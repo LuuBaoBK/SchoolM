@@ -13,11 +13,11 @@ class CreateParentsTable extends Migration
     public function up()
     {
         Schema::create('parents', function (Blueprint $table) {
-            $table->string('paid',8);
-            $table->primary('paid');
-            $table->foreign('paid')->references('uid')->on('myusers');
-            $table->string('mphone',11);
-            $table->string('hphone',11);
+            $table->string('id',8);
+            $table->primary('id');
+            $table->foreign('id')->references('id')->on('users');
+            $table->string('mobilephone',11);
+            $table->string('homephone',11);
         });
     }
 

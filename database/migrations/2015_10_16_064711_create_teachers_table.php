@@ -13,15 +13,14 @@ class CreateTeachersTable extends Migration
     public function up()
     {
         Schema::create('teachers', function (Blueprint $table) {
-            $table->string('teid',8);
-            $table->primary('teid');
-            $table->foreign('teid')->references('uid')->on('myusers');
-            $table->string('email',30)->unique();
-            $table->string('mphone',11)->unique();
-            $table->string('hphone',11);
-            $table->string('to',10);
-            $table->string('chucvu',20);
-            $table->datetime('ngayvaolam')->format(DB::raw('CURRENT_TIMESTAMP'));
+            $table->string('id',8);
+            $table->primary('id');
+            $table->foreign('id')->references('id')->on('users');
+            $table->string('mobilephone',11)->unique();
+            $table->string('homephone',11);
+            $table->string('group',10);
+            $table->string('position',20);
+            $table->datetime('incomingday')->format(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

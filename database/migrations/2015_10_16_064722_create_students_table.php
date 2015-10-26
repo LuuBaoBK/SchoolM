@@ -13,13 +13,13 @@ class CreateStudentsTable extends Migration
     public function up()
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->string('stid',8);
-            $table->primary('stid');
-            $table->foreign('stid')->references('uid')->on('myusers');
-            $table->integer('namnhaphoc');
-            $table->integer('namtotnghiep');
-            $table->string('paid',8);
-            $table->foreign('paid')->references('paid')->on('parents');
+            $table->string('id',8);
+            $table->primary('id');
+            $table->foreign('id')->references('id')->on('users');
+            $table->integer('enrolled_year');
+            $table->integer('graduated_year');
+            $table->string('parent_id',8);
+            $table->foreign('parent_id')->references('id')->on('parents');
         });
     }
 

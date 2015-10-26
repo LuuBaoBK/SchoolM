@@ -13,10 +13,10 @@ class CreateMessagesTable extends Migration
     public function up()
     {
         Schema::create('messages', function (Blueprint $table) {
-            $table->integer('mid');
-            $table->primary('mid');
+            $table->integer('id');
+            $table->primary('id');
             $table->string('content',100);
-            $table->datetime('ngaythang')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('datetime')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

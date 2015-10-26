@@ -13,13 +13,14 @@ class CreateSchedulesTable extends Migration
     public function up()
     {
         Schema::create('schedules', function (Blueprint $table) {
-            $table->string('cid',8);
-            $table->integer('sid');
-            $table->string('thu',5);
-            $table->integer('tiet');
-            $table->primary(['cid','sid','thu','tiet']);
-            $table->foreign('cid')->references('cid')->on('classes');
-            $table->foreign('sid')->references('sid')->on('subjects');
+            $table->string('class_id',8);
+            $table->integer('subject_id');
+            $table->string('day',5);
+            $table->integer('start_at');
+            $table->integer('duration');
+            $table->primary(['class_id','subject_id','day','start_at']);
+            $table->foreign('class_id')->references('id')->on('classes');
+            $table->foreign('subject_id')->references('id')->on('subjects');
         });
     }
 

@@ -13,12 +13,13 @@ class CreateMsgsendTable extends Migration
     public function up()
     {
         Schema::create('msgsend', function (Blueprint $table) {
-            $table->integer('msid');
+            $table->integer('id');
             $table->string('sendby',8);
-            $table->primary('msid');
-            $table->foreign('msid')->references('mid')->on('messages');
-            $table->foreign('sendby')->references('uid')->on('myusers');
+            $table->primary('id');
+            $table->foreign('id')->references('id')->on('messages');
+            $table->foreign('sendby')->references('id')->on('users');
             $table->integer('isdelete');
+            $table->integer('isdraft');
         });
     }
 

@@ -13,12 +13,12 @@ class CreateMsgrecvTable extends Migration
     public function up()
     {
         Schema::create('msgrecv', function (Blueprint $table) {
-            $table->integer('mrid');
-            $table->foreign('mrid')->references('mid')->on('messages');
+            $table->integer('id');
+            $table->foreign('id')->references('id')->on('messages');
             $table->string('recvby',8);
-            $table->foreign('recvby')->references('uid')->on('myusers');
+            $table->foreign('recvby')->references('id')->on('users');
             $table->integer('isdelete');
-            $table->primary(['mrid','recvby']);
+            $table->primary(['id','recvby']);
 
         });
     }
