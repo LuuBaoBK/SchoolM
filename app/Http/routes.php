@@ -14,3 +14,12 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('mypage', function () {
+    return view('mypage');
+});
+
+Route::get('blankpage', function(){
+	return view('blankpage');
+});
+
