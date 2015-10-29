@@ -15,10 +15,6 @@ Route::get('admin/dashboard', function () {
     return view('adminpage.dashboard');
 });
 
-Route::get('admin/userManage', function () {
-    return view('adminpage.adduser');
-});
-
 // Authentication routes...
 Route::get('/', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'auth\AuthController@postLogin');
@@ -28,4 +24,4 @@ Route::get('auth/logout', 'auth\AuthController@getLogout');
 Route::get('admin/adduser', function() {
 	return view('adminpage.adduser');
 });
-Route::post('admin/adduser', 'Admin\adduser@store');
+Route::post('admin/adduser', 'Admin\AdduserController@store');

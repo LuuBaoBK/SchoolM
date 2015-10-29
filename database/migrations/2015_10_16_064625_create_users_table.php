@@ -18,8 +18,10 @@ class CreateUsersTable extends Migration
             $table->string('password',60);
             $table->integer('role');
             $table->string('fullname',30);
-            $table->datetime('dateofbirth')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('dateofbirth');
             $table->string('address',80);
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

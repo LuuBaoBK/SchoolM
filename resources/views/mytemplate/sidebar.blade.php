@@ -5,7 +5,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left info">
-                <p>Hello, UserName</p>
+                <p>Hello, <?php $user =  Auth::user(); echo $user->fullname ?></p>
             </div>
         </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
