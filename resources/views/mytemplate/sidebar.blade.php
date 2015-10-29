@@ -11,13 +11,13 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="active">
-                <a href="mypage">
+                <a href="dashboard">
                     <i class="fa fa-home"></i> <span>Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="blankpage">
-                    <i class="fa fa-male"></i> <span>profile</span>
+                <a href="adduser">
+                    <i class="fa fa-male"></i> <span>User Register</span>
                 </a>
             </li>
             <li class="treeview">

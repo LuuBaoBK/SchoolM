@@ -11,15 +11,21 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('admin/dashboard', function () {
+    return view('adminpage.dashboard');
 });
 
-Route::get('mypage', function () {
-    return view('mypage');
+Route::get('admin/userManage', function () {
+    return view('adminpage.adduser');
 });
 
-Route::get('blankpage', function(){
-	return view('blankpage');
-});
+// Authentication routes...
+Route::get('/', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'auth\AuthController@postLogin');
+Route::get('auth/logout', 'auth\AuthController@getLogout');
 
+// Registration routes...
+Route::get('admin/adduser', function() {
+	return view('adminpage.adduser');
+});
+Route::post('admin/adduser', 'Admin\adduser@store');
