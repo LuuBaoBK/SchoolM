@@ -29,3 +29,18 @@ Route::get('admin/adduser', function() {
 	return view('adminpage.adduser');
 });
 Route::post('admin/adduser', 'Admin\adduser@store');
+
+
+//Manage class
+
+Route::get('class/view', 'ClassController@view');
+
+Route::get('class/form', 'ClassController@form');
+
+Route::post('class/save', 'ClassController@save');
+
+Route::post('class/update', 'ClassController@update');
+
+Route::get('class/delete/{id}', 'ClassController@delete');
+
+Route::get('class/edit/{id}', 'ClassController@edit');
