@@ -10,7 +10,10 @@ use App\User;
 
 class AdduserController extends Controller
 {
-
+    public function index(){
+        $userlist = User::all();
+        return view('adminpage.adduser', ['userlist' => $userlist]);
+    }
     public function store(Request $request)
     {
         $user = new User;
@@ -19,6 +22,6 @@ class AdduserController extends Controller
         $user->password = bcrypt($request['password']);
         $user->fullname = $request['fullname'];
         $user->save();
-        return view('adminpage.adduser');
+        return Redirect('/admin/adduser');
     }
 }

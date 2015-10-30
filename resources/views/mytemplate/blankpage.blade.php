@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>AdminLTE | Dashboard</title>
+        <title>School M</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <!-- bootstrap 3.0.2 -->
         <link href="{{asset("/adminltemaster/css/bootstrap.min.css")}}" rel="stylesheet" type="text/css" />
@@ -22,6 +22,8 @@
         <link href="{{asset("/adminltemaster/css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css")}}" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
         <link href="{{asset("/adminltemaster/css/AdminLTE.css")}}" rel="stylesheet" type="text/css" />
+        <!-- Table data -->
+        <link href="{{asset("/adminltemaster/css/datatables/dataTables.bootstrap.css")}}" rel="stylesheet" type="text/css" />
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -69,7 +71,9 @@
         <script src="{{asset("adminltemaster/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js")}}" type="text/javascript"></script>
         <!-- iCheck -->
         <script src="{{asset("/adminltemaster/js/plugins/iCheck/icheck.min.js")}}" type="text/javascript"></script>
-
+        <!-- DATA TABES SCRIPT -->
+        <script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
+        <script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}"s type="text/javascript"></script>
         <!-- AdminLTE App -->
         <script src="{{asset("/adminltemaster/js/AdminLTE/app.js")}}" type="text/javascript"></script>
         
