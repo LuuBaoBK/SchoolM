@@ -30,22 +30,23 @@ Route::post('admin/adduser', 'Admin\adduser@store');
 
 //Manage class
 
-Route::get('class/view', 'ClassController@view');
+Route::get('admin/classinfo', 'ClassController@view');
 
-Route::get('class/form', 'ClassController@form');
+Route::get('admin/form', 'ClassController@form');
 
-Route::post('class/save', 'ClassController@save');
+Route::post('admin/save', 'ClassController@save');
 
-Route::post('class/update', 'ClassController@update');
+Route::post('admin/update', 'ClassController@update');
 
-Route::get('class/delete/{id}', 'ClassController@delete');
+Route::get('admin/delete/{id}', 'ClassController@delete');
 
-Route::get('class/edit/{id}', 'ClassController@edit');
+Route::get('admin/edit/{id}', 'ClassController@edit');
 
 Route::get('admin/adduser', [
 	'middleware' => 'authrole',
 	'uses' => 'Admin\AdduserController@index',
 	]);
+
 Route::post('admin/adduser', 'Admin\AdduserController@store');
 
 Route::get('admin/adduser', 'Admin\AdduserController@index');

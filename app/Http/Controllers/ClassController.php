@@ -40,7 +40,7 @@ class ClassController extends Controller
     	if($id > 0)
     	{
     		\Session::flash('message', 'Record have been deleted successfully');
-			return redirect('class/view');
+			return redirect('admin/classinfo');
     	}
     }
 
@@ -81,10 +81,10 @@ class ClassController extends Controller
     		if($i > 0)
     		{	
     			\Session::flash('message', 'Record have been updated successfully');
-    			return redirect('class/view');
+    			return redirect('admin/classinfo');
     		}
     		//
-    		return redirect('class/view');
+    		return redirect('admin/classinfo');
     	}
     }
 
@@ -117,7 +117,7 @@ class ClassController extends Controller
     		if($i > 0)
     		{	
     			\Session::flash('message', 'Record have been saved successfully');
-    			return redirect('class/view');
+    			return redirect('admin/classinfo');
     		}
     	}
     }
