@@ -54,7 +54,7 @@
             </div>                                    
         </div><!-- /.box-header -->
         <div class="box-body table-responsive">
-            <table id="example2" class="table table-bordered">
+            <table id="example1" class="table table-bordered">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -92,7 +92,7 @@
 <!-- page script -->
         <script type="text/javascript">
             $(function() {
-                $('#example2').dataTable({
+                $('#example1').dataTable({
                     "bPaginate": true,
                     "bLengthChange": false,
                     "bFilter": true,

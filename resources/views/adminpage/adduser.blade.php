@@ -62,7 +62,7 @@
             </div>                                    
         </div><!-- /.box-header -->
         <div class="box-body table-responsive">
-            <table id="example2" class="table table-bordered table-striped">
+            <table id="example" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>User Id</th>
@@ -103,7 +103,7 @@
 <!-- page script -->
         <script type="text/javascript">
             $(function() {
-                var table = $('#example2').dataTable({
+                var table = $('#example').dataTable({
                     "bPaginate": true,
                     "bLengthChange": false,
                     "bFilter": true,
