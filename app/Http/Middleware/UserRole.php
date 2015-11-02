@@ -5,26 +5,14 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
-class RedirectIfAuthenticated
+class UserRole
 {
-    /**
-     * The Guard implementation.
-     *
-     * @var Guard
-     */
     protected $auth;
 
-    /**
-     * Create a new filter instance.
-     *
-     * @param  Guard  $auth
-     * @return void
-     */
     public function __construct(Guard $auth)
     {
         $this->auth = $auth;
     }
-
     /**
      * Handle an incoming request.
      *
@@ -34,10 +22,10 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next)
     {
-        if ($this->auth->check()) {
-            return redirect('/admin/dashboard');
+        if($this->auth->check())
+        {
+            return $next($request);
         }
-
-        return $next($request);
+        return view('errors.503');
     }
 }

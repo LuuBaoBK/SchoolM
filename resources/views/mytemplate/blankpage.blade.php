@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>AdminLTE | Dashboard</title>
+        <title>School M</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <!-- bootstrap 3.0.2 -->
         <link href="{{asset("/adminltemaster/css/bootstrap.min.css")}}" rel="stylesheet" type="text/css" />
@@ -14,6 +14,12 @@
         <link href="{{asset("/adminltemaster/css/datatables/dataTables.bootstrap.css")}}" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
         <link href="{{asset("/adminltemaster/css/AdminLTE.css")}}" rel="stylesheet" type="text/css" />
+<<<<<<< HEAD
+=======
+        <!-- Table data -->
+        <link href="{{asset("/adminltemaster/css/datatables/dataTables.bootstrap.css")}}" rel="stylesheet" type="text/css" />
+
+>>>>>>> c2d7de884518f7b4bebecdc72c6901eff752ab6b
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -41,10 +47,35 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
         <script src="{{ URL::asset("adminltemaster/js/jquery.min.js") }}" type="text/javascript"></script>
         <!-- Bootstrap -->
+<<<<<<< HEAD
         <script src="{{ URL::asset("adminltemaster/js/bootstrap.min.js") }}" type="text/javascript"></script>
         <!-- DATA TABES SCRIPT -->
         <script src="{{ URL::asset("adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
         <script src="{{ URL::asset("adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
+=======
+        <script src="{{asset("/adminltemaster/js/bootstrap.min.js")}}" type="text/javascript"></script>
+        <!-- Morris.js charts -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="{{asset("/adminltemaster/js/plugins/morris/morris.min.js")}}" type="text/javascript"></script>
+        <!-- Sparkline -->
+        <script src="{{asset("/adminltemaster/js/plugins/sparkline/jquery.sparkline.min.js")}}" type="text/javascript"></script>
+        <!-- jvectormap -->
+        <script src="{{asset("/adminltemaster/js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js")}}" type="text/javascript"></script>
+        <script src="{{asset("/adminltemaster/js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js")}}" type="text/javascript"></script>
+        <!-- fullCalendar -->
+        <script src="{{asset("/adminltemaster/js/plugins/fullcalendar/fullcalendar.min.js")}}" type="text/javascript"></script>
+        <!-- jQuery Knob Chart -->
+        <script src="{{asset("/adminltemaster/js/plugins/jqueryKnob/jquery.knob.js")}}" type="text/javascript"></script>
+        <!-- daterangepicker -->
+        <script src="{{asset("/adminltemaster/js/plugins/daterangepicker/daterangepicker.js")}}" type="text/javascript"></script>
+        <!-- Bootstrap WYSIHTML5 -->
+        <script src="{{asset("adminltemaster/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js")}}" type="text/javascript"></script>
+        <!-- iCheck -->
+        <script src="{{asset("/adminltemaster/js/plugins/iCheck/icheck.min.js")}}" type="text/javascript"></script>
+        <!-- DATA TABES SCRIPT -->
+        <script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
+        <script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}"s type="text/javascript"></script>
+>>>>>>> c2d7de884518f7b4bebecdc72c6901eff752ab6b
         <!-- AdminLTE App -->
         <script src="{{ URL::asset("adminltemaster/js/AdminLTE/app.js")}}" type="text/javascript"></script>
 

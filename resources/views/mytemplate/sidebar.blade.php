@@ -5,7 +5,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left info">
-                <p>Hello, UserName</p>
+                <p>Hello,<?php  $user = (Auth::check() ? Auth::user()->fullname : "guest").' !'; echo ' '.$user ?></p>
             </div>
         </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
@@ -17,7 +17,12 @@
             </li>
             <li>
                 <a href="adduser">
-                    <i class="fa fa-male"></i> <span>User Register</span>
+                    <i class="fa fa-user"></i> <span>User Register</span>
+                </a>
+            </li>
+            <li>
+                <a href="addsubject">
+                    <i class="fa fa-book"></i> <span>Subject Manager</span>
                 </a>
             </li>
             <li class="treeview">
@@ -32,7 +37,11 @@
                     <li><a href="#!"><i class="fa fa-angle-double-right"></i>???</a></li>
                 </ul>
             </li>
-            
+            <li>
+                <a href="../auth/logout">
+                    <i class="glyphicon glyphicon-log-out"></i> <span>Logout</span>
+                </a>
+            </li>
         </ul>
     </section>
 </aside>
