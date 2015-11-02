@@ -24,7 +24,7 @@
     <form method="POST" role="form">
          {!! csrf_field() !!}
         <div style = "display: none" class="box-body">
-             <div class="form-group">
+            <div class="form-group">
                 <label for="id">Id</label>
                 <input style="width:80%" type="text" class="form-control" name="id" id="id" placeholder="Enter id" value={{old('id')}}>
             </div>
@@ -36,13 +36,13 @@
                 <label for="password">Password</label>
                 <input style="width:80%" type="password" class="form-control" name="password" id="password" placeholder="Password">
             </div>
-             <div class="form-group">
-                <label for="password_confirmation">Password</label>
-                <input style="width:80%" type="password" class="form-control" name="password_confirmation" id="password_confirmation" placeholder="password_confirmation">
+            <div class="form-group">
+                <label for="role">Role</label>
+                <input style="width:80%" type="text" class="form-control" name="role" id="role" placeholder="Enter role" value={{old('role')}}>
             </div>
             <div class="form-group">
                 <label for="fullname">Full Name</label>
-                <input style="width:80%" type="text" class="form-control" name="fullname" id="fullname" placeholder="Full Name" value={{old('name')}}>
+                <input style="width:80%" type="text" class="form-control" name="fullname" id="fullname" placeholder="Full Name" value={{old('fullname')}}>
             </div>
         </div><!-- /.box-body -->
         <div style = "display: none" class="box-footer">
@@ -67,15 +67,19 @@
                     <tr>
                         <th>User Id</th>
                         <th>User Full Name</th>
+                        <th>User Role</th>
                         <th>User Email(s)</th>
+                        <th>Delete Item</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($userlist as $row) :?>
-                    <tr class="item_row">
+                    <tr>
                             <td> <?php echo $row->id ?></td>
                             <td> <?php echo $row->fullname ?></td>
+                            <td> <?php echo $row->role ?></td>
                             <td> <?php echo $row->email ?></td>
+                            <td> <input type="checkbox"/></td>
                     </tr>
                     <?php endforeach;?>
                 </tbody>
@@ -83,7 +87,9 @@
                     <tr>
                         <th>User Id</th>
                         <th>User Full Name</th>
+                        <th>User Role</th>
                         <th>User Email(s)</th>
+                        <th>Delete Item</th>
                     </tr>
                 </tfoot>
             </table>
@@ -91,13 +97,13 @@
     </div><!-- /.box -->
 </div>
 </section><!-- DATA TABES SCRIPT -->
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+        <script src="{{asset("/mylib/jquery/jquery.min.js")}}" type="text/javascript"></script>
         <script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
         <script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
 <!-- page script -->
         <script type="text/javascript">
             $(function() {
-                $('#example2').dataTable({
+                var table = $('#example2').dataTable({
                     "bPaginate": true,
                     "bLengthChange": false,
                     "bFilter": true,
@@ -106,6 +112,8 @@
                     "bAutoWidth": false,
                 });
             });
+
+            
         </script>
 
 @endsection
