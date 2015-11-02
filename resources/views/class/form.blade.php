@@ -9,7 +9,7 @@
 <p style="color:red">{{ $errors->first('classname')}}</p>
 <p style="color:red">{{ $errors->first('homeroom_teacher')}}</p>
 <body>
-	<form action="{{action('Class\ClassController@save')}}" method="post">
+	<form action="{{action('ClassController@save')}}" method="post">
 		<input type="hidden" name="_token" value="<?= csrf_token(); ?>">
 		Id
 		<input type="text" name="id" class="form-control">

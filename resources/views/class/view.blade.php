@@ -1,3 +1,4 @@
+
 @extends('class.template')
 @section('content')
  
