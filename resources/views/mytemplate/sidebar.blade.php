@@ -17,7 +17,12 @@
             </li>
             <li>
                 <a href="adduser">
-                    <i class="fa fa-male"></i> <span>User Register</span>
+                    <i class="fa fa-user"></i> <span>User Register</span>
+                </a>
+            </li>
+            <li>
+                <a href="addsubject">
+                    <i class="fa fa-book"></i> <span>Subject Manager</span>
                 </a>
             </li>
             <li class="treeview">
