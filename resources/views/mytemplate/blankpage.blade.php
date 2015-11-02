@@ -14,12 +14,9 @@
         <link href="{{asset("/adminltemaster/css/datatables/dataTables.bootstrap.css")}}" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
         <link href="{{asset("/adminltemaster/css/AdminLTE.css")}}" rel="stylesheet" type="text/css" />
-<<<<<<< HEAD
-=======
         <!-- Table data -->
         <link href="{{asset("/adminltemaster/css/datatables/dataTables.bootstrap.css")}}" rel="stylesheet" type="text/css" />
 
->>>>>>> c2d7de884518f7b4bebecdc72c6901eff752ab6b
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -47,12 +44,11 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
         <script src="{{ URL::asset("adminltemaster/js/jquery.min.js") }}" type="text/javascript"></script>
         <!-- Bootstrap -->
-<<<<<<< HEAD
         <script src="{{ URL::asset("adminltemaster/js/bootstrap.min.js") }}" type="text/javascript"></script>
         <!-- DATA TABES SCRIPT -->
         <script src="{{ URL::asset("adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
         <script src="{{ URL::asset("adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
-=======
+
         <script src="{{asset("/adminltemaster/js/bootstrap.min.js")}}" type="text/javascript"></script>
         <!-- Morris.js charts -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
@@ -75,7 +71,6 @@
         <!-- DATA TABES SCRIPT -->
         <script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
         <script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}"s type="text/javascript"></script>
->>>>>>> c2d7de884518f7b4bebecdc72c6901eff752ab6b
         <!-- AdminLTE App -->
         <script src="{{ URL::asset("adminltemaster/js/AdminLTE/app.js")}}" type="text/javascript"></script>
 

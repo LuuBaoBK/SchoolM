@@ -20,6 +20,8 @@ class CreateLectureregisterTable extends Migration
             $table->foreign('class_id')->references('id')->on('classes');
             $table->foreign('writeby')->references('id')->on('teachers');
             $table->string('content',300);
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

@@ -20,6 +20,8 @@ class CreateClassteachersubjectTable extends Migration
             $table->foreign('class_id')->references('id')->on('teachers');
             $table->foreign('teacher_id')->references('id')->on('classes');
             $table->foreign('subject_id')->references('id')->on('subjects');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

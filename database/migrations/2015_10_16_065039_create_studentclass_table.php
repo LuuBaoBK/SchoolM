@@ -19,6 +19,8 @@ class CreateStudentclassTable extends Migration
             $table->primary(array('class_id','student_id'));
             $table->foreign('class_id')->references('id')->on('classes');
             $table->foreign('student_id')->references('id')->on('students');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

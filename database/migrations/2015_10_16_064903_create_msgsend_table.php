@@ -20,6 +20,8 @@ class CreateMsgsendTable extends Migration
             $table->foreign('sendby')->references('id')->on('users');
             $table->integer('isdelete');
             $table->integer('isdraft');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

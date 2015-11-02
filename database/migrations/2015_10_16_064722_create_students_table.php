@@ -20,6 +20,8 @@ class CreateStudentsTable extends Migration
             $table->integer('graduated_year');
             $table->string('parent_id',8);
             $table->foreign('parent_id')->references('id')->on('parents');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

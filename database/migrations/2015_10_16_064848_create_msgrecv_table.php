@@ -19,6 +19,8 @@ class CreateMsgrecvTable extends Migration
             $table->foreign('recvby')->references('id')->on('users');
             $table->integer('isdelete');
             $table->primary(['id','recvby']);
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
 
         });
     }

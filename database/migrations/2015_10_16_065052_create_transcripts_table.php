@@ -22,6 +22,8 @@ class CreateTranscriptsTable extends Migration
             $table->primary(['student_id','semester','subject_id','type','datetime']);
             $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('subject_id')->references('id')->on('subjects');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

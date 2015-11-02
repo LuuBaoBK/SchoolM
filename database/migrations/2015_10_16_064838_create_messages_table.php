@@ -16,7 +16,8 @@ class CreateMessagesTable extends Migration
             $table->integer('id');
             $table->primary('id');
             $table->string('content',100);
-            $table->datetime('datetime')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

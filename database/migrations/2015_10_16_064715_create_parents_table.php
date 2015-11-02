@@ -18,6 +18,9 @@ class CreateParentsTable extends Migration
             $table->foreign('id')->references('id')->on('users');
             $table->string('mobilephone',11);
             $table->string('homephone',11);
+            $table->string('job',11);
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

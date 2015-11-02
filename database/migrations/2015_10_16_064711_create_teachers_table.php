@@ -21,6 +21,8 @@ class CreateTeachersTable extends Migration
             $table->string('group',10);
             $table->string('position',20);
             $table->datetime('incomingday')->format(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 
