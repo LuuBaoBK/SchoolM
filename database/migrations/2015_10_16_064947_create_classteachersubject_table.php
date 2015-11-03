@@ -14,7 +14,7 @@ class CreateClassteachersubjectTable extends Migration
     {
         Schema::create('classteachersubject', function (Blueprint $table) {
             $table->string('class_id',8);
-            $table->string('teacher_id',8);
+            $table->string('teacher_id',10);
             $table->integer('subject_id');
             $table->primary(array('class_id','teacher_id','subject_id'));
             $table->foreign('class_id')->references('id')->on('teachers');

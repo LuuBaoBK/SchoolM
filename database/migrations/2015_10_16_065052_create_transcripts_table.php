@@ -13,7 +13,7 @@ class CreateTranscriptsTable extends Migration
     public function up()
     {
         Schema::create('transcript', function (Blueprint $table) {
-            $table->string('student_id',8);
+            $table->string('student_id',10);
             $table->string('semester',6);
             $table->integer('subject_id');
             $table->string('type',6);

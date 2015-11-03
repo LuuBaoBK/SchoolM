@@ -14,7 +14,7 @@ class CreateLectureregisterTable extends Migration
     {
         Schema::create('lectureregister', function (Blueprint $table) {
             $table->string('class_id');
-            $table->string('writeby',8);
+            $table->string('writeby',10);
             $table->datetime('date_time')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->primary(array('class_id','writeby','date_time'));
             $table->foreign('class_id')->references('id')->on('classes');

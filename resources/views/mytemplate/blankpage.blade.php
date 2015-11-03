@@ -38,10 +38,7 @@
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
 
-
         <!-- jQuery 2.0.2 -->
-        <!-- jQuery 2.0.2 -->
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
         <script src="{{ URL::asset("adminltemaster/js/jquery.min.js") }}" type="text/javascript"></script>
         <!-- Bootstrap -->
         <script src="{{ URL::asset("adminltemaster/js/bootstrap.min.js") }}" type="text/javascript"></script>
@@ -73,21 +70,10 @@
         <script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}"s type="text/javascript"></script>
         <!-- AdminLTE App -->
         <script src="{{ URL::asset("adminltemaster/js/AdminLTE/app.js")}}" type="text/javascript"></script>
-
-        <!-- page script -->
-        <script type="text/javascript">
-            $(function() {
-                $("#example1").dataTable();
-                $('#example2').dataTable({
-                    "bPaginate": true,
-                    "bLengthChange": false,
-                    "bFilter": false,
-                    "bSort": true,
-                    "bInfo": true,
-                    "bAutoWidth": false
-                });
-            });
-        </script>
+        <!-- InputMask -->
+        <script src="{{asset("/adminltemaster/js/plugins/input-mask/jquery.inputmask.js")}}" type="text/javascript"></script>
+        <script src="{{asset("/adminltemaster/js/plugins/input-mask/jquery.inputmask.date.extensions.js")}}" type="text/javascript"></script>
+        <script src="{{asset("/adminltemaster/js/plugins/input-mask/jquery.inputmask.extensions.js")}}" type="text/javascript"></script>
         
     </body>
 </html>

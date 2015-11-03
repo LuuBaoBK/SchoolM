@@ -11,17 +11,26 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="active">
-                <a href="dashboard">
+                <a href="/schoolm/public/admin/dashboard">
                     <i class="fa fa-home"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li>
-                <a href="adduser">
-                    <i class="fa fa-user"></i> <span>User Register</span>
+            <li class="treeview">
+                <a href="">
+                    <i class="fa fa-th"></i>
+                    <span>User Manage</span>
+                    <i class="fa fa-angle-left pull-right"></i>
                 </a>
+                <ul class="treeview-menu">
+                    <li><a href="/schoolm/public/admin/adduser/admin"><i class="fa fa-angle-double-right"></i>Admin</a></li>
+                    <li><a href="/schoolm/public/admin/adduser/teacher"><i class="fa fa-angle-double-right"></i>Teacher</a></li>
+                    <li><a href="/schoolm/public/admin/adduser/student"><i class="fa fa-angle-double-right"></i>Student</a></li>
+                    <li><a href="/schoolm/public/admin/adduser/parent"><i class="fa fa-angle-double-right"></i>Parent</a></li>
+                    <li><a href="/schoolm/public/admin/adduser/userlist"><i class="fa fa-angle-double-right"></i>User List</a></li>
+                </ul>
             </li>
             <li>
-                <a href="addsubject">
+                <a href="/schoolm/public/admin/addsubject">
                     <i class="fa fa-book"></i> <span>Subject Manager</span>
                 </a>
             </li>
@@ -32,13 +41,13 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="classinfo"><i class="fa fa-angle-double-right"></i>Class Info</a></li>
+                    <li><a href="/schoolm/public/admin/classinfo"><i class="fa fa-angle-double-right"></i>Class Info</a></li>
                     <li><a href="#!"><i class="fa fa-angle-double-right"></i>Student List</a></li>
                     <li><a href="#!"><i class="fa fa-angle-double-right"></i>???</a></li>
                 </ul>
             </li>
             <li>
-                <a href="../auth/logout">
+                <a href="/schoolm/public/auth/logout">
                     <i class="glyphicon glyphicon-log-out"></i> <span>Logout</span>
                 </a>
             </li>

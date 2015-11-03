@@ -22,10 +22,11 @@ Route::get('auth/logout', 'Auth\MyAuthController@logout');
 
 // Registration routes...
 
-Route::get('admin/adduser', function() {
-	return view('adminpage.adduser');
-});
-Route::post('admin/adduser', 'Admin\adduser@store');
+Route::get ('admin/adduser/admin', 'Admin\AdduserController@get_ad');
+Route::post('admin/adduser/admin', 'Admin\AdduserController@store_ad');
+
+Route::get ('admin/adduser/teacher', 'Admin\AdduserController@get_te');
+Route::post('admin/adduser/teacher', 'Admin\AdduserController@store_te');
 
 
 //Manage class

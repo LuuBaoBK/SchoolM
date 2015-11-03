@@ -16,7 +16,7 @@ class ClassTableSeeder extends Seeder
     			'id' =>	$i,
 	            'semester' => 'subject'.$i,
 	            'classname' => $i*50,
-	            'homeroom_teacher' => 'te_000'.$i,	  
+	            'homeroom_teacher' => 'te_000000'.$i,	  
         	]);
     	}
     }

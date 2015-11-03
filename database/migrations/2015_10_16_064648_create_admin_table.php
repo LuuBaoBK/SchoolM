@@ -13,8 +13,9 @@ class CreateAdminTable extends Migration
     public function up()
     {
         Schema::create('admin', function (Blueprint $table) {
-            $table->string('id',8)->primary();
+            $table->string('id',10)->primary();
             $table->foreign('id')->references('id')->on('users');
+            $table->string('mobilephone',11);
             $table->string('ownername');
             $table->timestamp('created_at');
             $table->timestamp('updated_at');

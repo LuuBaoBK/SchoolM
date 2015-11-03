@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Subject;
+use App\Model\Subject;
 
 class AddsubjectController extends Controller
 {

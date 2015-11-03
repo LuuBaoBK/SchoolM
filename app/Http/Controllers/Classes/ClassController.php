@@ -25,7 +25,7 @@ class ClassController extends Controller
     	//$result = DB::table('lophoc')->paginate(5);*/
     	//return view("viewClass")->with('data', $data);
 
-    	$result = DB::table('lophoc')->get();
+    	$result = DB::table('classes')->get();
     	
     	return view("class.view")->with('data', $result);
     }
@@ -36,7 +36,7 @@ class ClassController extends Controller
 
     public function delete($id)
     {
-    	$i = DB::table('lophoc')->where('id', $id)->delete();
+    	$i = DB::table('classes')->where('id', $id)->delete();
     	if($id > 0)
     	{
     		\Session::flash('message', 'Record have been deleted successfully');
@@ -47,7 +47,7 @@ class ClassController extends Controller
 
     public function edit($id)
     {
-    	$row = DB::table('lophoc')->where('id', $id)->first();
+    	$row = DB::table('classes')->where('id', $id)->first();
     	return view("class.edit")->with('row', $row);
     }
 
@@ -60,7 +60,7 @@ class ClassController extends Controller
     			'id' => 'required',
     			'semester' => 'required',
     			'classname' => 'required',
-    			'homeroom_teacher' => 'required',
+    			//'homeroom_teacher' => 'required',
     		]);
 
     	if($v->fails())
@@ -76,7 +76,7 @@ class ClassController extends Controller
 				'homeroom_teacher' => $post['homeroom_teacher'],
     			);
 
-    		$i = DB::table('lophoc')->where('id', $post['id'])->update($data);
+    		$i = DB::table('classes')->where('id', $post['id'])->update($data);
 
     		if($i > 0)
     		{	
@@ -112,7 +112,7 @@ class ClassController extends Controller
 				'homeroom_teacher' => $post['homeroom_teacher'],
     			);
 
-    		$i = DB::table('lophoc')->insert($data);
+    		$i = DB::table('classes')->insert($data);
 
     		if($i > 0)
     		{	

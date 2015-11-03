@@ -13,8 +13,7 @@ class CreateTeachersTable extends Migration
     public function up()
     {
         Schema::create('teachers', function (Blueprint $table) {
-            $table->string('id',8);
-            $table->primary('id');
+            $table->string('id',10)->primary();
             $table->foreign('id')->references('id')->on('users');
             $table->string('mobilephone',11)->unique();
             $table->string('homephone',11);
