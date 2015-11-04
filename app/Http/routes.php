@@ -54,6 +54,13 @@ Route::post('admin/adduser', 'Admin\AdduserController@store');
 
 Route::get('admin/addsubject', 'Admin\AddsubjectController@index');
 Route::post('admin/addsubject', 'Admin\AddsubjectController@store');
-Route::put('admin/addsubject', 'Admin\AddsubjectController@update');
 
-Route::get('admin/editsubject', 'Admin\EditsubjectController@edit');
+Route::get('admin/editsubject/{id}', 'Admin\EditsubjectController@edit');
+Route::post('admin/editsubject{id}', 'Admin\EditsubjectController@update');
+Route::get('admin/deletesubject/{id}', 'Admin\EditsubjectController@delete');
+
+Route::get('admin/schedule', 'Admin\ScheduleController@index');
+Route::post('admin/schedule', 'Admin\ScheduleController@store');
+
+Route::get('admin/transcript', 'Admin\TranscriptController@index');
+Route::post('admin/transcript', 'Admin\TranscriptController@store');

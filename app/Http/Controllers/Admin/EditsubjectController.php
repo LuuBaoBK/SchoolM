@@ -10,13 +10,25 @@ use App\Subject;
 
 class EditsubjectController extends Controller
 {
-    public function edit(Request $request)
+    public function edit($id)
     {
-        $subject = new Subject;
-        $subject->id = $request['id'];
-        $subject->subject_name = $request['name'];
-        $subject->total_time = $request['totaltime'];
-        $subject->save();
-        return view('adminpage.editsubject');
+    	$row = Subject::where('id', $id)->first();
+    	return view("adminpage.editsubject", ['row' => $row]);
+    }
+
+    public function update(Request $request)
+    {	
+    	$data = Subject::where('id', $request['id'])->first();
+    	$data->id = $request['id'];
+    	$data->subject_name = $request['name'];
+    	$data->total_time = $request['totaltime'];
+    	$data->update();
+    	return Redirect('admin/addsubject');
+    }
+
+    public function delete($id)
+    {
+        $i = Subject::where('id', $id)->delete();
+        return redirect('admin/addsubject');
     }
 }
