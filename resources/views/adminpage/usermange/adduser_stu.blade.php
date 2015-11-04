@@ -4,18 +4,18 @@
 <section class="content-header">
     <h1>
         Admin
-        <small>Regist Teacher</small>
+        <small>Regist Student</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i>Admin</a></li>
-        <li class="active">Regist Teacher</li>
+        <li class="active">Regist Student</li>
     </ol>
 </section>
 <section class="content">
 <div class="col-xs-6">
 <div class="box box-solid box-primary collapsed-box">
     <div class="box-header">
-            <h3 class="box-title">Regist New Teacher</h3>
+            <h3 class="box-title">Regist New Student</h3>
         <div class="box-tools pull-right">
             <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
         </div>
@@ -37,12 +37,16 @@
                 <input style="width:80%" type="text" class="form-control" name="fullname" id="fullname" placeholder="Full Name" value={{old('fullname')}}>
             </div>
             <div class="form-group">
-                <label for="mobilephone">Mobile Phone</label>
-                <input style="width:80%" type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone" value={{old('mobilephone')}}>
+                <label for="enrolled_year">Enrolled Year</label>
+                <input style="width:80%" type="text" class="form-control" name="enrolled_year" id="enrolled_year" placeholder="Enrolled Year" value={{old('enrolled_year')}}>
             </div>
             <div class="form-group">
-                <label for="homephone">Home Phone</label>
-                <input style="width:80%" type="text" class="form-control" name="homephone" id="homephone" placeholder="Home Phone" value={{old('homephone')}}>
+                <label for="graduated_year">Graduated Year</label>
+                <input style="width:80%" type="text" class="form-control" name="graduated_year" id="graduated_year" placeholder="Graduated Year" value={{old('graduated_year')}}>
+            </div>
+            <div class="form-group">
+                <label for="parent_id">Parent's ID</label>
+                <input style="width:80%" type="text" class="form-control" name="parent_id" id="parent_id" placeholder="Parent's ID" value={{old('parent_id')}}>
             </div>
             <div class="form-group">
                 <label>Date Of Birth:</label>
@@ -53,27 +57,6 @@
                     <input style="width:80%" type="text" name="dateofbirth" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/>
                 </div><!-- /.input group -->
             </div><!-- /.form group -->
-            <div class="form-group">
-                <label>Incoming Day:</label>
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                    </div>
-                    <input style="width:80%" type="text" name="incomingday" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/>
-                </div><!-- /.input group -->
-            </div><!-- /.form group -->
-            <div class="form-group">
-                <label for="group">Group</label>
-                <input style="width:80%" type="text" class="form-control" name="group" id="group" placeholder="Group" value={{old('group')}}>
-            </div>
-            <div class="form-group">
-                <label for="specialize">Specialize</label>
-                <input style="width:80%" type="text" class="form-control" name="specialize" id="role" placeholder="Specialize" value={{old('specialize')}}>
-            </div>
-            <div class="form-group">
-                <label for="position">Position</label>
-                <input style="width:80%" type="text" class="form-control" name="position" id="position" placeholder="Position" value={{old('position')}}>
-            </div>
             <div class="form-group">
                 <label for="role">Address</label>
                 <input style="width:80%" type="text" class="form-control" name="address" id="role" placeholder="Address" value={{old('address')}}>
@@ -90,7 +73,7 @@
 <div class="col-xs-12">
     <div class="box box-solid box-primary">
         <div class="box-header">
-            <h3 class="box-title">Teacher List</h3>
+            <h3 class="box-title">Student List</h3>
             <div class="box-tools pull-right">
                 <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
             </div>                                    
@@ -102,26 +85,22 @@
                         <th>Id</th>
                         <th>Full Name</th>
                         <th>Email</th>
-                        <th>Mobile</th>
-                        <th>Home Phone</th>
-                        <th>Group</th>
-                        <th>Specialize</th>
-                        <th>Incoming Day</th>
-                        <th>role</th>
+                        <th>Enrolled Year</th>
+                        <th>Graduated Year</th>
+                        <th>Parent Name</th>
+                        <th>Role</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($teacherlist as $row) :?>
+                    <?php foreach ($studentlist as $row) :?>
                     <tr>
                             <td> <?php echo $row->id ?></td>
                             <td> <?php echo $row->user->fullname ?></td>
                             <td> <?php echo $row->user->email ?></td>
-                            <td> <?php echo $row->mobilephone ?></td>
-                            <td> <?php echo $row->homephone ?></td>
-                            <td> <?php echo $row->group ?></td>
-                            <td> <?php echo $row->specialize ?></td>
-                            <td> <?php echo $row->incomingday ?></td>
+                            <td> <?php echo $row->enrolled_year ?></td>
+                            <td> <?php echo $row->graduated_year ?></td>
+                            <td> <?php echo $row->parent->user->fullname?></td>
                             <td> <?php echo $row->user->role ?></td>
                             <td>
                                 <i class = "fa fa-fw fa-edit"></i>
@@ -135,12 +114,10 @@
                         <th>Id</th>
                         <th>Full Name</th>
                         <th>Email</th>
-                        <th>Mobile</th>
-                        <th>Home Phone</th>
-                        <th>Group</th>
-                        <th>Specialize</th>
-                        <th>Incoming Day</th>
-                        <th>role</th>
+                        <th>Enrolled Year</th>
+                        <th>Graduated Year</th>
+                        <th>Parent Name</th>
+                        <th>Role</th>
                         <th></th>
                     </tr>
                 </tfoot>

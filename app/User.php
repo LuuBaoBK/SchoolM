@@ -36,4 +36,19 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->hasOne('App\Model\Admin' , 'id' ,'id');
     }
+
+    public function teacher()
+    {
+        return $this->hasOne('App\Model\Teacher' , 'id' ,'id');
+    }
+    
+    public function student()
+    {
+        return $this->hasOne('App\Model\Student' , 'id' ,'id');
+    }
+
+    public function parent()
+    {
+        return $this->hasOne('App\Model\Parent' , 'id' ,'id');
+    }
 }

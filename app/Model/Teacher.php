@@ -12,7 +12,6 @@ class Teacher extends Model
      * @var string
      */
     protected $table = 'teachers';
-
     /**
      * The attributes that are mass assignable.
      *

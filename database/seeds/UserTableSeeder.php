@@ -17,24 +17,28 @@ class UserTableSeeder extends Seeder
 	            'fullname' => 'admin'.$i.' Full Name',
 	            'email' => 'admin'.$i.'@schoolm.com',
 	            'password' => bcrypt('1234'),
+                'role' => '0',
         	]);
             DB::table('users')->insert([
                 'id' => 'te_000000'.$i,
                 'fullname' => 'teacher'.$i.' Full Name',
                 'email' => 'teacher'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
+                'role' => '1',
             ]);
             DB::table('users')->insert([
                 'id' => 'st_000000'.$i,
                 'fullname' => 'student'.$i.' Full Name',
                 'email' => 'student'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
+                'role' => '2',
             ]);
             DB::table('users')->insert([
                 'id' => 'pa_000000'.$i,
                 'fullname' => 'parent'.$i.' Full Name',
                 'email' => 'parent'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
+                'role' => '2',
             ]);
     	}
     }
