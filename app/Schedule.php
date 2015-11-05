@@ -10,7 +10,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Model implements AuthenticatableContract,
+class Schedule extends Model implements AuthenticatableContract,
                                     AuthorizableContract,
                                     CanResetPasswordContract
 {
@@ -21,34 +21,18 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var string
      */
-    protected $table = 'users';
+    protected $table = 'schedules';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['id', 'email', 'password', 'role', 'fullname', 'dateofbirth', 'address' ];
+    protected $fillable = ['class', 'subject', 'day', 'start', 'duration'];
 
-    protected $hidden = ['password', 'remember_token'];
-
-    public function admin()
-    {
-        return $this->hasOne('App\Model\Admin' , 'id' ,'id');
-    }
-
-    public function teacher()
-    {
-        return $this->hasOne('App\Model\Teacher' , 'id' ,'id');
-    }
-    
-    public function student()
-    {
-        return $this->hasOne('App\Model\Student' , 'id' ,'id');
-    }
-
-    public function parent()
-    {
-        return $this->hasOne('App\Model\Parent' , 'id' ,'id');
-    }
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
 }

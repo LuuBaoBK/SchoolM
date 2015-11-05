@@ -11,7 +11,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="active">
-                <a href="/schoolm/public/admin/dashboard">
+                <a href="/admin/dashboard">
                     <i class="fa fa-home"></i> <span>Dashboard</span>
                 </a>
             </li>
@@ -22,16 +22,26 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/schoolm/public/admin/adduser/admin"><i class="fa fa-angle-double-right"></i>Admin</a></li>
-                    <li><a href="/schoolm/public/admin/adduser/teacher"><i class="fa fa-angle-double-right"></i>Teacher</a></li>
-                    <li><a href="/schoolm/public/admin/adduser/student"><i class="fa fa-angle-double-right"></i>Student</a></li>
-                    <li><a href="/schoolm/public/admin/adduser/parent"><i class="fa fa-angle-double-right"></i>Parent</a></li>
-                    <li><a href="/schoolm/public/admin/adduser/userlist"><i class="fa fa-angle-double-right"></i>User List</a></li>
+                    <li><a href="/admin/manage-user/admin"><i class="fa fa-angle-double-right"></i>Admin</a></li>
+                    <li><a href="/admin/manage-user/teacher"><i class="fa fa-angle-double-right"></i>Teacher</a></li>
+                    <li><a href="/admin/manage-user/student"><i class="fa fa-angle-double-right"></i>Student</a></li>
+                    <li><a href="/admin/manage-user/parent"><i class="fa fa-angle-double-right"></i>Parent</a></li>
+                    <li><a href="/admin/manage-user/userlist"><i class="fa fa-angle-double-right"></i>User List</a></li>
                 </ul>
             </li>
             <li>
-                <a href="/schoolm/public/admin/addsubject">
+                <a href="/admin/addsubject">
                     <i class="fa fa-book"></i> <span>Subject Manager</span>
+                </a>
+            </li>
+            <li>
+                <a href="schedule">
+                    <i class="fa fa-calendar"></i> <span>Schedule Manager</span>
+                </a>
+            </li>
+            <li>
+                <a href="transcript">
+                    <i class="fa fa-file-text-o"></i> <span>Transcript Manager</span>
                 </a>
             </li>
             <li class="treeview">
@@ -41,7 +51,7 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/schoolm/public/admin/classinfo"><i class="fa fa-angle-double-right"></i>Class Info</a></li>
+                    <li><a href="/admin/classinfo"><i class="fa fa-angle-double-right"></i>Class Info</a></li>
                     <li><a href="#!"><i class="fa fa-angle-double-right"></i>Student List</a></li>
                     <li><a href="#!"><i class="fa fa-angle-double-right"></i>???</a></li>
                 </ul>
@@ -59,7 +69,7 @@
                 </ul>
             </li>
             <li>
-                <a href="/schoolm/public/auth/logout">
+                <a href="/auth/logout">
                     <i class="glyphicon glyphicon-log-out"></i> <span>Logout</span>
                 </a>
             </li>

@@ -25,4 +25,14 @@ class Student extends Model
      *
      * @var array
      */
+
+    public function user()
+    {
+        return $this->belongsTo('App\User' , 'id', 'id');
+    }
+
+     public function parent()
+    {
+        return $this->hasOne('App\Model\Parents' , 'id' ,'parent_id');
+    }
 }

@@ -17,7 +17,8 @@ class TeacherTableSeeder extends Seeder
                 'mobilephone' => '090-000-'.$i,
                 'homephone' => '08-000-'.$i,
                 'group' => $i,
-                'position' => 'giao vien',              
+                'position' => 'giao vien',
+                'specialize' => 'toan'.$i,              
         	]);
     	}
     }

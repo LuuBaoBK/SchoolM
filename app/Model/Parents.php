@@ -11,7 +11,7 @@ class Parents extends Model
      *
      * @var string
      */
-    protected $table = 'subjects';
+    protected $table = 'parents';
 
     /**
      * The attributes that are mass assignable.
@@ -25,4 +25,14 @@ class Parents extends Model
      *
      * @var array
      */
+
+    public function user()
+    {
+        return $this->belongsTo('App\User' , 'id', 'id');
+    }
+
+    public function student()
+    {
+        return $this->belongsTo('App\Student' , 'parent_id', 'id');
+    }
 }

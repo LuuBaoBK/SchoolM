@@ -21,13 +21,28 @@ Route::post('auth/login', 'Auth\MyAuthController@authenticate');
 Route::get('auth/logout', 'Auth\MyAuthController@logout');
 
 // Registration routes...
+/*
+Use this later
+Route::get('admin/adduser', [
+	'middleware' => 'authrole',
+	'uses' => 'Admin\AdduserController@index',
+	]);
+*/
+Route::get ('admin/manage-user/admin', 'Admin\UserManageController@get_ad');
+Route::post('admin/manage-user/admin', 'Admin\UserManageController@store_ad');
+Route::get ('admin/manage-user/admin/delete/{id}', 'Admin\UserManageController@delete_ad');
 
-Route::get ('admin/adduser/admin', 'Admin\AdduserController@get_ad');
-Route::post('admin/adduser/admin', 'Admin\AdduserController@store_ad');
+Route::get ('admin/manage-user/teacher', 'Admin\UserManageController@get_te');
+Route::post('admin/manage-user/teacher', 'Admin\UserManageController@store_te');
+Route::get ('admin/manage-user/teacher/delete/{id}', 'Admin\UserManageController@delete_te');
 
-Route::get ('admin/adduser/teacher', 'Admin\AdduserController@get_te');
-Route::post('admin/adduser/teacher', 'Admin\AdduserController@store_te');
+Route::get ('admin/manage-user/student', 'Admin\UserManageController@get_stu');
+Route::post('admin/manage-user/student', 'Admin\UserManageController@store_stu');
 
+Route::get ('admin/manage-user/parent', 'Admin\UserManageController@get_pa');
+Route::post('admin/manage-user/parent', 'Admin\UserManageController@store_pa');
+
+Route::get ('admin/manage-user/userlist', 'Admin\UserManageController@get_userlist');
 
 //Manage class
 
@@ -72,8 +87,17 @@ Route::post('admin/adduser', 'Admin\AdduserController@store');
 Route::get('admin/adduser', 'Admin\AdduserController@index');
 Route::post('admin/adduser', 'Admin\AdduserController@store');
 
+
+//Manage subject
 Route::get('admin/addsubject', 'Admin\AddsubjectController@index');
 Route::post('admin/addsubject', 'Admin\AddsubjectController@store');
-Route::put('admin/addsubject', 'Admin\AddsubjectController@update');
 
-Route::get('admin/editsubject', 'Admin\EditsubjectController@edit');
+Route::get('admin/editsubject/{id}', 'Admin\EditsubjectController@edit');
+Route::post('admin/editsubject{id}', 'Admin\EditsubjectController@update');
+Route::get('admin/deletesubject/{id}', 'Admin\EditsubjectController@delete');
+
+Route::get('admin/schedule', 'Admin\ScheduleController@index');
+Route::post('admin/schedule', 'Admin\ScheduleController@store');
+
+Route::get('admin/transcript', 'Admin\TranscriptController@index');
+Route::post('admin/transcript', 'Admin\TranscriptController@store');

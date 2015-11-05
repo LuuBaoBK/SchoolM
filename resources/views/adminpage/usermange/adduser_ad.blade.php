@@ -7,7 +7,7 @@
         <small>Regist Admin</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="/schoolm/public/admin/dashboard"><i class="fa fa-dashboard"></i>Admin</a></li>
+        <li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i>Admin</a></li>
         <li class="active">Regist Admin</li>
     </ol>
 </section>
@@ -79,6 +79,7 @@
                         <th>Email</th>
                         <th>Mobile</th>
                         <th>role</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -89,6 +90,12 @@
                             <td> <?php echo $row->user->email ?></td>
                             <td> <?php echo $row->mobilephone ?></td>
                             <td> <?php echo $row->user->role ?></td>
+                            <td>
+                                <i class = "fa fa-fw fa-edit"></i>
+                                <a href="<?php echo 'edit/'.$row->id ?>">Edit</a> |
+                                <i class = "fa fa-fw fa-trash-o"></i> 
+                                <a href="<?php echo 'admin/delete/'.$row->id ?>">Delete</a>
+                            </td>
                     </tr>
                     <?php endforeach;?>
                 </tbody>
@@ -99,6 +106,7 @@
                         <th>Email</th>
                         <th>Mobile</th>
                         <th>role</th>
+                        <th></th>
                     </tr>
                 </tfoot>
             </table>

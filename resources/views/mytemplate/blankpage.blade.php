@@ -41,6 +41,7 @@
         <!-- jQuery 2.0.2 -->
         <script src="{{ URL::asset("adminltemaster/js/jquery.min.js") }}" type="text/javascript"></script>
         <!-- Bootstrap -->
+
         <script src="{{ URL::asset("adminltemaster/js/bootstrap.min.js") }}" type="text/javascript"></script>
         <!-- DATA TABES SCRIPT -->
         <script src="{{ URL::asset("adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
