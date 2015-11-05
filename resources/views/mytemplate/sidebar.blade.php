@@ -34,6 +34,16 @@
                     <i class="fa fa-book"></i> <span>Subject Manager</span>
                 </a>
             </li>
+            <li>
+                <a href="schedule">
+                    <i class="fa fa-calendar"></i> <span>Schedule Manager</span>
+                </a>
+            </li>
+            <li>
+                <a href="transcript">
+                    <i class="fa fa-file-text-o"></i> <span>Transcript Manager</span>
+                </a>
+            </li>
             <li class="treeview">
                 <a href="">
                     <i class="fa fa-th"></i>

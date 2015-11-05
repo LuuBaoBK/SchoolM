@@ -23,11 +23,4 @@ class AddsubjectController extends Controller
         $subject->save();
         return Redirect('/admin/addsubject');
     }
-    public function update(Request $data)
-    {
-        $id = new String;
-        $id=$data;
-        $id->save();
-        return Redirect('/admin/editsubject');
-    }
 }

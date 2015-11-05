@@ -21,7 +21,7 @@
         </div>
     </div><!-- /.box-header -->
     <!-- form start -->
-    <form method="POST" role="form">
+    <form method="POST">
          {!! csrf_field() !!}
         <div style = "display: none" class="box-body">
             <div class="form-group">
@@ -34,7 +34,7 @@
             </div>
             <div class="form-group">
                 <label for="id">Total Time</label>
-                <input style="width:80%" type="text" class="form-control" name="totaltime" id="id" value={{old('id')}}>
+                <input style="width:80%" type="text" class="form-control" name="totaltime" id="totaltime" value={{old('totaltime')}}>
             </div>
         </div><!-- /.box-body -->
         <div style = "display: none" class="box-footer">
@@ -70,14 +70,8 @@
                             <td> <?php echo $row->id ?></td>
                             <td> <?php echo $row->subject_name ?></td>
                             <td> <?php echo $row->total_time ?></td>
-                            <td> 
-                                <form method="PUT" action="editsubject">
-                                <button type="submit">Edit</button>
-                            </td>
-                            <td> 
-                                <form method="DELETE">
-                                <button type="submit">Delete</button>
-                            </td>
+                            <td> <a href="<?php echo 'editsubject/'.$row->id ?>">Edit</a> </td>
+                            <td> <a href="<?php echo 'deletesubject/'.$row->id ?>">Delete</a> </td>
                     </tr>
                     <?php endforeach;?>
                 </tbody>
