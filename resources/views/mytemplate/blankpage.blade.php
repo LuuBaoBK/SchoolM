@@ -16,10 +16,7 @@
         <link href="{{asset("/adminltemaster/css/AdminLTE.css")}}" rel="stylesheet" type="text/css" />
         <!-- Table data -->
         <link href="{{asset("/adminltemaster/css/datatables/dataTables.bootstrap.css")}}" rel="stylesheet" type="text/css" />
-<<<<<<< HEAD
-=======
 
->>>>>>> 4cf36a9d726826357656fcf866a50d9ad976a798
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -44,18 +41,12 @@
         <!-- jQuery 2.0.2 -->
         <script src="{{ URL::asset("adminltemaster/js/jquery.min.js") }}" type="text/javascript"></script>
         <!-- Bootstrap -->
-<<<<<<< HEAD
 
-=======
->>>>>>> 4cf36a9d726826357656fcf866a50d9ad976a798
         <script src="{{ URL::asset("adminltemaster/js/bootstrap.min.js") }}" type="text/javascript"></script>
         <!-- DATA TABES SCRIPT -->
         <script src="{{ URL::asset("adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
         <script src="{{ URL::asset("adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
-<<<<<<< HEAD
-=======
 
->>>>>>> 4cf36a9d726826357656fcf866a50d9ad976a798
         <script src="{{asset("/adminltemaster/js/bootstrap.min.js")}}" type="text/javascript"></script>
         <!-- Morris.js charts -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
