@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Classes;
+namespace App\Http\Controllers\StudentInClass;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use DB;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class ClassController extends Controller
+class StudentInClassController extends Controller
 {
     //
     public function view(){
@@ -25,30 +25,26 @@ class ClassController extends Controller
     	//$result = DB::table('lophoc')->paginate(5);*/
     	//return view("viewClass")->with('data', $data);
 
-    	$result = DB::table('lophoc')->get();
+    	$result = DB::table('lop_hocsinh')->get();
     	
-    	return view("class.view")->with('data', $result);
-    }
-
-    public function form(){
-    	return view('class.form');
+    	return view("studentinclass.view")->with('data', $result);
     }
 
     public function delete($id)
     {
-    	$i = DB::table('lophoc')->where('id', $id)->delete();
+    	$i = DB::table('lop_hocsinh')->where('id', $id)->delete();
     	if($id > 0)
     	{
     		\Session::flash('message', 'Record have been deleted successfully');
-			return redirect('admin/classinfo');
+			return redirect('admin/studentclassinfo');
     	}
     }
 
 
-    public function edit($id)
+    public function edit($class_id, $student_id)
     {
-    	$row = DB::table('lophoc')->where('id', $id)->first();
-    	return view("class.edit")->with('row', $row);
+    	$row = DB::table('lop_hocsinh')->where('class_id', $class_id)->where('student_id', $class_id)->first();
+    	return view("studentinclass.edit")->with('row', $row);
     }
 
     public function update(Request $request){
@@ -57,9 +53,8 @@ class ClassController extends Controller
     	
     	$v = \Validator::make($request->all(), 
     		[
-    			'id' => 'required',
-    			'semester' => 'required',
-    			'classname' => 'required',
+    			'class_id' => 'required',
+    			'student_id' => 'required',
     			//'homeroom_teacher' => 'required',
     		]);
 
@@ -76,15 +71,15 @@ class ClassController extends Controller
 				'homeroom_teacher' => $post['homeroom_teacher'],
     			);
 
-    		$i = DB::table('lophoc')->where('id', $post['id'])->update($data);
+    		$i = DB::table('lop_hocsinh')->where('id', $post['id'])->update($data);
 
     		if($i > 0)
     		{	
     			\Session::flash('message', 'Record have been updated successfully');
-    			return redirect('admin/classinfo');
+    			return redirect('admin/studentclassinfo');
     		}
     		//
-    		return redirect('admin/classinfo');
+    		return redirect('admin/studentclassinfo');
     	}
     }
 
@@ -93,10 +88,8 @@ class ClassController extends Controller
     	$post = $request->all();
     	$v = \Validator::make($request->all(), 
     		[
-    			'id' => 'required',
-    			'semester' => 'required',
-    			'classname' => 'required',
-    			'homeroom_teacher' => 'required',
+    			'class_id' => 'required',
+    			'student_id' => 'required',
     		]);
 
     	if($v->fails())
@@ -106,18 +99,16 @@ class ClassController extends Controller
     	else
     	{
     		$data = array(
-				'id'               => $post['id'],
-				'semester'         => $post['semester'],
-				'classname'        => $post['classname'],
-				'homeroom_teacher' => $post['homeroom_teacher'],
+				'class_id'               => $post['class_id'],
+				'student_id'         => $post['student_id'],
     			);
 
-    		$i = DB::table('lophoc')->insert($data);
+    		$i = DB::table('lop_hocsinh')->insert($data);
 
     		if($i > 0)
     		{	
     			\Session::flash('message', 'Record have been saved successfully');
-    			return redirect('admin/classinfo');
+    			return redirect('admin/studentclassinfo');
     		}
     	}
     }

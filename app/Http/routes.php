@@ -43,6 +43,25 @@ Route::get('admin/delete/{id}', 'Classes\ClassController@delete');
 
 Route::get('admin/edit/{id}', 'Classes\ClassController@edit');
 
+
+//Manage student of class
+
+Route::get('admin/studentclassinfo', 'StudentInClass\StudentInClassController@view');
+
+Route::get('admin/studentclassform', 'StudentInClass\StudentInClassController@form');
+
+Route::post('admin/studentclasssave', 'StudentInClass\StudentInClassController@save');
+
+Route::post('admin/studentclassupdate', 'StudentInClass\StudentInClassController@update');
+
+Route::get('admin/studentclassdelete/{class_id}/{student_id}', 'StudentInClass\StudentInClassController@delete');
+
+Route::get('admin/studentclassedit/{class_id}/{student_id}', 'StudentInClass\StudentInClassController@edit');
+
+
+
+
+
 Route::get('admin/adduser', [
 	'middleware' => 'authrole',
 	'uses' => 'Admin\AdduserController@index',
