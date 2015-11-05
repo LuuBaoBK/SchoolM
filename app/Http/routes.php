@@ -31,6 +31,8 @@ Route::get('admin/adduser', [
 Route::get ('admin/manage-user/admin', 'Admin\UserManageController@get_ad');
 Route::post('admin/manage-user/admin', 'Admin\UserManageController@store_ad');
 Route::get ('admin/manage-user/admin/delete/{id}', 'Admin\UserManageController@delete_ad');
+Route::get ('admin/manage-user/admin/edit/{id}', 'Admin\UserManageController@get_edit_form');
+Route::post ('admin/manage-user/admin/edit/{id}', 'Admin\UserManageController@edit_ad');
 
 Route::get ('admin/manage-user/teacher', 'Admin\UserManageController@get_te');
 Route::post('admin/manage-user/teacher', 'Admin\UserManageController@store_te');

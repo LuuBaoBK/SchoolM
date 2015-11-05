@@ -17,27 +17,27 @@ class UserManageController extends Controller
 {
     public function get_ad(){
         $adminlist = Admin::all();
-        return view('adminpage.usermange.adduser_ad', ['adminlist' => $adminlist]);
+        return view('adminpage.usermanage.adduser_ad', ['adminlist' => $adminlist]);
     }
 
     public function get_te(){
         $teacherlist = Teacher::all();
-        return view('adminpage.usermange.adduser_te', ['teacherlist' => $teacherlist]);
+        return view('adminpage.usermanage.adduser_te', ['teacherlist' => $teacherlist]);
     }
 
     public function get_stu(){
         $studentlist = Student::all();
-        return view('adminpage.usermange.adduser_stu', ['studentlist' => $studentlist]);
+        return view('adminpage.usermanage.adduser_stu', ['studentlist' => $studentlist]);
     }
 
     public function get_pa(){
         $parentlist = Parents::all();
-        return view('adminpage.usermange.adduser_pa', ['parentlist' => $parentlist]);
+        return view('adminpage.usermanage.adduser_pa', ['parentlist' => $parentlist]);
     }
 
     public function get_userlist(){
         $userlist = User::all();
-        return view('adminpage.usermange.adduser_userlist', ['userlist' => $userlist]);
+        return view('adminpage.usermanage.userlist', ['userlist' => $userlist]);
     }
 
     public function store_ad(Request $request)
@@ -178,5 +178,11 @@ class UserManageController extends Controller
     {
         $admin = Teacher::where('id',$id)->delete();
         return Redirect('/admin/manage-user/teacher');
+    }
+
+    public function get_edit_form($id)
+    {
+        $admin = Admin::where('id',$id)->get();
+        return view('adminpage.usermanage.edit_ad')->with($admin);
     }
 }

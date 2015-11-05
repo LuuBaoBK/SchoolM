@@ -25,6 +25,7 @@ class MyAuthController extends Controller
                 return Redirect()->intended('admin/dashboard');
             }
             else{
+                $request->session()->flash('alert-warning', 'Incorrect Email Or Password!');
                 return Redirect('/');
             }
         }
