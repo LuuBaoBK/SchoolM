@@ -21,37 +21,44 @@ Route::post('auth/login', 'Auth\MyAuthController@authenticate');
 Route::get('auth/logout', 'Auth\MyAuthController@logout');
 
 // Registration routes...
-
-Route::get('admin/adduser', function() {
-	return view('adminpage.adduser');
-});
-Route::post('admin/adduser', 'Admin\adduser@store');
-
-
-//Manage class
-
-Route::get('admin/classinfo', 'ClassController@view');
-
-Route::get('admin/form', 'ClassController@form');
-
-Route::post('admin/save', 'ClassController@save');
-
-Route::post('admin/update', 'ClassController@update');
-
-Route::get('admin/delete/{id}', 'ClassController@delete');
-
-Route::get('admin/edit/{id}', 'ClassController@edit');
-
+/*
+Use this later
 Route::get('admin/adduser', [
 	'middleware' => 'authrole',
 	'uses' => 'Admin\AdduserController@index',
 	]);
+*/
+Route::get ('admin/manage-user/admin', 'Admin\UserManageController@get_ad');
+Route::post('admin/manage-user/admin', 'Admin\UserManageController@store_ad');
+Route::get ('admin/manage-user/admin/delete/{id}', 'Admin\UserManageController@delete_ad');
 
-Route::post('admin/adduser', 'Admin\AdduserController@store');
+Route::get ('admin/manage-user/teacher', 'Admin\UserManageController@get_te');
+Route::post('admin/manage-user/teacher', 'Admin\UserManageController@store_te');
+Route::get ('admin/manage-user/teacher/delete/{id}', 'Admin\UserManageController@delete_te');
 
-Route::get('admin/adduser', 'Admin\AdduserController@index');
-Route::post('admin/adduser', 'Admin\AdduserController@store');
+Route::get ('admin/manage-user/student', 'Admin\UserManageController@get_stu');
+Route::post('admin/manage-user/student', 'Admin\UserManageController@store_stu');
 
+Route::get ('admin/manage-user/parent', 'Admin\UserManageController@get_pa');
+Route::post('admin/manage-user/parent', 'Admin\UserManageController@store_pa');
+
+Route::get ('admin/manage-user/userlist', 'Admin\UserManageController@get_userlist');
+
+//Manage class
+
+Route::get('admin/classinfo', 'Classes\ClassController@view');
+
+Route::get('admin/form', 'Classes\ClassController@form');
+
+Route::post('admin/save', 'Classes\ClassController@save');
+
+Route::post('admin/update', 'Classes\ClassController@update');
+
+Route::get('admin/delete/{id}', 'Classes\ClassController@delete');
+
+Route::get('admin/edit/{id}', 'Classes\ClassController@edit');
+
+//Manage subject
 Route::get('admin/addsubject', 'Admin\AddsubjectController@index');
 Route::post('admin/addsubject', 'Admin\AddsubjectController@store');
 

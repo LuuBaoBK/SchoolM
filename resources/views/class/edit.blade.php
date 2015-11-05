@@ -9,7 +9,7 @@
 <p style="color:red">{{ $errors->first('classname')}}</p>
 <p style="color:red">{{ $errors->first('homeroom_teacher')}}</p>
 <body>
-    <form action="{{action('ClassController@update')}}" method="post">
+    <form action="{{action('Classes\ClassController@update')}}" method="post">
         <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
         Id
         <input type="text" name="id"  value="<?= $row->id ?>" class="form-control">

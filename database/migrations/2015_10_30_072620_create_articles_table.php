@@ -17,6 +17,8 @@ class CreateArticlesTable extends Migration
             $table->string('semester');
             $table->string('classname');
             $table->string('homeroom_teacher');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

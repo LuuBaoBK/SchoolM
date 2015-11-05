@@ -14,12 +14,14 @@ class CreateMsgsendTable extends Migration
     {
         Schema::create('msgsend', function (Blueprint $table) {
             $table->integer('id');
-            $table->string('sendby',8);
+            $table->string('sendby',10);
             $table->primary('id');
             $table->foreign('id')->references('id')->on('messages');
             $table->foreign('sendby')->references('id')->on('users');
             $table->integer('isdelete');
             $table->integer('isdraft');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

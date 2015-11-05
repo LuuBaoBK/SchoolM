@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Classes;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -60,7 +60,7 @@ class ClassController extends Controller
     			'id' => 'required',
     			'semester' => 'required',
     			'classname' => 'required',
-    			'homeroom_teacher' => 'required',
+    			//'homeroom_teacher' => 'required',
     		]);
 
     	if($v->fails())
@@ -76,7 +76,7 @@ class ClassController extends Controller
 				'homeroom_teacher' => $post['homeroom_teacher'],
     			);
 
-    		$i = DB::table('lophoc')->where('id', $post['id'])->update($data);
+    		$i = DB::table('classes')->where('id', $post['id'])->update($data);
 
     		if($i > 0)
     		{	

@@ -11,6 +11,13 @@ class ClassTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        for($i=1; $i<=5; $i++){
+    		DB::table('classes')->insert([
+    			'id' =>	$i,
+	            'semester' => 'subject'.$i,
+	            'classname' => $i*50,
+	            'homeroom_teacher' => 'te_000000'.$i,	  
+        	]);
+    	}
     }
 }

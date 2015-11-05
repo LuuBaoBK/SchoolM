@@ -17,8 +17,10 @@ class CreateClassesTable extends Migration
             $table->primary('id');
             $table->string('semester',6);
             $table->string('classname',4);
-            $table->string('homeroom_teacher',8);
+            $table->string('homeroom_teacher',10);
             $table->foreign('homeroom_teacher')->references('id')->on('teachers');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

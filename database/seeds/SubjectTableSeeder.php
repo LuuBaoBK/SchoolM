@@ -11,11 +11,11 @@ class SubjectTableSeeder extends Seeder
      */
     public function run()
     {
-        for($i=1; $i<=10; $i++){
+        for($i=1; $i<10; $i++){
     		DB::table('subjects')->insert([
     			'id' =>	$i,
-	            'subject_name' => 'subject'.$i,
-	            'total_time' => $i*50,	  
+	            'subject_name' => 'subject '.$i,
+	            'total_time' => $i*20,	  
         	]);
     	}   
     }

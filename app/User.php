@@ -30,10 +30,25 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $fillable = ['id', 'email', 'password', 'role', 'fullname', 'dateofbirth', 'address' ];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
     protected $hidden = ['password', 'remember_token'];
+
+    public function admin()
+    {
+        return $this->hasOne('App\Model\Admin' , 'id' ,'id');
+    }
+
+    public function teacher()
+    {
+        return $this->hasOne('App\Model\Teacher' , 'id' ,'id');
+    }
+    
+    public function student()
+    {
+        return $this->hasOne('App\Model\Student' , 'id' ,'id');
+    }
+
+    public function parent()
+    {
+        return $this->hasOne('App\Model\Parent' , 'id' ,'id');
+    }
 }
