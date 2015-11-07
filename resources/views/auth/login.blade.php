@@ -19,7 +19,6 @@
         <![endif]-->
     </head>
     <body class="bg-black">
-
         <div class="form-box" id="login-box">
             <div class="header">
                Sign In
@@ -32,7 +31,17 @@
                     </div>
                     <div class="form-group">
                         <input type="password" name="password" class="form-control" placeholder="Password"/>
-                    </div>          
+                    </div>
+                    <div class="form-group">
+                    <div id="flashmsg" class="flash-message">
+                        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+                          @if(Session::has('alert-' . $msg))
+                          <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} 
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
+                          @endif
+                        @endforeach
+                    </div> <!-- end .flash-message --> 
+                    </div>
                 </div>
                 <div class="footer">                                                               
                     <button type="submit" class="btn bg-olive btn-block">Sign me in</button>  
@@ -47,4 +56,9 @@
         <script src="{{asset("/adminltemaster/js/bootstrap.min.js")}}" type="text/javascript"></script>        
 
     </body>
+    <script type="text/javascript">
+       setTimeout(function() {
+            $('#flashmsg').fadeOut('slow');
+        }, 1500); // <-- time in milliseconds
+    </script>
 </html>
