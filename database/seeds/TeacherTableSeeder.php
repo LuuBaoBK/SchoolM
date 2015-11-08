@@ -18,7 +18,8 @@ class TeacherTableSeeder extends Seeder
                 'homephone' => '08-000-'.$i,
                 'group' => $i,
                 'position' => 'giao vien',
-                'specialize' => 'toan'.$i,              
+                'specialize' => 'toan'.$i,
+                'incomingday' => "2015-11-".$i,              
         	]);
     	}
     }

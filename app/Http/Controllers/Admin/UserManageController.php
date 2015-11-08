@@ -42,12 +42,6 @@ class UserManageController extends Controller
 
     public function store_ad(Request $request)
     {
-
-        $this->validate($request, [
-            'password' => 'required|max:60',
-            'email' => 'required|max:60|email_address',
-        ]);
-
         $user = new User;
         $admin = new Admin;
         $id = Admin::all()->count();
@@ -55,15 +49,19 @@ class UserManageController extends Controller
         $newid = "0000000";
         $newid = substr($newid,$offset);
         $newid = "ad_".$newid.$id;
+        $dateofbirth = date_create($request['dateofbirth']);
+        $dateofbirth = date_format($dateofbirth,"Y-m-d");
 
         // Create User
         $user->id = $newid;
         $user->email = $request['email'];
         $user->password = bcrypt($request['password']);
-        $user->fullname = $request['fullname'];
+        $user->firstname = $request['firstname'];
+        $user->middlename = $request['middlename'];
+        $user->lastname = $request['lastname'];
         $user->address = $request['address'];
         $user->role = "0";
-        $user->dateofbirth = $request['dateofbirth'];
+        $user->dateofbirth = $dateofbirth;
         $user->save();
 
         // Create Admin
@@ -84,15 +82,20 @@ class UserManageController extends Controller
         $newid = "0000000";
         $newid = substr($newid,$offset);
         $newid = "te_".$newid.$id;
-
+        $dateofbirth = date_create($request['dateofbirth']);
+        $dateofbirth = date_format($dateofbirth,"Y-m-d");
+        $incomingday = date_create($request['incomingday']);
+        $incomingday = date_format($incomingday,"Y-m-d");
         // Create User
         $user->id = $newid;
         $user->email = $request['email'];
         $user->password = bcrypt($request['password']);
-        $user->fullname = $request['fullname'];
+        $user->firstname = $request['firstname'];
+        $user->middlename = $request['middlename'];
+        $user->lastname = $request['lastname'];
         $user->address = $request['address'];
         $user->role = "1";
-        $user->dateofbirth = $request['dateofbirth'];
+        $user->dateofbirth = $dateofbirth;
         $user->save();
 
         // Create Admin
@@ -102,7 +105,7 @@ class UserManageController extends Controller
         $teacher->group = $request['group'];
         $teacher->position = $request['position'];
         $teacher->specialize = $request['specialize'];
-        $teacher->incomingday = $request['incomingday'];
+        $teacher->incomingday = $incomingday;
         $teacher->save();
 
         return Redirect('/admin/manage-user/teacher');
@@ -117,15 +120,19 @@ class UserManageController extends Controller
         $newid = "0000000";
         $newid = substr($newid,$offset);
         $newid = "st_".$newid.$id;
+        $dateofbirth = date_create($request['dateofbirth']);
+        $dateofbirth = date_format($dateofbirth,"Y-m-d");
 
         // Create User
         $user->id = $newid;
         $user->email = $request['email'];
         $user->password = bcrypt($request['password']);
-        $user->fullname = $request['fullname'];
+        $user->firstname = $request['firstname'];
+        $user->middlename = $request['middlename'];
+        $user->lastname = $request['lastname'];
         $user->address = $request['address'];
         $user->role = "2";
-        $user->dateofbirth = $request['dateofbirth'];
+        $user->dateofbirth = $dateofbirth;
         $user->save();
 
         // Create Student
@@ -147,15 +154,19 @@ class UserManageController extends Controller
         $newid = "0000000";
         $newid = substr($newid,$offset);
         $newid = "pa_".$newid.$id;
+        $dateofbirth = date_create($request['dateofbirth']);
+        $dateofbirth = date_format($dateofbirth,"Y-m-d");
 
         // Create User
         $user->id = $newid;
         $user->email = $request['email'];
         $user->password = bcrypt($request['password']);
-        $user->fullname = $request['fullname'];
+        $user->firstname = $request['firstname'];
+        $user->middlename = $request['middlename'];
+        $user->lastname = $request['lastname'];
         $user->address = $request['address'];
         $user->role = "3";
-        $user->dateofbirth = $request['dateofbirth'];
+        $user->dateofbirth = $dateofbirth;
         $user->save();
 
         // Create Student
@@ -182,7 +193,27 @@ class UserManageController extends Controller
 
     public function get_edit_form($id)
     {
-        $admin = Admin::where('id',$id)->get();
-        return view('adminpage.usermanage.edit_ad')->with($admin);
+        $admin = Admin::find($id);
+        return view('adminpage.usermanage.edit_ad')->with('admin',$admin);
+    }
+
+    public function edit_ad($id, Request $request){
+        $user  = User::find($id);
+        $admin = Admin::find($id);
+
+        $user->email = $request['email'];
+        $user->firstname = $request['firstname'];
+        $user->middlename = $request['middlename'];
+        $user->lastname = $request['lastname'];
+        $user->address = $request['address'];
+        $user->dateofbirth = $request['dateofbirth'];
+        $user->save();
+
+        // Create Admin
+        $admin->ownername = $request['fullname'];
+        $admin->mobilephone = $request['mobilephone'];
+        $admin->save();
+
+        return $this->get_ad();
     }
 }

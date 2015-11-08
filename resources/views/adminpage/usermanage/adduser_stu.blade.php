@@ -33,8 +33,16 @@
                 <input style="width:80%" type="password" class="form-control" name="password" id="password" placeholder="Password">
             </div>
             <div class="form-group">
-                <label for="fullname">Full Name</label>
-                <input style="width:80%" type="text" class="form-control" name="fullname" id="fullname" placeholder="Full Name" value={{old('fullname')}}>
+                <label for="firstname">First Name</label>
+                <input style="width:80%" type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value={{old('firstname')}}>
+            </div>
+            <div class="form-group">
+                <label for="middlename">Middle Name</label>
+                <input style="width:80%" type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" value={{old('middlename')}}>
+            </div>
+            <div class="form-group">
+                <label for="lastname">Last Name</label>
+                <input style="width:80%" type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value={{old('lastname')}}>
             </div>
             <div class="form-group">
                 <label for="enrolled_year">Enrolled Year</label>
@@ -96,11 +104,11 @@
                     <?php foreach ($studentlist as $row) :?>
                     <tr>
                             <td> <?php echo $row->id ?></td>
-                            <td> <?php echo $row->user->fullname ?></td>
+                            <td> <?php echo $row->user->firstname." ".$row->user->middlename." ".$row->user->lastname; ?></td>
                             <td> <?php echo $row->user->email ?></td>
                             <td> <?php echo $row->enrolled_year ?></td>
                             <td> <?php echo $row->graduated_year ?></td>
-                            <td> <?php echo $row->parent->user->fullname?></td>
+                            <td> <?php echo $row->parent->user->firstname." ".$row->parent->user->middlename." ".$row->parent->user->lastname?></td>
                             <td> <?php echo $row->user->role ?></td>
                             <td>
                                 <i class = "fa fa-fw fa-edit"></i>

@@ -4,41 +4,42 @@
 <section class="content-header">
     <h1>
         Admin
-        <small>Edit</small>
+        <small>Edit Admin</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i>Admin</a></li>
-        <li class="active">Edit</li>
+        <li class="active">Edit Admin</li>
     </ol>
 </section>
 <section class="content">
 <div class="col-xs-12 col-lg-6">
-<div class="box box-solid box-primary collapsed-box">
+<div class="box box-solid box-primary">
     <div class="box-header">
-            <h3 class="box-title">Edit Admin</h3>
-        <div class="box-tools pull-right">
-            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
-        </div>
+            <h3 class="box-title">Edit New Admin</h3>
     </div><!-- /.box-header -->
     <!-- form start -->
     <form method="POST" role="form">
          {!! csrf_field() !!}
-        <div style = "display: none" class="box-body">
+        <div class="box-body">
             <div class="form-group">
                 <label for="Email">Email address</label>
-                <input style="width:80%" type="email" class="form-control" name="email" id="email" placeholder="Enter email" value={{old('email')}}>
+                <input style="width:80%" type="email" class="form-control" name="email" id="email" value="{{$admin->user->email}}">
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
-                <input style="width:80%" type="password" class="form-control" name="password" id="password" placeholder="Password">
+                <label for="firstname">First Name</label>
+                <input style="width:80%" type="text" class="form-control" name="firstname" id="firstname" value="{{$admin->user->firstname}}">
             </div>
             <div class="form-group">
-                <label for="fullname">Full Name</label>
-                <input style="width:80%" type="text" class="form-control" name="fullname" id="fullname" placeholder="Full Name" value={{old('fullname')}}>
+                <label for="middlename">Middle Name</label>
+                <input style="width:80%" type="text" class="form-control" name="middlename" id="middlename" value="{{$admin->user->middlename}}">
+            </div>
+            <div class="form-group">
+                <label for="lastname">Last Name</label>
+                <input style="width:80%" type="text" class="form-control" name="lastname" id="lastname" value="{{$admin->user->lastname}}">
             </div>
             <div class="form-group">
                 <label for="mobilephone">Mobile Phone</label>
-                <input style="width:80%" type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone" value={{old('mobile')}}>
+                <input style="width:80%" type="text" class="form-control" name="mobilephone" id="mobilephone" value="{{$admin->mobilephone}}">
             </div>
             <div class="form-group">
                 <label>Date Of Birth:</label>
@@ -51,16 +52,21 @@
             </div><!-- /.form group -->
             <div class="form-group">
                 <label for="role">Address</label>
-                <input style="width:80%" type="text" class="form-control" name="address" id="role" placeholder="Address" value={{old('address')}}>
+                <input style="width:80%" type="text" class="form-control" name="address" id="role" value="{{$admin->user->address}}">
             </div>
         </div><!-- /.box-body -->
-        <div style = "display: none" class="box-footer">
+        <div class="box-footer">
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
 </div><!-- /.box -->
 </div>
-</section>  
+</section>
+<!-- DATA TABES SCRIPT -->
+        <script src="{{asset("/mylib/jquery/jquery.min.js")}}" type="text/javascript"></script>
+        <script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
+        <script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
+        
 <!-- page script -->
         <script type="text/javascript">
             $(function() {
