@@ -21,8 +21,6 @@ class CreateSchedulesTable extends Migration
             $table->primary(['class_id','subject_id','day','start_at']);
             $table->foreign('class_id')->references('id')->on('classes');
             $table->foreign('subject_id')->references('id')->on('subjects');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
         });
     }
 

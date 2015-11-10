@@ -17,7 +17,9 @@
 Route::get('/', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\MyAuthController@authenticate');
 Route::get('auth/logout', 'Auth\MyAuthController@logout');
-
+Route::get('/mypage',function(){
+	return view('auth.mylogin');
+});
 Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 
 	Route::get('dashboard', function () {
@@ -27,19 +29,23 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::group(['prefix'=>'manage-user'], function(){
 		Route::get ('admin', 'Admin\UserManageController@get_ad');
 		Route::post('admin', 'Admin\UserManageController@store_ad');
-		Route::get ('admin/delete/{id}', 'Admin\UserManageController@delete_ad');
 		Route::get ('admin/edit/{id}', 'Admin\UserManageController@get_edit_form');
 		Route::post ('admin/edit/{id}', 'Admin\UserManageController@edit_ad');
 
 		Route::get ('teacher', 'Admin\UserManageController@get_te');
 		Route::post('teacher', 'Admin\UserManageController@store_te');
-		Route::get ('teacher/delete/{id}', 'Admin\UserManageController@delete_te');
+		Route::get ('teacher/edit/{id}', 'Admin\UserManageController@get_edit_form');
+		Route::post ('teacher/edit/{id}', 'Admin\UserManageController@edit_ad');
 
 		Route::get ('student', 'Admin\UserManageController@get_stu');
 		Route::post('student', 'Admin\UserManageController@store_stu');
+		Route::get ('student/edit/{id}', 'Admin\UserManageController@get_edit_form');
+		Route::post ('student/edit/{id}', 'Admin\UserManageController@edit_ad');
 
 		Route::get ('parent', 'Admin\UserManageController@get_pa');
 		Route::post('parent', 'Admin\UserManageController@store_pa');
+		Route::get ('parent/edit/{id}', 'Admin\UserManageController@get_edit_form');
+		Route::post ('parent/edit/{id}', 'Admin\UserManageController@edit_ad');
 
 		Route::get ('userlist', 'Admin\UserManageController@get_userlist');
 	});

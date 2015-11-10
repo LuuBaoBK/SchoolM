@@ -2,7 +2,7 @@
 <html class="bg-black">
     <head>
         <meta charset="UTF-8">
-        <title>AdminLTE | Log in</title>
+        <title>SChoolM | Log in</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <!-- bootstrap 3.0.2 -->
         <link href="{{asset("/adminltemaster/css/bootstrap.min.css")}}"  rel="stylesheet" type="text/css" />
@@ -56,6 +56,13 @@
         <script src="{{asset("/adminltemaster/js/bootstrap.min.js")}}" type="text/javascript"></script>        
 
     </body>
+    <style type="text/css">
+        body {
+          background-image: url("schoolm.jpg");
+          background-position: 50% 50%;
+          background-repeat: repeat;
+        }
+    </style>
     <script type="text/javascript">
        setTimeout(function() {
             $('#flashmsg').fadeOut('slow');

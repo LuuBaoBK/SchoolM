@@ -17,8 +17,6 @@ class CreateSubjectsTable extends Migration
             $table->primary('id');
             $table->string('subject_name',20);
             $table->integer('total_time');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
         });
     }
 

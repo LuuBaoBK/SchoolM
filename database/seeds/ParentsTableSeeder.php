@@ -13,7 +13,7 @@ class ParentsTableSeeder extends Seeder
     {
         for($i=0; $i<=9; $i++){
     		DB::table('parents')->insert([
-    			'id' =>	'pa_000000'.$i,
+    			'id' =>	'p_000000'.$i,
 	            'mobilephone' => '090-111-'.$i,
                 'homephone' => '08-111-'.$i,
                 'job' => 'parent job',              	  

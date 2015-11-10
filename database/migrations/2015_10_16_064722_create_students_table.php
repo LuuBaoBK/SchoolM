@@ -13,14 +13,12 @@ class CreateStudentsTable extends Migration
     public function up()
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->string('id',10)->primary();
+            $table->string('id',9)->primary();
             $table->foreign('id')->references('id')->on('users');
             $table->integer('enrolled_year');
             $table->integer('graduated_year');
-            $table->string('parent_id',10);
+            $table->string('parent_id',9);
             $table->foreign('parent_id')->references('id')->on('parents');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
         });
     }
 

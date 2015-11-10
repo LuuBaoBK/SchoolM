@@ -13,7 +13,7 @@ class UserTableSeeder extends Seeder
     {
     	for($i=0; $i<=9; $i++){
     		DB::table('users')->insert([
-    			'id' =>	'ad_000000'.$i,
+    			'id' =>	'a_000000'.$i,
 	            'firstname' => 'admin'.$i,
                 'middlename' => 'middle'.$i,
                 'lastname' => 'last'.$i,
@@ -23,7 +23,7 @@ class UserTableSeeder extends Seeder
                 'role' => '0',
         	]);
             DB::table('users')->insert([
-                'id' => 'te_000000'.$i,
+                'id' => 't_000000'.$i,
                 'firstname' => 'teacher'.$i,
                 'middlename' => 'middle'.$i,
                 'lastname' => 'last'.$i,
@@ -32,7 +32,7 @@ class UserTableSeeder extends Seeder
                 'role' => '1',
             ]);
             DB::table('users')->insert([
-                'id' => 'st_000000'.$i,
+                'id' => 's_000000'.$i,
                 'firstname' => 'student'.$i,
                 'middlename' => 'middle'.$i,
                 'lastname' => 'last'.$i,
@@ -42,7 +42,7 @@ class UserTableSeeder extends Seeder
                 'role' => '2',
             ]);
             DB::table('users')->insert([
-                'id' => 'pa_000000'.$i,
+                'id' => 'p_000000'.$i,
                 'firstname' => 'parent'.$i,
                 'middlename' => 'middle'.$i,
                 'lastname' => 'last'.$i,

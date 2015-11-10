@@ -13,7 +13,7 @@ class CreateTeachersTable extends Migration
     public function up()
     {
         Schema::create('teachers', function (Blueprint $table) {
-            $table->string('id',10)->primary();
+            $table->string('id',9)->primary();
             $table->foreign('id')->references('id')->on('users');
             $table->string('mobilephone',11)->unique();
             $table->string('homephone',11);
@@ -21,8 +21,6 @@ class CreateTeachersTable extends Migration
             $table->string('position',20);
             $table->string('specialize',20);
             $table->date('incomingday');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
         });
     }
 

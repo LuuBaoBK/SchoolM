@@ -15,12 +15,13 @@ class CreateStudentclassTable extends Migration
     {
         Schema::create('studentclass', function (Blueprint $table) {
             $table->string('class_id',8);
-            $table->string('student_id',10);
+            $table->string('student_id',9);
+            $table->string('conduct');
+            $table->integer('ispass');
+            $table->string('note');
             $table->primary(array('class_id','student_id'));
             $table->foreign('class_id')->references('id')->on('classes');
             $table->foreign('student_id')->references('id')->on('students');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
         });
     }
 

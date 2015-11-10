@@ -11,6 +11,7 @@ use App\Model\Admin;
 use App\Model\Teacher;
 use App\Model\Student;
 use App\Model\Parents;
+use App\Model\Sysvar;
 
 
 class UserManageController extends Controller
@@ -44,11 +45,16 @@ class UserManageController extends Controller
     {
         $user = new User;
         $admin = new Admin;
-        $id = Admin::all()->count();
+
+        $ad_next_id = Sysvar::find('a_next_id');
+        $ad_next_id->value = $ad_next_id->value + 1;
+        $ad_next_id->save();
+        $id = $ad_next_id->value;
         $offset = strlen($id);
         $newid = "0000000";
         $newid = substr($newid,$offset);
         $newid = "ad_".$newid.$id;
+
         $dateofbirth = date_create($request['dateofbirth']);
         $dateofbirth = date_format($dateofbirth,"Y-m-d");
 
@@ -77,11 +83,16 @@ class UserManageController extends Controller
     {
         $user = new User;
         $teacher = new Teacher;
-        $id = Teacher::all()->count();
+
+        $ad_next_id = Sysvar::find('t_next_id');
+        $ad_next_id->value = $ad_next_id->value + 1;
+        $ad_next_id->save();
+        $id = $ad_next_id->value;
         $offset = strlen($id);
         $newid = "0000000";
         $newid = substr($newid,$offset);
         $newid = "te_".$newid.$id;
+
         $dateofbirth = date_create($request['dateofbirth']);
         $dateofbirth = date_format($dateofbirth,"Y-m-d");
         $incomingday = date_create($request['incomingday']);
@@ -115,11 +126,16 @@ class UserManageController extends Controller
     {
         $user = new User;
         $student = new Student;
-        $id = Teacher::all()->count();
+
+        $ad_next_id = Sysvar::find('s_next_id');
+        $ad_next_id->value = $ad_next_id->value + 1;
+        $ad_next_id->save();
+        $id = $ad_next_id->value;
         $offset = strlen($id);
         $newid = "0000000";
         $newid = substr($newid,$offset);
         $newid = "st_".$newid.$id;
+
         $dateofbirth = date_create($request['dateofbirth']);
         $dateofbirth = date_format($dateofbirth,"Y-m-d");
 
@@ -149,11 +165,16 @@ class UserManageController extends Controller
     {
         $user = new User;
         $parent = new Parents;
-        $id = Teacher::all()->count();
+
+        $ad_next_id = Sysvar::find('p_next_id');
+        $ad_next_id->value = $ad_next_id->value + 1;
+        $ad_next_id->save();
+        $id = $ad_next_id->value;
         $offset = strlen($id);
         $newid = "0000000";
         $newid = substr($newid,$offset);
         $newid = "pa_".$newid.$id;
+
         $dateofbirth = date_create($request['dateofbirth']);
         $dateofbirth = date_format($dateofbirth,"Y-m-d");
 
@@ -177,18 +198,6 @@ class UserManageController extends Controller
         $parent->save();
 
         return Redirect('/admin/manage-user/parent');
-    }
-
-    public function delete_ad($id)
-    {
-        $admin = Admin::where('id',$id)->delete();
-        return Redirect('/admin/manage-user/admin');
-    }
-
-    public function delete_te($id)
-    {
-        $admin = Teacher::where('id',$id)->delete();
-        return Redirect('/admin/manage-user/teacher');
     }
 
     public function get_edit_form($id)

@@ -21,7 +21,7 @@
         </div>
     </div><!-- /.box-header -->
     <!-- form start -->
-    <form method="POST" role="form">
+    <form id="ad_form" method="POST" role="form">
          {!! csrf_field() !!}
         <div style = "display: none" class="box-body">
             <div class="form-group">
@@ -63,7 +63,7 @@
             </div>
         </div><!-- /.box-body -->
         <div style = "display: none" class="box-footer">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button id ="ad_form_submit" type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
 </div><!-- /.box -->
