@@ -65,6 +65,8 @@ Route::get('admin/edit/{id}', 'Classes\ClassController@edit');
 
 Route::get('admin/studentclassinfo', 'StudentInClass\StudentInClassController@view');
 
+Route::get('admin/studentclassinfo1', 'StudentInClass\StudentInClassController@view1');
+
 Route::get('admin/studentclassform', 'StudentInClass\StudentInClassController@form');
 
 Route::post('admin/studentclasssave', 'StudentInClass\StudentInClassController@save');

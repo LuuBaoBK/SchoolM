@@ -13,22 +13,18 @@ class StudentInClassController extends Controller
     //
     public function view(){
 
-    /*	$id = '1';
-    	$semester = 'hk1';
-    	$classname = '1c';
-    	$teacher = 'tc1';
-    	//$lophoc = DB::table('lophoc')->get();
-    	$data['id'] = $id;
-    	$data['semester'] = $semester;
-    	$data['classname'] = $classname;
-    	$data['teacher']  = $teacher;
-    	//$result = DB::table('lophoc')->paginate(5);*/
-    	//return view("viewClass")->with('data', $data);
-
     	$result = DB::table('lop_hocsinh')->get();
     	
     	return view("studentinclass.view")->with('data', $result);
     }
+
+    public function view1(){
+
+        $result = DB::table('studentclass')->get();
+        
+        return view("studentinclass.view1")->with('data', $result);
+    }
+
 
     public function delete($id)
     {
