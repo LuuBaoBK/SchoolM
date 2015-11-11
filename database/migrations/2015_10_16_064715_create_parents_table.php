@@ -15,8 +15,8 @@ class CreateParentsTable extends Migration
         Schema::create('parents', function (Blueprint $table) {
             $table->string('id',9)->primary();
             $table->foreign('id')->references('id')->on('users');
-            $table->string('mobilephone',11);
-            $table->string('homephone',11);
+            $table->string('mobilephone',15);
+            $table->string('homephone',15);
             $table->string('job',11);
         });
     }

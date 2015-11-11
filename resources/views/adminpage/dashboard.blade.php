@@ -1,4 +1,4 @@
-@extends('mytemplate.admin_template')
+@extends('mytemplate.newblankpage')
 
 @section('content')
 

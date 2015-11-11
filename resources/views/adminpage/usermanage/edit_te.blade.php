@@ -21,7 +21,7 @@
                     <h3 class="box-title">Edit Admin Info</h3>
                 </div><!-- /.box-header -->
             <!-- form start -->
-            <form id="ad_form" method="POST" role="form">
+            <form id="te_form" method="POST" role="form">
             {!! csrf_field() !!}
             <div class="box-body">
                 <div id="error_mess" style = "display: none" class="alert alert-warning alert-dismissable">
@@ -33,48 +33,70 @@
                 <div class="row">
                     <div class="col-xs-12 col-lg-3">
                         <label for="id">Id</label>
-                        <input type="text" class="form-control" name="id" id="id" placeholder="Id" value={{$admin->id}} disabled>
+                        <input type="text" class="form-control" name="id" id="id" placeholder="Id" value={{$teacher->id}} disabled>
                     </div>
                     <div class="col-xs-12 col-lg-3">
                         <label for="email">Email</label>
-                        <input type="text" class="form-control" name="email" id="email" placeholder="Email" value={{$admin->user->email}} disabled>
+                        <input type="text" class="form-control" name="email" id="email" placeholder="Email" value={{$teacher->user->email}} disabled>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-3 col-xs-12">
                         <label for="firstname">First Name</label>
                         <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value={{$admin->user->firstname}}>
+                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value={{$teacher->user->firstname}}>
                     </div>
                     <div class="form-group col-lg-3 col-xs-12">
                         <label for="middlename">Middle Name</label>
-                        <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" value={{$admin->user->middlename}}>
+                        <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" value={{$teacher->user->middlename}}>
                     </div>
                     <div class="form-group col-lg-3 col-xs-12">
                         <label for="lastname">Last Name</label>
-                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value={{$admin->user->lastname}}>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-3">
-                        <label for="mobilephone">Mobile Phone</label>
-                        <input type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone" value={{$admin->mobilephone}}>
-                    </div>
-                    <div class="form-group col-lg-3">
-                        <label for="dateofbirth">Date Of Birth:</label>
-                        <input type="text" id="dateofbirth" name="dateofbirth" class="form-control"  data-inputmask="'alias': 'dd/mm/yyyy'" data-mask / value={{$admin->mydateofbirth}} >
+                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value={{$teacher->user->lastname}}>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-6">
                         <label for="address">Address</label>
-                        <input type="text" class="form-control" name="address" id="address" placeholder="Address" value='<?=$admin->user->address?>'>
+                        <input type="text" class="form-control" name="address" id="address" placeholder="Address" value='<?=$teacher->user->address?>'>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="homephone">Home Phone</label>
+                        <input type="text" class="form-control" name="homephone" id="homephone" placeholder="Home Phone" value={{$teacher->homephonne}}>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3">
+                        <label for="mobilephone">Mobile Phone</label>
+                        <input type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone" value={{$teacher->mobilephone}}>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="dateofbirth">Date Of Birth</label>
+                        <input type="text" id="dateofbirth" name="dateofbirth" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/ value={{$teacher->mydateofbirth}}>
+                    </div>
+                     <div class="form-group col-lg-3">
+                        <label for="incomingday">Incoming Day</label>
+                        <input type="text" id="incomingday" name="incomingday" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/ value={{$teacher->myincomingday}}>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3">
+                        <label for="group">Group</label>
+                        <input type="text" class="form-control" name="group" id="group" placeholder="Group" value='<?=$teacher->group?>'>
+                    </div>
+                   <div class="form-group col-lg-3">
+                        <label for="specialized">Specialized</label>
+                        <input type="text" class="form-control" name="specialized" id="specialized" placeholder="Specialized" value='<?=$teacher->specialized?>'>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="position">Position</label>
+                        <input type="text" class="form-control" name="position" id="position" placeholder="Position" value='<?=$teacher->position?>'}>
                     </div>
                 </div>
             </div><!-- /.box-body -->
             <div class="box-footer">
-                    <button id ="ad_form_submit" type="button" class="btn btn-primary">Edit</button>
-                    <a href="/admin/manage-user/admin"><button id ="back" type="button" class="btn btn-primary">Back To Admin Table</button></a>
+                    <button id ="te_form_submit" type="button" class="btn btn-primary">Edit</button>
+                    <a href="/admin/manage-user/teacher"><button id ="back" type="button" class="btn btn-primary">Back To Teacher Table</button></a>
             </div>
 
             </form>
@@ -90,18 +112,23 @@
         $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
         $("[data-mask]").inputmask();
 
-        $("#ad_form_submit").click(function() {
+        $("#te_form_submit").click(function() {
             /* Act on the event */
-            var id          = $('#id').val()
+            var id          = $('#id').val();
             var firstname   = $('#firstname').val();
             var middlename  = $('#middlename').val();
             var lastname    = $('#lastname').val();
             var mobilephone = $('#mobilephone').val();
+            var homephone   = $('#homephone').val();
             var dateofbirth = $('#dateofbirth').val();
+            var incomingday = $('#incomingday').val();
             var address     = $('#address').val();
+            var group       = $('#group').val();
+            var specialized = $('#specialized').val();
+            var position    = $('#position').val();
             var token       = $('input[name="_token"]').val();
             $.ajax({
-                url     :"<?= URL::to('admin/manage-user/admin/edit') ?>",
+                url     :"<?= URL::to('admin/manage-user/teacher/edit') ?>",
                 type    :"POST",
                 async   :false,
                 data    :{
@@ -110,6 +137,11 @@
                     'middlename'    :middlename,
                     'lastname'      :lastname,
                     'mobilephone'   :mobilephone,
+                    'homephone'     :homephone,
+                    'incomingday'   :incomingday,
+                    'group'         :group,
+                    'specialized'   :specialized,
+                    'position'      :position,
                     'dateofbirth'   :dateofbirth,
                     'address'       :address,
                     '_token'        :token

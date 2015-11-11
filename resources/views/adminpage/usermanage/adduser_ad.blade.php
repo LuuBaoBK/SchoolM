@@ -7,7 +7,7 @@
         <small>Regist Admin</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="/admin/dashboard"><i class="fa fa-dashboard"></i>Admin</a></li>
+        <li><a href="/admin/dashboard"><i class="fa fa-home"></i>Admin</a></li>
         <li class="active">Regist Admin</li>
     </ol>
 </section>
@@ -38,31 +38,31 @@
                     <div class="form-group col-lg-3 col-xs-12">
                         <label for="firstname">First Name</label>
                         <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value={{old('firstname')}}>
+                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name">
                     </div>
                     <div class="form-group col-lg-3 col-xs-12">
                         <label for="middlename">Middle Name</label>
-                        <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" value={{old('middlename')}}>
+                        <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name">
                     </div>
                     <div class="form-group col-lg-3 col-xs-12">
                         <label for="lastname">Last Name</label>
-                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value={{old('lastname')}}>
+                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name">
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-3">
                         <label for="mobilephone">Mobile Phone</label>
-                        <input type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone" value={{old('mobile')}}>
+                        <input type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone">
                     </div>
                     <div class="form-group col-lg-3">
-                        <label for="dateofbirth">Date Of Birth:</label>
+                        <label for="dateofbirth">Date Of Birth</label>
                         <input type="text" id="dateofbirth" name="dateofbirth" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-6">
                         <label for="address">Address</label>
-                        <input type="text" class="form-control" name="address" id="address" placeholder="Address" value={{old('address')}}>
+                        <input type="text" class="form-control" name="address" id="address" placeholder="Address">
                     </div>
                 </div>
             </div><!-- /.box-body -->
@@ -144,7 +144,8 @@
 
 <script>
     $(function () {
-        $("#admin_table").DataTable();
+        $("#admin_table").DataTable(
+        );
         $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
         $("[data-mask]").inputmask();
 
