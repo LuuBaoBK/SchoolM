@@ -18,7 +18,7 @@ Route::get('/', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\MyAuthController@authenticate');
 Route::get('auth/logout', 'Auth\MyAuthController@logout');
 Route::get('/mypage',function(){
-	return view('auth.mylogin');
+	return view('mytemplate.newblankpage');
 });
 Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 
@@ -29,6 +29,7 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::group(['prefix'=>'manage-user'], function(){
 		Route::get ('admin', 'Admin\UserManageController@get_ad');
 		Route::post('admin', 'Admin\UserManageController@store_ad');
+		Route::post('admin/show_ad', 'Admin\UserManageController@show_ad');
 		Route::get ('admin/edit/{id}', 'Admin\UserManageController@get_edit_form');
 		Route::post ('admin/edit/{id}', 'Admin\UserManageController@edit_ad');
 

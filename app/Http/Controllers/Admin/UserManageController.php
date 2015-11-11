@@ -12,6 +12,8 @@ use App\Model\Teacher;
 use App\Model\Student;
 use App\Model\Parents;
 use App\Model\Sysvar;
+use Input;
+use Validator;
 
 
 class UserManageController extends Controller
@@ -43,40 +45,89 @@ class UserManageController extends Controller
 
     public function store_ad(Request $request)
     {
-        $user = new User;
-        $admin = new Admin;
+        $rules = array(
+            'firstname'     => 'max:20',
+            'middlename'    => 'max:20',
+            'lastname'      => 'max:20',
+            'mobilephone'   => 'digits_between:10,11',
+            'dateofbirth'   => 'date_format:d/m/Y',
+            'address'       => 'max:120'
+        );
 
-        $ad_next_id = Sysvar::find('a_next_id');
-        $ad_next_id->value = $ad_next_id->value + 1;
-        $ad_next_id->save();
-        $id = $ad_next_id->value;
-        $offset = strlen($id);
-        $newid = "0000000";
-        $newid = substr($newid,$offset);
-        $newid = "ad_".$newid.$id;
+        $validator = Validator::make($request->all(), $rules);
 
-        $dateofbirth = date_create($request['dateofbirth']);
-        $dateofbirth = date_format($dateofbirth,"Y-m-d");
+        if($validator->fails()){
+           $record =  $validator->messages();
+           return $record;
+        }else{
+            $user = new User;
+            $admin = new Admin;
+            //Create ID
+            $ad_next_id = Sysvar::find('a_next_id');
+            $ad_next_id->value = $ad_next_id->value + 1;
+            $id = $ad_next_id->value;
+            $offset = strlen($id);
+            $newid = "0000000";
+            $newid = substr($newid,$offset);
+            $newid = "a_".$newid.$id;
+            //Handle Date Format
+            if($request['dateofbirth'] != "")
+            {
+                $dateofbirth = date_create_from_format("d/m/Y", $request['dateofbirth']);
+                $dateofbirth = date_format($dateofbirth,"Y-m-d");
+            }
+            else{
+                $dateofbirth = $request['dateofbirth'];
+            }
 
-        // Create User
-        $user->id = $newid;
-        $user->email = $request['email'];
-        $user->password = bcrypt($request['password']);
-        $user->firstname = $request['firstname'];
-        $user->middlename = $request['middlename'];
-        $user->lastname = $request['lastname'];
-        $user->address = $request['address'];
-        $user->role = "0";
-        $user->dateofbirth = $dateofbirth;
-        $user->save();
+            //Create Email & Password
+            $email = $newid."@schoolm.com";
+            $password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
 
-        // Create Admin
-        $admin->id = $newid;
-        $admin->ownername = $request['fullname'];
-        $admin->mobilephone = $request['mobilephone'];
-        $admin->save();
-
-        return Redirect('/admin/manage-user/admin');
+            // Create User
+            $user->id = $newid;
+            $user->email = $email;
+            $user->password = $password;
+            $user->firstname = $request['firstname'];
+            $user->middlename = $request['middlename'];
+            $user->lastname = $request['lastname'];
+            $user->address = $request['address'];
+            $user->role = "0";
+            $user->dateofbirth = $dateofbirth;
+            if($user->save())
+            {
+                $admin->id = $newid;
+                $admin->create_by = $request->user()->id;
+                $admin->mobilephone = $request['mobilephone'];
+                if($admin->save()){
+                    $ad_next_id->save();
+                    $record = array
+                    (
+                        "id" => $newid,
+                        "fullname" => $request['firstname']." ".$request['middlename']." ".$request['lastname'],
+                        "email" => $email,
+                        "mobilephone" => $admin->mobilephone,
+                        "dateofbirth" => $request['dateofbirth'],
+                        "role" => $user->role,
+                        "create_by" => $admin->create_by,
+                        "address" => $request['address'],
+                        "button" => "<i class = 'fa fa-fw fa-edit'></i>
+                                    <a href='/admin/manage-user/admin/edit/$newid' >Edit</a>",
+                        "isDone" => 1 
+                    );
+                    
+                    return $record;
+                }
+                else{
+                    User::where('id',$newid)->delete();
+                    return "error";
+                }
+            }
+            else{
+                return "error";
+            }
+        }
+        //return Redirect('/admin/manage-user/admin');
     }
 
     public function store_te(Request $request)
@@ -223,6 +274,6 @@ class UserManageController extends Controller
         $admin->mobilephone = $request['mobilephone'];
         $admin->save();
 
-        return $this->get_ad();
+        return Redirect('/admin/manage-user/admin');
     }
 }

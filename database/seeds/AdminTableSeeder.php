@@ -14,7 +14,7 @@ class AdminTableSeeder extends Seeder
         for($i=0; $i<=9; $i++){
     		DB::table('admin')->insert([
     			'id' =>	'a_000000'.$i,
-                'ownername' => 'admin 000'.$i,
+                'create_by' => 'a_000000'.$i,
                 'mobilephone' => '091-333'.$i,
         	]);
     	}
