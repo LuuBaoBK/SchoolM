@@ -26,22 +26,22 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	    return view('adminpage.dashboard');
 	});
 
-	Route::group(['prefix'=>'manage-user'], function(){
-		Route::get ('admin', 'Admin\UserManageController@get_ad');
-		Route::post('admin', 'Admin\UserManageController@store_ad');
-		Route::post('admin/show_ad', 'Admin\UserManageController@show_ad');
-		Route::get ('admin/edit/{id}', 'Admin\UserManageController@get_edit_form');
-		Route::post ('admin/edit/{id}', 'Admin\UserManageController@edit_ad');
+	Route::group(['prefix'=>'manage-user', 'namespace' => 'Admin\UserManage'], function(){
+		Route::get ('admin', 'AdminManageController@get_ad');
+		Route::post('admin', 'AdminManageController@store_ad');
+		Route::get ('admin/edit/{id}', 'AdminManageController@get_edit_form');
+		Route::post ('admin/edit', 'AdminManageController@edit_ad');
 
-		Route::get ('teacher', 'Admin\UserManageController@get_te');
-		Route::post('teacher', 'Admin\UserManageController@store_te');
-		Route::get ('teacher/edit/{id}', 'Admin\UserManageController@get_edit_form');
-		Route::post ('teacher/edit/{id}', 'Admin\UserManageController@edit_ad');
+		Route::get ('teacher', 'TeacherManageController@get_te');
+		Route::post('teacher', 'TeacherManageController@store_te');
+		Route::get ('teacher/edit/{id}', 'TeacherManageController@get_edit_form');
+		Route::post ('teacher/edit', 'TeacherManageController@edit_ad');
 
-		Route::get ('student', 'Admin\UserManageController@get_stu');
-		Route::post('student', 'Admin\UserManageController@store_stu');
-		Route::get ('student/edit/{id}', 'Admin\UserManageController@get_edit_form');
-		Route::post ('student/edit/{id}', 'Admin\UserManageController@edit_ad');
+		Route::get ('student', 'StudentManageController@get_stu');
+		Route::post('student', 'StudentManageController@store_stu');
+		Route::post('student/show', 'StudentManageController@show');
+		Route::get ('student/edit/{id}', 'StudentManageController@get_edit_form');
+		Route::post ('student/edit/{id}', 'StudentManageController@edit_ad');
 
 		Route::get ('parent', 'Admin\UserManageController@get_pa');
 		Route::post('parent', 'Admin\UserManageController@store_pa');

@@ -28,6 +28,7 @@ class UserTableSeeder extends Seeder
                 'middlename' => 'middle'.$i,
                 'lastname' => 'last'.$i,
                 'email' => 'teacher'.$i.'@schoolm.com',
+                'dateofbirth' => "2014-11-".$i,
                 'password' => bcrypt('1234'),
                 'role' => '1',
             ]);
