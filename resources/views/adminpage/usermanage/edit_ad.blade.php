@@ -124,7 +124,7 @@
                    }
                    else{
                         $('#error_mess').show("medium");
-                        $('#error_mess').empty();
+                        //$('#error_mess').empty();
                         $.each(user, function(i, item){
                           $('#error_mess').append("<h4><i class='icon fa fa-warning'></i>"+item+"</h4>");
                         });

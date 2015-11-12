@@ -12,7 +12,7 @@ class AddsubjectController extends Controller
 {
     public function index(){
         $subjectlist = Subject::all();
-        return view('adminpage.addsubject', ['subjectlist' => $subjectlist]);
+        return view('adminpage.subjectmanage.addsubject', ['subjectlist' => $subjectlist]);
     }
     public function store(Request $request)
     {

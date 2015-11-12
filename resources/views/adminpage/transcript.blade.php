@@ -1,6 +1,5 @@
-@extends('mytemplate.blankpage')
+@extends('mytemplate.newblankpage')
 @section('content')
-<link href="{{asset("/adminltemaster/css/datatables/dataTables.bootstrap.css")}}" rel="stylesheet" type="text/css" />
 <section class="content-header">
     <h1>
         Admin
