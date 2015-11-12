@@ -7,105 +7,109 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use DB;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Input;
+use App\Model\Student;
+use App\Model\Teacher;
+use App\Model\StudentClass;
+use App\Model\Classes;
 
 class StudentInClassController extends Controller
 {
     //
+    
     public function view(){
 
-    	$result = DB::table('lop_hocsinh')->get();
-    	
-    	return view("studentinclass.view")->with('data', $result);
-    }
-
-    public function view1(){
-
-        $result = DB::table('studentclass')->get();
+        $s = Classes::distinct()->select('semester')->get();
+        $c = Classes::select('id', 'classname')->get();
         
-        return view("studentinclass.view1")->with('data', $result);
+        return view("studentinclass.view", ['data'=> $s, 'classlist' => $c]);
     }
 
+    public function filterstudent(){
 
-    public function delete($id)
+        $display = "";
+        $student = "";
+        $postedit = Input::all();
+        $hocky = $postedit['hocky'];
+        $khoi = $postedit['khoi'];
+        
+        $idclass = Classes::where('semester', '=', $hocky)->where('classname','like',"$khoi%")->get();
+        foreach($idclass as $row){
+            $sts = $row->students;
+            foreach ($sts as $key) {
+                $student = $key->student->user;
+                $display .="<tr>
+                                <td>$student->id</td>
+                                <td>$student->firstname $student->middlename $student->lastname</td>
+                                <td>
+                                <a data-id ='$student->id' class='addStudentIntoClass'>Add</a> 
+                            </td>
+                            </tr>";
+            }
+            
+        }
+
+        return $display;
+    }
+
+    public function getclass(){
+
+        $display = "";
+        $postedit = Input::all();
+        $id = $postedit['id'];
+        $idclass = Classes::find($id);
+        $sts = $idclass->students;
+        foreach ($sts as $key) {
+            $student = $key->student->user;
+            $display .="<tr>
+                            <td>$student->id</td>
+                            <td>$student->firstname $student->middlename $student->lastname</td>
+                            <td>
+                            <a data-id ='$student->id' href='#' class='removeStudentFromClass'>Remove</a>
+                            </td>
+                        </tr>";
+        }
+
+        return $display;
+    }
+
+    public function addStudent()
     {
-    	$i = DB::table('lop_hocsinh')->where('id', $id)->delete();
-    	if($id > 0)
-    	{
-    		\Session::flash('message', 'Record have been deleted successfully');
-			return redirect('admin/studentclassinfo');
-    	}
+        $poststudent = Input::all();
+        $newrecord = new StudentClass;
+        $newrecord->student_id = $poststudent['student_id'];
+        $newrecord->class_id   = $poststudent['class_id'];
+        $check = $newrecord->save();
+
+        if($check)
+        {
+            return 0;
+        }
+        else
+        {
+            return 1;
+        }
+        
     }
 
 
-    public function edit($class_id, $student_id)
+    public function removeStudent()
     {
-    	$row = DB::table('lop_hocsinh')->where('class_id', $class_id)->where('student_id', $class_id)->first();
-    	return view("studentinclass.edit")->with('row', $row);
+        $poststudent = Input::all();
+        $student_id = $poststudent['student_id'];
+        $class_id   = $poststudent['class_id'];
+        $del = StudentClass::where('student_id',$student_id)->where('class_id',$class_id);
+        $check = $del->delete();
+
+        if($check)
+        {
+            return 0;
+        }
+        else
+        {
+            return 1;
+        }
+        
     }
 
-    public function update(Request $request){
-    	
-    	$post = $request->all();
-    	
-    	$v = \Validator::make($request->all(), 
-    		[
-    			'class_id' => 'required',
-    			'student_id' => 'required',
-    			//'homeroom_teacher' => 'required',
-    		]);
-
-    	if($v->fails())
-    	{
-    		return redirect()->back()->withErrors($v->errors());
-    	}
-    	else
-    	{
-    		$data = array(
-				'id'               => $post['id'],
-				'semester'         => $post['semester'],
-				'classname'        => $post['classname'],
-				'homeroom_teacher' => $post['homeroom_teacher'],
-    			);
-
-    		$i = DB::table('lop_hocsinh')->where('id', $post['id'])->update($data);
-
-    		if($i > 0)
-    		{	
-    			\Session::flash('message', 'Record have been updated successfully');
-    			return redirect('admin/studentclassinfo');
-    		}
-    		//
-    		return redirect('admin/studentclassinfo');
-    	}
-    }
-
-
-    public function save(Request $request){
-    	$post = $request->all();
-    	$v = \Validator::make($request->all(), 
-    		[
-    			'class_id' => 'required',
-    			'student_id' => 'required',
-    		]);
-
-    	if($v->fails())
-    	{
-    		return redirect()->back()->withErrors($v->errors());
-    	}
-    	else
-    	{
-    		$data = array(
-				'class_id'               => $post['class_id'],
-				'student_id'         => $post['student_id'],
-    			);
-
-    		$i = DB::table('lop_hocsinh')->insert($data);
-
-    		if($i > 0)
-    		{	
-    			\Session::flash('message', 'Record have been saved successfully');
-    			return redirect('admin/studentclassinfo');
-    		}
-    	}
-    }
 }

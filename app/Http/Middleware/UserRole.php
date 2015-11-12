@@ -24,8 +24,19 @@ class UserRole
     {
         if($this->auth->check())
         {
-            return $next($request);
+            $user = $this->auth->user();
+            if($user->role > 1)
+            {
+                return view('errors.503');
+            }
+            else
+            {
+                return $next($request);
+            }
+            
         }
-        return view('errors.503');
+        else{
+            return view('errors.503');
+        }
     }
 }

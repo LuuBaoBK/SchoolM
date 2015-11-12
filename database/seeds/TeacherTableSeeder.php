@@ -13,12 +13,13 @@ class TeacherTableSeeder extends Seeder
     {
         for($i=0; $i<=9; $i++){
     		DB::table('teachers')->insert([
-    			'id' =>	'te_000000'.$i,
+    			'id' =>	't_000000'.$i,
                 'mobilephone' => '090-000-'.$i,
                 'homephone' => '08-000-'.$i,
                 'group' => $i,
                 'position' => 'giao vien',
-                'specialize' => 'toan'.$i,              
+                'specialize' => 'toan'.$i,
+                'incomingday' => "2015-11-".$i,              
         	]);
     	}
     }

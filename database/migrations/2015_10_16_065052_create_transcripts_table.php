@@ -13,7 +13,7 @@ class CreateTranscriptsTable extends Migration
     public function up()
     {
         Schema::create('transcript', function (Blueprint $table) {
-            $table->string('student_id',10);
+            $table->string('student_id',9);
             $table->string('semester',6);
             $table->integer('subject_id');
             $table->string('type',6);
@@ -22,8 +22,6 @@ class CreateTranscriptsTable extends Migration
             $table->primary(['student_id','semester','subject_id','type','datetime']);
             $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('subject_id')->references('id')->on('subjects');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
         });
     }
 

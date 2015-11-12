@@ -1,116 +1,217 @@
-@extends('mytemplate.blankpage')
+@extends('class.template')
 @section('content')
-<link href="{{asset("/adminltemaster/css/datatables/dataTables.bootstrap.css")}}" rel="stylesheet" type="text/css" />
-<section class="content-header">
-    <h1>
-        Admin
-        <small>Create Record Student Of A Class</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="dashboard"><i class="fa fa-dashboard"></i>Admin</a></li>
-        <li><a href="addsubject"><i class="active"></i>Create Class</a></li>
-    </ol>
-</section>
-<section class="content">
-<div class="col-xs-6">
-<div class="box box-solid box-primary collapsed-box">
+
+<div class="box box-primary" style="width:49%; display: inline-block;">
     <div class="box-header">
-            <h3 class="box-title">Add New Student In Class</h3>
-        <div class="box-tools pull-right">
-            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
-        </div>
+        <h3 class="box-title">Student</h3>
     </div><!-- /.box-header -->
     <!-- form start -->
-    <p style="color:red">{{ $errors->first('class_id')}}</p>
-    <p style="color:red">{{ $errors->first('student_id')}}</p>
+    <form role="form" style="width: 100%; height: 230px;">
+            <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+            <input type="hidden" id="id">
 
-    <form action="{{action('StudentInClass\StudentInClassController@save')}}" method="post">
-                <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-         {!! csrf_field() !!}
-        <div style = "display: none" class="box-body">
+        <div class="box-body">
             <div class="form-group">
-                <label for="class_id">Class Id</label>
-                <input style="width:80%" type="text" name="class_id" class="form-control">       
-            </div>
-            <div class="form-group">
-                <label for="student_id">Student Id</label>
-                <input style="width:80%" type="text" name="student_id" class="form-control">
-            </div>
-        </div><!-- /.box-body -->
-        <div style = "display: none" class="box-footer">
-            <button type="submit" class="btn btn-primary">Save Record</button>
-        </div>
-    </form>    
-</div><!-- /.box -->
-</div>
-</section>
-<section class="content">
-<div class="col-xs-12">
-    <div class="box box-solid box-primary">
-        <div class="box-header">
-            <h3 class="box-title">Student Of Classes List</h3>
-            <div class="box-tools pull-right">
-                <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
-            </div>                                    
-        </div><!-- /.box-header -->
-        <div class="box-body table-responsive">
-            <p style="color:red" ><?php echo Session::get('message'); ?></p>
-            <table id="example2" class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>Class Id</th>
-                        <th>Student Id</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <label for="exampleInputPassword1">Hoc Ky</label>
+                <select name="hocky" id="hocky" class="form-control">
+                    <option value="">Select Hoc Ky</option>
                     <?php
                         foreach ($data as $row) {
                     ?>
-                        <tr>
-                            <td><?php echo $row->class_id ?></td>
-                            <td><?php echo $row->student_id ?></td>
-                            <td>
-                                <a href="<?php echo 'studentclassedit/'.$row->class_id.'/'.$row->student_id ?>">Edit</a> | 
-                                <a href="<?php echo 'studentclassedit/'.$row->class_id.'/'.$row->student_id ?>">Delete</a>
-                            </td>
-                        </tr>
+                    <option value="<?php echo $row->semester ?>"><?php echo $row->semester ?></option>
                     <?php } ?>
-                
-                </tbody>
-                <tfoot>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Khoi</label>
+                <select name="khoi" id="khoi" class="form-control">
+                    <option value="">Select Khoi lop</option>
+                    <option value="6">Khoi 6</option>
+                    <option value="7">Khoi 7</option>
+                    <option value="8">Khoi 8</option>
+                    <option value="9">Khoi 9</option>
+                </select>
+            </div>
+            
+        </div><!-- /.box-body -->
+
+        <div class="box-footer">
+            <button type="button" class="btn btn-primary filtercord">Filter</button>
+        </div>
+        
+    </form>
+    <div class="box">
+        <div class="box-body table-responsive">
+            <table id="example1" class="table table-bordered table-striped">
+                <thead>
                     <tr>
-                        <th>Class Id</th>
-                        <th>Student Id</th>
+                        <th>ID</th>
+                        <th>Student Name</th>
                         <th>Action</th>
                     </tr>
-                </tfoot>
+                </thead>
+                <tbody class="displayrecord">
+                </tbody>
             </table>
-        </div>
+        </div><!-- /.box-body -->
     </div><!-- /.box -->
-</div>
-</section>
+</div><!-- /.box -->
 
-<!-- InputMask -->
-        <script src="../../js/plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
-        <script src="../../js/plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
-        <script src="../../js/plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
-<!-- DATA TABES SCRIPT -->
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-        <script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
-        <script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
-<!-- page script -->
-        <script type="text/javascript">
-            $(function() {
-                $('#example1').dataTable({
-                    "bPaginate": true,
-                    "bLengthChange": false,
-                    "bFilter": true,
-                    "bSort": true,
-                    "bInfo": true,
-                    "bAutoWidth": false,
-                });
-            });
-        </script>
+<!--displaydata -->
+
+<div class="box box-primary" style="width:49%; display: inline-block;vertical-align: top; float:right;">
+    <div class="box-header">
+        <h3 class="box-title">Student</h3>
+    </div><!-- /.box-header -->
+    <div class="form-group">
+         <form role="form" style="width: 100%; height: 230px;">
+            <label for="exampleInputPassword1">Lop hoc</label>
+            <select name="lophoc" id="lophoc" class="form-control lophoc">
+                <option value=""><table><td>MS</td>x<td>Ten lop</td></table>|</option>
+                <?php
+                    foreach ($classlist as $row) {
+                ?>
+                <option value="<?php echo $row->id ?>"><?php echo $row->id ?> | <?php echo $row->classname; ?></option>
+                <?php } ?>
+            </select>
+        </form>
+        <div class="box">
+            <div class="box-body table-responsive">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Student Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="liststudent">
+                    </tbody>
+                </table>
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div>
+</div><!-- /.box -->
+
 
 @endsection
+
+<script src="{{ URL::asset("mylib/js/jquery.min.js") }}" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $(function(){
+
+       $('.lophoc').change(function(){
+            displaystudent();
+        });
+
+
+        $('.filtercord').click(function() {
+            displaydata();
+        });
+
+        $('body').delegate('.addStudentIntoClass', 'click', function(){
+            var student_id = $(this).data('id');
+            var class_id = $('#lophoc').val();
+            var token = $('input[name="_token"]').val();
+
+            alert(student_id+class_id);
+            $.ajax({
+                url     : "<?= URL::to('addStudent') ?>",
+                type    :"POST",
+                async   :false,
+                data    :{
+                    'student_id' : student_id,
+                    'class_id'   : class_id,
+                    '_token'     : token
+                },
+                success:function(re){
+                    if(re == 0)
+                    {
+                        alert('save success');
+                        displaydata();
+                        displaystudent();
+                    }
+                    else
+                    {
+                        alert('error');
+                    }
+                }
+            });
+
+        });
+
+        $('body').delegate('.removeStudentFromClass', 'click', function(){
+            var student_id = $(this).data('id');
+            var class_id = $('#lophoc').val();
+            var token = $('input[name="_token"]').val();
+            
+            $.ajax({
+                url     : "<?= URL::to('removeStudent') ?>",
+                type    :"POST",
+                async   :false,
+                data    :{
+                    'student_id' : student_id,
+                    'class_id'   : class_id,
+                    '_token'     : token
+                },
+                success:function(re){
+                    if(re == 0)
+                    {
+                        alert('Remove success');
+                        displaydata();
+                        displaystudent();
+                    }
+                    else
+                    {
+                        alert('error');
+                    }
+                }
+            });
+
+        });
+        
+    });
+
+
+    function displaydata(){
+            var hocky = $('#hocky').val();
+            var khoi      = $('#khoi').val();
+            var token       = $('input[name="_token"]').val();
+
+            $.ajax({
+                url     : "<?= URL::to('filterstudent') ?>",
+                type    :"POST",
+                async   :false,
+                data    :{
+                    'hocky':  hocky,
+                    'khoi' :  khoi,
+                    '_token': token
+                },
+                success:function(re){
+                    $('.displayrecord').html(re);       
+                }
+            });
+    }
+
+    function displaystudent(){
+        var id = $('#lophoc').val();
+        var token = $('input[name="_token"]').val();
+
+        $.ajax({
+            url     : "<?= URL::to('getclass') ?>",
+            type    :"POST",
+            async   :false,
+            data    :{
+                'id'    :   id,
+                '_token': token
+            },
+            success:function(re){
+                $('.liststudent').html(re);       
+            }
+        });
+    };
+});
+</script>
+

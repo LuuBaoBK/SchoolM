@@ -13,31 +13,42 @@ class UserTableSeeder extends Seeder
     {
     	for($i=0; $i<=9; $i++){
     		DB::table('users')->insert([
-    			'id' =>	'ad_000000'.$i,
-	            'fullname' => 'admin'.$i.' Full Name',
+    			'id' =>	'a_000000'.$i,
+	            'firstname' => 'admin'.$i,
+                'middlename' => 'middle'.$i,
+                'lastname' => 'last'.$i,
 	            'email' => 'admin'.$i.'@schoolm.com',
 	            'password' => bcrypt('1234'),
+                'dateofbirth' => "2015-11-".$i,
                 'role' => '0',
         	]);
             DB::table('users')->insert([
-                'id' => 'te_000000'.$i,
-                'fullname' => 'teacher'.$i.' Full Name',
+                'id' => 't_000000'.$i,
+                'firstname' => 'teacher'.$i,
+                'middlename' => 'middle'.$i,
+                'lastname' => 'last'.$i,
                 'email' => 'teacher'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
                 'role' => '1',
             ]);
             DB::table('users')->insert([
-                'id' => 'st_000000'.$i,
-                'fullname' => 'student'.$i.' Full Name',
+                'id' => 's_000000'.$i,
+                'firstname' => 'student'.$i,
+                'middlename' => 'middle'.$i,
+                'lastname' => 'last'.$i,
                 'email' => 'student'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
+                'dateofbirth' => "2015-11-".$i,
                 'role' => '2',
             ]);
             DB::table('users')->insert([
-                'id' => 'pa_000000'.$i,
-                'fullname' => 'parent'.$i.' Full Name',
+                'id' => 'p_000000'.$i,
+                'firstname' => 'parent'.$i,
+                'middlename' => 'middle'.$i,
+                'lastname' => 'last'.$i,
                 'email' => 'parent'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
+                'dateofbirth' => "2015-11-".$i,
                 'role' => '2',
             ]);
     	}

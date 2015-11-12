@@ -11,23 +11,74 @@
 |
 */
 
-Route::get('admin/dashboard', function () {
-    return view('adminpage.dashboard');
-});
+
 
 // Authentication routes...
 Route::get('/', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\MyAuthController@authenticate');
 Route::get('auth/logout', 'Auth\MyAuthController@logout');
+Route::get('/mypage',function(){
+	return view('mytemplate.newblankpage');
+});
+Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 
-// Registration routes...
-/*
-Use this later
+	Route::get('dashboard', function () {
+	    return view('adminpage.dashboard');
+	});
+
+	Route::group(['prefix'=>'manage-user'], function(){
+		Route::get ('admin', 'Admin\UserManageController@get_ad');
+		Route::post('admin', 'Admin\UserManageController@store_ad');
+		Route::post('admin/show_ad', 'Admin\UserManageController@show_ad');
+		Route::get ('admin/edit/{id}', 'Admin\UserManageController@get_edit_form');
+		Route::post ('admin/edit/{id}', 'Admin\UserManageController@edit_ad');
+
+		Route::get ('teacher', 'Admin\UserManageController@get_te');
+		Route::post('teacher', 'Admin\UserManageController@store_te');
+		Route::get ('teacher/edit/{id}', 'Admin\UserManageController@get_edit_form');
+		Route::post ('teacher/edit/{id}', 'Admin\UserManageController@edit_ad');
+
+		Route::get ('student', 'Admin\UserManageController@get_stu');
+		Route::post('student', 'Admin\UserManageController@store_stu');
+		Route::get ('student/edit/{id}', 'Admin\UserManageController@get_edit_form');
+		Route::post ('student/edit/{id}', 'Admin\UserManageController@edit_ad');
+
+		Route::get ('parent', 'Admin\UserManageController@get_pa');
+		Route::post('parent', 'Admin\UserManageController@store_pa');
+		Route::get ('parent/edit/{id}', 'Admin\UserManageController@get_edit_form');
+		Route::post ('parent/edit/{id}', 'Admin\UserManageController@edit_ad');
+
+		Route::get ('userlist', 'Admin\UserManageController@get_userlist');
+	});
+    
+    //Manage class
+
+	Route::get('classinfo', 'Classes\ClassController@view');
+	Route::get('form', 'Classes\ClassController@form');
+	Route::post('save', 'Classes\ClassController@save');
+	Route::post('update', 'Classes\ClassController@update');
+	Route::get('delete/{id}', 'Classes\ClassController@delete');
+	Route::get('edit/{id}', 'Classes\ClassController@edit');
+
+	//Manage subject
+	Route::get('addsubject', 'Admin\AddsubjectController@index');
+	Route::post('addsubject', 'Admin\AddsubjectController@store');
+
+	Route::get('editsubject/{id}', 'Admin\EditsubjectController@edit');
+	Route::post('editsubject{id}', 'Admin\EditsubjectController@update');
+	Route::get('deletesubject/{id}', 'Admin\EditsubjectController@delete');
+
+	Route::get('schedule', 'Admin\ScheduleController@index');
+	Route::post('schedule', 'Admin\ScheduleController@store');
+
+	Route::get('transcript', 'Admin\TranscriptController@index');
+	Route::post('transcript', 'Admin\TranscriptController@store');
+});
+
 Route::get('admin/adduser', [
 	'middleware' => 'authrole',
 	'uses' => 'Admin\AdduserController@index',
 	]);
-*/
 Route::get ('admin/manage-user/admin', 'Admin\UserManageController@get_ad');
 Route::post('admin/manage-user/admin', 'Admin\UserManageController@store_ad');
 Route::get ('admin/manage-user/admin/delete/{id}', 'Admin\UserManageController@delete_ad');
@@ -63,20 +114,15 @@ Route::get('admin/edit/{id}', 'Classes\ClassController@edit');
 
 //Manage student of class
 
-Route::get('admin/studentclassinfo', 'StudentInClass\StudentInClassController@view');
+Route::get('studentclassinfo', 'StudentInClass\StudentInClassController@view');
 
-Route::get('admin/studentclassinfo1', 'StudentInClass\StudentInClassController@view1');
+Route::post('filterstudent', 'StudentInClass\StudentInClassController@filterstudent');
 
-Route::get('admin/studentclassform', 'StudentInClass\StudentInClassController@form');
+Route::post('getclass', 'StudentInClass\StudentInClassController@getclass');
 
-Route::post('admin/studentclasssave', 'StudentInClass\StudentInClassController@save');
+Route::post('addStudent', 'StudentInClass\StudentInClassController@addStudent');
 
-Route::post('admin/studentclassupdate', 'StudentInClass\StudentInClassController@update');
-
-Route::get('admin/studentclassdelete/{class_id}/{student_id}', 'StudentInClass\StudentInClassController@delete');
-
-Route::get('admin/studentclassedit/{class_id}/{student_id}', 'StudentInClass\StudentInClassController@edit');
-
+Route::post('removeStudent', 'StudentInClass\StudentInClassController@removeStudent');
 
 
 
@@ -96,12 +142,4 @@ Route::post('admin/adduser', 'Admin\AdduserController@store');
 Route::get('admin/addsubject', 'Admin\AddsubjectController@index');
 Route::post('admin/addsubject', 'Admin\AddsubjectController@store');
 
-Route::get('admin/editsubject/{id}', 'Admin\EditsubjectController@edit');
-Route::post('admin/editsubject{id}', 'Admin\EditsubjectController@update');
-Route::get('admin/deletesubject/{id}', 'Admin\EditsubjectController@delete');
 
-Route::get('admin/schedule', 'Admin\ScheduleController@index');
-Route::post('admin/schedule', 'Admin\ScheduleController@store');
-
-Route::get('admin/transcript', 'Admin\TranscriptController@index');
-Route::post('admin/transcript', 'Admin\TranscriptController@store');

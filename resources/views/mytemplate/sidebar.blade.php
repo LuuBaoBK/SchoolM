@@ -5,7 +5,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left info">
-                <p>Hello,<?php  $user = (Auth::check() ? Auth::user()->fullname : "guest").' !'; echo ' '.$user ?></p>
+                <p>Hello,<?php  $user = (Auth::check() ? Auth::user()->lastname : "guest").' !'; echo ' '.$user ?></p>
             </div>
         </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
@@ -35,12 +35,12 @@
                 </a>
             </li>
             <li>
-                <a href="schedule">
+                <a href="/admin/schedule">
                     <i class="fa fa-calendar"></i> <span>Schedule Manager</span>
                 </a>
             </li>
             <li>
-                <a href="transcript">
+                <a href="/admin/transcript">
                     <i class="fa fa-file-text-o"></i> <span>Transcript Manager</span>
                 </a>
             </li>
