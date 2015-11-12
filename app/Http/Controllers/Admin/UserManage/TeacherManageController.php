@@ -178,8 +178,8 @@ class TeacherManageController extends Controller
 
         if($validator->fails())
         {
-           $record =  $validator->messages();
-           return $record;
+            $record =  $validator->messages();
+            return $record;
         }
         else
         {

@@ -39,6 +39,7 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 
 		Route::get ('student', 'StudentManageController@get_stu');
 		Route::post('student', 'StudentManageController@store_stu');
+		Route::post('student/show', 'StudentManageController@show');
 		Route::get ('student/edit/{id}', 'StudentManageController@get_edit_form');
 		Route::post ('student/edit/{id}', 'StudentManageController@edit_ad');
 

@@ -23,6 +23,28 @@ class StudentManageController extends Controller
         return view('adminpage.usermanage.adduser_stu', ['studentlist' => $studentlist]);
     }
 
+    public function show(Request $request){
+        $rules = array(
+            'to_year'     => 'greaterthan:from_year'      
+        );      
+        $validator = Validator::make($request->all(), $rules);
+        if($validator->fails())
+        {
+            $record =  $validator->messages();
+            dd($record);die;
+            return $record;
+        }
+        else
+        {   
+            $record['isSuccess'] = 1;
+            $record['from_year'] = $request['from_year'];
+            $record['to_year'] = $request['to_year'];
+            return $record;
+        }
+
+        //return view('adminpage.usermanage.adduser_stu', ['studentlist' => $studentlist]);
+    }
+
     public function store_te(Request $request)
     {
         $rules = array(
