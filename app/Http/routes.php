@@ -18,7 +18,7 @@ Route::get('/', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\MyAuthController@authenticate');
 Route::get('auth/logout', 'Auth\MyAuthController@logout');
 Route::get('/mypage',function(){
-	return view('mytemplate.newblankpage');
+	return view('auth.mylogin');
 });
 Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 

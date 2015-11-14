@@ -14,12 +14,13 @@
   <link rel="stylesheet" href="{{asset("/adminlte/onlinelib/ionicons-2.0.1/ionicons-2.0.1/css/ionicons.min.css")}}">
   <!-- DataTables -->
   <link rel="stylesheet" href="{{asset("/adminlte/plugins/datatables/dataTables.bootstrap.css")}}">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="{{asset("/adminlte/plugins/iCheck/all.css")}}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset("/adminlte/dist/css/AdminLTE.min.css")}}">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{{asset("/adminlte/dist/css/skins/_all-skins.min.css")}}">
-
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -66,6 +67,10 @@
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
 <!-- Bootstrap 3.3.5 -->
 <script src="{{asset("/adminlte/bootstrap/js/bootstrap.min.js")}}"></script>
+<!-- InputMask -->
+<script src="{{asset("/adminlte/plugins/input-mask/jquery.inputmask.js")}}"></script>
+<script src="{{asset("/adminlte/plugins/input-mask/jquery.inputmask.date.extensions.js")}}"></script>
+<script src="{{asset("/adminlte/plugins/input-mask/jquery.inputmask.extensions.js")}}"></script>
 <!-- SlimScroll -->
 <script src="{{asset("/adminlte/plugins/slimScroll/jquery.slimscroll.min.js")}}"></script>
 <!-- FastClick -->
@@ -77,10 +82,8 @@
 <!-- DataTables -->
 <script src="{{asset("/adminlte/plugins/datatables/jquery.dataTables.min.js")}}"></script>
 <script src="{{asset("/adminlte/plugins/datatables/dataTables.bootstrap.min.js")}}"></script>
-<!-- InputMask -->
-<script src="{{asset("/adminltemaster/js/plugins/input-mask/jquery.inputmask.js")}}" type="text/javascript"></script>
-<script src="{{asset("/adminltemaster/js/plugins/input-mask/jquery.inputmask.date.extensions.js")}}" type="text/javascript"></script>
-<script src="{{asset("/adminltemaster/js/plugins/input-mask/jquery.inputmask.extensions.js")}}" type="text/javascript"></script>
+<!-- iCheck 1.0.1 -->
+<script src="{{asset("/adminlte/plugins/iCheck/icheck.min.js")}}"></script>
 
 </body>
 </html>

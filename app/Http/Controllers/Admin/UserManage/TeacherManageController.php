@@ -19,7 +19,7 @@ use Validator;
 class TeacherManageController extends Controller
 {
     public function get_te(){
-        $teacherlist = Teacher::all();
+        $teacherlist = Teacher::orderBy('id', 'desc')->get();
         return view('adminpage.usermanage.adduser_te', ['teacherlist' => $teacherlist]);
     }
 
@@ -106,24 +106,17 @@ class TeacherManageController extends Controller
 
             $te_next_id->save();
 
+            $teacher = Teacher::find($newid);
+            $teacher->user;
             $record = array
             (
-                "id"            => $newid,
-                "fullname"      => $request['firstname']." ".$request['middlename']." ".$request['lastname'],
-                "email"         => $email,
-                "mobilephone"   => $teacher->mobilephone,
-                "homephone"     => $teacher->homephone,
-                "group"         => $teacher->group,
-                "specialized"   => $teacher->specialized,
-                "position"      => $teacher->position,
-                "dateofbirth"   => $request['dateofbirth'],
-                "incomingday"   => $request['incomingday'],
-                "address"       => $request['address'],
-                "role"          => $user->role,
-                "button"        => "<i class = 'fa fa-fw fa-edit'></i>
-                            <a href='/admin/manage-user/teacher/edit/$newid' >Edit</a>",
-                "isDone"        => 1  
+                'button'        => "<a href='/admin/manage-user/teacher/edit/$newid' ><i class = 'glyphicon glyphicon-edit'></i></a>",
+                'isDone'       => 1,
+                'mydata'        => $teacher
             );
+
+            
+            $record['mydata'] = $teacher;
             return $record;
         }
     }

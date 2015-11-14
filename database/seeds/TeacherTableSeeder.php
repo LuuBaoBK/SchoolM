@@ -22,5 +22,16 @@ class TeacherTableSeeder extends Seeder
                 'incomingday' => "2015-11-".$i,              
         	]);
     	}
+        for($i=0; $i<=9; $i++){
+            DB::table('teachers')->insert([
+                'id' => 't_000001'.$i,
+                'mobilephone' => '090-000-'.$i,
+                'homephone' => '08-000-'.$i,
+                'group' => $i,
+                'position' => 'giao vien',
+                'specialized' => 'toan'.$i,
+                'incomingday' => "2015-11-".$i,              
+            ]);
+        }
     }
 }

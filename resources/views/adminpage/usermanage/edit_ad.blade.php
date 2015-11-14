@@ -24,9 +24,6 @@
             <form id="ad_form" method="POST" role="form">
             {!! csrf_field() !!}
             <div class="box-body">
-                <div id="error_mess" style = "display: none" class="alert alert-warning alert-dismissable">
-                    <h4></h4>        
-                </div>
                  <div id="success_mess" style = "display: none" class="alert alert-success">
                     <h4><i class="icon fa fa-check"></i>Success Add New Admin</h4>
                 </div>
@@ -44,31 +41,37 @@
                     <div class="form-group col-lg-3 col-xs-12">
                         <label for="firstname">First Name</label>
                         <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value={{$admin->user->firstname}}>
+                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value='<?=$admin->user->firstname?>'>
+                        <label class="error_mess" id="firstname_error" style="display:none" for="firstname"></label>
                     </div>
                     <div class="form-group col-lg-3 col-xs-12">
                         <label for="middlename">Middle Name</label>
-                        <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" value={{$admin->user->middlename}}>
+                        <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" value='<?=$admin->user->middlename?>'>
+                        <label class="error_mess" id="middlename_error" style="display:none" for="middlename"></label>
                     </div>
                     <div class="form-group col-lg-3 col-xs-12">
                         <label for="lastname">Last Name</label>
-                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value={{$admin->user->lastname}}>
+                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value='<?=$admin->user->lastname?>'>
+                        <label class="error_mess" id="lastname_error" style="display:none" for="lastname"></label>        
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-3">
                         <label for="mobilephone">Mobile Phone</label>
                         <input type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone" value={{$admin->mobilephone}}>
+                        <label class="error_mess" id="mobilephone_error" style="display:none" for="mobilephone"></label>
                     </div>
                     <div class="form-group col-lg-3">
                         <label for="dateofbirth">Date Of Birth:</label>
                         <input type="text" id="dateofbirth" name="dateofbirth" class="form-control"  data-inputmask="'alias': 'dd/mm/yyyy'" data-mask / value={{$admin->mydateofbirth}} >
+                        <label class="error_mess" id="dateofbirth_error" style="display:none" for="dateofbirth"></label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-6">
                         <label for="address">Address</label>
                         <input type="text" class="form-control" name="address" id="address" placeholder="Address" value='<?=$admin->user->address?>'>
+                        <label class="error_mess" id="address_error" style="display:none" for="address"></label>
                     </div>
                 </div>
             </div><!-- /.box-body -->
@@ -100,6 +103,10 @@
             var dateofbirth = $('#dateofbirth').val();
             var address     = $('#address').val();
             var token       = $('input[name="_token"]').val();
+
+            $(".form-group").removeClass("has-warning");
+            $(".error_mess").empty();
+            
             $.ajax({
                 url     :"<?= URL::to('admin/manage-user/admin/edit') ?>",
                 type    :"POST",
@@ -114,8 +121,8 @@
                     'address'       :address,
                     '_token'        :token
                 },
-                success:function(user){
-                   if(user.isDone == 1){
+                success:function(record){
+                   if(record.isDone == 1){
                         $('#error_mess').slideUp('slow');
                         $('#success_mess').show("medium");
                         setTimeout(function() {
@@ -125,10 +132,10 @@
                    else{
                         $('#error_mess').show("medium");
                         $('#error_mess').empty();
-                        $.each(user, function(i, item){
-                          $('#error_mess').append("<h4><i class='icon fa fa-warning'></i>"+item+"</h4>");
+                        $.each(record, function(i, item){
+                          $('#'+i).parent().addClass('has-warning');
+                          $('#'+i+"_error").css("display","block").append("<i class='icon fa fa-warning'></i> "+item);
                         });
-                        
                    }    
                 }
             });

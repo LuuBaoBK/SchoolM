@@ -17,7 +17,7 @@ class UserTableSeeder extends Seeder
 	            'firstname' => 'admin'.$i,
                 'middlename' => 'middle'.$i,
                 'lastname' => 'last'.$i,
-	            'email' => 'admin'.$i.'@schoolm.com',
+	            'email' => 'a_000000'.$i.'@schoolm.com',
 	            'password' => bcrypt('1234'),
                 'dateofbirth' => "2015-11-".$i,
                 'role' => '0',
@@ -27,7 +27,7 @@ class UserTableSeeder extends Seeder
                 'firstname' => 'teacher'.$i,
                 'middlename' => 'middle'.$i,
                 'lastname' => 'last'.$i,
-                'email' => 'teacher'.$i.'@schoolm.com',
+                'email' => 't_000000'.$i.'@schoolm.com',
                 'dateofbirth' => "2014-11-".$i,
                 'password' => bcrypt('1234'),
                 'role' => '1',
@@ -37,7 +37,7 @@ class UserTableSeeder extends Seeder
                 'firstname' => 'student'.$i,
                 'middlename' => 'middle'.$i,
                 'lastname' => 'last'.$i,
-                'email' => 'student'.$i.'@schoolm.com',
+                'email' => 's_000000'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
                 'dateofbirth' => "2015-11-".$i,
                 'role' => '2',
@@ -47,11 +47,53 @@ class UserTableSeeder extends Seeder
                 'firstname' => 'parent'.$i,
                 'middlename' => 'middle'.$i,
                 'lastname' => 'last'.$i,
-                'email' => 'parent'.$i.'@schoolm.com',
+                'email' => 'p_000000'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
                 'dateofbirth' => "2015-11-".$i,
                 'role' => '2',
             ]);
     	}
+        for($i=0; $i<=9; $i++){
+            DB::table('users')->insert([
+                'id' => 'a_000001'.$i,
+                'firstname' => 'admin'.$i,
+                'middlename' => 'middle'.$i,
+                'lastname' => 'last'.$i,
+                'email' => 'a_000001'.$i.'@schoolm.com',
+                'password' => bcrypt('1234'),
+                'dateofbirth' => "2015-11-".$i,
+                'role' => '0',
+            ]);
+            DB::table('users')->insert([
+                'id' => 't_000001'.$i,
+                'firstname' => 'teacher'.$i,
+                'middlename' => 'middle'.$i,
+                'lastname' => 'last'.$i,
+                'email' => 't_000001'.$i.'@schoolm.com',
+                'dateofbirth' => "2014-11-".$i,
+                'password' => bcrypt('1234'),
+                'role' => '1',
+            ]);
+            DB::table('users')->insert([
+                'id' => 's_000001'.$i,
+                'firstname' => 'student'.$i,
+                'middlename' => 'middle'.$i,
+                'lastname' => 'last'.$i,
+                'email' => 's_000001'.$i.'@schoolm.com',
+                'password' => bcrypt('1234'),
+                'dateofbirth' => "2015-11-".$i,
+                'role' => '2',
+            ]);
+            DB::table('users')->insert([
+                'id' => 'p_000001'.$i,
+                'firstname' => 'parent'.$i,
+                'middlename' => 'middle'.$i,
+                'lastname' => 'last'.$i,
+                'email' => 'p_000001'.$i.'@schoolm.com',
+                'password' => bcrypt('1234'),
+                'dateofbirth' => "2015-11-".$i,
+                'role' => '2',
+            ]);
+        }
     }
 }

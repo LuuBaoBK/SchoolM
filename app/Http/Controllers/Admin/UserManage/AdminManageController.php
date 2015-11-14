@@ -19,7 +19,7 @@ use Validator;
 class AdminManageController extends Controller
 {
     public function get_ad(){
-        $adminlist = Admin::all();
+        $adminlist = Admin::orderBy('id', 'desc')->get();
         return view('adminpage.usermanage.adduser_ad', ['adminlist' => $adminlist]);
     }
 
@@ -33,9 +33,7 @@ class AdminManageController extends Controller
             'dateofbirth'   => 'date_format:d/m/Y',
             'address'       => 'max:120'
         );
-
         $validator = Validator::make($request->all(), $rules);
-
         if($validator->fails())
         {
            $record =  $validator->messages();
@@ -86,20 +84,15 @@ class AdminManageController extends Controller
             
             $ad_next_id->save();
 
+            $admin = Admin::find($newid);
+            $admin->user;
             $record = array
             (
-                "id" => $newid,
-                "fullname" => $request['firstname']." ".$request['middlename']." ".$request['lastname'],
-                "email" => $email,
-                "mobilephone" => $admin->mobilephone,
-                "dateofbirth" => $request['dateofbirth'],
-                "role" => $user->role,
-                "create_by" => $admin->create_by,
-                "address" => $request['address'],
-                "button" => "<i class = 'fa fa-fw fa-edit'></i>
-                            <a href='/admin/manage-user/admin/edit/$newid' >Edit</a>",
-                "isDone" => 1 
+                'button' => "<a href='/admin/manage-user/admin/edit/$newid' ><i class = 'glyphicon glyphicon-edit'></i></a>",
+                'isDone' => 1,
+                'mydata'   => $admin
             );  
+
             return $record;
         }
     }

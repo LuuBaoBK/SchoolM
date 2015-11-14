@@ -17,9 +17,9 @@
     <div class="box-body">
         <!-- My page start here --> 
         <div class="col-xs-12 col-lg-12">
-            <div class="box box-solid box-primary ">
+            <div class="box box-solid box-primary collapsed-box">
                 <div class="box-header">
-                    <h3 class="box-title">Teacher Info</h3>
+                    <h3  class="box-title">Regist New Teacher</h3>
                     <div class="box-tools pull-right">
                         <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
                     </div>
@@ -53,6 +53,7 @@
                     <div class="form-group col-lg-6">
                         <label for="address">Address</label>
                         <input type="text" class="form-control" name="address" id="address" placeholder="Address">
+                        <label class="error_mess" id="address_error" style="display:none" for="homephone"></label>
                     </div>
                     <div class="form-group col-lg-3">
                         <label for="homephone">Home Phone</label>
@@ -105,7 +106,7 @@
         <div class="col-xs-12 col-lg12">
             <div class="box box-solid box-primary">
                 <div class="box-header">
-                    <h3 class="box-title">Admin List</h3>
+                    <h3 class="box-title">Teacher List</h3>
                     <div class="box-tools pull-right">
                         <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     </div>                                    
@@ -119,7 +120,7 @@
                             <th>Full Name</th>
                             <th>Email</th>
                             <th>Home Phone</th>
-                            <th>Mobile</th>
+                            <th>Mobile Phone</th>
                             <th>Group</th>
                             <th>Specialized</th>
                             <th>Position</th>
@@ -142,13 +143,33 @@
                                 <td> <?php echo $row->group ?></td>
                                 <td> <?php echo $row->specialized ?></td>
                                 <td> <?php echo $row->position ?></td>
-                                <td> <?php echo $row->user->dateofbirth ?></td>
-                                <td> <?php echo $row->incomingday ?></td>
+                                <td> <?php 
+                                    $dateofbirth = $row->user->dateofbirth;
+                                    if($dateofbirth != "0000-00-00"){
+                                        $dateofbirth = date_create($row->user->dateofbirth);
+                                        $dateofbirth = date_format($dateofbirth,"d/m/Y");
+                                    }
+                                    else{
+                                       $dateofbirth = "";
+                                    }
+                                    echo $dateofbirth;
+                                ?></td>
+                                <td> <?php 
+                                    $incomingday = $row->incomingday;
+                                    if($incomingday != "0000-00-00"){
+                                        $incomingday = date_create($row->incomingday);
+                                        $incomingday = date_format($incomingday,"d/m/Y");
+                                    }
+                                    else{
+                                       $incomingday = "";
+                                    }
+                                    echo $incomingday;
+                                ?></td>
                                 <td> <?php echo $row->user->address ?></td>
                                 <td> <?php echo $row->user->role ?></td>
                                 <td>
-                                <i class = "fa fa-fw fa-edit"></i>
-                                <a href="<?php echo 'teacher/edit/'.$row->id ?>">Edit</a>
+                                    <a href="<?php echo 'teacher/edit/'.$row->id ?>"><i class = "glyphicon glyphicon-edit"></i></a>
+                                   <!-- <a href="<?php echo 'teacher/edit/'.$row->id ?>">Edit</a> -->
                                 </td>
                             </tr>
                         <?php endforeach;?>
@@ -160,7 +181,7 @@
                             <th>Full Name</th>
                             <th>Email</th>
                             <th>Home Phone</th>
-                            <th>Mobile</th>
+                            <th>Mobile Phone</th>
                             <th>Group</th>
                             <th>Specialized</th>
                             <th>Position</th>
@@ -185,7 +206,9 @@
 
 <script>
     $(function () {
-        $("#teacher_table").DataTable();
+        $("#teacher_table").DataTable({
+            "order": [[ 0, "desc" ]],   
+        });
         $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
         $("[data-mask]").inputmask();
 
@@ -207,7 +230,7 @@
             $(".form-group").removeClass("has-warning");
             $(".error_mess").empty();
             $.ajax({
-                url     :"<?= URL::to('admin/manage-user/teacher') ?>",
+                url     :"<?= URL::to('/admin/manage-user/teacher') ?>",
                 type    :"POST",
                 async   :false,
                 data    :{
@@ -224,35 +247,36 @@
                     'address'       :address,
                     '_token'        :token
                 },
-                success:function(user){
-                   if(user.isDone == 1){
+                success:function(record){
+                   if(record.isDone == 1){
                         $('#success_mess').show("medium");
                         setTimeout(function() {
                             $('#success_mess').slideUp('slow');
                         }, 2000); // <-- time in milliseconds
                         $('#teacher_table').dataTable().fnAddData( [
-                            user.id,
-                            user.fullname,
-                            user.email,
-                            user.homephone,
-                            user.mobilephone,
-                            user.group,
-                            user.specialized,
-                            user.position,
-                            user.dateofbirth,
-                            user.incomingday,
-                            user.address,
-                            user.role,
-                            user.button
+                            record.mydata.id,
+                            record.mydata.user.firstname+" "+record.mydata.user.middlename+" "+record.mydata.user.lastname,
+                            record.mydata.user.email,
+                            record.mydata.homephone,
+                            record.mydata.mobilephone,
+                            record.mydata.group,
+                            record.mydata.specialized,
+                            record.mydata.position,
+                            record.mydata.user.dateofbirth,
+                            record.mydata.incomingday,
+                            record.mydata.user.address,
+                            record.mydata.user.role,
+                            record.button
                              ]
                             );
                    }
                    else{
-                        $.each(user, function(i, item){
+                        $('#error_mess').show("medium");
+                        $('#error_mess').empty();
+                        $.each(record, function(i, item){
                           $('#'+i).parent().addClass('has-warning');
                           $('#'+i+"_error").css("display","block").append("<i class='icon fa fa-warning'></i> "+item);
                         });
-                        
                    }    
                 },
                 error:function(){

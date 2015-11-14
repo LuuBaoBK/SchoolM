@@ -108,13 +108,22 @@
                                 <td> <?php echo $row->user->firstname." ".$row->user->middlename." ".$row->user->lastname ?></td>
                                 <td> <?php echo $row->user->email ?></td>
                                 <td> <?php echo $row->mobilephone ?></td>
-                                <td> <?php echo $row->user->dateofbirth ?></td>
+                                <td> <?php 
+                                    $dateofbirth = $row->user->dateofbirth;
+                                    if($dateofbirth != "0000-00-00"){
+                                        $dateofbirth = date_create($row->user->dateofbirth);
+                                        $dateofbirth = date_format($dateofbirth,"d/m/Y");
+                                    }
+                                    else{
+                                       $dateofbirth = "";
+                                    }
+                                    echo $dateofbirth;
+                                ?></td>
                                 <td> <?php echo $row->user->address ?></td>
                                 <td> <?php echo $row->create_by ?></td>
                                 <td> <?php echo $row->user->role ?></td>
                                 <td>
-                                <i class = "fa fa-fw fa-edit"></i>
-                                <a href="<?php echo 'admin/edit/'.$row->id ?>">Edit</a>
+                                    <a href="<?php echo 'admin/edit/'.$row->id ?>"><i class = "glyphicon glyphicon-edit"></i></a>
                                 </td>
                             </tr>
                         <?php endforeach;?>
@@ -148,6 +157,7 @@
 <script>
     $(function () {
         $("#admin_table").DataTable(
+            {"order": [[ 0, "desc" ]]}
         );
         $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
         $("[data-mask]").inputmask();
@@ -166,7 +176,7 @@
             $(".error_mess").empty();
 
             $.ajax({
-                url     :"<?= URL::to('admin/manage-user/admin') ?>",
+                url     :"<?= URL::to('/admin/manage-user/admin') ?>",
                 type    :"POST",
                 async   :false,
                 data    :{
@@ -178,40 +188,45 @@
                     'address'       :address,
                     '_token'        :token
                 },
-                success:function(user){
-                   if(user.isDone == 1){
+                success:function(record){
+                   if(record.isDone == 1){
                         $('#error_mess').slideUp('slow');
                         $('#success_mess').show("medium");
                         setTimeout(function() {
                             $('#success_mess').slideUp('slow');
                         }, 2000); // <-- time in milliseconds
+
                         $('#admin_table').dataTable().fnAddData( [
-                             user.id,
-                             user.fullname,
-                             user.email,
-                             user.mobilephone,
-                             user.dateofbirth,
-                             user.address,
-                             user.create_by,
-                             user.role,
-                             user.button
+                             record.mydata.id,
+                             record.mydata.user.firstname+" "+record.mydata.user.middlename+" "+record.mydata.user.lastname,
+                             record.mydata.user.email,
+                             record.mydata.mobilephone,
+                             dateofbirth,
+                             record.mydata.user.address,
+                             record.mydata.create_by,
+                             record.mydata.user.role,
+                             record.button
                              ]
                             );
                    }
                    else{
                         $('#error_mess').show("medium");
                         $('#error_mess').empty();
-                        $.each(user, function(i, item){
+                        $.each(record, function(i, item){
                           $('#'+i).parent().addClass('has-warning');
                           $('#'+i+"_error").css("display","block").append("<i class='icon fa fa-warning'></i> "+item);
-                        });
-                        
+                        });                      
                    }    
                 },
                 error:function(){
                     alert("something went wrong, contact master admin to fix");
                 }
             });
+        });
+
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
         });
     });
 
