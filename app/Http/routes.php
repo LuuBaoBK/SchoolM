@@ -60,8 +60,8 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::get('edit/{id}', 'Classes\ClassController@edit');
 
 	//Manage subject
-	Route::get('addsubject', 'Admin\AddsubjectController@index');
-	Route::post('addsubject', 'Admin\AddsubjectController@store');
+	Route::get('addsubject', 'Admin\AddsubjectController@getsubject');
+	Route::post('addsubject', 'Admin\AddsubjectController@storesubject');
 
 	Route::get('editsubject/{id}', 'Admin\EditsubjectController@edit');
 	Route::post('editsubject{id}', 'Admin\EditsubjectController@update');

@@ -17,7 +17,7 @@
     <div class="box-body">
         <!-- My page start here --> 
         <div class="col-xs-12 col-lg-12">
-            <div class="box box-solid box-primary ">
+            <div class="box box-solid box-primary collapsed-box">
                 <div class="box-header">
                     <h3 class="box-title">Teacher Info</h3>
                     <div class="box-tools pull-right">
