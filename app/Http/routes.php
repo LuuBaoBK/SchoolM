@@ -18,7 +18,7 @@ Route::get('/', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\MyAuthController@authenticate');
 Route::get('auth/logout', 'Auth\MyAuthController@logout');
 Route::get('/mypage',function(){
-	return view('mytemplate.newblankpage');
+	return view('auth.mylogin');
 });
 Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 
@@ -39,6 +39,7 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 
 		Route::get ('student', 'StudentManageController@get_stu');
 		Route::post('student', 'StudentManageController@store_stu');
+		Route::post('student/show', 'StudentManageController@show');
 		Route::get ('student/edit/{id}', 'StudentManageController@get_edit_form');
 		Route::post ('student/edit/{id}', 'StudentManageController@edit_ad');
 
@@ -74,6 +75,15 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::post('transcript', 'Admin\TranscriptController@store');
 });
 
+//Manage student of class
 
+Route::get('class/studentclassinfo', 'StudentInClass\StudentInClassController@view');
 
+Route::post('filterstudent', 'StudentInClass\StudentInClassController@filterstudent');
+
+Route::post('getclass', 'StudentInClass\StudentInClassController@getclass');
+
+Route::post('addStudent', 'StudentInClass\StudentInClassController@addStudent');
+
+Route::post('removeStudent', 'StudentInClass\StudentInClassController@removeStudent');
 

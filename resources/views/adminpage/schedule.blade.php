@@ -2,63 +2,55 @@
 @section('content')
 
 <?php use App\Model\Subject; ?>
+<?php use App\Model\Classes; ?>
 
 <section class="content-header">
     <h1>
         Admin
-        <small>Create Schedule</small>
+        <small>View Schedule</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="/admin/dashboard"><i class="fa fa-home"></i>Admin</a></li>
-        <li class="active"><a href="/admin/schedule">Create Schedule</a></li>
+        <li class="active"><a href="/admin/schedule">View Schedule</a></li>
     </ol>
 </section>
 
 <section class="content">
     <div class="box-body">
         <!-- My page start here --> 
-        <div class="col-xs-12 col-lg-12">
+        <div class="col-xs-3">
             <div class="box box-solid box-primary collapsed-box">
             <div class="box-header">
-                <h3 class="box-title">Create Schedule</h3>
+                <h3 class="box-title">Class List</h3>
                 <div class="box-tools pull-right">
                     <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
                 </div>
             </div><!-- /.box-header -->
             <!-- form start -->
-            <form id="schedule_form" method="POST" role="form">
-            {!! csrf_field() !!}
-            <div style = "display: none" class="box-body">
-                <div id="error_mess" style = "display: none" class="alert alert-warning alert-dismissable">
-                    <h4></h4>        
-                </div>
-                 <div id="success_mess" style = "display: none" class="alert alert-success">
-                    <h4><i class="icon fa fa-check"></i>Success Add New Subject To Schedule</h4>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        <label for="subject_name">Subject Name</label>
-                        <input type="text" class="form-control" name="subject_name" id="subject_name">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        <label for="totaltime">Total Time</label>
-                        <input type="text" class="form-control" name="total_time" id="total_time">
-                    </div>
-                </div>
-            </div><!-- /.box-body -->
-            <div style = "display: none" class="box-footer">
-                    <button id ="schedule_form_submit" type="button" class="btn btn-primary">Add New Subject To Schedule</button>
+            <form method="POST">
+         {!! csrf_field() !!}
+        <div style = "display: none" class="box-body">
+            <div class="form-group">
+                <label>Class</label>
+                <select class="form-control select2 select2-hidden-accessible" name="semester" id="semester" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                    <?php $class = Classes::all() ?> 
+                    <?php foreach ($class as $key) { ?>
+                        <option><?php echo $key->classname ?></option>
+                    <?php } ?>
+                </select>
             </div>
-            </form>
+        </div><!-- /.box-body -->
+        <div style = "display: none" class="box-footer">
+            <button type="submit" class="btn btn-primary">Get Schedule</button>
+        </div>
+    </form>
             </div><!-- /.box -->
         </div>
 
-        <div class="col-xs-12 col-lg12">
+        <div class="col-xs-9 col-lg12">
             <div class="box box-solid box-primary">
                 <div class="box-header">
-                    <h3 class="box-title">Class List</h3>
+                    <h3 class="box-title">Schedule</h3>
                     <div class="box-tools pull-right">
                         <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     </div>                                    
@@ -77,13 +69,31 @@
                         </tr>
                     </thead>
 
-                    
                     <tbody class="displayrecord">
-                        <?php for ($i=0;$i<=9;$i++) { ?>
-                            <td>Tiết <?=$i+1 ?></td>
-                            <?php foreach ($schedulelist[$i] as $row) { ?>
-                                <td> <?php echo $row->subject->subject_name ?></td>
+                        <?php for ($i=0;$i<=4;$i++) { ?>
+                            <tr>
+                                <td><b>Tiết <?=$i+1 ?></b></td>
+                                <?php foreach ($schedulelist[$i] as $row) { ?>
+                                    <?php $subject = Subject::where("id", $row->subject_id)->get(); ?>
+                                    <?php foreach ($subject as $a)?>
+                                    <td> <?php echo $a->subject_name ?></td> 
+                                <?php } ?>
+                            </tr>
+                        <?php } ?>
+                        <tr>
+                            <!-- <td></td> -->
+                            <?php for ($z=0;$z<=5;$z++) { ?>
+                            <td style="background-color:Gainsboro"></td>
                             <?php } ?>
+                        </tr>
+                        <?php for ($i=5;$i<=9;$i++) { ?>
+                            <tr>
+                                <td><b>Tiết <?=$i+1 ?></b></td>
+                                <?php foreach ($schedulelist[$i] as $row) { ?>
+                                    <?php $subject = Subject::where("id", $row->subject_id)->get(); ?>
+                                    <?php foreach ($subject as $a)?>
+                                    <td> <?php echo $a->subject_name ?></td> 
+                                <?php } ?>
                             </tr>
                         <?php } ?>
                     </tbody>

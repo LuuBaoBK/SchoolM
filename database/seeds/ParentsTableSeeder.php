@@ -19,5 +19,13 @@ class ParentsTableSeeder extends Seeder
                 'job' => 'parent job',              	  
         	]);
     	}
+        for($i=0; $i<=9; $i++){
+            DB::table('parents')->insert([
+                'id' => 'p_000001'.$i,
+                'mobilephone' => '090-111-'.$i,
+                'homephone' => '08-111-'.$i,
+                'job' => 'parent job',                    
+            ]);
+        }
     }
 }

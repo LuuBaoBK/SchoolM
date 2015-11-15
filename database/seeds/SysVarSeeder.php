@@ -13,19 +13,19 @@ class SysVarSeeder extends Seeder
     {
         DB::table('sysvar')->insert([
     			'id' =>	'a_next_id',
-	            'value' => '9',            	  
+	            'value' => '19',            	  
     	]);
     	DB::table('sysvar')->insert([
     			'id' =>	't_next_id',
-	            'value' => '9',            	  
+	            'value' => '19',            	  
     	]);
     	DB::table('sysvar')->insert([
     			'id' =>	's_next_id',
-	            'value' => '9',            	  
+	            'value' => '19',            	  
     	]);
     	DB::table('sysvar')->insert([
     			'id' =>	'p_next_id',
-	            'value' => '9',            	  
+	            'value' => '19',            	  
     	]);
     }
 }

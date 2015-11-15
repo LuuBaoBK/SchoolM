@@ -56,6 +56,18 @@
                     <li><a href="#!"><i class="fa fa-angle-double-right"></i>???</a></li>
                 </ul>
             </li>
+            <li class="treeview">
+                <a href="">
+                    <i class="fa fa-th"></i>
+                    <span>Student In Class</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/schoolm/public/admin/studentclassinfo"><i class="fa fa-angle-double-right"></i>Class Info</a></li>
+                    <li><a href="#!"><i class="fa fa-angle-double-right"></i>Student List</a></li>
+                    <li><a href="#!"><i class="fa fa-angle-double-right"></i>???</a></li>
+                </ul>
+            </li>
             <li>
                 <a href="/auth/logout">
                     <i class="glyphicon glyphicon-log-out"></i> <span>Logout</span>
