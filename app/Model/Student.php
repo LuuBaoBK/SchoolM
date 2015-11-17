@@ -17,7 +17,7 @@ class Student extends Model
 
     public function parent()
     {
-        return $this->hasOne('App\Model\Parents' , 'id' ,'parent_id');
+        return $this->belongsTo('App\Model\Parents','parent_id','id');
     }
 
     public function classes()

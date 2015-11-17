@@ -13,7 +13,7 @@ class SubjectTableSeeder extends Seeder
     {
         for($i=1; $i<10; $i++){
     		DB::table('subjects')->insert([
-    			'id' =>	$i,
+                'id'           => $i,
 	            'subject_name' => 'subject '.$i,
 	            'total_time' => $i*20,	  
         	]);

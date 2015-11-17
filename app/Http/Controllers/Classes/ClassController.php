@@ -25,7 +25,7 @@ class ClassController extends Controller
     	//$result = DB::table('lophoc')->paginate(5);*/
     	//return view("viewClass")->with('data', $data);
 
-    	$result = DB::table('lophoc')->get();
+    	$result = DB::table('classes')->get();
     	
     	return view("class.view")->with('data', $result);
     }

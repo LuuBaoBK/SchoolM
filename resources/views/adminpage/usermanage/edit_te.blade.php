@@ -25,7 +25,7 @@
             {!! csrf_field() !!}
             <div class="box-body">
                  <div id="success_mess" style = "display: none" class="alert alert-success">
-                    <h4><i class="icon fa fa-check"></i>Success Add New Admin</h4>
+                    <h4><i class="icon fa fa-check"></i>Success edit teacher info</h4>
                 </div>
                 <div class="row">
                     <div class="col-xs-12 col-lg-3">

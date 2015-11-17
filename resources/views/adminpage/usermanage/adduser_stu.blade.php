@@ -179,7 +179,7 @@
                                             <?php
                                                 $year = date("Y") + 2;
                                                 for($year;$year >=2010 ;$year--){
-                                                    if($year == 2013)
+                                                    if($year == 2010)
                                                     {
                                                         echo "<option selected>".$year."</option>";
                                                     }
@@ -197,7 +197,7 @@
                                             <?php
                                                 $year = date("Y") + 2;
                                                 for($year;$year >=2010 ;$year--){
-                                                    if($year == 2013)
+                                                    if($year == 2017)
                                                     {
                                                         echo "<option selected>".$year."</option>";
                                                     }
@@ -336,7 +336,7 @@
                 success:function(record){
                    if(record.isSuccess == 1){
                         var button="";
-                        button = "<a href='/admin/user-manage/student/edit/"+record.id+"'><i class='glyphicon glyphicon-edit'></i></a>"
+                        button = "<a href='/admin/manage-user/student/edit/"+record.id+"'><i class='glyphicon glyphicon-edit'></i></a>"
                         $('#student_table').dataTable().fnAddData([
                             record.id,
                             record.user.firstname+" "+record.user.middlename+" "+record.user.lastname,
@@ -387,13 +387,21 @@
                         $('#from_to_warning').slideUp('medium');
                         $('#student_table').dataTable().fnClearTable();
                         var button="";
+                        var mydateofbirth,formattedDate,d,m,y;
                         $.each(record.mydata, function(i, row){
-                            button = "<a href='/admin/user-manage/student/edit/"+row.id+"'><i class='glyphicon glyphicon-edit'></i></a>"
-                            var formattedDate = new Date(row.user.dateofbirth);
-                            var d = formattedDate.getDate();
-                            var m =  formattedDate.getMonth();
-                            m += 1;  // JavaScript months are 0-11
-                            var y = formattedDate.getFullYear();
+                            button = "<a href='/admin/manage-user/student/edit/"+row.id+"'><i class='glyphicon glyphicon-edit'></i></a>";
+                            if(row.user.dateofbirth != "0000-00-00"){
+                                formattedDate = new Date(row.user.dateofbirth);
+                                d = formattedDate.getDate();
+                                m =  formattedDate.getMonth();
+                                m += 1;  // JavaScript months are 0-11
+                                y = formattedDate.getFullYear();
+                                mydateofbirth = (d + "/" + m + "/" + y);        
+                            }
+                            else{
+                                mydateofbirth = "N/A";
+                            }
+                            
                             $('#student_table').dataTable().fnAddData([
                                 row.id,
                                 row.user.firstname+" "+row.user.middlename+" "+row.user.lastname,
@@ -401,7 +409,7 @@
                                 row.enrolled_year,
                                 row.graduated_year,
                                 row.parent.user.firstname+" "+row.parent.user.middlename+" "+row.parent.user.lastname,
-                                (d + "/" + m + "/" + y),
+                                mydateofbirth,
                                 row.user.address,
                                 row.user.role,
                                 button

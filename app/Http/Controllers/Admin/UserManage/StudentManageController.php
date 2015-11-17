@@ -47,8 +47,6 @@ class StudentManageController extends Controller
             $record['isSuccess'] = 1;
             return $record;
         }
-
-        //return view('adminpage.usermanage.adduser_stu', ['studentlist' => $studentlist]);
     }
 
     public function store_stu(Request $request)
@@ -191,49 +189,36 @@ class StudentManageController extends Controller
 
     public function get_edit_form($id)
     {
-        $teacher = Teacher::find($id);
-        if($teacher->user->dateofbirth == "0000-00-00"){
+        $student = Student::find($id);
+        if($student->user->dateofbirth == "0000-00-00"){
             $dateofbirth = "";
         }
         else
         {
-            $dateofbirth = date_create($teacher->user->dateofbirth);
+            $dateofbirth = date_create($student->user->dateofbirth);
             $dateofbirth = date_format($dateofbirth, "d/m/Y");
         }
-
-        if($teacher->user->incomingday == "0000-00-00"){
-            $incomingday = "";
-        }
-        else
-        {
-            $incomingday = date_create($teacher->user->incomingday);
-            $incomingday = date_format($incomingday, "d/m/Y");
-        }
             
-        $teacher['mydateofbirth'] = $dateofbirth;
-        $teacher['myincomingday'] = $incomingday;
-        return view('adminpage.usermanage.edit_te')->with('teacher',$teacher);
+        $student['mydateofbirth'] = $dateofbirth;
+        return view('adminpage.usermanage.edit_stu')->with('student',$student);
     }
 
-    public function edit_ad(Request $request){
+    public function edit_stu(Request $request){
 
         $id = $request['id'];
         $user  = User::find($id);
-        $teacher = Teacher::find($id);
+        $student = Student::find($id);
 
-        $test['isDone'] = 1;
-        $rules = array(
+        $rules = array(     
             'firstname'     => 'max:20',
             'middlename'    => 'max:20',
             'lastname'      => 'max:20',
-            'address'       => 'max:120',
-            'homephone'     => 'digits_between:10,11',
-            'mobilephone'   => 'digits_between:10,11',
             'dateofbirth'   => 'date_format:d/m/Y',
-            'incomingday'   => 'date_format:d/m/Y',
-            'group'         => 'max:20',
-            'specialized'   => 'max:20',
-            'position'      => 'max:20'
+            'enrolled_year' => 'digits_between:1,4',        
+            'graduated_year'=> 'digits_between:1,4',
+            'address'       => 'max:120',
+            'parent_id'     => 'required|isexistparent',
+
         );
 
         $validator = Validator::make($request->all(), $rules);
@@ -245,7 +230,6 @@ class StudentManageController extends Controller
         }
         else
         {
-
             if($request['dateofbirth'] != "")
             {
                 $dateofbirth = date_create_from_format("d/m/Y", $request['dateofbirth']);
@@ -255,15 +239,6 @@ class StudentManageController extends Controller
                 $dateofbirth = $request['dateofbirth'];
             }
 
-           if($request['incomingday'] != "")
-            {
-                $incomingday = date_create_from_format("d/m/Y", $request['incomingday']);
-                $incomingday = date_format($incomingday,"Y-m-d");
-            }
-            else{
-                $incomingday = $request['incomingday'];
-            }
-
             $user->firstname = $request['firstname'];
             $user->middlename = $request['middlename'];
             $user->lastname = $request['lastname'];
@@ -271,14 +246,11 @@ class StudentManageController extends Controller
             $user->dateofbirth = $dateofbirth;
             $user->save();
 
-            $teacher->mobilephone = $request['mobilephone'];
-            $teacher->homephone = $request['homephone'];
-            $teacher->group = $request['group'];
-            $teacher->position = $request['position'];
-            $teacher->specialized = $request['specialized'];
-            $teacher->incomingday = $request['incomingday'];
+            $student->enrolled_year = $request['enrolled_year'];
+            $student->graduated_year = $request['graduated_year'];
+            $student->parent_id = $request['parent_id'];
 
-            $teacher->save();
+            $student->save();
 
             $record['isDone'] = 1;
             return $record;

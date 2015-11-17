@@ -31,7 +31,6 @@
                     <li><a href="/admin/manage-user/teacher"><i class="fa fa-angle-double-right"></i>Teacher</a></li>
                     <li><a href="/admin/manage-user/student"><i class="fa fa-angle-double-right"></i>Student</a></li>
                     <li><a href="/admin/manage-user/parent"><i class="fa fa-angle-double-right"></i>Parent</a></li>
-                    <li><a href="/admin/manage-user/userlist"><i class="fa fa-angle-double-right"></i>User List</a></li>
                 </ul>
             </li>
             <li>

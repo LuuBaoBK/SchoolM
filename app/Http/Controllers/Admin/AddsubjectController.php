@@ -17,9 +17,9 @@ class AddsubjectController extends Controller
     public function store(Request $request)
     {
         $subject = new Subject;
-        $subject->id = $request['id'];
-        $subject->subject_name = $request['name'];
-        $subject->total_time = $request['totaltime'];
+        $subject->id            = $request['id'];
+        $subject->subject_name  = $request['name'];
+        $subject->total_time    = $request['totaltime'];
         $subject->save();
         return Redirect('/admin/addsubject');
     }

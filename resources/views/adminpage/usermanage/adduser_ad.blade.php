@@ -123,7 +123,13 @@
                                 <td> <?php echo $row->create_by ?></td>
                                 <td> <?php echo $row->user->role ?></td>
                                 <td>
-                                    <a href="<?php echo 'admin/edit/'.$row->id ?>"><i class = "glyphicon glyphicon-edit"></i></a>
+                                    <?php
+                                    if($row->user->id == Auth::user()->id){
+                                        echo ("<a href='/admin/dashboard'><i class = 'glyphicon glyphicon-edit'></i></a>");
+                                    }
+                                    else{
+                                        echo ("<a href='admin/edit/$row->id'><i class = 'glyphicon glyphicon-edit'></i></a>");  
+                                    }?>
                                 </td>
                             </tr>
                         <?php endforeach;?>

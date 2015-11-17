@@ -6,7 +6,7 @@ use Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-
+use Illuminate\Routing\Redirector;
 
 class MyAuthController extends Controller
 {
@@ -14,7 +14,7 @@ class MyAuthController extends Controller
     {
         if(Auth::check())
         {
-            return redirect()->intended('admin/dashboard');
+            return redirect()->intended('/dashboard');
         }
         else
         {
@@ -22,13 +22,13 @@ class MyAuthController extends Controller
             $password = ($request['password']);
             if (Auth::attempt(['email' => $email, 'password' => $password])) {
                 // Authentication passed...
-                return Redirect()->intended('admin/dashboard');
+                return Redirect()->intended('/dashboard');
             }
             else{
                 $request->session()->flash('alert-warning', 'Incorrect Email Or Password!');
                 return Redirect('/');
             }
-        }
+        }   
     }
 
     public function logout()
@@ -36,5 +36,12 @@ class MyAuthController extends Controller
         Auth::logout();
         return Redirect('/');
 
+    }
+
+    public function get_dashboard(){
+        $user = Auth::user();
+        if($user->role == 0){
+            return redirect('admin/dashboard');
+        }
     }
 }
