@@ -18,12 +18,12 @@
         <!-- My page start here --> 
         <div class="col-xs-12 col-lg-12">
             <div class="box box-solid box-primary collapsed-box">
-                <div class="box-header">
-                    <h3 class="box-title">Regist New Admin</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                    </div>
-                </div><!-- /.box-header -->
+            <div class="box-header">
+                <h3 class="box-title">Regist New Admin</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                </div>
+            </div><!-- /.box-header -->
             <!-- form start -->
             <form id="ad_form" method="POST" role="form">
             {!! csrf_field() !!}
@@ -100,7 +100,6 @@
                             <th></th>
                         </tr>
                     </thead>
-
                     <tbody class="displayrecord">
                         <?php foreach ($adminlist as $row) :?>
                             <tr>

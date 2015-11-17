@@ -126,26 +126,25 @@
                     '_token'        :token
                 },
                 success:function(record){
-                   if(record.isDone == 1){
+                    if(record.isDone == 1){
                         $('#error_mess').slideUp('slow');
                         $('#success_mess').show("medium");
                         setTimeout(function() {
                             $('#success_mess').slideUp('slow');
                         }, 2000); // <-- time in milliseconds
-                   }
-                   else{
+                    }
+                    else{
                         $('#error_mess').show("medium");
                         $('#error_mess').empty();
                         $.each(record, function(i, item){
-                          $('#'+i).parent().addClass('has-warning');
-                          $('#'+i+"_error").css("display","block").append("<i class='icon fa fa-warning'></i> "+item);
-                        });
-                   }    
+                            $('#'+i).parent().addClass('has-warning');
+                            $('#'+i+"_error").css("display","block").append("<i class='icon fa fa-warning'></i> "+item);
+                        });   
+                    }
                 }
             });
         });
     });
-
 
 </script>
 

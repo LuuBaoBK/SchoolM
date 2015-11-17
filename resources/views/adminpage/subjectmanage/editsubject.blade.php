@@ -1,6 +1,6 @@
-@extends('mytemplate.blankpage')
+@extends('mytemplate.newblankpage')
 @section('content')
-<link href="{{asset("/adminltemaster/css/datatables/dataTables.bootstrap.css")}}" rel="stylesheet" type="text/css" />
+
 <section class="content-header">
     <h1>
         Admin
@@ -13,17 +13,17 @@
 </section>
 <section class="content">
 <div class="col-xs-6">
-<div class="box box-solid box-primary collapsed-box" style="collapsed=false">
+<div class="box box-solid box-primary" style="collapsed=false">
     <div class="box-header">
         <h3 class="box-title">Edit Subject Information</h3> 
         <div class="box-tools pull-right">
-            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
+            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
         </div>                                 
     </div><!-- /.box-header -->
         <div class="box-body table-responsive">
         <form method="POST" action="{{action('Admin\EditsubjectController@update')}}">
                  {!! csrf_field() !!}
-                <div style = "display: none" class="box-body">
+                <div style class="box-body">
                     <div class="form-group">
                         <label for="id">ID</label>
                         <input style="width:80%" type="text" class="form-control" name="id" id="id" value="{{$row['id']}}">
@@ -37,7 +37,7 @@
                         <input style="width:80%" type="text" class="form-control" name="totaltime" id="totaltime" value="{{$row['total_time']}}">
                     </div>
                 </div><!-- /.box-body -->
-                <div style = "display: none" class="box-footer">
+                <div style class="box-footer">
                     <button type="submit" class="btn btn-primary">Update</button>
                 </div>
           </form>

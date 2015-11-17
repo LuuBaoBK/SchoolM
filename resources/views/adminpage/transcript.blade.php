@@ -1,6 +1,5 @@
-@extends('mytemplate.blankpage')
+@extends('mytemplate.newblankpage')
 @section('content')
-<link href="{{asset("/adminltemaster/css/datatables/dataTables.bootstrap.css")}}" rel="stylesheet" type="text/css" />
 <section class="content-header">
     <h1>
         Admin
@@ -23,7 +22,7 @@
     <!-- form start -->
     <form method="POST">
          {!! csrf_field() !!}
-        <div style = "display: none" class="box-body">
+        <div  class="box-body">
             <div class="form-group">
                 <label>Semester</label>
                 <select class="form-control select2 select2-hidden-accessible" name="semester" id="semester" style="width: 100%;" tabindex="-1" aria-hidden="true">

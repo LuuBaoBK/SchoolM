@@ -6,14 +6,14 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Subject;
+use App\Model\Subject;
 
 class EditsubjectController extends Controller
 {
     public function edit($id)
     {
     	$row = Subject::where('id', $id)->first();
-    	return view("adminpage.editsubject", ['row' => $row]);
+    	return view("adminpage.subjectmanage.editsubject", ['row' => $row]);
     }
 
     public function update(Request $request)
