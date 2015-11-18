@@ -14,7 +14,7 @@ class CreateTranscriptsTable extends Migration
     {
         Schema::create('transcript', function (Blueprint $table) {
             $table->string('student_id',9);
-            $table->string('semester',6);
+            $table->string('semester',4);
             $table->integer('subject_id');
             $table->string('type',6);
             $table->integer('score');

@@ -140,7 +140,7 @@
             $(".error_mess").empty();
 
             $.ajax({
-                url     :"<?= URL::to('admin/manage-user/teacher/edit') ?>",
+                url     :"<?= URL::to('/admin/manage-user/teacher/edit') ?>",
                 type    :"POST",
                 async   :false,
                 data    :{

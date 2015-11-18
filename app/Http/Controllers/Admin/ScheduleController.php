@@ -11,11 +11,11 @@ use App\Schedule;
 class ScheduleController extends Controller
 {
     public function index(){
-        $tiet1 = Schedule::where("class_id", 1)->where("start_at", 1)->orderBy("day", 'asc')->get();
+        $tiet1 = Schedule::where("class_id", '15_9_A_1')->where("start_at", 1)->orderBy("day", 'asc')->get();
         $tiet = array($tiet1);
         for ($i=2;$i<=10;$i++)
         {
-            $temp = Schedule::where("class_id", 1)->where("start_at", $i)
+            $temp = Schedule::where("class_id", '15_9_A_1')->where("start_at", $i)
                                                   ->orwhere(function ($query)
                                                   {
                                                     $query->where("start_at", '$i-1')

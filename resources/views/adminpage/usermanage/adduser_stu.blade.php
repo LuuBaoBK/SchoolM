@@ -13,7 +13,7 @@
 </section>
 
 <section class="content">
-  <div class="box">
+<div class="box">
     <div class="box-body">
         <!-- My page start here --> 
         <div class="col-xs-12 col-lg12">
@@ -28,7 +28,7 @@
                     {!! csrf_field() !!}
                     <div class="box-body">
                         <div id="success_mess" style = "display: none" class="alert alert-success">
-                            <h4><i class="icon fa fa-check"></i>Success Add New Admin</h4>
+                            <h4><i class="icon fa fa-check"></i>Success Add New Student</h4>
                         </div>
 
                         <div class="col-lg-6 col-xs-12">

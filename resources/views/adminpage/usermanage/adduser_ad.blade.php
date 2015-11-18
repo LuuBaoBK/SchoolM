@@ -127,7 +127,7 @@
                                         echo ("<a href='/admin/dashboard'><i class = 'glyphicon glyphicon-edit'></i></a>");
                                     }
                                     else{
-                                        echo ("<a href='admin/edit/$row->id'><i class = 'glyphicon glyphicon-edit'></i></a>");  
+                                        echo ("<a href='/admin/edit/$row->id'><i class = 'glyphicon glyphicon-edit'></i></a>");  
                                     }?>
                                 </td>
                             </tr>

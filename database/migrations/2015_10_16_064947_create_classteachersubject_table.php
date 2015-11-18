@@ -13,7 +13,7 @@ class CreateClassteachersubjectTable extends Migration
     public function up()
     {
         Schema::create('classteachersubject', function (Blueprint $table) {
-            $table->string('class_id',8);
+            $table->string('class_id',11);
             $table->string('teacher_id',9);
             $table->integer('subject_id');
             $table->primary(array('class_id','teacher_id','subject_id'));

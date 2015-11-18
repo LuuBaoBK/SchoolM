@@ -13,10 +13,10 @@ class CreateClassesTable extends Migration
     public function up()
     {
         Schema::create('classes', function (Blueprint $table) {
-            $table->string('id',8);
+            $table->string('id',11);
             $table->primary('id');
-            $table->string('semester',6);
-            $table->string('classname',4);
+            $table->string('scholastic',2);
+            $table->string('classname',6);
             $table->string('homeroom_teacher',9);
             $table->foreign('homeroom_teacher')->references('id')->on('teachers');
         });

@@ -112,7 +112,7 @@
             $(".error_mess").empty();
             
             $.ajax({
-                url     :"<?= URL::to('admin/manage-user/admin/edit') ?>",
+                url     :"<?= URL::to('/admin/manage-user/admin/edit') ?>",
                 type    :"POST",
                 async   :false,
                 data    :{

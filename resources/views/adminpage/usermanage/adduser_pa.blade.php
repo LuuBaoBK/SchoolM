@@ -101,8 +101,7 @@ table tr.selected{
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                   <li class="active"><a href="#info" data-toggle="tab">Personal Info</a></li>
-                  <li><a href="#timeline" data-toggle="tab">Timeline</a></li>
-                  <li><a href="#settings" data-toggle="tab">Settings</a></li>
+                  <li><a href="#children" data-toggle="tab">Children</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="active tab-pane" id="info">       
@@ -110,7 +109,7 @@ table tr.selected{
                             {!! csrf_field() !!}
                             <div class="box-body">
                                 <div id="success_mess" style = "display: none" class="alert alert-success">
-                                    <h4><i class="icon fa fa-check"></i>Success edit admin info</h4>
+                                    <h4><i class="icon fa fa-check"></i>Success edit parent info</h4>
                                 </div>
                                 <div id="empty_mess" style = "display: none" class="alert alert-warning">
                                     <h4><i class="icon fa fa-check"></i>Please Select Parent From Left Table First</h4>
@@ -174,14 +173,39 @@ table tr.selected{
                             </div>
                         </form>
                     </div>
+                    <div class="tab-pane" id="children">
+                        <table id="student_table" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Enrolled Year</th>
+                                    <th>Graduated Year</th>
+                                    <th>Date Of Birth</th>
+                                    <th>Address</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
 
-                    <div class="tab-pane" id="timeline">
+                            <tbody class="children_table_info">
+                            </tbody>
+                            
+                            <tfoot>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Enrolled Year</th>
+                                    <th>Graduated Year</th>
+                                    <th>Date Of Birth</th>
+                                    <th>Address</th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
                     <!-- /.tab-pane -->
-
-                    <div class="tab-pane" id="settings">
-                    </div>
-                      <!-- /.tab-pane -->
                 </div>
                 <!-- /.tab-content -->
             </div>
@@ -207,6 +231,11 @@ $(function() {
                   ],
         "bLengthChange" : false
     });
+    $('#student_table').dataTable({
+        "lengthChange": false,
+        "searching": false,
+        "ordering": false,
+    })
     $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
     $("[data-mask]").inputmask();
 
@@ -293,6 +322,35 @@ $(function() {
                     $('#homephone').val(record.homephone);
                     $('#address').val(record.user.address);
                     $('#dateofbirth').val(mydateofbirth);
+
+                    var button_1="";
+                    var children_dateofbirth,formattedDate,d,m,y;
+                    $('#student_table').dataTable().fnClearTable();
+                    $.each(record.student, function(i, row){
+                        button_1 = "<a href='/admin/manage-user/student/edit/"+row.id+"'><i class='glyphicon glyphicon-edit'></i></a>";
+                        if(row.user.dateofbirth != "0000-00-00"){
+                            formattedDate = new Date(row.user.dateofbirth);
+                            d = formattedDate.getDate();
+                            m =  formattedDate.getMonth();
+                            m += 1;  // JavaScript months are 0-11
+                            y = formattedDate.getFullYear();
+                            children_dateofbirth = (d + "/" + m + "/" + y);        
+                        }
+                        else{
+                            children_dateofbirth = "N/A";
+                        }
+                        
+                        $('#student_table').dataTable().fnAddData([
+                            row.id,
+                            row.user.firstname+" "+row.user.middlename+" "+row.user.lastname,
+                            row.user.email,
+                            row.enrolled_year,
+                            row.graduated_year,
+                            children_dateofbirth,
+                            row.user.address,
+                            button_1
+                        ]);
+                    });
                 },
                 error:function(){
                     alert("Something went wrong ! Please Contact Your Super Admin");

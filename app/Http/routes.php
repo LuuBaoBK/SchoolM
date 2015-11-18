@@ -51,14 +51,22 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	});
     
     //Manage class
+	Route::group(['prefix' => 'class'], function(){
+		Route::get('classinfo', 'Classes\ClassController@view');
+		Route::get('form', 'Classes\ClassController@form');
+		Route::post('save', 'Classes\ClassController@save');
+		Route::post('update', 'Classes\ClassController@update');
+		Route::get('delete/{id}', 'Classes\ClassController@delete');
+		Route::get('edit/{id}', 'Classes\ClassController@edit');
 
-	Route::get('classinfo', 'Classes\ClassController@view');
-	Route::get('form', 'Classes\ClassController@form');
-	Route::post('save', 'Classes\ClassController@save');
-	Route::post('update', 'Classes\ClassController@update');
-	Route::get('delete/{id}', 'Classes\ClassController@delete');
-	Route::get('edit/{id}', 'Classes\ClassController@edit');
-
+		//Manage student of class
+		Route::get('class/studentclassinfo', 'StudentInClass\StudentInClassController@view');
+		Route::post('filterstudent', 'StudentInClass\StudentInClassController@filterstudent');
+		Route::post('getclass', 'StudentInClass\StudentInClassController@getclass');
+		Route::post('addStudent', 'StudentInClass\StudentInClassController@addStudent');
+		Route::post('removeStudent', 'StudentInClass\StudentInClassController@removeStudent');
+	});
+	
 	//Manage subject
 	Route::get('addsubject', 'Admin\AddsubjectController@getsubject');
 	Route::post('addsubject', 'Admin\AddsubjectController@storesubject');
@@ -74,14 +82,3 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::post('transcript', 'Admin\TranscriptController@store');
 });
 
-//Manage student of class
-
-Route::get('class/studentclassinfo', 'StudentInClass\StudentInClassController@view');
-
-Route::post('filterstudent', 'StudentInClass\StudentInClassController@filterstudent');
-
-Route::post('getclass', 'StudentInClass\StudentInClassController@getclass');
-
-Route::post('addStudent', 'StudentInClass\StudentInClassController@addStudent');
-
-Route::post('removeStudent', 'StudentInClass\StudentInClassController@removeStudent');

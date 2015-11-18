@@ -10,24 +10,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class ClassController extends Controller
 {
-    //
     public function view(){
-
-    /*	$id = '1';
-    	$semester = 'hk1';
-    	$classname = '1c';
-    	$teacher = 'tc1';
-    	//$lophoc = DB::table('lophoc')->get();
-    	$data['id'] = $id;
-    	$data['semester'] = $semester;
-    	$data['classname'] = $classname;
-    	$data['teacher']  = $teacher;
-    	//$result = DB::table('lophoc')->paginate(5);*/
-    	//return view("viewClass")->with('data', $data);
-
-    	$result = DB::table('classes')->get();
-    	
-    	return view("class.view")->with('data', $result);
+    	$result = DB::table('classes')->get(); 	
+    	return view("adminpage.class.view")->with('data', $result);
     }
 
     public function form(){

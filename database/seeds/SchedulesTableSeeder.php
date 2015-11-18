@@ -16,7 +16,7 @@ class SchedulesTableSeeder extends Seeder
             for($j=1; $j<=10; $j++)
             {
     		  DB::table('schedules')->insert([
-    			'class_id' =>	1,
+    			'class_id' =>	'15_9_A_1',
 	            'subject_id' => rand(1, 9),
 	            'day' => $i,
                 'start_at' => $j,

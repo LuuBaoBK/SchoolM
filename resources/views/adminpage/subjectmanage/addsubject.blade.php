@@ -13,6 +13,7 @@
 </section>
 
 <section class="content">
+<div class="box">
     <div class="box-body">
         <!-- My page start here --> 
         <div class="col-xs-12 col-lg-12">
@@ -88,6 +89,7 @@
             </div><!-- /.box -->
         </div>
     </div>
+</div>
 <!-- /.box -->
 </section>
 

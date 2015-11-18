@@ -13,7 +13,7 @@ class CreateLectureregisterTable extends Migration
     public function up()
     {
         Schema::create('lectureregister', function (Blueprint $table) {
-            $table->string('class_id');
+            $table->string('class_id',11);
             $table->string('writeby',9);
             $table->datetime('date_time')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->primary(array('class_id','writeby','date_time'));
