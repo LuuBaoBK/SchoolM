@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\StudentInClass;
+namespace App\Http\Controllers\Admin\Classes;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -19,10 +19,10 @@ class StudentInClassController extends Controller
     
     public function view(){
 
-        $s = Classes::distinct()->select('semester')->get();
+        $s = Classes::distinct()->select('scholastic')->get();
         $c = Classes::select('id', 'classname')->get();
         
-        return view("studentinclass.view", ['data'=> $s, 'classlist' => $c]);
+        return view("adminpage.class.studentclassinfo", ['data'=> $s, 'classlist' => $c]);
     }
 
     public function filterstudent(){
@@ -33,8 +33,9 @@ class StudentInClassController extends Controller
         $hocky = $postedit['hocky'];
         $khoi = $postedit['khoi'];
         
-        $idclass = Classes::where('semester', '=', $hocky)->where('classname','like',"$khoi%")->get();
+        $idclass = Classes::where('scholastic', '=', $hocky)->where('classname','like',"$khoi%")->get();
         foreach($idclass as $row){
+
             $sts = $row->students;
             foreach ($sts as $key) {
                 $student = $key->student->user;

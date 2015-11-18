@@ -127,7 +127,7 @@
                                         echo ("<a href='/admin/dashboard'><i class = 'glyphicon glyphicon-edit'></i></a>");
                                     }
                                     else{
-                                        echo ("<a href='/admin/edit/$row->id'><i class = 'glyphicon glyphicon-edit'></i></a>");  
+                                        echo ("<a href='/admin/manage-user/admin/edit/$row->id'><i class = 'glyphicon glyphicon-edit'></i></a>");  
                                     }?>
                                 </td>
                             </tr>
@@ -160,6 +160,7 @@
 <script src="{{asset("/adminlte/bootstrap/js/bootstrap.min.js")}}"></script>
 
 <script>
+$(document).ready(function() {
     $(function () {
         $("#admin_table").DataTable(
             {"order": [[ 0, "desc" ]]}
@@ -234,7 +235,6 @@
           radioClass: 'iradio_flat-green'
         });
     });
-
-    
+});
 </script>
 @endsection

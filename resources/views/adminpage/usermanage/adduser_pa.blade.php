@@ -222,211 +222,213 @@ table tr.selected{
         
 <!-- page script -->
 <script type="text/javascript">
-$(function() {
-    var selected_row_index;
-    $('#parent_table').dataTable({
-        "columns": [
-                    { "width": "20%" },
-                    { "width": "70%" },
-                  ],
-        "bLengthChange" : false
-    });
-    $('#student_table').dataTable({
-        "lengthChange": false,
-        "searching": false,
-        "ordering": false,
-    })
-    $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
-    $("[data-mask]").inputmask();
-
-    $('#parent_search').click(function(){
-        var from_year   = $('#from_year').val();
-        var to_year     = $('#to_year').val();
-        var token       = $('input[name="_token"]').val();
-
-       $.ajax({
-            url     :"<?= URL::to('/admin/manage-user/parent/show') ?>",
-            type    :"POST",
-            async   :false,
-            data    :{
-                'from_year'     :from_year,
-                'to_year'       :to_year,
-                '_token'        :token
-            },
-            success:function(record){
-               if(record.isSuccess == 1){
-                    $('#to_year').parent().removeClass('has-warning');
-                    $('#from_year').parent().removeClass('has-warning');
-                    $('#from_to_warning').slideUp('medium');
-                    $('#parent_table').dataTable().fnClearTable();
-                    var button="";
-                    var mydateofbirth,formattedDate,d,m,y;
-                    $.each(record.mydata, function(i, row){
-                        $('#parent_table').dataTable().fnAddData([
-                            row.id,
-                            row.user.firstname+" "+row.user.middlename+" "+row.user.lastname,
-                        ]);
-                    });
-               }
-               else{
-                  $('#to_year').parent().addClass('has-warning');
-                  $('#from_year').parent().addClass('has-warning');
-                  $('#from_to_warning').show('medium');
-               }
-            },
-            error:function(){
-                alert("Something went wrong ! Please Contact Your Super Admin");
-            }
+$(document).ready(function() {
+    $(function() {
+        var selected_row_index;
+        $('#parent_table').dataTable({
+            "columns": [
+                        { "width": "20%" },
+                        { "width": "70%" },
+                      ],
+            "bLengthChange" : false
         });
-    });
+        $('#student_table').dataTable({
+            "lengthChange": false,
+            "searching": false,
+            "ordering": false,
+        })
+        $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        $("[data-mask]").inputmask();
 
-   $('#parent_table tbody').on( 'click', 'tr', function () {
-        if ( $(this).hasClass('selected') ) {
-            $(this).removeClass('selected');
-        }
-        else {
-            $('#parent_table').dataTable().$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');          
-        }
-        selected_row_index = $('#parent_table').dataTable().fnGetPosition(this);
-        if( $('#parent_table').dataTable().fnGetData(this) != null){
-            $('#empty_mess').slideUp('medium');
-            var token = $('input[name="_token"]').val();
-            $.ajax({
-                url     :"<?= URL::to('/admin/manage-user/parent/getdata') ?>",
+        $('#parent_search').click(function(){
+            var from_year   = $('#from_year').val();
+            var to_year     = $('#to_year').val();
+            var token       = $('input[name="_token"]').val();
+
+           $.ajax({
+                url     :"<?= URL::to('/admin/manage-user/parent/show') ?>",
                 type    :"POST",
                 async   :false,
                 data    :{
-                    'id'     :$('#parent_table').dataTable().fnGetData(this)[0],
-                    '_token'        : token
+                    'from_year'     :from_year,
+                    'to_year'       :to_year,
+                    '_token'        :token
                 },
                 success:function(record){
-                    if(record.user.dateofbirth != "0000-00-00"){
-                        formattedDate = new Date(record.user.dateofbirth);
-                        d = formattedDate.getDate();
-                        m =  formattedDate.getMonth();
-                        m += 1;  // JavaScript months are 0-11
-                        y = formattedDate.getFullYear();
-                        mydateofbirth = (d + "/" + m + "/" + y);        
-                    }
-                    else{
-                        mydateofbirth = "N/A";
-                    }
-
-                    $('#id').val(record.id);
-                    $('#email').val(record.user.email);
-                    $('#firstname').val(record.user.firstname);
-                    $('#middlename').val(record.user.middlename);
-                    $('#lastname').val(record.user.lastname);
-                    $('#mobilephone').val(record.mobilephone);
-                    $('#homephone').val(record.homephone);
-                    $('#address').val(record.user.address);
-                    $('#dateofbirth').val(mydateofbirth);
-
-                    var button_1="";
-                    var children_dateofbirth,formattedDate,d,m,y;
-                    $('#student_table').dataTable().fnClearTable();
-                    $.each(record.student, function(i, row){
-                        button_1 = "<a href='/admin/manage-user/student/edit/"+row.id+"'><i class='glyphicon glyphicon-edit'></i></a>";
-                        if(row.user.dateofbirth != "0000-00-00"){
-                            formattedDate = new Date(row.user.dateofbirth);
-                            d = formattedDate.getDate();
-                            m =  formattedDate.getMonth();
-                            m += 1;  // JavaScript months are 0-11
-                            y = formattedDate.getFullYear();
-                            children_dateofbirth = (d + "/" + m + "/" + y);        
-                        }
-                        else{
-                            children_dateofbirth = "N/A";
-                        }
-                        
-                        $('#student_table').dataTable().fnAddData([
-                            row.id,
-                            row.user.firstname+" "+row.user.middlename+" "+row.user.lastname,
-                            row.user.email,
-                            row.enrolled_year,
-                            row.graduated_year,
-                            children_dateofbirth,
-                            row.user.address,
-                            button_1
-                        ]);
-                    });
+                   if(record.isSuccess == 1){
+                        $('#to_year').parent().removeClass('has-warning');
+                        $('#from_year').parent().removeClass('has-warning');
+                        $('#from_to_warning').slideUp('medium');
+                        $('#parent_table').dataTable().fnClearTable();
+                        var button="";
+                        var mydateofbirth,formattedDate,d,m,y;
+                        $.each(record.mydata, function(i, row){
+                            $('#parent_table').dataTable().fnAddData([
+                                row.id,
+                                row.user.firstname+" "+row.user.middlename+" "+row.user.lastname,
+                            ]);
+                        });
+                   }
+                   else{
+                      $('#to_year').parent().addClass('has-warning');
+                      $('#from_year').parent().addClass('has-warning');
+                      $('#from_to_warning').show('medium');
+                   }
                 },
                 error:function(){
                     alert("Something went wrong ! Please Contact Your Super Admin");
                 }
             });
-        }
-        else{
-            $('#id').val("");
-            $('#email').val("");
-            $('#firstname').val("");
-            $('#middlename').val("");
-            $('#lastname').val("");
-            $('#mobilephone').val("");
-            $('#homephone').val("");
-            $('#address').val("");
-            $('#dateofbirth').val("");
-        }        
-        
-    });
+        });
 
-    $('#pa_info_form_submit').click(function(){
-        var id          = $('#id').val();
-        var firstname   = $('#firstname').val();
-        var middlename  = $('#middlename').val();
-        var lastname    = $('#lastname').val();
-        var mobilephone = $('#mobilephone').val();
-        var homephone   = $('#homephone').val();
-        var dateofbirth = $('#dateofbirth').val();
-        var address     = $('#address').val();
-        var token       = $('input[name="_token"]').val();
-        $(".form-group").removeClass("has-warning");
-        $(".info_error_mess").empty();
-       $.ajax({
-            url     :"<?= URL::to('/admin/manage-user/parent/edit') ?>",
-            type    :"POST",
-            async   :false,
-            data    :{
-                'id'            :id,
-                'firstname'     :firstname,
-                'middlename'    :middlename,
-                'lastname'      :lastname,
-                'mobilephone'   :mobilephone,
-                'homephone'     :homephone,
-                'dateofbirth'   :dateofbirth,
-                'address'       :address,
-                '_token'        :token
-            },
-            success:function(record){
-                console.log(record);
-                if(record.isSuccess == 1){
-                    $('#success_mess').show('medium');
-                    setTimeout(function() {
-                            $('#success_mess').slideUp('slow');
-                    }, 2000); // <-- time in milliseconds
-                    $('#parent_table').dataTable().fnUpdate( firstname+" "+middlename+" "+lastname, selected_row_index, 1 );;
-                }
-                else{
-                    if(record.isSuccess == 0){
-                        $('#empty_mess').show('medium');
+       $('#parent_table tbody').on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $('#parent_table').dataTable().$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');          
+            }
+            selected_row_index = $('#parent_table').dataTable().fnGetPosition(this);
+            if( $('#parent_table').dataTable().fnGetData(this) != null){
+                $('#empty_mess').slideUp('medium');
+                var token = $('input[name="_token"]').val();
+                $.ajax({
+                    url     :"<?= URL::to('/admin/manage-user/parent/getdata') ?>",
+                    type    :"POST",
+                    async   :false,
+                    data    :{
+                        'id'     :$('#parent_table').dataTable().fnGetData(this)[0],
+                        '_token'        : token
+                    },
+                    success:function(record){
+                        if(record.user.dateofbirth != "0000-00-00"){
+                            formattedDate = new Date(record.user.dateofbirth);
+                            d = formattedDate.getDate();
+                            m =  formattedDate.getMonth();
+                            m += 1;  // JavaScript months are 0-11
+                            y = formattedDate.getFullYear();
+                            mydateofbirth = (d + "/" + m + "/" + y);        
+                        }
+                        else{
+                            mydateofbirth = "N/A";
+                        }
+
+                        $('#id').val(record.id);
+                        $('#email').val(record.user.email);
+                        $('#firstname').val(record.user.firstname);
+                        $('#middlename').val(record.user.middlename);
+                        $('#lastname').val(record.user.lastname);
+                        $('#mobilephone').val(record.mobilephone);
+                        $('#homephone').val(record.homephone);
+                        $('#address').val(record.user.address);
+                        $('#dateofbirth').val(mydateofbirth);
+
+                        var button_1="";
+                        var children_dateofbirth,formattedDate,d,m,y;
+                        $('#student_table').dataTable().fnClearTable();
+                        $.each(record.student, function(i, row){
+                            button_1 = "<a href='/admin/manage-user/student/edit/"+row.id+"'><i class='glyphicon glyphicon-edit'></i></a>";
+                            if(row.user.dateofbirth != "0000-00-00"){
+                                formattedDate = new Date(row.user.dateofbirth);
+                                d = formattedDate.getDate();
+                                m =  formattedDate.getMonth();
+                                m += 1;  // JavaScript months are 0-11
+                                y = formattedDate.getFullYear();
+                                children_dateofbirth = (d + "/" + m + "/" + y);        
+                            }
+                            else{
+                                children_dateofbirth = "N/A";
+                            }
+                            
+                            $('#student_table').dataTable().fnAddData([
+                                row.id,
+                                row.user.firstname+" "+row.user.middlename+" "+row.user.lastname,
+                                row.user.email,
+                                row.enrolled_year,
+                                row.graduated_year,
+                                children_dateofbirth,
+                                row.user.address,
+                                button_1
+                            ]);
+                        });
+                    },
+                    error:function(){
+                        alert("Something went wrong ! Please Contact Your Super Admin");
+                    }
+                });
+            }
+            else{
+                $('#id').val("");
+                $('#email').val("");
+                $('#firstname').val("");
+                $('#middlename').val("");
+                $('#lastname').val("");
+                $('#mobilephone').val("");
+                $('#homephone').val("");
+                $('#address').val("");
+                $('#dateofbirth').val("");
+            }        
+            
+        });
+
+        $('#pa_info_form_submit').click(function(){
+            var id          = $('#id').val();
+            var firstname   = $('#firstname').val();
+            var middlename  = $('#middlename').val();
+            var lastname    = $('#lastname').val();
+            var mobilephone = $('#mobilephone').val();
+            var homephone   = $('#homephone').val();
+            var dateofbirth = $('#dateofbirth').val();
+            var address     = $('#address').val();
+            var token       = $('input[name="_token"]').val();
+            $(".form-group").removeClass("has-warning");
+            $(".info_error_mess").empty();
+           $.ajax({
+                url     :"<?= URL::to('/admin/manage-user/parent/edit') ?>",
+                type    :"POST",
+                async   :false,
+                data    :{
+                    'id'            :id,
+                    'firstname'     :firstname,
+                    'middlename'    :middlename,
+                    'lastname'      :lastname,
+                    'mobilephone'   :mobilephone,
+                    'homephone'     :homephone,
+                    'dateofbirth'   :dateofbirth,
+                    'address'       :address,
+                    '_token'        :token
+                },
+                success:function(record){
+                    console.log(record);
+                    if(record.isSuccess == 1){
+                        $('#success_mess').show('medium');
+                        setTimeout(function() {
+                                $('#success_mess').slideUp('slow');
+                        }, 2000); // <-- time in milliseconds
+                        $('#parent_table').dataTable().fnUpdate( firstname+" "+middlename+" "+lastname, selected_row_index, 1 );;
                     }
                     else{
-                        $('.info_error_mess').show("medium");
-                        $('.info_error_mess').empty();
-                        $.each(record, function(i, item){
-                            $('#'+i).parent().addClass('has-warning');
-                            $('#'+i+"_error").css("display","block").append("<i class='icon fa fa-warning'></i> "+item);
-                        });
+                        if(record.isSuccess == 0){
+                            $('#empty_mess').show('medium');
+                        }
+                        else{
+                            $('.info_error_mess').show("medium");
+                            $('.info_error_mess').empty();
+                            $.each(record, function(i, item){
+                                $('#'+i).parent().addClass('has-warning');
+                                $('#'+i+"_error").css("display","block").append("<i class='icon fa fa-warning'></i> "+item);
+                            });
+                        }
                     }
+                },
+                error:function(){
+                    alert("Something went wrong ! Please Contact Your Super Admin");
                 }
-            },
-            error:function(){
-                alert("Something went wrong ! Please Contact Your Super Admin");
-            }
+            });
         });
-    });
 
+    });
 });
 </script>
 

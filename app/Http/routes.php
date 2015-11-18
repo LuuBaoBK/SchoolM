@@ -51,20 +51,20 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	});
     
     //Manage class
-	Route::group(['prefix' => 'class'], function(){
-		Route::get('classinfo', 'Classes\ClassController@view');
-		Route::get('form', 'Classes\ClassController@form');
-		Route::post('save', 'Classes\ClassController@save');
-		Route::post('update', 'Classes\ClassController@update');
-		Route::get('delete/{id}', 'Classes\ClassController@delete');
-		Route::get('edit/{id}', 'Classes\ClassController@edit');
+	Route::group(['prefix' => 'class', 'namespace' =>'Admin\Classes'], function(){
+		Route::get('classinfo', 'ClassController@view');
+		Route::post('classinfo', 'ClassController@show');
+		Route::post('classinfo/updateform', 'ClassController@updateform');
+		Route::post('classinfo/store', 'ClassController@store');
+		Route::get('classinfo/edit/{id}', 'ClassController@get_edit_form');
+		Route::post('classinfo/edit/{id}', 'ClassController@changeinfo');
 
 		//Manage student of class
-		Route::get('class/studentclassinfo', 'StudentInClass\StudentInClassController@view');
-		Route::post('filterstudent', 'StudentInClass\StudentInClassController@filterstudent');
-		Route::post('getclass', 'StudentInClass\StudentInClassController@getclass');
-		Route::post('addStudent', 'StudentInClass\StudentInClassController@addStudent');
-		Route::post('removeStudent', 'StudentInClass\StudentInClassController@removeStudent');
+		Route::get('studentclassinfo', 'StudentInClassController@view');
+		Route::post('filterstudent', 'StudentInClassController@filterstudent');
+		Route::post('getclass', 'StudentInClassController@getclass');
+		Route::post('addStudent', 'StudentInClassController@addStudent');
+		Route::post('removeStudent', 'StudentInClassController@removeStudent');
 	});
 	
 	//Manage subject

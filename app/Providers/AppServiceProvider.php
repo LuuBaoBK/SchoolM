@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Validator;
 use App\Model\Parents;
+use App\Model\Classes;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,16 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('isexistparent', function($attribute, $value, $parameters, $validator) {
             $data = Parents::where("id",$value)->count();
             if($data > 0){
+                return true;
+            }
+            else{
+                return false;
+            }
+        });
+
+        Validator::extend('isexistclasses', function($attribute, $value, $parameters, $validator) {
+            $data = Classes::where("id",$value)->count();
+            if($data <= 0){
                 return true;
             }
             else{

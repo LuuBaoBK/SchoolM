@@ -264,6 +264,7 @@
 <!-- iCheck 1.0.1 -->
 <script src="{{asset("/adminlte/plugins/iCheck/icheck.min.js")}}"></script>
 <script>
+$(document).ready(function() {
     $(function () {
         var isCheck = 1;
     //Flat red color scheme for iCheck
@@ -335,6 +336,10 @@
                 },
                 success:function(record){
                    if(record.isSuccess == 1){
+                        $('#success_mess').show("medium");
+                        setTimeout(function() {
+                            $('#success_mess').slideUp('slow');
+                        }, 2000); // <-- time in milliseconds
                         var button="";
                         button = "<a href='/admin/manage-user/student/edit/"+record.id+"'><i class='glyphicon glyphicon-edit'></i></a>"
                         $('#student_table').dataTable().fnAddData([
@@ -427,10 +432,8 @@
                 }
             });
         });
-
-       
     });
-
+});
     
 </script>
 @endsection

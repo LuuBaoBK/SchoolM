@@ -12,7 +12,8 @@ return [
     | as the size rules. Feel free to tweak each of these messages here.
     |
     */
-    'isexistparent'              => 'The :attribute is not exist.',
+    'isexistclasses'       => 'This class is existed in this scholastic',
+    'isexistparent'        => 'The :attribute is not exist.',
     'greater_than'         => 'The :attribute and must be greater than The :other.',
     'accepted'             => 'The :attribute must be accepted.',
     'active_url'           => 'The :attribute is not a valid URL.',

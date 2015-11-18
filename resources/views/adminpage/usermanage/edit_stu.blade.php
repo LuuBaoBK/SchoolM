@@ -99,6 +99,7 @@
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
 <script src="{{asset("/adminlte/bootstrap/js/bootstrap.min.js")}}"></script>
 <script type="text/javascript">
+$(document).ready(function() {
     $(function() {
         $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
         $("[data-mask]").inputmask();
@@ -155,8 +156,7 @@
             });
         });
     });
-
-
+});
 </script>
 
 @endsection
