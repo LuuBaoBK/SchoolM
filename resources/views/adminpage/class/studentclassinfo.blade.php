@@ -30,34 +30,37 @@
                                         <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
                                         <label for="scholastic">Scholastic</label>
                                         <select id="scholastic" name="scholastic" class="form-control">
-                                            <option value="" selected>--Select--</option>;
+                                            <option value="-1" selected>-- Select --</option>;
                                             <?php
                                                 $year = date("Y") + 2;
                                                 for($year;$year >=2010 ;$year--){
                                                     echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
                                                 }
                                             ?>
+                                            <option value="0">-- All --</option>;
                                         </select>
                                     </div>
                                     <div class="form-group col-lg-4">
                                         <label for="grade">Grade</label>
                                         <select id="grade" name="grade" class="form-control">
-                                            <option value="0">Find All</option>;
+                                            <option value="-1" selected>-- Select --</option>;                                            
                                             <option>6</option>;
                                             <option>7</option>;
                                             <option>8</option>;
                                             <option>9</option>;
+                                            <option value="0">-- All --</option>;
                                         </select>
                                     </div>
                                     <div class="form-group col-lg-4">
                                         <label for="group">Group</label>
                                         <select id="group" name="group" class="form-control">
-                                            <option value="">Find All</option>;
-                                            <option>A</option>;
-                                            <option>B</option>;
-                                            <option>C</option>;
-                                            <option>D</option>;
-                                            <option>MT</option>;
+                                            <option value="-1" selected>-- Select --</option>;
+                                            <option value="A">A</option>;
+                                            <option value="B">B</option>;
+                                            <option value="C">C</option>;
+                                            <option value="D">D</option>;
+                                            <option value="MT">MT</option>;
+                                            <option value="0">-- All --</option>
                                         </select>     
                                     </div>
                                 </div>
@@ -65,15 +68,16 @@
                                     <div class="form-group col-lg-4">
                                         <label for="classname">Class Name</label>
                                         <select id="classname" name="classname" class="form-control">
-                                            <option value="0" selected>Select Scholastic First</option>;
+                                            <option value="-1" selected>Select Scholastic First</option>;
                                         </select> 
                                     </div>
                                      <div class="form-group col-lg-4">
                                         <label for="isPassed">Type</label>
                                         <select id="isPassed" name="isPassed" class="form-control">
-                                            <option value="-1" selected>All</option>;
-                                            <option value="1">Passed</option>;
-                                            <option value="0">Not Passed</option>;
+                                            <option value="-1" selected>--- Select --</option>;
+                                            <option value="0">Passed</option>;
+                                            <option value="1">Not Passed</option>;
+                                            <option value="2" selected>-- All --</option>;
                                         </select> 
                                     </div>
                                 </div>
@@ -130,20 +134,49 @@ $(document).ready(function() {
     });
 
     $( "#scholastic" ).change(function() {
-        updateClassname();
+        if($('#scholastic').val() != -1){
+            updateClassname();
+            $("#scholastic option[value='-1']").remove();
+        }
+        else{
+            // do nothing
+        }
     });
     $( "#grade" ).change(function() {
-        updateClassname();
+        if($('#grade').val() != -1){
+            updateClassname();
+            $("#grade option[value='-1']").remove();
+        }
+        else{
+            // do nothing
+        }
     });
     $( "#group" ).change(function() {
-        updateClassname();
+        if($('#group').val() != -1){
+            updateClassname();
+            $("#group option[value='-1']").remove();
+        }
+        else{
+            // do nothing
+        }
     });
 
     $( "#classname" ).change(function() {
-        showClass();
+        if($('#scholastic').val() != -1){
+            showClass();
+        }
+        else{
+            // do nothing
+        }
     });
     $( "#isPassed" ).change(function() {
-        showClass();
+        if($('#scholastic').val() != -1){
+            showClass();
+            $("#isPassed option[value='-1']").remove();
+        }
+        else{
+            // do nothing
+        }
     });
 
     function updateClassname(){
@@ -163,11 +196,12 @@ $(document).ready(function() {
                     },
             success:function(record){
                 $("#classname").empty();
+                console.log(record);
                 if(record.count > 0){
-                    $('#classname').append("<option value='-2' selected>Find All</option>");
                     $.each(record.data, function(i, row){
                         $('#classname').append("<option value='"+row.classname+"'>"+row.id+"  |  "+row.classname+"</option>");
                     });
+                    $('#classname').append("<option value='0' selected>-- All --</option>");
                 }
                 else{
                     $('#classname').append("<option value='-1' selected>No Record</option>");

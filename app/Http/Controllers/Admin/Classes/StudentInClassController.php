@@ -22,39 +22,101 @@ class StudentInClassController extends Controller
     }
 
     public function updateclassname(Request $request){
-        $id = $request['scholastic']."_%";
-        $name = "";
-        if($request['grade'] == 0){
-            $name = "%".$request['group']."%";
+        $scholastic = $request['scholastic'];
+        $grade      = $request['grade'];
+        $group      = $request['group'];
+
+        if($scholastic == '0' || $scholastic == '-1'){
+            $id = "%";
         }
         else{
-            $name = $request['grade'].$request['group'].'%';
+            $id = $scholastic."_%";
         }
+
+        $name = "";
+        if($grade != '0' && $grade != '-1'){
+            $name .= $grade;
+        }
+        else{
+            $name .= "%";
+        }
+
+        if($group != '0' && $group != '-1'){
+            $name .= $group;
+        }
+        else{
+            // do nothing
+        }
+
+        $name .= "%";
         
+
         $classname = Classes::where('id','like',$id)->where('classname','like',$name)->get();
         $count = Classes::where('id','like', $id)->where('classname','like',$name)->count();
         $record['count'] = $count;
         $record['data'] = $classname;
+        $record['id']   = $id;
+        $record['name'] = $name;
         return $record;
     }
 
     public function showclass(Request $request){
-        $class = Classes::where('id','like',$request['scholastic']."_%")
-                            ->where('classname','=',$request['classname'])
-                            ->first();
-        if($request['isPassed'] == -1){
-            $record = StudentClass::where('class_id','=',$class->id)->get();
-        }
-        elseif($request['isPassed'] == 0){
-            $record = StudentClass::where('class_id','=',$class->id)
-                                    ->where('ispassed','=','0')
-                                    ->get();
+        $scholastic = $request['scholastic'];
+        $grade      = $request['grade'];
+        $group      = $request['group'];
+        $classname  = $request['classname'];
+        $isPassed   = $request['isPassed'];
+
+        if($scholastic == '0' || $scholastic == '-1'){
+            $id     = "%";
         }
         else{
-            $record = StudentClass::where('class_id','=',$class->id)
-                                    ->where('ispassed','=','1')
+            $id     = $scholastic."_%";
+        }
+
+        if($isPassed == '2' || $isPassed == '-1'){
+            $isPassed = "%";
+        }
+        else{
+            $isPassed .= "%";
+        }
+
+        if($classname == '0'){
+            $name = "";
+            if($grade != '0' && $grade != '-1'){
+                $name .= $grade;
+            }
+            else{
+                $name .= "%";
+            }
+
+            if($group != '0' && $group != '-1'){
+                $name .= $group;
+            }
+            else{
+                // do nothing
+            }
+
+            $name .= "%";
+
+            $record = StudentClass::whereIn('class_id',
+                                            Classes::select('id')
+                                                   ->where('id','like',$id)
+                                                   ->wherE('classname','like',$name)
+                                                   ->get())
+                                  ->where('ispassed','like',$isPassed)
+                                  ->get();
+        }
+        else{
+            $record = StudentClass::whereIn('class_id',
+                                            Classes::select('id')
+                                                   ->where('id','like',$id)
+                                                   ->wherE('classname','=',$classname)
+                                                   ->get())
+                                    ->where('ispassed','like', $isPassed)
                                     ->get();
         }
+        
         foreach ($record as $key => $value) {
             $value->student->user;
         }
