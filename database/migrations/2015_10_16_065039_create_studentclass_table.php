@@ -17,7 +17,7 @@ class CreateStudentclassTable extends Migration
             $table->string('class_id',11);
             $table->string('student_id',9);
             $table->string('conduct');
-            $table->integer('ispass');
+            $table->integer('ispassed');
             $table->string('note');
             $table->primary(array('class_id','student_id'));
             $table->foreign('class_id')->references('id')->on('classes');

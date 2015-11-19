@@ -18,11 +18,47 @@ class StudentInClassController extends Controller
     //
     
     public function view(){
+        return view("adminpage.class.studentclassinfo");
+    }
 
-        $s = Classes::distinct()->select('scholastic')->get();
-        $c = Classes::select('id', 'classname')->get();
+    public function updateclassname(Request $request){
+        $id = $request['scholastic']."_%";
+        $name = "";
+        if($request['grade'] == 0){
+            $name = "%".$request['group']."%";
+        }
+        else{
+            $name = $request['grade'].$request['group'].'%';
+        }
         
-        return view("adminpage.class.studentclassinfo", ['data'=> $s, 'classlist' => $c]);
+        $classname = Classes::where('id','like',$id)->where('classname','like',$name)->get();
+        $count = Classes::where('id','like', $id)->where('classname','like',$name)->count();
+        $record['count'] = $count;
+        $record['data'] = $classname;
+        return $record;
+    }
+
+    public function showclass(Request $request){
+        $class = Classes::where('id','like',$request['scholastic']."_%")
+                            ->where('classname','=',$request['classname'])
+                            ->first();
+        if($request['isPassed'] == -1){
+            $record = StudentClass::where('class_id','=',$class->id)->get();
+        }
+        elseif($request['isPassed'] == 0){
+            $record = StudentClass::where('class_id','=',$class->id)
+                                    ->where('ispassed','=','0')
+                                    ->get();
+        }
+        else{
+            $record = StudentClass::where('class_id','=',$class->id)
+                                    ->where('ispassed','=','1')
+                                    ->get();
+        }
+        foreach ($record as $key => $value) {
+            $value->student->user;
+        }
+        return $record;
     }
 
     public function filterstudent(){

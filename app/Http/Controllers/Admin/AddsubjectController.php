@@ -13,7 +13,7 @@ use Validator;
 class AddsubjectController extends Controller
 {
     public function getsubject(){
-        $subjectlist = Subject::all();
+        $subjectlist = Subject::orderBy('id','desc')->get();
         return view('adminpage.subjectmanage.addsubject', ['subjectlist' => $subjectlist]);
     }
     public function storesubject(Request $request)
@@ -51,8 +51,7 @@ class AddsubjectController extends Controller
                 "id" => $id,
                 "subject_name" => $request['subject_name'],
                 "total_time" => $request['total_time'],
-                "button" => "<i class = 'fa fa-fw fa-edit'></i>
-                            <a href='/admin/editsubject."+$id+"' >Edit</a>",
+                "button" => "<i class = 'fa fa-fw fa-edit'></i><a href='/admin/editsubject/".$id."'>Edit</a>",
                 "isDone" => 1 
             );  
             return $record;
