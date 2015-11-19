@@ -19,29 +19,30 @@
     <div class="box-body">
         <!-- My page start here --> 
         <div class="col-xs-3">
-            <div class="box box-solid box-primary collapsed-box">
+            <div class="box box-solid box-primary">
             <div class="box-header">
                 <h3 class="box-title">Class List</h3>
                 <div class="box-tools pull-right">
-                    <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                    <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
                 </div>
             </div><!-- /.box-header -->
             <!-- form start -->
             <form method="POST">
          {!! csrf_field() !!}
-        <div style = "display: none" class="box-body">
+        <div class="box-body">
             <div class="form-group">
                 <label>Class</label>
                 <select class="form-control select2 select2-hidden-accessible" name="semester" id="semester" style="width: 100%;" tabindex="-1" aria-hidden="true">
                     <?php $class = Classes::all() ?> 
+
                     <?php foreach ($class as $key) { ?>
                         <option><?php echo $key->classname ?></option>
                     <?php } ?>
                 </select>
             </div>
         </div><!-- /.box-body -->
-        <div style = "display: none" class="box-footer">
-            <button type="submit" class="btn btn-primary">Get Schedule</button>
+        <div class="box-footer">
+            <button id="nut" type="button" class="btn btn-primary">Get Schedule</button>
         </div>
     </form>
             </div><!-- /.box -->
@@ -70,32 +71,14 @@
                     </thead>
 
                     <tbody class="displayrecord">
-                        <?php for ($i=0;$i<=4;$i++) { ?>
+                       <!--<?php for ($i=1;$i<=10;$i++) { ?>
                             <tr>
-                                <td><b>Tiết <?=$i+1 ?></b></td>
-                                <?php foreach ($schedulelist[$i] as $row) { ?>
-                                    <?php $subject = Subject::where("id", $row->subject_id)->get(); ?>
-                                    <?php foreach ($subject as $a)?>
-                                    <td> <?php echo $a->subject_name ?></td> 
+                                <td><b>Tiết <?=$i ?></b></td>
+                                <?php for ($j=1;$j<=5;$j++) { ?>
+                                    <td> <? echo "a".$schedulelist[$i][$j] ?></td>
                                 <?php } ?>
                             </tr>
-                        <?php } ?>
-                        <tr>
-                            <!-- <td></td> -->
-                            <?php for ($z=0;$z<=5;$z++) { ?>
-                            <td style="background-color:Gainsboro"></td>
-                            <?php } ?>
-                        </tr>
-                        <?php for ($i=5;$i<=9;$i++) { ?>
-                            <tr>
-                                <td><b>Tiết <?=$i+1 ?></b></td>
-                                <?php foreach ($schedulelist[$i] as $row) { ?>
-                                    <?php $subject = Subject::where("id", $row->subject_id)->get(); ?>
-                                    <?php foreach ($subject as $a)?>
-                                    <td> <?php echo $a->subject_name ?></td> 
-                                <?php } ?>
-                            </tr>
-                        <?php } ?>
+                        <?php } ?><!--  -->
                     </tbody>
                     </table>
                 </div>
@@ -118,6 +101,10 @@
                     "bInfo": true,
                     "bAutoWidth": false,
                 });
+            });
+            $('#nut').click(function(){
+                var abc = "<tr><td> $abc </td><td> $abc</td></tr>";
+                $('.displayrecord').append(abc);
             });
         </script>
 
