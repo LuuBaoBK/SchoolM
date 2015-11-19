@@ -75,8 +75,8 @@
                                         <label for="isPassed">Type</label>
                                         <select id="isPassed" name="isPassed" class="form-control">
                                             <option value="-1" selected>--- Select --</option>;
-                                            <option value="0">Passed</option>;
-                                            <option value="1">Not Passed</option>;
+                                            <option value="1">Passed</option>;
+                                            <option value="0">Not Passed</option>;
                                             <option value="2" selected>-- All --</option>;
                                         </select> 
                                     </div>
@@ -242,6 +242,8 @@ $(document).ready(function() {
                     $('#student_table').dataTable().fnAddData([
                         row.student_id,
                         row.student.user.firstname+" "+row.student.user.middlename+" "+row.student.user.lastname,
+                        row.student.user.dateofbirth,
+                        row.ispassed
                     ]);
                 });
                 
