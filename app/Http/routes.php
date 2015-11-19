@@ -61,7 +61,8 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 
 		//Manage student of class
 		Route::get('studentclassinfo', 'StudentInClassController@view');
-		Route::post('filterstudent', 'StudentInClassController@filterstudent');
+		Route::post('studentclassinfo/updateclassname', 'StudentInClassController@updateclassname');
+		Route::post('studentclassinfo/showclass', 'StudentInClassController@showclass');
 		Route::post('getclass', 'StudentInClassController@getclass');
 		Route::post('addStudent', 'StudentInClassController@addStudent');
 		Route::post('removeStudent', 'StudentInClassController@removeStudent');

@@ -100,6 +100,7 @@
 <script>
     $(function () {
         $("#subject_table").DataTable(
+            {"order": [[ 0, "desc" ]]}
         );
 
         $("#subject_form_submit").click(function() {

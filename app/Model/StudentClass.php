@@ -12,12 +12,12 @@ class StudentClass extends Model
 
     public function student()
     {
-        return $this->hasOne('App\Model\Student' , 'id','student_id');
+        return $this->belongsTo('App\Model\Student' , 'student_id','id');
     }
 
     public function classes()
     {
-        return $this->belongsTo('App\Model\Classes' , 'id', 'class_id');
+        return $this->belongsTo('App\Model\Classes' , 'class_id', 'id');
     }
 
 }
