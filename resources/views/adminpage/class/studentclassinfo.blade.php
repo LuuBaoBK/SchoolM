@@ -162,15 +162,16 @@ $(document).ready(function() {
     });
 
     $( "#classname" ).change(function() {
-        if($('#scholastic').val() != -1){
+        if($('#classname').val() != -1){
             showClass();
+            $("#classname option[value='-1']").remove();
         }
         else{
             // do nothing
         }
     });
     $( "#isPassed" ).change(function() {
-        if($('#scholastic').val() != -1){
+        if($('#isPassed').val() != -1){
             showClass();
             $("#isPassed option[value='-1']").remove();
         }
@@ -198,13 +199,14 @@ $(document).ready(function() {
                 $("#classname").empty();
                 console.log(record);
                 if(record.count > 0){
+                    $('#classname').append("<option value='-1' selected>-- Select --</option>");
                     $.each(record.data, function(i, row){
                         $('#classname').append("<option value='"+row.classname+"'>"+row.id+"  |  "+row.classname+"</option>");
                     });
-                    $('#classname').append("<option value='0' selected>-- All --</option>");
+                    $('#classname').append("<option value='0'>-- All --</option>");
                 }
                 else{
-                    $('#classname').append("<option value='-1' selected>No Record</option>");
+                    $('#classname').append("<option value='-1'>No Record</option>");
                 }
                 
             },
@@ -234,7 +236,6 @@ $(document).ready(function() {
                     '_token'        :token
                     },
             success:function(record){
-                console.log(record);
                 $('#student_table').dataTable().fnClearTable();
                 button="";
                 $.each(record, function(i, row){
