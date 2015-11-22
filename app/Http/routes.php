@@ -77,6 +77,7 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::get('deletesubject/{id}', 'Admin\EditsubjectController@delete');
 
 	Route::get('schedule', 'Admin\ScheduleController@index');
+	Route::post('schedule/getschedule', 'Admin\ScheduleController@getschedule');
 	Route::post('schedule', 'Admin\ScheduleController@store');
 
 	Route::get('transcript', 'Admin\TranscriptController@index');

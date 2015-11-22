@@ -7,29 +7,36 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Schedule;
-use App\Classes;
+use App\Model\Subject;
+use App\Model\Classes;
 
 class ScheduleController extends Controller
 {
-    public function index()
+    public function index(){
+        return view('adminpage.schedule');
+    }
+
+    public function getschedule(Request $request)
     {
         $tkb = array();
-        // for ($i=1;$i<=5;$i++)
-        // {
-        //     $day = Schedule::where("class_id", 1)->where("day", $i)->orderBy("start_at", 'asc')->get();
-        //     foreach ($day as $key) {
-                
-        //         for ($z=$key->start_at;$z<$key->start_at + $key->duration;$z++)
-        //             $tkb[$z][$i] = $key->subject->subject_name;
-        //     }
-        // }
-        // return view('adminpage.schedule', ['schedulelist' => $tkb]);
-        $abc = "<tr>
-                    <td> abc </td>
-                    <td> abc</td>
+        $id = $request['classname'];
+        for ($i=1;$i<=5;$i++)
+        {
+            $day = Schedule::where('class_id', $id)->where('day', $i)->orderBy('start_at', 'asc')->get();
+            foreach ($day as $key) {
+                 for ($z=$key->start_at;$z<$key->start_at + $key->duration;$z++)
+                 {
+                    $name = Subject::select('subject_name')->where('id', $key->subject_id)->first();
+                    $tkb[$z][$i] = $name->subject_name;
+                 }
+            }
+        }
 
-         </tr>";
-         return view('adminpage.schedule', ['abc' => $abc]);
+        $record = array(
+                'isSuccess' => 1,
+                'mydata' => $tkb
+            );
+        return $record;
     }
 
     public function store(Request $request)

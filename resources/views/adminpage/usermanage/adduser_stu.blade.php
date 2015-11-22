@@ -386,6 +386,7 @@ $(document).ready(function() {
                     '_token'        :token
                 },
                 success:function(record){
+                    console.log(record);
                    if(record.isSuccess == 1){
                         $('#to_year').parent().removeClass('has-warning');
                         $('#from_year').parent().removeClass('has-warning');
