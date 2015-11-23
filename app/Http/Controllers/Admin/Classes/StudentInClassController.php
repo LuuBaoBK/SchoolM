@@ -55,8 +55,6 @@ class StudentInClassController extends Controller
         $count = Classes::where('id','like', $id)->where('classname','like',$name)->count();
         $record['count'] = $count;
         $record['data'] = $classname;
-        $record['id']   = $id;
-        $record['name'] = $name;
         return $record;
     }
 
@@ -102,7 +100,7 @@ class StudentInClassController extends Controller
             $record = StudentClass::whereIn('class_id',
                                             Classes::select('id')
                                                    ->where('id','like',$id)
-                                                   ->wherE('classname','like',$name)
+                                                   ->where('classname','like',$name)
                                                    ->get())
                                   ->where('ispassed','like',$isPassed)
                                   ->get();
@@ -110,8 +108,7 @@ class StudentInClassController extends Controller
         else{
             $record = StudentClass::whereIn('class_id',
                                             Classes::select('id')
-                                                   ->where('id','like',$id)
-                                                   ->wherE('classname','=',$classname)
+                                                   ->where('id','=',$classname)
                                                    ->get())
                                     ->where('ispassed','like', $isPassed)
                                     ->get();
@@ -123,92 +120,135 @@ class StudentInClassController extends Controller
         return $record;
     }
 
-    public function filterstudent(){
+    public function showstudent(Request $request){
+        $enrolled_year = $request['enrolled_year'];
+        $studentid   = $request['studentid'];
+        $record;
 
-        $display = "";
-        $student = "";
-        $postedit = Input::all();
-        $hocky = $postedit['hocky'];
-        $khoi = $postedit['khoi'];
-        
-        $idclass = Classes::where('scholastic', '=', $hocky)->where('classname','like',"$khoi%")->get();
-        foreach($idclass as $row){
-
-            $sts = $row->students;
-            foreach ($sts as $key) {
-                $student = $key->student->user;
-                $display .="<tr>
-                                <td>$student->id</td>
-                                <td>$student->firstname $student->middlename $student->lastname</td>
-                                <td>
-                                <a data-id ='$student->id' class='addStudentIntoClass'>Add</a> 
-                            </td>
-                            </tr>";
+        if($studentid == ""){
+            if($enrolled_year == "-1"){
+                $record['error'] = '0';
+                return $record;
             }
-            
+            else{
+                $count = Student::where('enrolled_year','=',$enrolled_year)->count();
+                if( $count > 0){
+                    $studentlist = Student::where('enrolled_year','=',$enrolled_year)->get();
+                    foreach ($studentlist as $key => $value) {
+                        $value->user;
+                    }
+                    $record = $studentlist;
+                    return $record;
+                }
+                else{
+                    $record['error'] = '0';
+                    return $record;
+                }
+            }
         }
-
-        return $display;
-    }
-
-    public function getclass(){
-
-        $display = "";
-        $postedit = Input::all();
-        $id = $postedit['id'];
-        $idclass = Classes::find($id);
-        $sts = $idclass->students;
-        foreach ($sts as $key) {
-            $student = $key->student->user;
-            $display .="<tr>
-                            <td>$student->id</td>
-                            <td>$student->firstname $student->middlename $student->lastname</td>
-                            <td>
-                            <a data-id ='$student->id' href='#' class='removeStudentFromClass'>Remove</a>
-                            </td>
-                        </tr>";
-        }
-
-        return $display;
-    }
-
-    public function addStudent()
-    {
-        $poststudent = Input::all();
-        $newrecord = new StudentClass;
-        $newrecord->student_id = $poststudent['student_id'];
-        $newrecord->class_id   = $poststudent['class_id'];
-        $check = $newrecord->save();
-
-        if($check)
-        {
-            return 0;
-        }
-        else
-        {
-            return 1;
+        else{
+            $count = Student::where('id','=',$studentid)->count();
+            if($count = 0){
+                $record['error'] = '0';
+                return $record;
+            }
+            else{
+                $record = Student::where('id','=',$studentid)->get();
+                foreach ($record as $key => $value) {
+                        $value->user;
+                    }
+                return $record;
+            }
         }
         
     }
 
+    public function addstudent(Request $request){
+        $studentlist = $request['studentlist'];
+        $classid_new = $request['classid_new'];
+        $classid_old = $request['classid_old'];
+        $type        = $request['type'];
 
-    public function removeStudent()
-    {
-        $poststudent = Input::all();
-        $student_id = $poststudent['student_id'];
-        $class_id   = $poststudent['class_id'];
-        $del = StudentClass::where('student_id',$student_id)->where('class_id',$class_id);
-        $check = $del->delete();
+        if($classid_new == "-1"){
+            $record['error'] = "Please Select New Class First";
+            return $record;
+        }
 
-        if($check)
-        {
-            return 0;
+        if($type == "1"){
+            $successlist    = Student::whereIn('id',$studentlist[0])
+                                     ->whereNotin(
+                                                    'id', 
+                                                    StudentClass::select('student_id')
+                                                                ->where('class_id','=',$classid_new)
+                                                                ->get()
+                                                )
+                                     ->get();
+            $errorlist      = Student::select('id')
+                                     ->whereIn('id',$studentlist[0])
+                                     ->whereIn(
+                                                    'id', 
+                                                    StudentClass::select('student_id')
+                                                                ->where('class_id','=',$classid_new)
+                                                                ->get()
+                                                )
+                                     ->get();
+            if($classid_old != "0"){
+                $warninglist    = Student::select('id')
+                                     ->whereIn('id',$studentlist[0])
+                                     ->whereNotin(
+                                                    'id', 
+                                                    StudentClass::select('student_id')
+                                                                ->where('class_id','=',$classid_new)
+                                                                ->get()
+                                                )
+                                     ->whereIn(
+                                                'id',
+                                                StudentClass::select('student_id')
+                                                            ->where('class_id','=',$classid_old)
+                                                            ->where('ispassed','=','0')
+                                                            ->get()
+                                                )
+                                     ->get();
+            }
+            else{
+                $warninglist    = [];
+            }
+
         }
-        else
-        {
-            return 1;
+        else{
+            $successlist    = Student::whereIn('id',$studentlist[0])
+                                     ->whereNotin(
+                                                    'id', 
+                                                    StudentClass::select('student_id')
+                                                                ->where('class_id','=',$classid_new)
+                                                                ->get()
+                                                )
+                                     ->get();
+
+            $errorlist      = Student::select('id')
+                                     ->whereIn('id',$studentlist[0])
+                                     ->whereIn(
+                                                    'id', 
+                                                    StudentClass::select('student_id')
+                                                                ->where('class_id','=',$classid_new)
+                                                                ->get()
+                                                )
+                                     ->get();
+            $warninglist    = [];
         }
-        
+        foreach ($successlist as $key => $value) {
+            $studentclass = new StudentClass;
+            $studentclass->class_id = $classid_new;
+            $studentclass->student_id = $value->id;
+            $studentclass->save();
+        }
+
+        $record['successlist'] = $successlist;
+        $record['errorlist'] = $errorlist;
+        $record['warninglist'] = $warninglist;
+
+        return $record;
     }
+
 
 }

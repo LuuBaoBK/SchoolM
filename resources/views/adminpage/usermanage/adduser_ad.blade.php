@@ -162,8 +162,9 @@
 <script>
 $(document).ready(function() {
     $(function () {
-        $("#admin_table").DataTable(
-            {"order": [[ 0, "desc" ]]}
+        $("#admin_table").DataTable({
+            "order": [[ 0, "desc" ]],
+        }
         );
         $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
         $("[data-mask]").inputmask();

@@ -19,7 +19,7 @@ class UserTableSeeder extends Seeder
                 'lastname' => 'last'.$i,
 	            'email' => 'a_000000'.$i.'@schoolm.com',
 	            'password' => bcrypt('1234'),
-                'dateofbirth' => "2015-11-".$i,
+                'dateofbirth' => "2015-11-1".$i,
                 'role' => '0',
         	]);
             DB::table('users')->insert([
@@ -28,7 +28,7 @@ class UserTableSeeder extends Seeder
                 'middlename' => 'middle'.$i,
                 'lastname' => 'last'.$i,
                 'email' => 't_000000'.$i.'@schoolm.com',
-                'dateofbirth' => "2014-11-".$i,
+                'dateofbirth' => "2014-11-1".$i,
                 'password' => bcrypt('1234'),
                 'role' => '1',
             ]);
@@ -39,7 +39,7 @@ class UserTableSeeder extends Seeder
                 'lastname' => 'last'.$i,
                 'email' => 's_000000'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
-                'dateofbirth' => "2015-11-".$i,
+                'dateofbirth' => "2015-11-1".$i,
                 'role' => '2',
             ]);
             DB::table('users')->insert([
@@ -49,7 +49,7 @@ class UserTableSeeder extends Seeder
                 'lastname' => 'last'.$i,
                 'email' => 'p_000000'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
-                'dateofbirth' => "2015-11-".$i,
+                'dateofbirth' => "2015-11-1".$i,
                 'role' => '2',
             ]);
     	}
@@ -61,7 +61,7 @@ class UserTableSeeder extends Seeder
                 'lastname' => 'last'.$i,
                 'email' => 'a_000001'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
-                'dateofbirth' => "2015-11-".$i,
+                'dateofbirth' => "2015-11-1".$i,
                 'role' => '0',
             ]);
             DB::table('users')->insert([
@@ -70,7 +70,7 @@ class UserTableSeeder extends Seeder
                 'middlename' => 'middle'.$i,
                 'lastname' => 'last'.$i,
                 'email' => 't_000001'.$i.'@schoolm.com',
-                'dateofbirth' => "2014-11-".$i,
+                'dateofbirth' => "2014-11-1".$i,
                 'password' => bcrypt('1234'),
                 'role' => '1',
             ]);
@@ -81,7 +81,7 @@ class UserTableSeeder extends Seeder
                 'lastname' => 'last'.$i,
                 'email' => 's_000001'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
-                'dateofbirth' => "2015-11-".$i,
+                'dateofbirth' => "2015-11-1".$i,
                 'role' => '2',
             ]);
             DB::table('users')->insert([
@@ -91,7 +91,7 @@ class UserTableSeeder extends Seeder
                 'lastname' => 'last'.$i,
                 'email' => 'p_000001'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
-                'dateofbirth' => "2015-11-".$i,
+                'dateofbirth' => "2015-11-1".$i,
                 'role' => '2',
             ]);
         }
