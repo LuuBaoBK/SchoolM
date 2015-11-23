@@ -19,31 +19,53 @@
     <div class="box-body">
         <!-- My page start here --> 
         <div class="col-xs-3">
-            <div class="box box-solid box-primary collapsed-box">
-            <div class="box-header">
-                <h3 class="box-title">Class List</h3>
-                <div class="box-tools pull-right">
-                    <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                </div>
-            </div><!-- /.box-header -->
+            <div class="box box-solid box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Class List</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div><!-- /.box-header -->
             <!-- form start -->
-            <form method="POST">
-         {!! csrf_field() !!}
-        <div style = "display: none" class="box-body">
-            <div class="form-group">
-                <label>Class</label>
-                <select class="form-control select2 select2-hidden-accessible" name="semester" id="semester" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                    <?php $class = Classes::all() ?> 
-                    <?php foreach ($class as $key) { ?>
-                        <option><?php echo $key->classname ?></option>
-                    <?php } ?>
-                </select>
-            </div>
-        </div><!-- /.box-body -->
-        <div style = "display: none" class="box-footer">
-            <button type="submit" class="btn btn-primary">Get Schedule</button>
-        </div>
-    </form>
+                <form method="POST">
+                 {!! csrf_field() !!}
+                <div class="box-body">
+                    <div class="form-group">
+                        <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+                        <label for="scholastic">Scholastic</label>
+                        <select id="scholastic" name="scholastic" class="form-control">
+                            <option value="-1" selected>-- Select --</option>;
+                            <?php
+                                $year = date("Y") + 2;
+                                for($year;$year >=2010 ;$year--){
+                                    echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
+                                }
+                            ?>
+                            <option value="0">-- All --</option>;
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="grade">Grade</label>
+                        <select id="grade" name="grade" class="form-control">
+                            <option value="-1" selected>-- Select --</option>;                                            
+                            <option>6</option>;
+                            <option>7</option>;
+                            <option>8</option>;
+                            <option>9</option>;
+                            <option value="0">-- All --</option>;
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="classname">Class Name</label>
+                        <select id="classname" name="classname" class="form-control">
+                            <option value="-1" selected>Select Scholastic First</option>;
+                        </select> 
+                    </div>
+                </div><!-- /.box-body -->
+                <div class="box-footer">
+                    <button id="getschedule" type="button" class="btn btn-primary">Get Schedule</button>
+                </div>
+                </form>
             </div><!-- /.box -->
         </div>
 
@@ -60,7 +82,7 @@
                     <table id="schedule_table" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th style="width:25px"></th>
                             <th>Monday</th>
                             <th>Tuesday</th>
                             <th>Wednesday</th>
@@ -70,32 +92,16 @@
                     </thead>
 
                     <tbody class="displayrecord">
-                        <?php for ($i=0;$i<=4;$i++) { ?>
-                            <tr>
-                                <td><b>Tiết <?=$i+1 ?></b></td>
-                                <?php foreach ($schedulelist[$i] as $row) { ?>
-                                    <?php $subject = Subject::where("id", $row->subject_id)->get(); ?>
-                                    <?php foreach ($subject as $a)?>
-                                    <td> <?php echo $a->subject_name ?></td> 
-                                <?php } ?>
-                            </tr>
-                        <?php } ?>
-                        <tr>
-                            <!-- <td></td> -->
-                            <?php for ($z=0;$z<=5;$z++) { ?>
-                            <td style="background-color:Gainsboro"></td>
-                            <?php } ?>
-                        </tr>
-                        <?php for ($i=5;$i<=9;$i++) { ?>
-                            <tr>
-                                <td><b>Tiết <?=$i+1 ?></b></td>
-                                <?php foreach ($schedulelist[$i] as $row) { ?>
-                                    <?php $subject = Subject::where("id", $row->subject_id)->get(); ?>
-                                    <?php foreach ($subject as $a)?>
-                                    <td> <?php echo $a->subject_name ?></td> 
-                                <?php } ?>
-                            </tr>
-                        <?php } ?>
+                        <?php
+                            // for($i=1;$i<=10;$i++){
+                            //     $string = "<tr> <td><b>Tiết ".$i."</b></td>";
+                            //     for($j=1;$j<=5;$j++){
+                            //         $string .= "<td>".$schedulelist[$i][$j]."</td>";
+                            //     }
+                            //     $string .= "</tr>";
+                            //     echo $string;
+                            // }
+                         ?>
                     </tbody>
                     </table>
                 </div>
@@ -104,21 +110,116 @@
     </div>
 <!-- /.box -->
 </section><!-- DATA TABES SCRIPT -->
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-        <script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
-        <script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
-<!-- page script -->
-        <script type="text/javascript">
-            $(function() {
-                $('#example1').dataTable({
-                    "bPaginate": true,
-                    "bLengthChange": false,
-                    "bFilter": true,
-                    "bSort": true,
-                    "bInfo": true,
-                    "bAutoWidth": false,
-                });
-            });
-        </script>
 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+<script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
+<script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
+<!-- page script -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(function() {
+            $('#schedule_table').dataTable(
+            {
+                "bSort" : false,
+                "bLengthChange": false,
+                "bInfo": false,
+                "bFilter": false,
+                "bPaginate": false
+            });
+        });
+        $( "#scholastic" ).change(function() {
+            if($('#scholastic').val() != -1){
+                updateClassname();
+                $("#scholastic option[value='-1']").remove();
+            }
+            else{
+                // do nothing
+            }
+        });
+        $( "#grade" ).change(function() {
+            if($('#grade').val() != -1){
+                updateClassname();
+                $("#grade option[value='-1']").remove();
+            }
+            else{
+                // do nothing
+            }
+        });
+        
+    function updateClassname(){
+        var scholastic      = $('#scholastic').val();
+        var grade           = $('#grade').val();
+        var group           = $('#group').val();
+        var token           = $('input[name="_token"]').val();
+        $.ajax({
+            url     :"<?= URL::to('/admin/class/studentclassinfo/updateclassname') ?>",
+            type    :"POST",
+            async   :false,
+            data    :{
+                    'scholastic'    :scholastic,
+                    'grade'         :grade,
+                    'group'         :group,
+                    '_token'        :token
+                    },
+            success:function(record){
+                $("#classname").empty();
+                if(record.count > 0){
+                    $('#classname').append("<option value='-1' selected>-- Select --</option>");
+                    $count = 1;
+                    $.each(record.data, function(i, row){
+                        $('#classname').append("<option value=" + $count +">"+row.id+"  |  "+row.classname+"</option>");
+                        $count++;
+                    });
+                    $('#classname').append("<option value='0'>-- All --</option>");
+                }
+                else{
+                    $('#classname').append("<option value='-1'>No Record</option>");
+                }
+                
+            },
+            error:function(){
+                alert("something went wrong, contact master admin to fix");
+            }
+        });
+    }
+
+    $('#getschedule').click(function(){
+            var classname = $('#classname option:selected').text().substr(0,8);
+            var token = $('input[name="_token"]').val();
+
+           $.ajax({
+                url     :"<?= URL::to('/admin/schedule/getschedule') ?>",
+                type    :"POST",
+                async   :false,
+                data    :{
+                    'classname'     :classname,
+                    '_token'        :token
+                },
+                success:function(record)
+                {
+                    console.log(record);
+                    if(record.isSuccess == 1)
+                    {
+                        $('#student_table').dataTable().fnClearTable();
+        
+                        $count = 1;
+                        $.each(record.mydata, function(i, row)
+                        {
+                            var tiet = "<b>Tiết " + $count + "</b>";
+                            $('#schedule_table').dataTable().fnAddData([
+                                tiet,
+                                row[1],
+                                row[2],
+                                row[3],
+                                row[4],
+                                row[5],
+                            ]);
+                            $count++;
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script>                           
 @endsection

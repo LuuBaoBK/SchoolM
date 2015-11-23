@@ -35,4 +35,8 @@ class Schedule extends Model implements AuthenticatableContract,
      *
      * @var array
      */
+    public function subject()
+    {
+        return $this->hasMany('App\Schedule', 'id', 'subject_id');
+    }
 }
