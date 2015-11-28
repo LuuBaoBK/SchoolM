@@ -250,5 +250,17 @@ class StudentInClassController extends Controller
         return $record;
     }
 
+    public function removestudent(Request $request){
+        $student_id = $request['student_id'];
+        $class_id   = $request['class_id'];
+
+        $studentinclass = StudentClass::where('student_id','=',$student_id)
+                                      ->where('class_id','=',$class_id)
+                                      ->delete();
+        $record[1] = $student_id;
+        $record[2] = $class_id;
+        return $record;
+    }
+
 
 }

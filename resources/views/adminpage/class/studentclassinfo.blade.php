@@ -149,7 +149,7 @@ table tr.selected{
                                     <th>Date Of Birth</th>
                                     <th>Enrolled Year</th>
                                     <th>
-                                        <button type="button" id="selectall_button_2" class="btn btn-block btn-primary btn-sm">Select All</button>
+                                        <button type="button" id="selectall_button_2" class="btn-primary">Select All</button>
                                     </th>
                                 </tr>
                             </thead>
@@ -250,6 +250,8 @@ table tr.selected{
         <div class="modal-content">
             <div class="modal-body">
                 Please Select New Class First
+                <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
             </div>
         </div>
     </div>
@@ -299,7 +301,7 @@ table tr.selected{
     </div>
   <!-- /.modal-dialog -->
 </div>
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#resultModal">
+<!-- <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#resultModal"> -->
 </section>
 <!-- DATA TABES SCRIPT -->
         <script src="{{asset("/mylib/jquery/jquery.min.js")}}" type="text/javascript"></script>
@@ -755,14 +757,15 @@ $(document).ready(function() {
                     },
             success:function(record){
                 $('#student_table_1').dataTable().fnClearTable();
-                button="";
                 var count = 0;
                 $.each(record, function(i, row){
+                    button= "<button type='button' class='btn-danger' value='"+row.student_id+"'>Remove</button>";
                     $('#student_table_1').dataTable().fnAddData([
                         row.student_id,
                         row.student.user.firstname+" "+row.student.user.middlename+" "+row.student.user.lastname,
                         row.student.user.dateofbirth,
-                        row.ispassed
+                        row.ispassed,
+                        button
                     ]);
                     count = count + 1;
                 });
@@ -775,6 +778,31 @@ $(document).ready(function() {
         });
     }
 
+    $('#student_table_1 tbody').on( 'click', 'button', function () {
+                  //  selected_row_index = $('#parent_table').dataTable().fnGetPosition(this);
+        var $tr             = $(this).closest('tr');
+        var myRow           = $tr.index();
+        var student_id      = $(this).val();
+        var class_id         = $('#classname_1').val(); 
+        var token           = $('input[name="_token"]').val();
+        $.ajax({
+            url     :"<?= URL::to('/admin/class/studentclassinfo/removestudent') ?>",
+            type    :"POST",
+            async   :false,
+            data    :{
+                    'student_id'    :student_id,
+                    'class_id'      :class_id,
+                    '_token'        :token
+                    },
+            success:function(record){
+                $('#student_table_1').dataTable().fnDeleteRow(myRow);
+                console.log(record);
+            },
+            error:function(){
+                alert("something went wrong, contact master admin to fix");
+            }
+        });
+    });
     
 });
 </script>

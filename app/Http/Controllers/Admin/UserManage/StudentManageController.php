@@ -103,7 +103,8 @@ class StudentManageController extends Controller
             $new_s_id = substr($new_s_id,$offset);
             $new_s_id = "s_".$new_s_id.$s_id;
             $s_email = $new_s_id."@schoolm.com";
-            $s_password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+            //$s_password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+            $s_password = $new_s_id;
             // handle student date of birth
             if($request['student_dateofbirth'] != "")
             {
@@ -116,7 +117,7 @@ class StudentManageController extends Controller
 
             $s_user->id             = $new_s_id; 
             $s_user->email          = $s_email;
-            $s_user->password       = $s_password;
+            $s_user->password       = bcrypt($s_password);
             $s_user->firstname      = $request['student_firstname'];
             $s_user->middlename     = $request['student_middlename'];    
             $s_user->lastname       = $request['student_lastname'];
@@ -138,7 +139,8 @@ class StudentManageController extends Controller
                 $new_p_id = substr($new_p_id,$offset);
                 $new_p_id = "p_".$new_p_id.$p_id;
                 $p_email = $new_p_id."@schoolm.com";
-                $p_password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+                //$p_password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+                $p_password = $new_p_id;
                 // handle student date of birth
                 if($request['parent_dateofbirth'] != "")
                 {
@@ -151,7 +153,7 @@ class StudentManageController extends Controller
 
                 $p_user->id             = $new_p_id; 
                 $p_user->email          = $p_email;
-                $p_user->password       = $p_password;
+                $p_user->password       = bcrypt($p_password);
                 $p_user->firstname      = $request['parent_firstname'];
                 $p_user->middlename     = $request['parent_middlename'];    
                 $p_user->lastname       = $request['parent_lastname'];

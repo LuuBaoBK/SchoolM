@@ -63,12 +63,13 @@ class AdminManageController extends Controller
 
             //Create Email & Password
             $email = $newid."@schoolm.com";
-            $password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+            //$password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+            $password = $newid;
 
             // Create User
             $user->id = $newid;
             $user->email = $email;
-            $user->password = $password;
+            $user->password = bcrypt($password);
             $user->firstname = $request['firstname'];
             $user->middlename = $request['middlename'];
             $user->lastname = $request['lastname'];

@@ -65,6 +65,7 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 		Route::post('studentclassinfo/showclass', 'StudentInClassController@showclass');
 		Route::post('studentclassinfo/showstudent', 'StudentInClassController@showstudent');
 		Route::post('studentclassinfo/addstudent', 'StudentInClassController@addstudent');
+		Route::post('studentclassinfo/removestudent', 'StudentInClassController@removestudent');
 	});
 	
 	//Manage subject
