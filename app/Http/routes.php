@@ -12,10 +12,9 @@
 */
 
 // Authentication routes...
-Route::get('/', 'Auth\AuthController@getLogin');
+Route::get('/', 'Auth\MyAuthController@getview');
 Route::post('auth/login', 'Auth\MyAuthController@authenticate');
 Route::get('auth/logout', 'Auth\MyAuthController@logout');
-Route::get('/mypage',function(){return view('auth.mylogin');});
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('/dashboard','Auth\MyAuthController@get_dashboard');
@@ -26,12 +25,14 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 
 	Route::get('dashboard', 'Admin\ProfileController@get_ad_dashboard' );
 	Route::post('dashboard', 'Admin\ProfileController@edit_info' );
+	Route::post('dashboard/changepassword', 'Admin\ProfileController@changepassword' );
 
 	Route::group(['prefix'=>'manage-user', 'namespace' => 'Admin\UserManage'], function(){
 		Route::get ('admin', 'AdminManageController@get_ad');
 		Route::post('admin', 'AdminManageController@store_ad');
 		Route::get ('admin/edit/{id}',  'AdminManageController@get_edit_form');
 		Route::post ('admin/edit', 'AdminManageController@edit_ad');
+		Route::get ('admin/edit/{id}/reset_password',  'AdminManageController@reset_password');
 
 		Route::get ('teacher', 'TeacherManageController@get_te');
 		Route::post('teacher', 'TeacherManageController@store_te');

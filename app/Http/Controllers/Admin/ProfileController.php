@@ -76,4 +76,29 @@ class ProfileController extends Controller
             return $record;
         }
     }        
+
+    public function changepassword(Request $request){
+        $new_password = $request['new_password'];
+        $confirm_password = $request['confirm_password'];
+
+        $rules = array(
+            'new_password'     => 'required|max:60|min:4',
+            'confirm_password' => 'required|max:60|min:4|same:new_password'
+        );
+        $validator = Validator::make($request->all(), $rules);
+        if($validator->fails())
+        {
+           $record =  $validator->messages();
+           return $record;
+        }
+        else
+        {
+            $new_password = bcrypt($new_password);
+            $user = User::find(Auth::user()->id);
+            $user->password = $new_password;
+            $user->save();
+            $record['isSuccess'] = '1';
+            return $record;
+        }
+    }
 }

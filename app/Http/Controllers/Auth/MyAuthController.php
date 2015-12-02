@@ -7,9 +7,29 @@ use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Routing\Redirector;
+use App\Model\Sysvar;
 
 class MyAuthController extends Controller
 {
+    
+    public function getview(){
+        
+        if(Auth::check())
+        {
+            $user = Auth::user();
+            if($user->role == 0){
+                return redirect('admin/dashboard');
+            }
+        }
+        else
+        {
+            $num_student = Sysvar::find('s_next_id');
+            $record['num_student'] = $num_student->value + 1;
+            $num_teacher = Sysvar::find('t_next_id');
+            $record['num_teacher'] = $num_teacher->value + 1;
+            return view('auth.mylogin')->with('record',$record);
+        }
+    }
     public function authenticate(Request $request)
     {
         if(Auth::check())
@@ -44,4 +64,5 @@ class MyAuthController extends Controller
             return redirect('admin/dashboard');
         }
     }
+
 }

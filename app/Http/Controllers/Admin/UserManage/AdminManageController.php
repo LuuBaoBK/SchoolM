@@ -163,4 +163,9 @@ class AdminManageController extends Controller
             return $record;
         }
     }
+
+    public function reset_password($id){
+        $adminlist = Admin::orderBy('id', 'desc')->get();
+        return view('adminpage.usermanage.ad_print', ['adminlist' => $adminlist]);
+    }
 }
