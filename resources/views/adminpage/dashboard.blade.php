@@ -39,7 +39,7 @@
 			<div class="nav-tabs-custom">
 		        <ul class="nav nav-tabs">
 		          <li class="active"><a href="#info" data-toggle="tab">Personal Info</a></li>
-		          <li><a href="#timeline" data-toggle="tab">Timeline</a></li>
+		          <li><a href="#changepassword" data-toggle="tab">Change Password</a></li>
 		          <li><a href="#settings" data-toggle="tab">Settings</a></li>
 		        </ul>
 		        <div class="tab-content">
@@ -108,10 +108,32 @@
 			            </form>
 		            </div>
 
-		          	<div class="tab-pane" id="timeline">
+		          	<div class="tab-pane" id="changepassword">
+		          		<form id="change_password_form" method="POST" role="form">
+				            {!! csrf_field() !!}
+				            <div class="box-body">
+				                 <div id="success_mess_psw" style = "display: none" class="alert alert-success">
+				                    <h4><i class="icon fa fa-check"></i>Success Change Password</h4>
+				                </div>
+				                <div class="row">
+				                    <div class="form-group col-lg-7 col-xs-12">
+				                        <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+				                        <label for="new_password">New Password</label>
+				                        <input type="password" class="form-control" name="new_password" id="new_password" placeholder="New Password" value='<?=$admin->user->new_password?>'>
+				                        <label class="error_mess" id="new_password_error" style="display:none" for="new_password"></label>
+				                    </div>
+				                    <div class="form-group col-lg-7 col-xs-12">
+				                        <label for="confirm_password">Confirm Passworld</label>
+				                        <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Passworld" value='<?=$admin->user->confirm_password?>'>
+				                        <label class="error_mess" id="confirm_password_error" style="display:none" for="confirm_password"></label>        
+				                    </div>
+				                </div>
+				            </div><!-- /.box-body -->
+				            <div class="box-footer">
+			                    <button id ="change_password_form_submit" type="button" class="btn btn-primary">Change</button>		                
+				            </div>
+			            </form>
 		          	</div>
-		          	<!-- /.tab-pane -->
-
 		          	<div class="tab-pane" id="settings">
 		          	</div>
 			          <!-- /.tab-pane -->
@@ -158,8 +180,6 @@
                     '_token'        :token
                 },
                 success:function(record){
-                	console.log("abc");
-                	console.log(record);
                    if(record.isDone == 1){
                    	location.reload();                       
                    }
@@ -177,6 +197,45 @@
                 }
             });
         });
+
+		$("#change_password_form_submit").click(function() {
+			var new_password 	 = $('#new_password').val();
+			var confirm_password = $('#confirm_password').val();
+			var token       	 = $('input[name="_token"]').val();
+			$(".form-group").removeClass("has-warning");
+            $(".error_mess").empty();
+			$.ajax({
+                url     :"<?= URL::to('/admin/dashboard/changepassword') ?>",
+                type    :"POST",
+                async   :false,
+                data    :{
+                	'new_password'	   : new_password,
+                	'confirm_password' : confirm_password,
+                    '_token'           :token
+                },
+                success:function(record){
+                  	if(record['isSuccess'] == 1){
+                  		$('#new_password').val('');
+                  		$('#confirm_password').val('');
+                  		$('#success_mess_psw').show('medium');
+                  		setTimeout(function() {
+                            $('#success_mess_psw').slideUp('slow');
+                        }, 2000); // <-- time in milliseconds
+                  	}
+                  	else{
+                  		$('#error_mess').show("medium");
+                        $('#error_mess').empty();
+                        $.each(record, function(i, item){
+                          $('#'+i).parent().addClass('has-warning');
+                          $('#'+i+"_error").css("display","block").append("<i class='icon fa fa-warning'></i> "+item);
+                        });
+                  	}
+                },
+                error:function(){
+                    alert("something went wrong, contact master admin to fix");
+                }
+            });
+		});
     });
 
 

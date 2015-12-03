@@ -81,12 +81,13 @@ class TeacherManageController extends Controller
 
             //Create Email & Password
             $email = $newid."@schoolm.com";
-            $password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+            //$password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+            $password = $newid;
 
             // Create User
             $user->id = $newid;
             $user->email = $email;
-            $user->password = $password;
+            $user->password = bcrypt($password);
             $user->firstname = $request['firstname'];
             $user->middlename = $request['middlename'];
             $user->lastname = $request['lastname'];
@@ -213,5 +214,14 @@ class TeacherManageController extends Controller
             $record['isDone'] = 1;
             return $record;
         }
+    }
+
+    public function reset_password($id){
+        $teacher = Teacher::find($id);
+        $teacher->user;
+        $password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+        $teacher->user->password = bcrypt($password);
+        $teacher->user->save();
+        return view('adminpage.usermanage.print_te', ['teacher' => $teacher, 'password' => $password]);
     }
 }
