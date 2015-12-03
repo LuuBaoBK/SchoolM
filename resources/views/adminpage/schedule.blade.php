@@ -200,7 +200,7 @@
                     console.log(record);
                     if(record.isSuccess == 1)
                     {
-                        $('#student_table').dataTable().fnClearTable();
+                        $('#schedule_table').dataTable().fnClearTable();
         
                         $count = 1;
                         $.each(record.mydata, function(i, row)

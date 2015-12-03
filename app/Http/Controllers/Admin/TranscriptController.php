@@ -7,12 +7,32 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Transcript;
+use App\User;
+use App\Model\Student;
+use App\Model\Classes;
+use App\Model\StudentClass;
 
 class TranscriptController extends Controller
 {
     public function index(){
-        $transcriptlist = Transcript::all();
-        return view('adminpage.transcript', ['transcriptlist' => $transcriptlist]);
+        return view('adminpage.transcript');
+    }
+
+    public function getstudent(Request $request)
+    {
+        $id = $request['classname'];
+        $stu = StudentClass::select('student_id')->where('class_id','=', $id)->get();
+        $kq = array();
+        $i = 1;
+        foreach ($stu as $value) {
+            $kq[$i] = $value->student->user->firstname." ".$value->student->user->middlename." ".$value->student->user->lastname;
+            $i++;
+        }
+        $record = array(
+                'isSuccess' => 1,
+                'mydata' => $kq
+            );
+        return $record;
     }
 
     public function store(Request $request)

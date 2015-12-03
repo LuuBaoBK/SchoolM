@@ -21,7 +21,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/dashboard','Auth\MyAuthController@get_dashboard');
 });
 
-
+	
 Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 
 	Route::get('dashboard', 'Admin\ProfileController@get_ad_dashboard' );
@@ -82,5 +82,6 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 
 	Route::get('transcript', 'Admin\TranscriptController@index');
 	Route::post('transcript', 'Admin\TranscriptController@store');
+	Route::post('transcript/getstudent', 'Admin\TranscriptController@getstudent');
 });
 
