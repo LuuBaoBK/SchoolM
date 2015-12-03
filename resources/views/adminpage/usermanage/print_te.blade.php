@@ -20,11 +20,11 @@
         </tr>
         <tr>
           <td>Role</td>
-          <td>teacher</td>
+          <td>Teacherr</td>
         </tr>
         <tr>
           <td>Date Of Birth</td>
-          <td>{{$teacher->user->dateofbirth}}</td>
+          <td>{{$dateofbirth}}</td>
         </tr>
         <tr>
           <td>Address</td>

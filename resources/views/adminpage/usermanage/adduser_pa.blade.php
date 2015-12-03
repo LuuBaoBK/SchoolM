@@ -169,7 +169,8 @@ table tr.selected{
                                 </div>
                             </div><!-- /.box-body -->
                             <div class="box-footer">
-                                    <button id ="pa_info_form_submit" type="button" class="btn btn-primary">Edit</button>                        
+                                    <button id ="pa_info_form_submit" type="button" class="btn btn-primary">Edit</button>
+                                    <button id ="reset_password" type="button" class="btn btn-warning">Reset Password</button>                        
                             </div>
                         </form>
                     </div>
@@ -215,6 +216,26 @@ table tr.selected{
     </div> <!-- /.box body -->
 </div> <!-- /.box -->
 </section>
+<div id="confirmModal" class="modal modal-warning">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Error</h4>
+        </div>
+        <div class="modal-body">
+            <p>Please Confirm That You Want To Reset Password Of This Admin</p>
+        </div>
+        <div class="modal-footer">
+            <button id="confirm_button" type="button" class="btn btn-warning pull-right">Confirm</button>
+            <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div>
 <!-- DATA TABES SCRIPT -->
         <script src="{{asset("/mylib/jquery/jquery.min.js")}}" type="text/javascript"></script>
         <script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
@@ -426,6 +447,18 @@ $(document).ready(function() {
                     alert("Something went wrong ! Please Contact Your Super Admin");
                 }
             });
+        });
+
+        $('#reset_password').click(function(){
+            $('#confirmModal').modal('show');
+        });
+
+        $('#confirm_button').click(function(){
+            $('#confirmModal').modal('hide');
+            var id = $('#id').val();
+            if(id != ""){
+                window.open('/admin/manage-user/parent/edit/'+$('#id').val()+'/reset_password', '_blank');
+            } 
         });
 
     });

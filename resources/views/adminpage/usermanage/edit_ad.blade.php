@@ -171,6 +171,7 @@ $(document).ready(function() {
         });
 
         $('#confirm_button').click(function(){
+            $('#confirmModal').modal('hide');
             window.open('/admin/manage-user/admin/edit/'+$('#id').val()+'/reset_password', '_blank');
         });
     });

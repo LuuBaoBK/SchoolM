@@ -258,4 +258,21 @@ class StudentManageController extends Controller
             return $record;
         }
     }
+
+    public function reset_password($id){
+        $student = Student::find($id);
+        $student->user;
+        $password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+        $student->user->password = bcrypt($password);
+        $student->user->save();
+        if($student->user->dateofbirth == "0000-00-00"){
+            $dateofbirth = "";
+        }
+        else
+        {
+            $dateofbirth = date_create($student->user->dateofbirth);
+            $dateofbirth = date_format($dateofbirth, "d/m/Y");
+        }
+        return view('adminpage.usermanage.print_stu', ['student' => $student, 'password' => $password, 'dateofbirth' => $dateofbirth]);
+    }
 }

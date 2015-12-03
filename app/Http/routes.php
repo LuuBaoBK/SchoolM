@@ -45,11 +45,13 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 		Route::post('student/show', 'StudentManageController@show');
 		Route::get ('student/edit/{id}', 'StudentManageController@get_edit_form');
 		Route::post ('student/edit', 'StudentManageController@edit_stu');
+		Route::get ('student/edit/{id}/reset_password',  'StudentManageController@reset_password');
 
 		Route::get ('parent', 'ParentManageController@get_pa');
 		Route::post('parent/show', 'ParentManageController@show');
 		Route::post('parent/getdata', 'ParentManageController@getdata');
 		Route::post('parent/edit', 'ParentManageController@editdata');
+		Route::get ('parent/edit/{id}/reset_password',  'ParentManageController@reset_password');
 	});
     
     //Manage class

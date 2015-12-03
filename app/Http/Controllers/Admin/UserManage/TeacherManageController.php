@@ -222,6 +222,14 @@ class TeacherManageController extends Controller
         $password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
         $teacher->user->password = bcrypt($password);
         $teacher->user->save();
-        return view('adminpage.usermanage.print_te', ['teacher' => $teacher, 'password' => $password]);
+        if($teacher->user->dateofbirth == "0000-00-00"){
+            $dateofbirth = "";
+        }
+        else
+        {
+            $dateofbirth = date_create($teacher->user->dateofbirth);
+            $dateofbirth = date_format($dateofbirth, "d/m/Y");
+        }
+        return view('adminpage.usermanage.print_te', ['teacher' => $teacher, 'password' => $password, 'dateofbirth' => $dateofbirth]);
     }
 }

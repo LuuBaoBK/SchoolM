@@ -170,6 +170,14 @@ class AdminManageController extends Controller
         $password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
         $admin->user->password = bcrypt($password);
         $admin->user->save();
-        return view('adminpage.usermanage.print_ad', ['admin' => $admin, 'password' => $password]);
+        if($admin->user->dateofbirth == "0000-00-00"){
+            $dateofbirth = "";
+        }
+        else
+        {
+            $dateofbirth = date_create($admin->user->dateofbirth);
+            $dateofbirth = date_format($dateofbirth, "d/m/Y");
+        }
+        return view('adminpage.usermanage.print_ad', ['admin' => $admin, 'password' => $password, 'dateofbirth' => $dateofbirth]);
     }
 }
