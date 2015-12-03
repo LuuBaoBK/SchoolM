@@ -215,4 +215,13 @@ class TeacherManageController extends Controller
             return $record;
         }
     }
+
+    public function reset_password($id){
+        $teacher = Teacher::find($id);
+        $teacher->user;
+        $password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+        $teacher->user->password = bcrypt($password);
+        $teacher->user->save();
+        return view('adminpage.usermanage.print_te', ['teacher' => $teacher, 'password' => $password]);
+    }
 }

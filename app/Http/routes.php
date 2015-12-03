@@ -38,6 +38,7 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 		Route::post('teacher', 'TeacherManageController@store_te');
 		Route::get ('teacher/edit/{id}', 'TeacherManageController@get_edit_form');
 		Route::post ('teacher/edit', 'TeacherManageController@edit_ad');
+		Route::get ('teacher/edit/{id}/reset_password',  'TeacherManageController@reset_password');
 
 		Route::get ('student', 'StudentManageController@get_stu');
 		Route::post('student', 'StudentManageController@store_stu');

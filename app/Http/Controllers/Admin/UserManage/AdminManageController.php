@@ -165,7 +165,11 @@ class AdminManageController extends Controller
     }
 
     public function reset_password($id){
-        $adminlist = Admin::orderBy('id', 'desc')->get();
-        return view('adminpage.usermanage.ad_print', ['adminlist' => $adminlist]);
+        $admin = Admin::find($id);
+        $admin->user;
+        $password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+        $admin->user->password = bcrypt($password);
+        $admin->user->save();
+        return view('adminpage.usermanage.print_ad', ['admin' => $admin, 'password' => $password]);
     }
 }
