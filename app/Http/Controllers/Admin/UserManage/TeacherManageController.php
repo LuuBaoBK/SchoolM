@@ -102,7 +102,7 @@ class TeacherManageController extends Controller
             $teacher->group = $request['group'];
             $teacher->position = $request['position'];
             $teacher->specialized = $request['specialized'];
-            $teacher->incomingday = $request['incomingday'];
+            $teacher->incomingday = $incomingday;
             $teacher->save();
 
             $te_next_id->save();
@@ -134,12 +134,12 @@ class TeacherManageController extends Controller
             $dateofbirth = date_format($dateofbirth, "d/m/Y");
         }
 
-        if($teacher->user->incomingday == "0000-00-00"){
+        if($teacher->incomingday == "0000-00-00"){
             $incomingday = "";
         }
         else
         {
-            $incomingday = date_create($teacher->user->incomingday);
+            $incomingday = date_create($teacher->incomingday);
             $incomingday = date_format($incomingday, "d/m/Y");
         }
             
@@ -148,7 +148,7 @@ class TeacherManageController extends Controller
         return view('adminpage.usermanage.edit_te')->with('teacher',$teacher);
     }
 
-    public function edit_ad(Request $request){
+    public function edit_te(Request $request){
         $id = $request['id'];
         $user  = User::find($id);
         $teacher = Teacher::find($id);
@@ -207,7 +207,7 @@ class TeacherManageController extends Controller
             $teacher->group = $request['group'];
             $teacher->position = $request['position'];
             $teacher->specialized = $request['specialized'];
-            $teacher->incomingday = $request['incomingday'];
+            $teacher->incomingday = $incomingday;
 
             $teacher->save();
 

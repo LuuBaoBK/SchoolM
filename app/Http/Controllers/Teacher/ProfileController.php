@@ -22,7 +22,16 @@ class ProfileController extends Controller
         else{
             $mydateofbirth = "N/A";
         }
+        if($teacher->incomingday != "0000-00-00")
+        {
+            $myincomingday = date_create_from_format("Y-m-d", $teacher->incomingday);
+            $myincomingday = date_format($myincomingday,"d/m/Y");
+        }
+        else{
+            $myincomingday = "N/A";
+        }
         $teacher['mydateofbirth'] = $mydateofbirth;
+        $teacher['myincomingday'] = $myincomingday;
     return view('teacherpage.dashboard')->with('teacher',$teacher);
     }	
 }

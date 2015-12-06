@@ -16,20 +16,29 @@
 		<div class="col-md-4 col-xs-12">
 			<div class="box box-primary">
 	            <div class="box-header">
-	              <h4 class="text text-center ">{{$admin->user->firstname}} {{$admin->user->middlename}} {{$admin->user->lastname}}</h4>
+	              <h4 class="text text-center ">{{$teacher->user->firstname}} {{$teacher->user->middlename}} {{$teacher->user->lastname}}</h4>
 	            </div>
 	            <div class="box-body">
 		      		<ul class="list-group list-group-unbordered">
 		                <li class="list-group-item">
-		                  <b>Role</b> <a class="pull-right">Admin</a>
+		                  <b>Role</b> <a class="pull-right">Teacher</a>
 		                </li>
 		                <li class="list-group-item">
-		                  <b>Mobile Phone</b> <a class="pull-right"><?php $mobilephone = ($admin->mobilephone =="")? "N/A" : $admin->mobilephone; echo $mobilephone ?></a>
-		                </li>
-		                <li class="list-group-item"><b>Date Of Birth</b><a class="pull-right">{{$admin->mydateofbirth}}</a>
+		                  <b>Position</b> <a class="pull-right">{{$teacher->position}}</a>
 		                </li>
 		                <li class="list-group-item">
-		                  <b>Create By</b> <a class="pull-right">{{$admin->create_by}}</a>
+		                  <b>Mobile Phone</b> <a class="pull-right"><?php $mobilephone = ($teacher->mobilephone =="")? "N/A" : $teacher->mobilephone; echo $mobilephone ?></a>
+		                </li>
+		                <li class="list-group-item"><b>Date Of Birth</b><a class="pull-right">{{$teacher->mydateofbirth}}</a>
+		                </li>
+		                <li class="list-group-item">
+		                  <b>Specialize</b> <a class="pull-right">{{$teacher->specialized}}</a>
+		                </li>
+		                <li class="list-group-item">
+		                  <b>Group</b> <a class="pull-right">{{$teacher->group}}</a>
+		                </li>
+		                <li class="list-group-item">
+		                  <b>Incoming Day</b> <a class="pull-right">{{$teacher->myincomingday}}</a>
 		                </li>
 	              	</ul>
 		      	</div>
@@ -53,51 +62,51 @@
 				                <div class="row form-group">
 				                    <div class="col-xs-12 col-lg-3">
 				                        <label for="id">Id</label>
-				                        <input type="text" class="form-control" name="id" id="id" value={{$admin->id}} disabled>
+				                        <input type="text" class="form-control" name="id" id="id" value={{$teacher->id}} disabled>
 				                    </div>
 				                    <div class="col-xs-12 col-lg-3">
 				                        <label for="email">Email</label>
-				                        <input type="text" class="form-control" name="email" id="email" value={{$admin->user->email}} disabled>
+				                        <input type="text" class="form-control" name="email" id="email" value={{$teacher->user->email}} disabled>
 				                    </div>
 				                    <div class="col-xs-12 col-lg-3">
 				                        <label for="create_by">Create By</label>
-				                        <input type="text" class="form-control" name="create_by" id="create_by" value={{$admin->create_by}} disabled>
+				                        <input type="text" class="form-control" name="create_by" id="create_by" value={{$teacher->create_by}} disabled>
 				                    </div>
 				                </div>
 				                <div class="row">
 				                    <div class="form-group col-lg-3 col-xs-12">
 				                        <label for="firstname">First Name</label>
 				                        <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-				                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value='<?=$admin->user->firstname?>'>
+				                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value='<?=$teacher->user->firstname?>'>
 				                        <label class="error_mess" id="firstname_error" style="display:none" for="firstname"></label>
 				                    </div>
 				                    <div class="form-group col-lg-3 col-xs-12">
 				                        <label for="middlename">Middle Name</label>
-				                        <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" value='<?=$admin->user->middlename?>'>
+				                        <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" value='<?=$teacher->user->middlename?>'>
 				                        <label class="error_mess" id="middlename_error" style="display:none" for="middlename"></label>
 				                    </div>
 				                    <div class="form-group col-lg-3 col-xs-12">
 				                        <label for="lastname">Last Name</label>
-				                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value='<?=$admin->user->lastname?>'>
+				                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value='<?=$teacher->user->lastname?>'>
 				                        <label class="error_mess" id="lastname_error" style="display:none" for="lastname"></label>        
 				                    </div>
 				                </div>
 				                <div class="row">
 				                    <div class="form-group col-lg-3">
 				                        <label for="mobilephone">Mobile Phone</label>
-				                        <input type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone" value={{$admin->mobilephone}}>
+				                        <input type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone" value={{$teacher->mobilephone}}>
 				                        <label class="error_mess" id="mobilephone_error" style="display:none" for="mobilephone"></label>
 				                    </div>
 				                    <div class="form-group col-lg-3">
 				                        <label for="dateofbirth">Date Of Birth:</label>
-				                        <input type="text" id="dateofbirth" name="dateofbirth" class="form-control"  data-inputmask="'alias': 'dd/mm/yyyy'" data-mask / value={{$admin->mydateofbirth}} >
+				                        <input type="text" id="dateofbirth" name="dateofbirth" class="form-control"  data-inputmask="'alias': 'dd/mm/yyyy'" data-mask / value={{$teacher->mydateofbirth}} >
 				                        <label class="error_mess" id="dateofbirth_error" style="display:none" for="dateofbirth"></label>
 				                    </div>
 				                </div>
 				                <div class="row">
 				                    <div class="form-group col-lg-6">
 				                        <label for="address">Address</label>
-				                        <input type="text" class="form-control" name="address" id="address" placeholder="Address" value='<?=$admin->user->address?>'>
+				                        <input type="text" class="form-control" name="address" id="address" placeholder="Address" value='<?=$teacher->user->address?>'>
 				                        <label class="error_mess" id="address_error" style="display:none" for="address"></label>
 				                    </div>
 				                </div>
@@ -119,12 +128,12 @@
 				                    <div class="form-group col-lg-7 col-xs-12">
 				                        <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
 				                        <label for="new_password">New Password</label>
-				                        <input type="password" class="form-control" name="new_password" id="new_password" placeholder="New Password" value='<?=$admin->user->new_password?>'>
+				                        <input type="password" class="form-control" name="new_password" id="new_password" placeholder="New Password" value='<?=$teacher->user->new_password?>'>
 				                        <label class="error_mess" id="new_password_error" style="display:none" for="new_password"></label>
 				                    </div>
 				                    <div class="form-group col-lg-7 col-xs-12">
 				                        <label for="confirm_password">Confirm Passworld</label>
-				                        <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Passworld" value='<?=$admin->user->confirm_password?>'>
+				                        <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Passworld" value='<?=$teacher->user->confirm_password?>'>
 				                        <label class="error_mess" id="confirm_password_error" style="display:none" for="confirm_password"></label>        
 				                    </div>
 				                </div>
