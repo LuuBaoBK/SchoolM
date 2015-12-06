@@ -25,9 +25,21 @@ class TranscriptController extends Controller
         $kq = array();
         $i = 1;
         foreach ($stu as $value) {
-            $kq[$i] = $value->student->user->firstname." ".$value->student->user->middlename." ".$value->student->user->lastname;
+            $kq[$i][1] = $value->student->user->firstname." ".$value->student->user->middlename." ".$value->student->user->lastname;
+            $kq[$i][2] = $value->student_id;
             $i++;
         }
+        $record = array(
+                'isSuccess' => 1,
+                'mydata' => $kq
+            );
+        return $record;
+    }
+
+    public function gettranscript(Request $request)
+    {
+        $id = $request['id'];
+        $kq = Transcript::where('student_id', '=', $id)->orderBy('type', 'asc')->get();
         $record = array(
                 'isSuccess' => 1,
                 'mydata' => $kq

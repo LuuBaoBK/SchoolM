@@ -1,5 +1,10 @@
 @extends('mytemplate.newblankpage')
 @section('content')
+<style type="text/css">
+table tr.selected{
+    background-color: #3399CC !important; 
+}
+</style>
 <section class="content-header">
     <h1>
         Admin
@@ -65,7 +70,8 @@
         </div>
 </section>
 <section class="content">
-<div class="col-xs-3">
+    <div class="row">
+<div class="col-xs-4">
     <div class="box box-solid box-primary">
         <div class="box-header">
             <h3 class="box-title">Student List</h3>
@@ -77,7 +83,8 @@
             <table id="student_table" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th style="width:25px"></th>
+                            <th style="width:70px">Student ID</th>
+                            <th>Fullname</th>
                         </tr>
                     </thead>
 
@@ -98,7 +105,7 @@
     </div><!-- /.box -->
 </div>
 
-<div class="col-xs-9 col-lg12">
+<div class="col-xs-8 col-lg12">
             <div class="box box-solid box-primary">
                 <div class="box-header">
                     <h3 class="box-title">Transcript</h3>
@@ -137,6 +144,7 @@
                 </div>
             </div><!-- /.box -->
         </div>
+    </div>
 </section><!-- DATA TABES SCRIPT -->
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
@@ -144,14 +152,18 @@
 <script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
 <!-- page script -->
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function()
+    {
         $(function() {
+            //$('#student_table_filter').css("float","left");
+            
             $('#student_table').dataTable(
             {
+
                 "bSort" : false,
                 "bLengthChange": false,
                 "bInfo": false,
-                "bFilter": false,
+                //"bFilter": false,
                 "bPaginate": false
             });
         });
@@ -185,43 +197,46 @@
         });
 
         function updateClassname(){
-        var scholastic      = $('#scholastic').val();
-        var grade           = $('#grade').val();
-        var group           = $('#group').val();
-        var token           = $('input[name="_token"]').val();
-        $.ajax({
-            url     :"<?= URL::to('/admin/class/studentclassinfo/updateclassname') ?>",
-            type    :"POST",
-            async   :false,
-            data    :{
-                    'scholastic'    :scholastic,
-                    'grade'         :grade,
-                    'group'         :group,
-                    '_token'        :token
-                    },
-            success:function(record){
-                $("#classname").empty();
-                if(record.count > 0){
-                    $('#classname').append("<option value='-1' selected>-- Select --</option>");
-                    $count = 1;
-                    $.each(record.data, function(i, row){
-                        $('#classname').append("<option value=" + $count +">"+row.id+"  |  "+row.classname+"</option>");
-                        $count++;
-                    });
-                    $('#classname').append("<option value='0'>-- All --</option>");
+            var scholastic      = $('#scholastic').val();
+            var grade           = $('#grade').val();
+            var group           = $('#group').val();
+            var token           = $('input[name="_token"]').val();
+            $.ajax({
+                url     :"<?= URL::to('/admin/class/studentclassinfo/updateclassname') ?>",
+                type    :"POST",
+                async   :false,
+                data    :{
+                        'scholastic'    :scholastic,
+                        'grade'         :grade,
+                        'group'         :group,
+                        '_token'        :token
+                        },
+                success:function(record)
+                {
+                    $("#classname").empty();
+                    if(record.count > 0){
+                        $('#classname').append("<option value='-1' selected>-- Select --</option>");
+                        $count = 1;
+                        $.each(record.data, function(i, row){
+                            $('#classname').append("<option value=" + $count +">"+row.id+"  |  "+row.classname+"</option>");
+                            $count++;
+                        });
+                        $('#classname').append("<option value='0'>-- All --</option>");
+                    }
+                    else{
+                        $('#classname').append("<option value='-1'>No Record</option>");
+                    }
+                    
+                },
+                error:function()
+                {
+                    alert("something went wrong, contact master admin to fix");
                 }
-                else{
-                    $('#classname').append("<option value='-1'>No Record</option>");
-                }
-                
-            },
-            error:function(){
-                alert("something went wrong, contact master admin to fix");
-            }
-        });
-    }
+            });
+        }
 
-     $('#getstudent').click(function(){
+     $('#getstudent').click(function()
+     {
             var classname = $('#classname option:selected').text().substr(0,8);
             var token = $('input[name="_token"]').val();
 
@@ -243,14 +258,68 @@
                         $.each(record.mydata, function(i, row)
                         {
                             $('#student_table').dataTable().fnAddData([
-                                row,
+                                row[2],
+                                row[1],
                             ]);
                         });
                     }
                 }
             });
         });
+
+    $('#student_table tbody').on('click', 'tr', function() {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                $('#student_table').dataTable().$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');          
+            }
+
+            if( $('#student_table').dataTable().fnGetData(this) != null){
+                $('#empty_mess').slideUp('medium');
+                var token = $('input[name="_token"]').val();
+                $.ajax({
+                    url     :"<?= URL::to('/admin/transcript/gettranscript') ?>",
+                    type    :"POST",
+                    async   :false,
+                    data    :{
+                        'id'     :$('#student_table').dataTable().fnGetData(this)[0],
+                        '_token'        : token
+                    },
+                    success:function(record){
+                        console.log(record);
+                        
+                        $('#transcript_table').dataTable().fnClearTable();
+
+                        $.each(record.student, function(i, row){
+                            
+                            $('#transcript_table').dataTable().fnAddData([
+                               
+                            ]);
+                        });
+                    },
+                    error:function(){
+                        alert("Something went wrong ! Please Contact Your Super Admin");
+                    }
+                });
+            }
+            else{
+                $('#id').val("");
+                $('#email').val("");
+                $('#firstname').val("");
+                $('#middlename').val("");
+                $('#lastname').val("");
+                $('#mobilephone').val("");
+                $('#homephone').val("");
+                $('#address').val("");
+                $('#dateofbirth').val("");
+            }        
+            
+        });
     });
+
+    
 </script> 
 
 @endsection

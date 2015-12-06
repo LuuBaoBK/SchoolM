@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SysVarSeeder::class);
         $this->call(SchedulesTableSeeder::class);
         $this->call(StudentClassTableSeeder::class);
+        $this->call(TranscriptClassTableSeeder::class);
         Model::reguard();
     }
 }
