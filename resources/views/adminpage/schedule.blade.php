@@ -170,7 +170,7 @@
                         $('#classname').append("<option value=" + $count +">"+row.id+"  |  "+row.classname+"</option>");
                         $count++;
                     });
-                    $('#classname').append("<option value='0'>-- All --</option>");
+                    //$('#classname').append("<option value='0'>-- All --</option>");
                 }
                 else{
                     $('#classname').append("<option value='-1'>No Record</option>");
@@ -200,7 +200,7 @@
                     console.log(record);
                     if(record.isSuccess == 1)
                     {
-                        $('#student_table').dataTable().fnClearTable();
+                        $('#schedule_table').dataTable().fnClearTable();
         
                         $count = 1;
                         $.each(record.mydata, function(i, row)

@@ -12,10 +12,18 @@ class TeacherTableSeeder extends Seeder
     public function run()
     {
         for($i=0; $i<=9; $i++){
+            $mobilephone = '0';
+            $homephone = '08';
+            for($k=0; $k<9; $k++){
+                $mobilephone = $mobilephone.rand(0,9);
+                if($k < 7){
+                    $homephone = $homephone.rand(0,9);
+                }
+            }
     		DB::table('teachers')->insert([
     			'id' =>	't_000000'.$i,
-                'mobilephone' => '090-000-'.$i,
-                'homephone' => '08-000-'.$i,
+                'mobilephone' => $mobilephone,
+                'homephone' => $homephone,
                 'group' => $i,
                 'position' => 'giao vien',
                 'specialized' => 'toan'.$i,
@@ -23,10 +31,18 @@ class TeacherTableSeeder extends Seeder
         	]);
     	}
         for($i=0; $i<=9; $i++){
+            $mobilephone = '0';
+            $homephone = '08';
+            for($k=0; $k<9; $k++){
+                $mobilephone = $mobilephone.rand(0,9);
+                if($k < 7){
+                    $homephone = $homephone.rand(0,9);
+                }
+            }
             DB::table('teachers')->insert([
                 'id' => 't_000001'.$i,
-                'mobilephone' => '090-000-'.$i,
-                'homephone' => '08-000-'.$i,
+                'mobilephone' => $mobilephone,
+                'homephone' => $homephone,
                 'group' => $i,
                 'position' => 'giao vien',
                 'specialized' => 'toan'.$i,

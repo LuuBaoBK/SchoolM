@@ -208,8 +208,22 @@
                                                 }
                                             ?>
                                         </select>
-                                    </div>                                  
-                                </div>                                        
+                                    </div>                                                                      
+                                </div>    
+                                <div class="row">
+                                    <div class="form-group col-lg-3 col-xs-7">
+                                        <label for="firstname">First Name</label>
+                                        <input id="firstname" type="text" class="form-control" name="firstname" id="firstname" placeholder="Student First Name">
+                                    </div>
+                                    <div class="form-group col-lg-3 col-xs-7">
+                                        <label for="middlename">Middle Name</label>
+                                        <input id="middlename" type="text" class="form-control" name="middlename" id="middlename" placeholder="Student Middle Name">
+                                    </div>
+                                    <div class="form-group col-lg-3 col-xs-7">
+                                        <label for="lastname">Last Name</label>
+                                        <input id="lastname" type="text" class="form-control" name="lastname" id="lastname" placeholder="Student Last Name">
+                                    </div>        
+                                </div>                                    
                                 <div class="box-footer">
                                     <button id ="student_search" type="button" class="btn btn-primary btn-flatt">Search</button>
                                 </div>
@@ -374,6 +388,9 @@ $(document).ready(function() {
         $('#student_search').click(function(){
             var from_year = $('#from_year').val();
             var to_year = $('#to_year').val();
+            var firstname = $('#firstname').val();
+            var middlename = $('#middlename').val();
+            var lastname = $('#lastname').val();
             var token = $('input[name="_token"]').val();
 
            $.ajax({
@@ -383,6 +400,9 @@ $(document).ready(function() {
                 data    :{
                     'from_year'     :from_year,
                     'to_year'       :to_year,
+                    'firstname'      :firstname,
+                    'middlename'      :middlename,
+                    'lastname'      :lastname,
                     '_token'        :token
                 },
                 success:function(record){
@@ -396,8 +416,8 @@ $(document).ready(function() {
                         var mydateofbirth,formattedDate,d,m,y;
                         $.each(record.mydata, function(i, row){
                             button = "<a href='/admin/manage-user/student/edit/"+row.id+"'><i class='glyphicon glyphicon-edit'></i></a>";
-                            if(row.user.dateofbirth != "0000-00-00"){
-                                formattedDate = new Date(row.user.dateofbirth);
+                            if(row.dateofbirth != "0000-00-00"){
+                                formattedDate = new Date(row.dateofbirth);
                                 d = formattedDate.getDate();
                                 m =  formattedDate.getMonth();
                                 m += 1;  // JavaScript months are 0-11
@@ -410,14 +430,14 @@ $(document).ready(function() {
                             
                             $('#student_table').dataTable().fnAddData([
                                 row.id,
-                                row.user.firstname+" "+row.user.middlename+" "+row.user.lastname,
-                                row.user.email,
-                                row.enrolled_year,
-                                row.graduated_year,
-                                row.parent.user.firstname+" "+row.parent.user.middlename+" "+row.parent.user.lastname,
+                                row.firstname+" "+row.middlename+" "+row.lastname,
+                                row.email,
+                                row.student.enrolled_year,
+                                row.student.graduated_year,
+                                row.student.parent.user.firstname+" "+row.student.parent.user.middlename+" "+row.student.parent.user.lastname,
                                 mydateofbirth,
-                                row.user.address,
-                                row.user.role,
+                                row.address,
+                                row.role,
                                 button
                             ]);
                         });

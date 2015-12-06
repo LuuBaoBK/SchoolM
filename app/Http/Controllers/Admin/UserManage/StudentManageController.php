@@ -35,16 +35,29 @@ class StudentManageController extends Controller
         }
         else
         {   
-            $student = Student::whereBetween('enrolled_year', [$request['from_year'], $request['to_year']])->orderBy('id','desc')->get();
-            foreach ($student as $key => $value) {
-                $value->user;
-                $value->parent->user;
+            $firstname = $request['firstname'];
+            $middlename = $request['middlename'];
+            $lastname = $request['lastname'];
+            $student = Student::select('id')
+                              ->whereBetween('enrolled_year', [$request['from_year'], $request['to_year']])
+                              ->orderBy('id','desc')
+                              ->get();
+            $studentlist =  User::whereIn('id', $student)
+                                ->where('firstname','like',$firstname."%")
+                                ->where('middlename', 'like',"%".$middlename."%")
+                                ->where('lastname','like',"%".$lastname)
+                                ->get();
+            foreach ($studentlist as $key => $value) {
+                $value->student->parent->user;
             }
             $record = array(
                 'isSuccess' => 1,
-                'mydata' => $student
+                'mydata' => $studentlist
             );
             $record['isSuccess'] = 1;
+            $record['firstname'] = $firstname;
+            $record['middlename'] = $middlename;
+            $record['lastname'] = $lastname;
             return $record;
         }
     }

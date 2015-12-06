@@ -57,7 +57,7 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
     //Manage class
 	Route::group(['prefix' => 'class', 'namespace' =>'Admin\Classes'], function(){
 		Route::get('classinfo', 'ClassController@view');
-		Route::post('classinfo', 'ClassController@show');
+		Route::post('classinfo/search', 'ClassController@show');
 		Route::post('classinfo/updateform', 'ClassController@updateform');
 		Route::post('classinfo/store', 'ClassController@store');
 		Route::get('classinfo/edit/{id}', 'ClassController@get_edit_form');

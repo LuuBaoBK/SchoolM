@@ -40,11 +40,11 @@ class ClassController extends Controller
 
     public function store(Request $request){
         $rules = array(
-            'classname' => 'required|max:2',
+            'class_identifier' => 'required|max:2',
             'id'   => 'isexistclasses'
         );
-        $needvalidate['classname'] = $request['classname'];
-        $needvalidate['id'] = $request['scholastic']."_".$request['grade']."_".$request['group']."_".$request['classname'];
+        $needvalidate['class_identifier'] = $request['class_identifier'];
+        $needvalidate['id'] = $request['scholastic']."_".$request['grade']."_".$request['group']."_".$request['class_identifier'];
         $validator = Validator::make($needvalidate, $rules);
         if($validator->fails())
         {
@@ -55,14 +55,14 @@ class ClassController extends Controller
         {
             $myclass = new Classes;
             $myclass->id                  = $needvalidate['id'];
-            $myclass->classname           = $request['grade'].$request['group'].$needvalidate['classname'];
+            $myclass->classname           = $request['grade'].$request['group'].$needvalidate['class_identifier'];
             $myclass->homeroom_teacher    = $request['homeroom_teacher'];
             $myclass->scholastic          = $request['scholastic'];
             $myclass->save();
 
             $myclass = Classes::find($needvalidate['id']);
             $record['id']               = $myclass->id;
-            $record['classname']             = $myclass->classname;
+            $record['classname']        = $myclass->classname;
             $record['scholastic']       = "20".$myclass->scholastic;
 
             $year = $myclass->scholastic;
