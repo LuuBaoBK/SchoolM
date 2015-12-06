@@ -88,3 +88,8 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::post('transcript', 'Admin\TranscriptController@store');
 });
 
+Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () {
+	Route::get('dashboard', 'Teacher\ProfileController@get_te_dashboard' );
+
+});
+
