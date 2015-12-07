@@ -49,7 +49,7 @@ class TranscriptController extends Controller
             $j=0;
             foreach ($type as $key1) {
                 $score = Transcript::select('score')->where('student_id', '=', $id)->where('subject_id', '=', $key->id)->where('type', '=', $key1->type)->first();
-                $temp = Transcript::select('score')->where('student_id', '=', $id)->where('subject_id', '=', $key->id)->where('type', '=', $key1->type)->get()->count();
+                $temp = count($score);
                 $j++;
                 $kq[$i][$j] = "";
                 if ($temp>0)

@@ -1,4 +1,4 @@
-@extends('mytemplate.newblankpage')
+@extends('mytemplate.blankpage_ad')
 @section('content')
 
 <?php use App\Model\Subject; ?>

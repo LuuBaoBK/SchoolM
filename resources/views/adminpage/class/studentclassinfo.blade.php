@@ -1,4 +1,4 @@
-@extends('mytemplate.newblankpage')
+@extends('mytemplate.blankpage_ad')
 @section('content')
 <style type="text/css">
 table tr.selected{
@@ -123,20 +123,30 @@ table tr.selected{
                                             echo ("<option value='".$year."'>".$year."</option>");
                                         }
                                     ?>
+                                    <option value="0">-- All --</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-lg-4">
-                                <label for="studentid">Student Id</label>
-                                <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-                                <input type="text" class="form-control" name="studentid" id="studentid" placeholder="Student Id" >
-                                <label class="info_error_mess" id="studentid_error" style="display:none" for="studentid"></label>
+                            <div class="form-group col-lg-4 col-xs-7">
+                                <label for="search_firstname">First Name</label>
+                                <input id="search_firstname" type="text" class="form-control" name="search_firstname" id="search_firstname" placeholder="Student First Name">
                             </div>
-                            <div class="form-group col-lg-4">
+                            <div class="form-group col-lg-4 col-xs-7">
+                                <label for="search_middlename">Middle Name</label>
+                                <input id="search_middlename" type="text" class="form-control" name="search_middlename" id="search_middlename" placeholder="Student Middle Name">
+                            </div>
+                            <div class="form-group col-lg-4 col-xs-7">
+                                <label for="search_lastname">Last Name</label>
+                                <input id="search_lastname" type="text" class="form-control" name="search_lastname" id="search_lastname" placeholder="Student Last Name">
+                            </div>        
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
                                 <button style="margin-top: 1.7em" type="button" id="search" class="pull-right btn btn-block btn-primary btn-flat">Search</button>  
                             </div>
                         </div>
+                        
                     </div><!-- /.box-body --> 
                 </form>
                 <div style="display: none" class="box needdisplay">
@@ -315,7 +325,7 @@ $(document).ready(function() {
     $(function() {
         $('#student_table').dataTable({
             "scrollCollapse": true,
-            "scrollY" : "200px",
+            "scrollY" : "350px",
             "paging": false,
             "lengthChange": false,
             "searching": false,
@@ -326,7 +336,7 @@ $(document).ready(function() {
         });
         $('#student_table_2').DataTable({
             "scrollCollapse": true,
-            "scrollY" : "200px",
+            "scrollY" : "350px",
             "paging": false,
             "lengthChange": false,
             "searching": false,
@@ -588,17 +598,24 @@ $(document).ready(function() {
     function searchbyid(){
         var enrolled_year      = $('#enrolled_year').val();
         var studentid          = $('#studentid').val();
+        var search_firstname   = $('#search_firstname').val();
+        var search_middlename  = $('#search_middlename').val();
+        var search_lastname    = $('#search_lastname').val();
         var token              = $('input[name="_token"]').val();
         $.ajax({
             url     :"<?= URL::to('/admin/class/studentclassinfo/showstudent') ?>",
             type    :"POST",
             async   :false,
             data    :{
-                    'enrolled_year'    :enrolled_year,
-                    'studentid'     :studentid,
-                    '_token'        :token
+                    'enrolled_year'     :enrolled_year,
+                    'studentid'         :studentid,
+                    'search_firstname'  :search_firstname,
+                    'search_middlename' :search_middlename,
+                    'search_lastname'   :search_lastname,
+                    '_token'            :token
                     },
             success:function(record){
+                console.log(record);
                 $('.needdisplay').css("display","block");
                 if(record.error == "0"){
                     $('#student_table_2').dataTable().fnClearTable();

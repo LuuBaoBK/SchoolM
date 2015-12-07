@@ -1,4 +1,4 @@
-@extends('mytemplate.newblankpage')
+@extends('mytemplate.blankpage_ad')
 @section('content')
 <?php use App\Transcript; ?>
 
@@ -19,59 +19,57 @@ table tr.selected{
     </ol>
 </section>
 <section class="content">
-<div class="col-xs-12">
-            <div class="box box-solid box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">Select Class</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    </div>
-                </div><!-- /.box-header -->
-            <!-- form start -->
-                <form method="POST">
-                 {!! csrf_field() !!}
-                <div class="box-body">
-                    <div class="row">
-                        <div class="form-group col-lg-3 col-xs-7">
-                            <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-                            <label for="scholastic">Scholastic</label>
-                            <select id="scholastic" name="scholastic" class="form-control">
-                                <option value="-1" selected>-- Select --</option>;
-                                <?php
-                                    $year = date("Y") + 2;
-                                    for($year;$year >=2010 ;$year--){
-                                        echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
-                                    }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group col-lg-3 col-xs-7">
-                            <label for="grade">Grade</label>
-                            <select id="grade" name="grade" class="form-control">
-                                <option value="-1" selected>-- Select --</option>;                                            
-                                <option>6</option>;
-                                <option>7</option>;
-                                <option>8</option>;
-                                <option>9</option>;
-                            </select>
-                        </div>
-                        <div class="form-group col-lg-3 col-xs-7">
-                            <label for="classname">Class Name</label>
-                            <select id="classname" name="classname" class="form-control">
-                                <option value="-1" selected>Select Scholastic First</option>;
-                            </select> 
-                        </div>
-                    </div>
-                </div><!-- /.box-body -->
-                <div class="box-footer">
-                    <button id="getstudent" type="button" class="btn btn-primary">Get Student List</button>
-                </div>
-                </form>
-            </div><!-- /.box -->
+<div class="box box-solid box-primary">
+    <div class="box-header">
+        <h3 class="box-title">Select Class</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
         </div>
+    </div><!-- /.box-header -->
+<!-- form start -->
+    <form method="POST">
+     {!! csrf_field() !!}
+    <div class="box-body">
+        <div class="row">
+            <div class="form-group col-lg-3 col-xs-7">
+                <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+                <label for="scholastic">Scholastic</label>
+                <select id="scholastic" name="scholastic" class="form-control">
+                    <option value="-1" selected>-- Select --</option>;
+                    <?php
+                        $year = date("Y") + 2;
+                        for($year;$year >=2010 ;$year--){
+                            echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
+                        }
+                    ?>
+                </select>
+            </div>
+            <div class="form-group col-lg-3 col-xs-7">
+                <label for="grade">Grade</label>
+                <select id="grade" name="grade" class="form-control">
+                    <option value="-1" selected>-- Select --</option>;                                            
+                    <option>6</option>;
+                    <option>7</option>;
+                    <option>8</option>;
+                    <option>9</option>;
+                </select>
+            </div>
+            <div class="form-group col-lg-3 col-xs-7">
+                <label for="classname">Class Name</label>
+                <select id="classname" name="classname" class="form-control">
+                    <option value="-1" selected>Select Scholastic First</option>;
+                </select> 
+            </div>
+        </div>
+    </div><!-- /.box-body -->
+    <div class="box-footer">
+        <button id="getstudent" type="button" class="btn btn-primary">Get Student List</button>
+    </div>
+    </form>
+</div><!-- /.box -->
 </section>
 <section class="content">
-    <div class="row">
+<div class="row">
 <div class="col-xs-4">
     <div class="box box-solid box-primary">
         <div class="box-header">
@@ -106,7 +104,7 @@ table tr.selected{
     </div><!-- /.box -->
 </div>
 
-<div class="col-xs-8 col-lg12">
+<div class="col-xs-8 col-lg-8">
             <div class="box box-solid box-primary">
                 <div class="box-header">
                     <h3 class="box-title">Transcript</h3>

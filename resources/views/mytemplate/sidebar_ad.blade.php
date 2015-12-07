@@ -42,7 +42,6 @@
                 <ul class="treeview-menu">
                     <li><a href="/admin/class/classinfo"><i class="fa fa-angle-double-right"></i>Class Info</a></li>
                     <li><a href="/admin/class/studentclassinfo"><i class="fa fa-angle-double-right"></i>Student List</a></li>
-                    <li><a href=""><i class="fa fa-angle-double-right"></i>???</a></li>
                 </ul>
             </li>
             <li>

@@ -12,6 +12,7 @@ use App\Model\Student;
 use App\Model\Teacher;
 use App\Model\StudentClass;
 use App\Model\Classes;
+use App\User;
 
 class StudentInClassController extends Controller
 {
@@ -121,44 +122,39 @@ class StudentInClassController extends Controller
     }
 
     public function showstudent(Request $request){
-        $enrolled_year = $request['enrolled_year'];
-        $studentid   = $request['studentid'];
-        $record;
+        $enrolled_year      = $request['enrolled_year'];
+        $studentid          = $request['studentid'];
+        $search_firstname   = $request['search_firstname'];
+        $search_middlename  = $request['search_middlename'];
+        $search_lastname    = $request['search_lastname'];
 
-        if($studentid == ""){
-            if($enrolled_year == "-1"){
-                $record['error'] = '0';
-                return $record;
+        if($enrolled_year == "-1"){
+            $record['error'] = '0';
+            return $record;
+        }
+
+        $student_id_list = User::select('id')
+                               ->where('id','like','s_%')
+                               ->where('firstname','like',$search_firstname.'%')
+                               ->where('middlename','like','%'.$search_middlename.'%')
+                               ->where('lastname','like','%'.$search_lastname)
+                               ->get();
+
+        $studentlist = Student::whereIn('id',$student_id_list)
+                                  ->where('enrolled_year','like',"%".$enrolled_year."%")
+                                  ->get();
+
+        $count = count($studentlist);
+        if($count > 0){
+            foreach ($studentlist as $key => $value) {
+                $value->user;
             }
-            else{
-                $count = Student::where('enrolled_year','=',$enrolled_year)->count();
-                if( $count > 0){
-                    $studentlist = Student::where('enrolled_year','=',$enrolled_year)->get();
-                    foreach ($studentlist as $key => $value) {
-                        $value->user;
-                    }
-                    $record = $studentlist;
-                    return $record;
-                }
-                else{
-                    $record['error'] = '0';
-                    return $record;
-                }
-            }
+            $record = $studentlist;
+            return $record;
         }
         else{
-            $count = Student::where('id','=',$studentid)->count();
-            if($count = 0){
-                $record['error'] = '0';
-                return $record;
-            }
-            else{
-                $record = Student::where('id','=',$studentid)->get();
-                foreach ($record as $key => $value) {
-                        $value->user;
-                    }
-                return $record;
-            }
+            $record['error'] = '0';
+            return $record;
         }
         
     }
