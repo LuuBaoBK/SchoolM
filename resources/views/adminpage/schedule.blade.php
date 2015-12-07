@@ -16,97 +16,94 @@
 </section>
 
 <section class="content">
-    <div class="box-body">
-        <!-- My page start here --> 
-        <div class="col-xs-3">
-            <div class="box box-solid box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">Class List</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    </div>
-                </div><!-- /.box-header -->
-            <!-- form start -->
-                <form method="POST">
-                 {!! csrf_field() !!}
-                <div class="box-body">
-                    <div class="form-group">
-                        <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-                        <label for="scholastic">Scholastic</label>
-                        <select id="scholastic" name="scholastic" class="form-control">
-                            <option value="-1" selected>-- Select --</option>;
-                            <?php
-                                $year = date("Y") + 2;
-                                for($year;$year >=2010 ;$year--){
-                                    echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
-                                }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="grade">Grade</label>
-                        <select id="grade" name="grade" class="form-control">
-                            <option value="-1" selected>-- Select --</option>;                                            
-                            <option>6</option>;
-                            <option>7</option>;
-                            <option>8</option>;
-                            <option>9</option>;
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="classname">Class Name</label>
-                        <select id="classname" name="classname" class="form-control">
-                            <option value="-1" selected>Select Scholastic First</option>;
-                        </select> 
-                    </div>
-                </div><!-- /.box-body -->
-                <div class="box-footer">
-                    <button id="getschedule" type="button" class="btn btn-primary">Get Schedule</button>
-                </div>
-                </form>
-            </div><!-- /.box -->
+<!-- My page start here --> 
+<div class="col-xs-3">
+    <div class="box box-solid box-primary">
+        <div class="box-header">
+            <h3 class="box-title">Class List</h3>
+            <div class="box-tools pull-right">
+                <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+        </div><!-- /.box-header -->
+    <!-- form start -->
+        <form method="POST">
+         {!! csrf_field() !!}
+        <div class="box-body">
+            <div class="form-group">
+                <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+                <label for="scholastic">Scholastic</label>
+                <select id="scholastic" name="scholastic" class="form-control">
+                    <option value="-1" selected>-- Select --</option>;
+                    <?php
+                        $year = date("Y") + 2;
+                        for($year;$year >=2010 ;$year--){
+                            echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
+                        }
+                    ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="grade">Grade</label>
+                <select id="grade" name="grade" class="form-control">
+                    <option value="-1" selected>-- Select --</option>;                                            
+                    <option>6</option>;
+                    <option>7</option>;
+                    <option>8</option>;
+                    <option>9</option>;
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="classname">Class Name</label>
+                <select id="classname" name="classname" class="form-control">
+                    <option value="-1" selected>Select Scholastic First</option>;
+                </select> 
+            </div>
+        </div><!-- /.box-body -->
+        <div class="box-footer">
+            <button id="getschedule" type="button" class="btn btn-primary">Get Schedule</button>
         </div>
+        </form>
+    </div><!-- /.box -->
+</div>
 
-        <div class="col-xs-9 col-lg12">
-            <div class="box box-solid box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">Schedule</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    </div>                                    
-                </div><!-- /.box-header -->
+<div class="col-xs-9">
+    <div class="box box-solid box-primary">
+        <div class="box-header">
+            <h3 class="box-title">Schedule</h3>
+            <div class="box-tools pull-right">
+                <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>                                    
+        </div><!-- /.box-header -->
 
-                <div class="box-body table-responsive">
-                    <table id="schedule_table" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th style="width:25px"></th>
-                            <th>Monday</th>
-                            <th>Tuesday</th>
-                            <th>Wednesday</th>
-                            <th>Thursday</th>
-                            <th>Friday</th>
-                        </tr>
-                    </thead>
+        <div class="box-body table-responsive">
+            <table id="schedule_table" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th style="width:25px"></th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                </tr>
+            </thead>
 
-                    <tbody class="displayrecord">
-                        <?php
-                            // for($i=1;$i<=10;$i++){
-                            //     $string = "<tr> <td><b>Tiết ".$i."</b></td>";
-                            //     for($j=1;$j<=5;$j++){
-                            //         $string .= "<td>".$schedulelist[$i][$j]."</td>";
-                            //     }
-                            //     $string .= "</tr>";
-                            //     echo $string;
-                            // }
-                         ?>
-                    </tbody>
-                    </table>
-                </div>
-            </div><!-- /.box -->
+            <tbody class="displayrecord">
+                <?php
+                    // for($i=1;$i<=10;$i++){
+                    //     $string = "<tr> <td><b>Tiết ".$i."</b></td>";
+                    //     for($j=1;$j<=5;$j++){
+                    //         $string .= "<td>".$schedulelist[$i][$j]."</td>";
+                    //     }
+                    //     $string .= "</tr>";
+                    //     echo $string;
+                    // }
+                 ?>
+            </tbody>
+            </table>
         </div>
-    </div>
-<!-- /.box -->
+    </div><!-- /.box -->
+</div>
 </section><!-- DATA TABES SCRIPT -->
 
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>

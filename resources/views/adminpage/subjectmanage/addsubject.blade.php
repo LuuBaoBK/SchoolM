@@ -13,84 +13,74 @@
 </section>
 
 <section class="content">
-<div class="box">
-    <div class="box-body">
-        <!-- My page start here --> 
-        <div class="col-xs-12 col-lg-12">
-            <div class="box box-solid box-primary collapsed-box">
-            <div class="box-header">
-                <h3 class="box-title">Create New Subject</h3>
-                <div class="box-tools pull-right">
-                    <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                </div>
-            </div><!-- /.box-header -->
-            <!-- form start -->
-            <form id="subject_form" method="POST" role="form">
-            {!! csrf_field() !!}
-            <div style = "display: none" class="box-body">
-                <div id="error_mess" style = "display: none" class="alert alert-warning alert-dismissable">
-                    <h4></h4>        
-                </div>
-                 <div id="success_mess" style = "display: none" class="alert alert-success">
-                    <h4><i class="icon fa fa-check"></i>Success Add New Subject</h4>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        <label for="subject_name">Subject Name</label>
-                        <input type="text" class="form-control" name="subject_name" id="subject_name">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        <label for="totaltime">Total Time</label>
-                        <input type="text" class="form-control" name="total_time" id="total_time">
-                    </div>
-                </div>
-            </div><!-- /.box-body -->
-            <div style = "display: none" class="box-footer">
-                    <button id ="subject_form_submit" type="button" class="btn btn-primary">Create New Subject</button>
+<!-- My page start here --> 
+<div class="box box-solid box-primary collapsed-box">
+    <div class="box-header">
+        <h3 class="box-title">Create New Subject</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
+        </div>
+    </div><!-- /.box-header -->
+    <!-- form start -->
+    <form id="subject_form" method="POST" role="form">
+    {!! csrf_field() !!}
+    <div style = "display: none" class="box-body">
+        <div id="error_mess" style = "display: none" class="alert alert-warning alert-dismissable">
+            <h4></h4>        
+        </div>
+         <div id="success_mess" style = "display: none" class="alert alert-success">
+            <h4><i class="icon fa fa-check"></i>Success Add New Subject</h4>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-6">
+                <label for="subject_name">Subject Name</label>
+                <input type="text" class="form-control" name="subject_name" id="subject_name">
             </div>
-            </form>
-            </div><!-- /.box -->
         </div>
-
-        <div class="col-xs-12 col-lg12">
-            <div class="box box-solid box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">Subject List</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    </div>                                    
-                </div><!-- /.box-header -->
-
-                <div class="box-body table-responsive">
-                    <table id="subject_table" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Subject Name</th>
-                            <th>Total Time</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-
-                    <tbody class="displayrecord">
-                        <?php foreach ($subjectlist as $row) :?>
-                            <tr>
-                                <td> <?php echo $row->id ?></td>
-                                <td> <?php echo $row->subject_name ?></td>
-                                <td> <?php echo $row->total_time ?></td>
-                                <td> <i class = "fa fa-fw fa-edit"></i> <a href="<?php echo '/admin/editsubject/'.$row->id ?>">Edit</a> </td>
-                            </tr>
-                        <?php endforeach;?>
-                    </tbody>
-                    </table>
-                </div>
-            </div><!-- /.box -->
+        <div class="row">
+            <div class="form-group col-lg-6">
+                <label for="totaltime">Total Time</label>
+                <input type="text" class="form-control" name="total_time" id="total_time">
+            </div>
         </div>
+    </div><!-- /.box-body -->
+    <div style = "display: none" class="box-footer">
+            <button id ="subject_form_submit" type="button" class="btn btn-primary">Create New Subject</button>
+    </div>
+    </form>
+</div><!-- /.box -->
+<div class="box box-solid box-primary">
+    <div class="box-header">
+        <h3 class="box-title">Subject List</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>                                    
+    </div><!-- /.box-header -->
+
+    <div class="box-body table-responsive">
+        <table id="subject_table" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Subject Name</th>
+                <th>Total Time</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody class="displayrecord">
+            <?php foreach ($subjectlist as $row) :?>
+                <tr>
+                    <td> <?php echo $row->id ?></td>
+                    <td> <?php echo $row->subject_name ?></td>
+                    <td> <?php echo $row->total_time ?></td>
+                    <td> <i class = "fa fa-fw fa-edit"></i> <a href="<?php echo '/admin/editsubject/'.$row->id ?>">Edit</a> </td>
+                </tr>
+            <?php endforeach;?>
+        </tbody>
+        </table>
     </div>
 </div>
-<!-- /.box -->
 </section>
 
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>

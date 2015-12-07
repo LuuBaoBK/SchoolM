@@ -11,166 +11,160 @@
     </ol>
 </section>
 <section class="content">
-<div class="box">
-    <div class="box-body">
-        <!-- My page start here --> 
-        <div class="col-xs-12 col-lg12">
-            <div class="box box-solid box-primary">
-                <div class="box-header">
-                   <h3 class="box-title">Add New Class</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    </div>   
-                </div>
-                <form id="class_form" role="form">
-                    {!! csrf_field() !!}
-                    <div class="box-body">
-                        <div id="success_mess" style = "display: none" class="alert alert-success">
-                            <h4><i class="icon fa fa-check"></i>Success Add New Class</h4>
-                        </div>
-                        <div class="box box-primary">
-                            <div class="box-header">
-                                <div class="box-title">Class Info</div>
-                            </div>
-                            <div class="box-body">
-                                <div class="row">
-                                    <div class="form-group col-lg-3 col-xs-7">
-                                        <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-                                        <label for="scholastic">Scholastic</label>
-                                        <select id="scholastic" name="scholastic" class="form-control">
-                                            <?php
-                                                $year = date("Y") + 2;
-                                                for($year;$year >=2010 ;$year--){
-                                                    if($year == 2015)
-                                                    {
-                                                        echo ("<option value='".substr($year,2)."' selected >".$year." - ".($year+1)."</option>");
-                                                    }
-                                                    else
-                                                    {
-                                                        echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
-                                                    }
-                                                }
-                                            ?>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-lg-3 col-xs-7">
-                                        <label for="grade">Grade</label>
-                                        <select id="grade" name="grade" class="form-control">
-                                            <option selected>6</option>;
-                                            <option>7</option>;
-                                            <option>8</option>;
-                                            <option>9</option>;
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-lg-3 col-xs-7">
-                                        <label for="group">Group</label>
-                                        <select id="group" name="group" class="form-control">
-                                            <option selected>A</option>;
-                                            <option>B</option>;
-                                            <option>C</option>;
-                                            <option>MT</option>;
-                                        </select>
-                                    </div>                                                   
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-3 col-xs-7">
-                                        <label for="class_identifier">Class's Identifier <small>*</small></label>
-                                        <input onkeydown="if (event.keyCode == 13) {return false;}" type="text" class="form-control" name="clasas_identifier" id="class_identifier" placeholder="2 characters">
-                                        <label class="error_mess" id="class_identifier_error" style="display:none" for="class_identifier"></label>
-                                    </div>
-                                    <div class="form-group col-lg-3 col-xs-7">
-                                        <label for="homeroomteacher">Homeroom Teacher</label>
-                                        <select id="homeroomteacher" name="homeroomteacher" class="form-control">
-                                            <?php
-                                                foreach($record['teacherlist'] as $key => $value){
-                                                    echo ("<option value='".$value->id."'>".$value->id." | ".$value->user->firstname." ".$value->user->middlename." ".$value->user->lastname."</option>");
-                                                }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div> <!-- Student box body -->
-                            <div class="box-footer">
-                                <button id ="class_form_submit" type="button" class="btn btn-primary">Create New Class</button>
-                            </div>
-                        </div> <!-- Student box -->
-                    </div><!-- /.box-body -->
-                </form>
+<!-- My page start here --> 
+<div class="box box-solid box-primary collapsed-box">
+    <div class="box-header">
+       <h3 class="box-title">Add New Class</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>   
+    </div>
+    <form id="class_form" role="form">
+        {!! csrf_field() !!}
+        <div class="box-body">
+            <div id="success_mess" style = "display: none" class="alert alert-success">
+                <h4><i class="icon fa fa-check"></i>Success Add New Class</h4>
             </div>
-            <div class="box box-solid box-primary">
+            <div class="box box-primary">
                 <div class="box-header">
-                    <h3 class="box-title">Classes List</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    </div>                                    
-                </div><!-- /.box-header -->
-
-                <div class="box-body table-responsive">
-                    <div class="box box-primary">
-                        <div class="box-header">
-                            <p class="box-title">Select Scholastic</p>
+                    <div class="box-title">Class Info</div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="form-group col-lg-3 col-xs-7">
+                            <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+                            <label for="scholastic">Scholastic</label>
+                            <select id="scholastic" name="scholastic" class="form-control">
+                                <?php
+                                    $year = date("Y") + 2;
+                                    for($year;$year >=2010 ;$year--){
+                                        if($year == 2015)
+                                        {
+                                            echo ("<option value='".substr($year,2)."' selected >".$year." - ".($year+1)."</option>");
+                                        }
+                                        else
+                                        {
+                                            echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
+                                        }
+                                    }
+                                ?>
+                            </select>
                         </div>
-                        <div class="box-body">
-                            <form id="class_filter">
-                                <div class="box-body">
-                                <div class="row">
-                                    <div class="form-group col-lg-3 col-xs-7">
-                                        <label for="scholastic_filter">Scholastic</label>
-                                        <select id="scholastic_filter" name="scholastic_filter" class="form-control">
-                                            <option value="" selected>Select All</option>
-                                            <?php
-                                                $year = date("Y") + 2;
-                                                for($year;$year >=2010 ;$year--){
-                                                    if($year == 2015)
-                                                    {
-                                                        echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
-                                                    }
-                                                    else
-                                                    {
-                                                        echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
-                                                    }
-                                                }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>                                  
-                                </div>                                        
-                                <div class="box-footer">
-                                    <button id ="class_search_submit" type="button" class="btn btn-primary btn-flatt">Search</button>
-                                </div>
-                            </form>
+                        <div class="form-group col-lg-3 col-xs-7">
+                            <label for="grade">Grade</label>
+                            <select id="grade" name="grade" class="form-control">
+                                <option selected>6</option>;
+                                <option>7</option>;
+                                <option>8</option>;
+                                <option>9</option>;
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-3 col-xs-7">
+                            <label for="group">Group</label>
+                            <select id="group" name="group" class="form-control">
+                                <option selected>A</option>;
+                                <option>B</option>;
+                                <option>C</option>;
+                                <option>MT</option>;
+                            </select>
+                        </div>                                                   
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-3 col-xs-7">
+                            <label for="class_identifier">Class's Identifier <small>*</small></label>
+                            <input onkeydown="if (event.keyCode == 13) {return false;}" type="text" class="form-control" name="clasas_identifier" id="class_identifier" placeholder="2 characters">
+                            <label class="error_mess" id="class_identifier_error" style="display:none" for="class_identifier"></label>
+                        </div>
+                        <div class="form-group col-lg-3 col-xs-7">
+                            <label for="homeroomteacher">Homeroom Teacher</label>
+                            <select id="homeroomteacher" name="homeroomteacher" class="form-control">
+                                <?php
+                                    foreach($record['teacherlist'] as $key => $value){
+                                        echo ("<option value='".$value->id."'>".$value->id." | ".$value->user->firstname." ".$value->user->middlename." ".$value->user->lastname."</option>");
+                                    }
+                                ?>
+                            </select>
                         </div>
                     </div>
-                    <table id="class_table" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Class Name</th>
-                            <th>Scholastic</th>
-                            <th>Homeroom Teacher</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-
-                    <tbody class="displayrecord">
-                       
-                    </tbody>
-                    
-                    <tfoot>
-                        <tr>
-                            <th>Id</th>
-                            <th>Class Name</th>
-                            <th>Scholastic</th>
-                            <th>Homeroom Teacher</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                    </table>
+                </div> <!-- Student box body -->
+                <div class="box-footer">
+                    <button id ="class_form_submit" type="button" class="btn btn-primary">Create New Class</button>
                 </div>
-            </div><!-- /.box -->
-        </div>
-    </div>
+            </div> <!-- Student box -->
+        </div><!-- /.box-body -->
+    </form>
 </div>
+<div class="box box-solid box-primary">
+    <div class="box-header">
+        <h3 class="box-title">Classes List</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>                                    
+    </div><!-- /.box-header -->
+
+    <div class="box-body table-responsive">
+        <div class="box box-primary">
+            <div class="box-header">
+                <p class="box-title">Select Scholastic</p>
+            </div>
+            <div class="box-body">
+                <form id="class_filter">
+                    <div class="box-body">
+                    <div class="row">
+                        <div class="form-group col-lg-3 col-xs-7">
+                            <label for="scholastic_filter">Scholastic</label>
+                            <select id="scholastic_filter" name="scholastic_filter" class="form-control">
+                                <option value="" selected>Select All</option>
+                                <?php
+                                    $year = date("Y") + 2;
+                                    for($year;$year >=2010 ;$year--){
+                                        if($year == 2015)
+                                        {
+                                            echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
+                                        }
+                                        else
+                                        {
+                                            echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
+                                        }
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                    </div>                                  
+                    </div>                                        
+                    <div class="box-footer">
+                        <button id ="class_search_submit" type="button" class="btn btn-primary btn-flatt">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <table id="class_table" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Class Name</th>
+                <th>Scholastic</th>
+                <th>Homeroom Teacher</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody class="displayrecord">
+           
+        </tbody>
+        
+        <tfoot>
+            <tr>
+                <th>Id</th>
+                <th>Class Name</th>
+                <th>Scholastic</th>
+                <th>Homeroom Teacher</th>
+                <th></th>
+            </tr>
+        </tfoot>
+        </table>
+    </div>
+</div><!-- /.box -->
 </section>
 <!-- DataTables -->
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>

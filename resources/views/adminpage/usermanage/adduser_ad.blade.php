@@ -13,147 +13,137 @@
 </section>
 
 <section class="content">
-  <div class="box">
-    <div class="box-body">
-        <!-- My page start here --> 
-        <div class="col-xs-12 col-lg-12">
-            <div class="box box-solid box-primary collapsed-box">
-            <div class="box-header">
-                <h3 class="box-title">Regist New Admin</h3>
-                <div class="box-tools pull-right">
-                    <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                </div>
-            </div><!-- /.box-header -->
-            <!-- form start -->
-            <form id="ad_form" method="POST" role="form">
-            {!! csrf_field() !!}
-            <div style = "display: none" class="box-body">
-                 <div id="success_mess" style = "display: none" class="alert alert-success">
-                    <h4><i class="icon fa fa-check"></i>Success Add New Admin</h4>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-3 col-xs-12">
-                        <label for="firstname">First Name</label>
-                        <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name">
-                        <label class="error_mess" id="firstname_error" style="display:none" for="firstname"></label>
-                    </div>
-                    <div class="form-group col-lg-3 col-xs-12">
-                        <label for="middlename">Middle Name</label>
-                        <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name">
-                        <label class="error_mess" id="middlename_error" style="display:none" for="middlename"></label>
-                    </div>
-                    <div class="form-group col-lg-3 col-xs-12">
-                        <label for="lastname">Last Name</label>
-                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name">
-                        <label class="error_mess" id="lastname_error" style="display:none" for="lastname"></label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-3">
-                        <label for="mobilephone">Mobile Phone</label>
-                        <input type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone">
-                        <label class="error_mess" id="mobilephone_error" style="display:none" for="mobilephone"></label>
-                    </div>
-                    <div class="form-group col-lg-3">
-                        <label for="dateofbirth">Date Of Birth</label>
-                        <input type="text" id="dateofbirth" name="dateofbirth" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/>
-                        <label class="error_mess" id="dateofbirth_error" style="display:none" for="dateofbirth"></label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        <label for="address">Address</label>
-                        <input type="text" class="form-control" name="address" id="address" placeholder="Address">
-                        <label class="error_mess" id="address_error" style="display:none" for="address"></label>
-                    </div>
-                </div>
-            </div><!-- /.box-body -->
-            <div style = "display: none" class="box-footer">
-                    <button id ="ad_form_submit" type="button" class="btn btn-primary">Create New Admin</button>
+<div class="box box-solid box-primary collapsed-box">
+    <div class="box-header">
+        <h3 class="box-title">Regist New Admin</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
+        </div>
+    </div><!-- /.box-header -->
+    <!-- form start -->
+    <form id="ad_form" method="POST" role="form">
+    {!! csrf_field() !!}
+    <div style = "display: none" class="box-body">
+         <div id="success_mess" style = "display: none" class="alert alert-success">
+            <h4><i class="icon fa fa-check"></i>Success Add New Admin</h4>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-3 col-xs-12">
+                <label for="firstname">First Name</label>
+                <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+                <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name">
+                <label class="error_mess" id="firstname_error" style="display:none" for="firstname"></label>
             </div>
-            </form>
-            </div><!-- /.box -->
+            <div class="form-group col-lg-3 col-xs-12">
+                <label for="middlename">Middle Name</label>
+                <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name">
+                <label class="error_mess" id="middlename_error" style="display:none" for="middlename"></label>
+            </div>
+            <div class="form-group col-lg-3 col-xs-12">
+                <label for="lastname">Last Name</label>
+                <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name">
+                <label class="error_mess" id="lastname_error" style="display:none" for="lastname"></label>
+            </div>
         </div>
-
-        <div class="col-xs-12 col-lg12">
-            <div class="box box-solid box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">Admin List</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    </div>                                    
-                </div><!-- /.box-header -->
-
-                <div class="box-body table-responsive">
-                    <table id="admin_table" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Onwer Name</th>
-                            <th>Email</th>
-                            <th>Mobile</th>
-                            <th>Date Of Birth</th>
-                            <th>Address</th>
-                            <th>Create By</th>
-                            <th>role</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody class="displayrecord">
-                        <?php foreach ($adminlist as $row) :?>
-                            <tr>
-                                <td> <?php echo $row->id ?></td>
-                                <td> <?php echo $row->user->firstname." ".$row->user->middlename." ".$row->user->lastname ?></td>
-                                <td> <?php echo $row->user->email ?></td>
-                                <td> <?php echo $row->mobilephone ?></td>
-                                <td> <?php 
-                                    $dateofbirth = $row->user->dateofbirth;
-                                    if($dateofbirth != "0000-00-00"){
-                                        $dateofbirth = date_create($row->user->dateofbirth);
-                                        $dateofbirth = date_format($dateofbirth,"d/m/Y");
-                                    }
-                                    else{
-                                       $dateofbirth = "";
-                                    }
-                                    echo $dateofbirth;
-                                ?></td>
-                                <td> <?php echo $row->user->address ?></td>
-                                <td> <?php echo $row->create_by ?></td>
-                                <td> <?php echo $row->user->role ?></td>
-                                <td>
-                                    <?php
-                                    if($row->user->id == Auth::user()->id){
-                                        echo ("<a href='/admin/dashboard'><i class = 'glyphicon glyphicon-edit'></i></a>");
-                                    }
-                                    else{
-                                        echo ("<a href='/admin/manage-user/admin/edit/$row->id'><i class = 'glyphicon glyphicon-edit'></i></a>");  
-                                    }?>
-                                </td>
-                            </tr>
-                        <?php endforeach;?>
-                    </tbody>
-                    
-                    <tfoot>
-                        <tr>
-                            <th>Id</th>
-                            <th>Onwer Name</th>
-                            <th>Email</th>
-                            <th>Mobile</th>
-                            <th>Date Of Birth</th>
-                            <th>Address</th>
-                            <th>Create By</th>
-                            <th>role</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                    </table>
-                </div>
-            </div><!-- /.box -->
+        <div class="row">
+            <div class="form-group col-lg-3">
+                <label for="mobilephone">Mobile Phone</label>
+                <input type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone">
+                <label class="error_mess" id="mobilephone_error" style="display:none" for="mobilephone"></label>
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="dateofbirth">Date Of Birth</label>
+                <input type="text" id="dateofbirth" name="dateofbirth" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/>
+                <label class="error_mess" id="dateofbirth_error" style="display:none" for="dateofbirth"></label>
+            </div>
         </div>
+        <div class="row">
+            <div class="form-group col-lg-6">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" name="address" id="address" placeholder="Address">
+                <label class="error_mess" id="address_error" style="display:none" for="address"></label>
+            </div>
+        </div>
+    </div><!-- /.box-body -->
+    <div style = "display: none" class="box-footer">
+            <button id ="ad_form_submit" type="button" class="btn btn-primary">Create New Admin</button>
     </div>
-</div>
-<!-- /.box -->
+    </form>
+</div><!-- /.box -->
+
+<div class="box box-solid box-primary">
+    <div class="box-header">
+        <h3 class="box-title">Admin List</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>                                    
+    </div><!-- /.box-header -->
+
+    <div class="box-body table-responsive">
+        <table id="admin_table" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Onwer Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Date Of Birth</th>
+                <th>Address</th>
+                <th>Create By</th>
+                <th>role</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="displayrecord">
+            <?php foreach ($adminlist as $row) :?>
+                <tr>
+                    <td> <?php echo $row->id ?></td>
+                    <td> <?php echo $row->user->firstname." ".$row->user->middlename." ".$row->user->lastname ?></td>
+                    <td> <?php echo $row->user->email ?></td>
+                    <td> <?php echo $row->mobilephone ?></td>
+                    <td> <?php 
+                        $dateofbirth = $row->user->dateofbirth;
+                        if($dateofbirth != "0000-00-00"){
+                            $dateofbirth = date_create($row->user->dateofbirth);
+                            $dateofbirth = date_format($dateofbirth,"d/m/Y");
+                        }
+                        else{
+                           $dateofbirth = "";
+                        }
+                        echo $dateofbirth;
+                    ?></td>
+                    <td> <?php echo $row->user->address ?></td>
+                    <td> <?php echo $row->create_by ?></td>
+                    <td> <?php echo $row->user->role ?></td>
+                    <td>
+                        <?php
+                        if($row->user->id == Auth::user()->id){
+                            echo ("<a href='/admin/dashboard'><i class = 'glyphicon glyphicon-edit'></i></a>");
+                        }
+                        else{
+                            echo ("<a href='/admin/manage-user/admin/edit/$row->id'><i class = 'glyphicon glyphicon-edit'></i></a>");  
+                        }?>
+                    </td>
+                </tr>
+            <?php endforeach;?>
+        </tbody>
+        
+        <tfoot>
+            <tr>
+                <th>Id</th>
+                <th>Onwer Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Date Of Birth</th>
+                <th>Address</th>
+                <th>Create By</th>
+                <th>role</th>
+                <th></th>
+            </tr>
+        </tfoot>
+        </table>
+    </div>
+</div><!-- /.box -->
 </section>
 <!-- DataTables -->
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>

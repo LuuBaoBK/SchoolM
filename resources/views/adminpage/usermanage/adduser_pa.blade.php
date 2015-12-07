@@ -8,228 +8,224 @@ table tr.selected{
 <section class="content-header">
     <h1>
         Admin
-        <small>Regist Parent</small>
+        <small>Parent Info</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="/admin/dashboard"><i class="fa fa-home"></i>Admin</a></li>
-        <li class="active">Regist Parent</li>
+        <li class="active">Parent Info</li>
     </ol>
 </section>
 <section class="content">
-<div class="box">
-    <div class="box-body">
-        <div class="row">
-        <div class="col-lg-5">
-            <div class="box box-primary">
-                <div class="box-header">
-                    <p class="box-title">Parent List</p>
+<div class="row">
+<div class="col-lg-5">
+    <div class="box box-primary">
+        <div class="box-header">
+            <p class="box-title">Parent List</p>
+        </div>
+        <div class="box-body">
+            <!-- <form action ="/admin/manage-user/parent/show" method="POST" id="parent_filter"> -->
+            <form id="parent_filter">    
+                <div id="from_to_warning" style="display: none"class="alert alert-warning">
+                    <i class="icon fa fa-warning"></i>From_Year can not be greater than To_Year
                 </div>
-                <div class="box-body">
-                    <!-- <form action ="/admin/manage-user/parent/show" method="POST" id="parent_filter"> -->
-                    <form id="parent_filter">    
-                        <div id="from_to_warning" style="display: none"class="alert alert-warning">
-                            <i class="icon fa fa-warning"></i>From_Year can not be greater than To_Year
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-4 col-xs-6">
-                                <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-                                <label for="from_year">From</label>
-                                <select id="from_year" name="from_year" class="form-control">
-                                    <?php
-                                        $year = date("Y") + 2;
-                                        for($year;$year >=2010 ;$year--){
-                                            if($year == 2010)
-                                            {
-                                                echo "<option selected>".$year."</option>";
-                                            }
-                                            else
-                                            {
-                                                echo "<option>".$year."</option>";
-                                            }
-                                        }  
-                                    ?>
-                                </select>                                       
-                            </div>
-                            <div class="form-group col-lg-4 col-xs-6">
-                                <label for="to_year">To</label>
-                                <select id="to_year" name="to_year" class="form-control">
-                                    <?php
-                                        $year = date("Y") + 2;
-                                        for($year;$year >=2010 ;$year--){
-                                            if($year == 2017)
-                                            {
-                                                echo "<option selected>".$year."</option>";
-                                            }
-                                            else
-                                            {
-                                                echo "<option>".$year."</option>";
-                                            }
-                                        }
-                                    ?>
-                                </select>
-                            </div>                              
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-4 col-xs-7">
-                                <label for="search_firstname">First Name</label>
-                                <input id="search_firstname" type="text" class="form-control" name="search_firstname" id="search_firstname" placeholder="Parent First Name">
-                            </div>
-                            <div class="form-group col-lg-4 col-xs-7">
-                                <label for="search_middlename">Middle Name</label>
-                                <input id="search_middlename" type="text" class="form-control" name="search_middlename" id="search_middlename" placeholder="Parent Middle Name">
-                            </div>
-                            <div class="form-group col-lg-4 col-xs-7">
-                                <label for="search_lastname">Last Name</label>
-                                <input id="search_lastname" type="text" class="form-control" name="search_lastname" id="search_lastname" placeholder="Parent Last Name">
-                            </div>        
-                        </div>                                    
-                                    
-                        <p>(* Search Parents Of Students Enrolled In Selected Range With Given Name )</p>                        
-                        <div class="box-footer">
-                            <button id ="parent_search" type="button" class="btn btn-primary btn-flatt">Search</button>
-                        </div>
-                    </form>                            
-                </div> <!-- /.box left body -->  
+                <div class="row">
+                    <div class="form-group col-lg-4 col-xs-6">
+                        <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+                        <label for="from_year">From</label>
+                        <select id="from_year" name="from_year" class="form-control">
+                            <?php
+                                $year = date("Y") + 2;
+                                for($year;$year >=2010 ;$year--){
+                                    if($year == 2010)
+                                    {
+                                        echo "<option selected>".$year."</option>";
+                                    }
+                                    else
+                                    {
+                                        echo "<option>".$year."</option>";
+                                    }
+                                }  
+                            ?>
+                        </select>                                       
+                    </div>
+                    <div class="form-group col-lg-4 col-xs-6">
+                        <label for="to_year">To</label>
+                        <select id="to_year" name="to_year" class="form-control">
+                            <?php
+                                $year = date("Y") + 2;
+                                for($year;$year >=2010 ;$year--){
+                                    if($year == 2017)
+                                    {
+                                        echo "<option selected>".$year."</option>";
+                                    }
+                                    else
+                                    {
+                                        echo "<option>".$year."</option>";
+                                    }
+                                }
+                            ?>
+                        </select>
+                    </div>                              
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-4 col-xs-7">
+                        <label for="search_firstname">First Name</label>
+                        <input id="search_firstname" type="text" class="form-control" name="search_firstname" id="search_firstname" placeholder="Parent First Name">
+                    </div>
+                    <div class="form-group col-lg-4 col-xs-7">
+                        <label for="search_middlename">Middle Name</label>
+                        <input id="search_middlename" type="text" class="form-control" name="search_middlename" id="search_middlename" placeholder="Parent Middle Name">
+                    </div>
+                    <div class="form-group col-lg-4 col-xs-7">
+                        <label for="search_lastname">Last Name</label>
+                        <input id="search_lastname" type="text" class="form-control" name="search_lastname" id="search_lastname" placeholder="Parent Last Name">
+                    </div>        
+                </div>                                    
+                            
+                <p>(* Search Parents Of Students Enrolled In Selected Range With Given Name )</p>                        
                 <div class="box-footer">
-                    <table id="parent_table" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Full Name</th>
-                                </tr>
-                            </thead>
-
-                            <tbody class="displayrecord">
-                            </tbody>
-                            
-                            <tfoot>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Full Name</th>
-                                </tr>
-                            </tfoot>
-                        </table>          
-                </div>             
-            </div>
-        </div> <!-- /.half left -->
-        <div class="col-lg-7">
-            <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs">
-                  <li class="active"><a href="#info" data-toggle="tab">Personal Info</a></li>
-                  <li><a href="#children" data-toggle="tab">Children</a></li>
-                </ul>
-                <div class="tab-content">
-                    <div class="active tab-pane" id="info">       
-                        <form id="pa_info_form" method="POST" role="form">
-                            {!! csrf_field() !!}
-                            <div class="box-body">
-                                <div id="success_mess" style = "display: none" class="alert alert-success">
-                                    <h4><i class="icon fa fa-check"></i>Success edit parent info</h4>
-                                </div>
-                                <div id="empty_mess" style = "display: none" class="alert alert-warning">
-                                    <h4><i class="icon fa fa-check"></i>Please Select Parent From Left Table First</h4>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-lg-4">
-                                        <label for="id">Id</label>
-                                        <input type="text" class="form-control" name="id" id="id"  disabled>
-                                        <input type="hidden" class="form-control" name="id" id="id">
-                                    </div>
-                                    <div class="col-lg-8">
-                                        <label for="email">Email</label>
-                                        <input type="text" class="form-control" name="email" id="email"  disabled>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-4">
-                                        <label for="firstname">First Name</label>
-                                        <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-                                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" >
-                                        <label class="info_error_mess" id="firstname_error" style="display:none" for="firstname"></label>
-                                    </div>
-                                    <div class="form-group col-lg-4">
-                                        <label for="middlename">Middle Name</label>
-                                        <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" >
-                                        <label class="info_error_mess" id="middlename_error" style="display:none" for="middlename"></label>
-                                    </div>
-                                    <div class="form-group col-lg-4">
-                                        <label for="lastname">Last Name</label>
-                                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" >
-                                        <label class="info_error_mess" id="lastname_error" style="display:none" for="lastname"></label>        
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-4">
-                                        <label for="mobilephone">Mobile Phone</label>
-                                        <input type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone">
-                                        <label class="info_error_mess" id="mobilephone_error" style="display:none" for="mobilephone"></label>
-                                    </div>
-                                    <div class="form-group col-lg-4">
-                                        <label for="homephone">Home Phone</label>
-                                        <input type="text" class="form-control" name="homephone" id="homephone" placeholder="Mobile Phone">
-                                        <label class="info_error_mess" id="homephone_error" style="display:none" for="homephone"></label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-4">
-                                        <label for="dateofbirth">Date Of Birth</label>
-                                        <input type="text" id="dateofbirth" name="dateofbirth" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/>
-                                        <label class="info_error_mess" id="dateofbirth_error" style="display:none" for="dateofbirth"></label>
-                                    </div>
-                                    <div class="form-group col-lg-8">
-                                        <label for="address">Address</label>
-                                        <input type="text" class="form-control" name="address" id="address" placeholder="Address">
-                                        <label class="info_error_mess" id="address_error" style="display:none" for="address"></label>
-                                    </div>
-                                </div>
-                            </div><!-- /.box-body -->
-                            <div class="box-footer">
-                                    <button id ="pa_info_form_submit" type="button" class="btn btn-primary">Edit</button>
-                                    <button id ="reset_password" type="button" class="btn btn-warning">Reset Password</button>                        
-                            </div>
-                        </form>
-                    </div>
-                    <div class="tab-pane" id="children">
-                        <table id="student_table" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Full Name</th>
-                                    <th>Email</th>
-                                    <th>Enrolled Year</th>
-                                    <th>Graduated Year</th>
-                                    <th>Date Of Birth</th>
-                                    <th>Address</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-
-                            <tbody class="children_table_info">
-                            </tbody>
-                            
-                            <tfoot>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Full Name</th>
-                                    <th>Email</th>
-                                    <th>Enrolled Year</th>
-                                    <th>Graduated Year</th>
-                                    <th>Date Of Birth</th>
-                                    <th>Address</th>
-                                    <th></th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <!-- /.tab-pane -->
+                    <button id ="parent_search" type="button" class="btn btn-primary btn-flatt">Search</button>
                 </div>
-                <!-- /.tab-content -->
+            </form>                            
+        </div> <!-- /.box left body -->  
+        <div class="box-footer">
+            <table id="parent_table" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Full Name</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="displayrecord">
+                    </tbody>
+                    
+                    <tfoot>
+                        <tr>
+                            <th>Id</th>
+                            <th>Full Name</th>
+                        </tr>
+                    </tfoot>
+                </table>          
+        </div>             
+    </div>
+</div> <!-- /.half left -->
+<div class="col-lg-7">
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#info" data-toggle="tab">Personal Info</a></li>
+          <li><a href="#children" data-toggle="tab">Children</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="active tab-pane" id="info">       
+                <form id="pa_info_form" method="POST" role="form">
+                    {!! csrf_field() !!}
+                    <div class="box-body">
+                        <div id="success_mess" style = "display: none" class="alert alert-success">
+                            <h4><i class="icon fa fa-check"></i>Success edit parent info</h4>
+                        </div>
+                        <div id="empty_mess" style = "display: none" class="alert alert-warning">
+                            <h4><i class="icon fa fa-check"></i>Please Select Parent From Left Table First</h4>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-lg-4">
+                                <label for="id">Id</label>
+                                <input type="text" class="form-control" name="id" id="id"  disabled>
+                                <input type="hidden" class="form-control" name="id" id="id">
+                            </div>
+                            <div class="col-lg-8">
+                                <label for="email">Email</label>
+                                <input type="text" class="form-control" name="email" id="email"  disabled>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="firstname">First Name</label>
+                                <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+                                <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" >
+                                <label class="info_error_mess" id="firstname_error" style="display:none" for="firstname"></label>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="middlename">Middle Name</label>
+                                <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" >
+                                <label class="info_error_mess" id="middlename_error" style="display:none" for="middlename"></label>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="lastname">Last Name</label>
+                                <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" >
+                                <label class="info_error_mess" id="lastname_error" style="display:none" for="lastname"></label>        
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="mobilephone">Mobile Phone</label>
+                                <input type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone">
+                                <label class="info_error_mess" id="mobilephone_error" style="display:none" for="mobilephone"></label>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="homephone">Home Phone</label>
+                                <input type="text" class="form-control" name="homephone" id="homephone" placeholder="Mobile Phone">
+                                <label class="info_error_mess" id="homephone_error" style="display:none" for="homephone"></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="dateofbirth">Date Of Birth</label>
+                                <input type="text" id="dateofbirth" name="dateofbirth" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/>
+                                <label class="info_error_mess" id="dateofbirth_error" style="display:none" for="dateofbirth"></label>
+                            </div>
+                            <div class="form-group col-lg-8">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" name="address" id="address" placeholder="Address">
+                                <label class="info_error_mess" id="address_error" style="display:none" for="address"></label>
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                    <div class="box-footer">
+                            <button id ="pa_info_form_submit" type="button" class="btn btn-primary">Edit</button>
+                            <button id ="reset_password" type="button" class="btn btn-warning">Reset Password</button>                        
+                    </div>
+                </form>
             </div>
-          <!-- /.nav-tabs-custom -->
-        </div> <!-- </.half right>  -->
-        </div> <!-- /.row -->
-    </div> <!-- /.box body -->
-</div> <!-- /.box -->
+            <div class="tab-pane" id="children">
+                <table id="student_table" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Enrolled Year</th>
+                            <th>Graduated Year</th>
+                            <th>Date Of Birth</th>
+                            <th>Address</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="children_table_info">
+                    </tbody>
+                    
+                    <tfoot>
+                        <tr>
+                            <th>Id</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Enrolled Year</th>
+                            <th>Graduated Year</th>
+                            <th>Date Of Birth</th>
+                            <th>Address</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.tab-pane -->
+        </div>
+        <!-- /.tab-content -->
+    </div>
+  <!-- /.nav-tabs-custom -->
+</div> <!-- </.half right>  -->
+</div> <!-- /.row -->
 </section>
 <div id="confirmModal" class="modal modal-warning">
 <div class="modal-dialog">
