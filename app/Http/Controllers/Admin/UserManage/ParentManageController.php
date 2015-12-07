@@ -35,14 +35,21 @@ class ParentManageController extends Controller
         }
         else
         {   
-           $parentlist = Parents::whereIn( 'id', 
+            $firstname = $request['search_firstname'];
+            $middlename = $request['search_middlename'];
+            $lastname = $request['search_lastname'];
+            $parent_id_list = Parents::select('id')
+                                 ->whereIn( 'id', 
                                         Student::select('parent_id')
                                         ->whereBetween('enrolled_year', [$request['from_year'], $request['to_year']])->get()
                                         )
                                 ->get();
-            foreach($parentlist as $parent){
-                $parent->user;
-            }
+            $parentlist =   User::whereIn('id',$parent_id_list)
+                                ->where('firstname','LIKE',$firstname.'%')
+                                ->where('middlename','LIKE','%'.$middlename.'%')
+                                ->where('lastname','LIKE','%'.$lastname)
+                                ->orderBy('id','asc')
+                                ->get();
             $record['isSuccess'] = 1;
             $record['mydata'] = $parentlist;
             return $record;

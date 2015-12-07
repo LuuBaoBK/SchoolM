@@ -67,9 +67,24 @@ table tr.selected{
                                         }
                                     ?>
                                 </select>
-                            </div>                                  
-                        </div>    
-                        <p>(* Search Parents Of Students Enrolled In Selected Range )</p>                        
+                            </div>                              
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4 col-xs-7">
+                                <label for="search_firstname">First Name</label>
+                                <input id="search_firstname" type="text" class="form-control" name="search_firstname" id="search_firstname" placeholder="Parent First Name">
+                            </div>
+                            <div class="form-group col-lg-4 col-xs-7">
+                                <label for="search_middlename">Middle Name</label>
+                                <input id="search_middlename" type="text" class="form-control" name="search_middlename" id="search_middlename" placeholder="Parent Middle Name">
+                            </div>
+                            <div class="form-group col-lg-4 col-xs-7">
+                                <label for="search_lastname">Last Name</label>
+                                <input id="search_lastname" type="text" class="form-control" name="search_lastname" id="search_lastname" placeholder="Parent Last Name">
+                            </div>        
+                        </div>                                    
+                                    
+                        <p>(* Search Parents Of Students Enrolled In Selected Range With Given Name )</p>                        
                         <div class="box-footer">
                             <button id ="parent_search" type="button" class="btn btn-primary btn-flatt">Search</button>
                         </div>
@@ -262,8 +277,11 @@ $(document).ready(function() {
         $("[data-mask]").inputmask();
 
         $('#parent_search').click(function(){
-            var from_year   = $('#from_year').val();
-            var to_year     = $('#to_year').val();
+            var from_year           = $('#from_year').val();
+            var to_year             = $('#to_year').val();
+            var search_firstname    = $('#search_firstname').val();
+            var search_middlename   = $('#search_middlename').val();
+            var search_lastname     = $('#search_lastname').val();
             var token       = $('input[name="_token"]').val();
 
            $.ajax({
@@ -271,12 +289,16 @@ $(document).ready(function() {
                 type    :"POST",
                 async   :false,
                 data    :{
-                    'from_year'     :from_year,
-                    'to_year'       :to_year,
-                    '_token'        :token
+                    'from_year'             :from_year,
+                    'to_year'               :to_year,
+                    'search_firstname'      :search_firstname,
+                    'search_middlename'     :search_middlename,
+                    'search_lastname'       :search_lastname,
+                    '_token'                :token
                 },
-                success:function(record){
-                   if(record.isSuccess == 1){
+                success:function(record)
+                {
+                    if(record.isSuccess == 1){
                         $('#to_year').parent().removeClass('has-warning');
                         $('#from_year').parent().removeClass('has-warning');
                         $('#from_to_warning').slideUp('medium');
@@ -286,15 +308,15 @@ $(document).ready(function() {
                         $.each(record.mydata, function(i, row){
                             $('#parent_table').dataTable().fnAddData([
                                 row.id,
-                                row.user.firstname+" "+row.user.middlename+" "+row.user.lastname,
+                                row.firstname+" "+row.middlename+" "+row.lastname,
                             ]);
                         });
-                   }
-                   else{
-                      $('#to_year').parent().addClass('has-warning');
-                      $('#from_year').parent().addClass('has-warning');
-                      $('#from_to_warning').show('medium');
-                   }
+                    }
+                    else{
+                        $('#to_year').parent().addClass('has-warning');
+                        $('#from_year').parent().addClass('has-warning');
+                        $('#from_to_warning').show('medium');
+                    }
                 },
                 error:function(){
                     alert("Something went wrong ! Please Contact Your Super Admin");
