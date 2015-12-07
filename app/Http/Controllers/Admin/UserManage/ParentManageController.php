@@ -199,4 +199,21 @@ class ParentManageController extends Controller
             return $record;
         }
     }
+
+    public function reset_password($id){
+        $parent = Parents::find($id);
+        $parent->user;
+        $password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+        $parent->user->password = bcrypt($password);
+        $parent->user->save();
+        if($parent->user->dateofbirth == "0000-00-00"){
+            $dateofbirth = "";
+        }
+        else
+        {
+            $dateofbirth = date_create($parent->user->dateofbirth);
+            $dateofbirth = date_format($dateofbirth, "d/m/Y");
+        }
+        return view('adminpage.usermanage.print_pa', ['parent' => $parent, 'password' => $password, 'dateofbirth' => $dateofbirth]);
+    }
 }

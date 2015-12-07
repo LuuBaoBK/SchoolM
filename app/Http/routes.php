@@ -37,7 +37,7 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 		Route::get ('teacher', 'TeacherManageController@get_te');
 		Route::post('teacher', 'TeacherManageController@store_te');
 		Route::get ('teacher/edit/{id}', 'TeacherManageController@get_edit_form');
-		Route::post ('teacher/edit', 'TeacherManageController@edit_ad');
+		Route::post ('teacher/edit', 'TeacherManageController@edit_te');
 		Route::get ('teacher/edit/{id}/reset_password',  'TeacherManageController@reset_password');
 
 		Route::get ('student', 'StudentManageController@get_stu');
@@ -45,17 +45,19 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 		Route::post('student/show', 'StudentManageController@show');
 		Route::get ('student/edit/{id}', 'StudentManageController@get_edit_form');
 		Route::post ('student/edit', 'StudentManageController@edit_stu');
+		Route::get ('student/edit/{id}/reset_password',  'StudentManageController@reset_password');
 
 		Route::get ('parent', 'ParentManageController@get_pa');
 		Route::post('parent/show', 'ParentManageController@show');
 		Route::post('parent/getdata', 'ParentManageController@getdata');
 		Route::post('parent/edit', 'ParentManageController@editdata');
+		Route::get ('parent/edit/{id}/reset_password',  'ParentManageController@reset_password');
 	});
     
     //Manage class
 	Route::group(['prefix' => 'class', 'namespace' =>'Admin\Classes'], function(){
 		Route::get('classinfo', 'ClassController@view');
-		Route::post('classinfo', 'ClassController@show');
+		Route::post('classinfo/search', 'ClassController@show');
 		Route::post('classinfo/updateform', 'ClassController@updateform');
 		Route::post('classinfo/store', 'ClassController@store');
 		Route::get('classinfo/edit/{id}', 'ClassController@get_edit_form');
@@ -86,5 +88,10 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::post('transcript', 'Admin\TranscriptController@store');
 	Route::post('transcript/getstudent', 'Admin\TranscriptController@getstudent');
 	Route::post('transcript/gettranscript', 'Admin\TranscriptController@gettranscript');
+});
+
+Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () {
+	Route::get('dashboard', 'Teacher\ProfileController@get_te_dashboard' );
+
 });
 

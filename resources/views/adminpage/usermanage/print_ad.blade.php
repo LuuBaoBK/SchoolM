@@ -24,7 +24,7 @@
         </tr>
         <tr>
           <td>Date Of Birth</td>
-          <td>{{$admin->user->dateofbirth}}</td>
+          <td>{{$dateofbirth}}</td>
         </tr>
         <tr>
           <td>Address</td>

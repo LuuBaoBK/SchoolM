@@ -1,10 +1,13 @@
 @extends('mytemplate.newblankpage')
 @section('content')
+<?php use App\Transcript; ?>
+
 <style type="text/css">
 table tr.selected{
     background-color: #3399CC !important; 
 }
 </style>
+
 <section class="content-header">
     <h1>
         Admin
@@ -40,7 +43,6 @@ table tr.selected{
                                         echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
                                     }
                                 ?>
-                                <option value="0">-- All --</option>;
                             </select>
                         </div>
                         <div class="form-group col-lg-3 col-xs-7">
@@ -51,7 +53,6 @@ table tr.selected{
                                 <option>7</option>;
                                 <option>8</option>;
                                 <option>9</option>;
-                                <option value="0">-- All --</option>;
                             </select>
                         </div>
                         <div class="form-group col-lg-3 col-xs-7">
@@ -118,13 +119,21 @@ table tr.selected{
                     <table id="transcript_table" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th style="width:25px"></th>
-                            <th>15 phút lần 1</th>
-                            <th>15 phút lần 2</th>
-                            <th>1 tiết</th>
-                            <th>Thi giữa kì</th>
-                            <th>1 tiết lần 2</th>
-                            <th>Thi cuối kì</th>
+                            <th> Subject </th>
+                            <?php $type = Transcript::select('type')->distinct()->orderBy('type', 'asc')
+                                                                        // ->orderByRaw("CASE
+                                                                        // WHEN type = 15 phút lần 1 THEN 1
+                                                                        // WHEN type = 15 phút lần 2 THEN 2
+                                                                        // WHEN type = 1 tiết lần 1 THEN 3
+                                                                        // WHEN type = Thi giữa kì THEN 4
+                                                                        // WHEN type = 15 phút lần 3 THEN 5
+                                                                        // WHEN type = 15 phút lần 4 THEN 6
+                                                                        // WHEN type = 1 tiết lần 2 THEN 7
+                                                                        // WHEN type = Thi cuối kì THEN 8 END ASC, created_at ASC")
+                                                                        ->get();
+                            foreach ($type as $value) { ?>
+                            <th> {{$value->type}} </th>
+                            <?php } ?>
                         </tr>
                     </thead>
 
@@ -147,13 +156,14 @@ table tr.selected{
     </div>
 </section><!-- DATA TABES SCRIPT -->
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-<script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
-<script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script> -->
+<script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
+<script src="{{asset("/adminlte/bootstrap/js/bootstrap.min.js")}}"></script>
 <!-- page script -->
 <script type="text/javascript">
     $(document).ready(function()
     {
+        console.log("abc");
         $(function() {
             //$('#student_table_filter').css("float","left");
             
@@ -221,7 +231,6 @@ table tr.selected{
                             $('#classname').append("<option value=" + $count +">"+row.id+"  |  "+row.classname+"</option>");
                             $count++;
                         });
-                        $('#classname').append("<option value='0'>-- All --</option>");
                     }
                     else{
                         $('#classname').append("<option value='-1'>No Record</option>");
@@ -292,29 +301,29 @@ table tr.selected{
                         
                         $('#transcript_table').dataTable().fnClearTable();
 
-                        $.each(record.student, function(i, row){
-                            
+                        $.each(record.mydata, function(i, row){
+                            // var monhoc = "<b>" + row[0] + "</b>";
                             $('#transcript_table').dataTable().fnAddData([
-                               
+                               // monhoc,
+                               row[0],
+                               row[1],
+                               row[2],
+                               row[3],
+                               row[4],
+                               row[5],
+                               row[6],
+                               row[7],
+                               row[8],
+                               row[9],
+
                             ]);
-                        });
+                         });
                     },
-                    error:function(){
-                        alert("Something went wrong ! Please Contact Your Super Admin");
-                    }
+                    // error:function(){
+                    //     alert("Something went wrong ! Please Contact Your Super Admin");
+                    //}
                 });
-            }
-            else{
-                $('#id').val("");
-                $('#email').val("");
-                $('#firstname').val("");
-                $('#middlename').val("");
-                $('#lastname').val("");
-                $('#mobilephone').val("");
-                $('#homephone').val("");
-                $('#address').val("");
-                $('#dateofbirth').val("");
-            }        
+            }   
             
         });
     });

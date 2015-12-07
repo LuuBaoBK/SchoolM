@@ -35,16 +35,29 @@ class StudentManageController extends Controller
         }
         else
         {   
-            $student = Student::whereBetween('enrolled_year', [$request['from_year'], $request['to_year']])->orderBy('id','desc')->get();
-            foreach ($student as $key => $value) {
-                $value->user;
-                $value->parent->user;
+            $firstname = $request['firstname'];
+            $middlename = $request['middlename'];
+            $lastname = $request['lastname'];
+            $student = Student::select('id')
+                              ->whereBetween('enrolled_year', [$request['from_year'], $request['to_year']])
+                              ->orderBy('id','desc')
+                              ->get();
+            $studentlist =  User::whereIn('id', $student)
+                                ->where('firstname','like',$firstname."%")
+                                ->where('middlename', 'like',"%".$middlename."%")
+                                ->where('lastname','like',"%".$lastname)
+                                ->get();
+            foreach ($studentlist as $key => $value) {
+                $value->student->parent->user;
             }
             $record = array(
                 'isSuccess' => 1,
-                'mydata' => $student
+                'mydata' => $studentlist
             );
             $record['isSuccess'] = 1;
+            $record['firstname'] = $firstname;
+            $record['middlename'] = $middlename;
+            $record['lastname'] = $lastname;
             return $record;
         }
     }
@@ -257,5 +270,22 @@ class StudentManageController extends Controller
             $record['isDone'] = 1;
             return $record;
         }
+    }
+
+    public function reset_password($id){
+        $student = Student::find($id);
+        $student->user;
+        $password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
+        $student->user->password = bcrypt($password);
+        $student->user->save();
+        if($student->user->dateofbirth == "0000-00-00"){
+            $dateofbirth = "";
+        }
+        else
+        {
+            $dateofbirth = date_create($student->user->dateofbirth);
+            $dateofbirth = date_format($dateofbirth, "d/m/Y");
+        }
+        return view('adminpage.usermanage.print_stu', ['student' => $student, 'password' => $password, 'dateofbirth' => $dateofbirth]);
     }
 }

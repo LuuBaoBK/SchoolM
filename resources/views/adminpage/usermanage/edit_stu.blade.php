@@ -86,8 +86,9 @@
                 </div>
             </div><!-- /.box-body -->
             <div class="box-footer">
-                    <button id ="stu_form_submit" type="button" class="btn btn-primary">Edit</button>
-                    <a href="/admin/manage-user/student"><button id ="back" type="button" class="btn btn-primary">Back To student Table</button></a>
+                <button id ="stu_form_submit" type="button" class="btn btn-primary">Edit</button>
+                <a href="/admin/manage-user/student"><button id ="back" type="button" class="btn btn-primary">Back To student Table</button></a>
+                <button id ="reset_password" type="button" class="btn btn-warning">Reset Password</button>
             </div>
 
             </form>
@@ -95,6 +96,26 @@
         </div>
     </div>
 </section>
+<div id="confirmModal" class="modal modal-warning">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Error</h4>
+        </div>
+        <div class="modal-body">
+            <p>Please Confirm That You Want To Reset Password Of This Student</p>
+        </div>
+        <div class="modal-footer">
+            <button id="confirm_button" type="button" class="btn btn-warning pull-right">Confirm</button>
+            <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div>
 <!-- page script -->
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
 <script src="{{asset("/adminlte/bootstrap/js/bootstrap.min.js")}}"></script>
@@ -154,6 +175,14 @@ $(document).ready(function() {
                    }    
                 }
             });
+        });
+        $('#reset_password').click(function(){
+            $('#confirmModal').modal('show');
+        });
+
+        $('#confirm_button').click(function(){
+            $('#confirmModal').modal('hide');
+            window.open('/admin/manage-user/student/edit/'+$('#id').val()+'/reset_password', '_blank');
         });
     });
 });

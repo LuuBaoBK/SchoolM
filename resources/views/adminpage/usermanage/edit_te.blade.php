@@ -63,7 +63,7 @@
                     </div>
                     <div class="form-group col-lg-3">
                         <label for="homephone">Home Phone</label>
-                        <input type="text" class="form-control" name="homephone" id="homephone" placeholder="Home Phone" value={{$teacher->homephonne}}>
+                        <input type="text" class="form-control" name="homephone" id="homephone" placeholder="Home Phone" value={{$teacher->homephone}}>
                         <label class="error_mess" id="homephone_error" style="display:none" for="homephone"></label>
                     </div>
                 </div>
@@ -206,6 +206,7 @@ $(document).ready(function() {
         });
 
     $('#confirm_button').click(function(){
+        $('#confirmModal').modal('hide');
         window.open('/admin/manage-user/teacher/edit/'+$('#id').val()+'/reset_password', '_blank');
     });
 });

@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Transcript;
 use App\User;
 use App\Model\Student;
+use App\Model\Subject;
 use App\Model\Classes;
 use App\Model\StudentClass;
 
@@ -39,7 +40,39 @@ class TranscriptController extends Controller
     public function gettranscript(Request $request)
     {
         $id = $request['id'];
-        $kq = Transcript::where('student_id', '=', $id)->orderBy('type', 'asc')->get();
+        $kq = array();
+        $listsubject = Subject::select('id', 'subject_name')->orderBy('subject_name', 'asc')->get();
+        $type = Transcript::select('type')->distinct()->orderBy('type', 'asc')->get();
+        $i = 0;
+        foreach ($listsubject as $key) {
+            $kq[$i][0] = $key->subject_name;
+            $j=0;
+            foreach ($type as $key1) {
+                $score = Transcript::select('score')->where('student_id', '=', $id)->where('subject_id', '=', $key->id)->where('type', '=', $key1->type)->first();
+                $temp = Transcript::select('score')->where('student_id', '=', $id)->where('subject_id', '=', $key->id)->where('type', '=', $key1->type)->get()->count();
+                $j++;
+                $kq[$i][$j] = "";
+                if ($temp>0)
+                    //foreach ($score as $key2) {
+                        $kq[$i][$j] = $score->score;
+                    //}        
+            }
+            $i++;
+            // $score = Transcript::select('score')->where('student_id', '=', $id)->where('subject_id', $key->id)->orderBy('type', 'asc')->get();
+            // $kq[$i][0] = $key->subject_name;
+            // $j = 0;
+            // foreach ($score as $key1) {
+            //     $j++;
+            //     $kq[$i][$j] = $key1->score;      
+            // }
+            // if ($j < $type)
+            //     for ($z = $j+1; $z <= $type; $z++)
+            //     {
+            //         $kq[$i][$z] = "";
+            //     }
+
+            // $i++;
+        }
         $record = array(
                 'isSuccess' => 1,
                 'mydata' => $kq

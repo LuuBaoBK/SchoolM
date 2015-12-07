@@ -10,25 +10,25 @@
         <thead>
           <tr>
           <td>Id</td>
-          <td>{{$admin->id}}</td>
+          <td>{{$student->id}}</td>
         </tr>
         </thead>
         <tbody>
         <tr>
           <td>Email</td>
-          <td>{{$admin->user->email}}</td>
+          <td>{{$student->user->email}}</td>
         </tr>
         <tr>
           <td>Role</td>
-          <td>Admin</td>
+          <td>Student</td>
         </tr>
         <tr>
           <td>Date Of Birth</td>
-          <td>{{$admin->user->dateofbirth}}</td>
+          <td>{{$dateofbirth}}</td>
         </tr>
         <tr>
           <td>Address</td>
-          <td>{{$admin->user->address}}</td>
+          <td>{{$student->user->address}}</td>
         </tr>
         <tr>
           <td>New Password</td>

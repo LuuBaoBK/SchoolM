@@ -41,7 +41,6 @@
                                     echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
                                 }
                             ?>
-                            <option value="0">-- All --</option>;
                         </select>
                     </div>
                     <div class="form-group">
@@ -52,7 +51,6 @@
                             <option>7</option>;
                             <option>8</option>;
                             <option>9</option>;
-                            <option value="0">-- All --</option>;
                         </select>
                     </div>
                     <div class="form-group">
@@ -111,9 +109,8 @@
 <!-- /.box -->
 </section><!-- DATA TABES SCRIPT -->
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-<script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
-<script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
+<script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
+<script src="{{asset("/adminlte/bootstrap/js/bootstrap.min.js")}}"></script>
 <!-- page script -->
 <script type="text/javascript">
     $(document).ready(function() {
@@ -170,7 +167,7 @@
                         $('#classname').append("<option value=" + $count +">"+row.id+"  |  "+row.classname+"</option>");
                         $count++;
                     });
-                    $('#classname').append("<option value='0'>-- All --</option>");
+                    //$('#classname').append("<option value='0'>-- All --</option>");
                 }
                 else{
                     $('#classname').append("<option value='-1'>No Record</option>");

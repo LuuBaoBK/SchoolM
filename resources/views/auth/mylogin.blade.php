@@ -238,8 +238,7 @@
   @include('mytemplate.footer')
 
   <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Create the tabs -->
+  <!-- <aside class="control-sidebar control-sidebar-dark">
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
       
     </ul>
@@ -248,7 +247,7 @@
       </div>
      
     </div>
-  </aside>
+  </aside> -->
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->

@@ -63,6 +63,9 @@ class MyAuthController extends Controller
         if($user->role == 0){
             return redirect('admin/dashboard');
         }
+        elseif($user->role == 1){
+            return redirect('teacher/dashboard');
+        }
     }
 
 }

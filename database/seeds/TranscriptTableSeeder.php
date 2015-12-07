@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class TranscriptClassTableSeeder extends Seeder
+class TranscriptTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,17 +11,26 @@ class TranscriptClassTableSeeder extends Seeder
      */
     public function run()
     {
+        $typelist = array(
+            '0' => '15 phút lần 1',
+            '1' => '15 phút lần 2',
+            '2' => '15 phút lần 3',
+            '3' => '15 phút lần 4',
+            '4' => '1 tiết lần 1',
+            '5' => '1 tiết lần 2',
+            '6' => 'Thi giữa kì',
+            '7' => 'Thi cuối kì',
+        );
         for($i=0; $i<=9; $i++){
-            $class = ($i <7)? "1" : "2";
-            $rtype = rand(0,3);
-            $type = array('0' => '15 phút' , '1' => '1 tiết', '2' => 'Thi giữa kì', '3' => 'Thi cuối kì');
-    		DB::table('studentclass')->insert([
-    			'class_id' 		=>	'15_9_A_'.$class,
-                'student_id'	=> 's_000000'.$i,
-                'conduct' 		=> $conducttype[$conduct],
-                'ispassed' 		=> $ispass,
-        	]);
+        	for($s=1; $s<=9; $s++){
+    			DB::table('transcript')->insert([
+	    			'student_id' =>	's_000000'.$i,
+	                'semester' => '15_1',
+	                'subject_id' => $s,
+	                'type' => $typelist[rand(0,7)],
+	                'score' => $s,              
+        		]);
+        	}
     	}
-        
     }
 }

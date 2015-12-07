@@ -22,7 +22,7 @@
                         <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     </div>   
                 </div>
-                <form id="class_form" method="POST" role="form">
+                <form id="class_form" role="form">
                     {!! csrf_field() !!}
                     <div class="box-body">
                         <div id="success_mess" style = "display: none" class="alert alert-success">
@@ -74,9 +74,9 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-lg-3 col-xs-7">
-                                        <label for="classname">Class Name</label>
-                                        <input type="text" id="classname" name="classname" class="form-control">
-                                        <label class="error_mess" id="classname_error" style="display:none" for="classname"></label>
+                                        <label for="class_identifier">Class's Identifier</label>
+                                        <input onkeydown="if (event.keyCode == 13) {return false;}" type="text" class="form-control" name="clasas_identifier" id="class_identifier" placeholder="2 characters">
+                                        <label class="error_mess" id="class_identifier_error" style="display:none" for="class_identifier"></label>
                                     </div>
                                     <div class="form-group col-lg-3 col-xs-7">
                                         <label for="homeroomteacher">Homeroom Teacher</label>
@@ -90,11 +90,11 @@
                                     </div>
                                 </div>
                             </div> <!-- Student box body -->
+                            <div class="box-footer">
+                                <button id ="class_form_submit" type="button" class="btn btn-primary">Create New Class</button>
+                            </div>
                         </div> <!-- Student box -->
                     </div><!-- /.box-body -->
-                    <div class="box-footer">
-                            <button id ="class_form_submit" type="button" class="btn btn-primary">Create New Class</button>
-                    </div>
                 </form>
             </div>
             <div class="box box-solid box-primary">
@@ -208,7 +208,7 @@
         var scholastic      = $('#scholastic').val();
         var grade           = $('#grade').val();
         var group           = $('#group').val();
-        var classname       = $('#classname').val();
+        var class_identifier       = $('#class_identifier').val();
         var homeroomteacher = $('#homeroomteacher').val();
         var token           = $('input[name="_token"]').val();
         
@@ -222,7 +222,7 @@
             async   :false,
             data    :{
                 'scholastic'        :scholastic,
-                'classname'         :classname,
+                'class_identifier'         :class_identifier,
                 'grade'             :grade,
                 'group'             :group,
                 'homeroom_teacher'   :homeroomteacher,
@@ -252,8 +252,8 @@
                 else{
                     $('#error_mess').show("medium");  
                     $.each(record, function(i, item){
-                      $('#classname').parent().addClass('has-warning');
-                      $('#classname_error').css("display","block").append("<i class='icon fa fa-warning'></i> "+item);
+                      $('#class_identifier').parent().addClass('has-warning');
+                      $('#class_identifier_error').css("display","block").append("<i class='icon fa fa-warning'></i> "+item);
                     });
                 }
             },
@@ -268,7 +268,7 @@
         var token        = $('input[name="_token"]').val();
         var button = "";
         $.ajax({
-            url     :"<?= URL::to('/admin/class/classinfo') ?>",
+            url     :"<?= URL::to('/admin/class/classinfo/search') ?>",
             type    :"POST",
             async   :false,
             data    :{

@@ -16,7 +16,7 @@ class CreateTranscriptsTable extends Migration
             $table->string('student_id',9);
             $table->string('semester',4);
             $table->integer('subject_id');
-            $table->string('type',6);
+            $table->string('type',15);
             $table->integer('score');
             $table->date('datetime');
             $table->primary(['student_id','semester','subject_id','type','datetime']);
