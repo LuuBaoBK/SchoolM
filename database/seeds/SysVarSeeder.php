@@ -25,7 +25,7 @@ class SysVarSeeder extends Seeder
     	]);
     	DB::table('sysvar')->insert([
     			'id' =>	'p_next_id',
-	            'value' => '19',            	  
+	            'value' => '9',            	  
     	]);
         DB::table('sysvar')->insert([
                 'id' => 'sub_next_id',
