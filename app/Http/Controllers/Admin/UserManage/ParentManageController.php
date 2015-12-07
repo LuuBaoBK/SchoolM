@@ -52,7 +52,6 @@ class ParentManageController extends Controller
                                 ->get();
             $record['isSuccess'] = 1;
             $record['mydata'] = $parentlist;
-            $record['junkdata'] = $firstname.$middlename.$lastname;
             return $record;
         }
     }

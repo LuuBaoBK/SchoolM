@@ -298,7 +298,6 @@ $(document).ready(function() {
                 },
                 success:function(record)
                 {
-                    console.log(record.junkdata);
                     if(record.isSuccess == 1){
                         $('#to_year').parent().removeClass('has-warning');
                         $('#from_year').parent().removeClass('has-warning');
