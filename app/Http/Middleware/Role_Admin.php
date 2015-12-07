@@ -25,9 +25,9 @@ class Role_Admin
         if($this->auth->check())
         {
             $user = $this->auth->user();
-            if($user->role > 1)
+            if($user->role > 0)
             {
-                return view('errors.503');
+                return Redirect('/permission_denied');
             }
             else
             {
@@ -36,7 +36,7 @@ class Role_Admin
             
         }
         else{
-            return view('errors.503');
+            return Redirect('/');
         }
     }
 }

@@ -33,5 +33,9 @@ class ProfileController extends Controller
         $teacher['mydateofbirth'] = $mydateofbirth;
         $teacher['myincomingday'] = $myincomingday;
     return view('teacherpage.dashboard')->with('teacher',$teacher);
+    }
+
+    public function permission_denied(){
+        return view('teacherpage.permission_denied');
     }	
 }

@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-lg-3 col-xs-7">
-                                        <label for="class_identifier">Class's Identifier</label>
+                                        <label for="class_identifier">Class's Identifier <small>*</small></label>
                                         <input onkeydown="if (event.keyCode == 13) {return false;}" type="text" class="form-control" name="clasas_identifier" id="class_identifier" placeholder="2 characters">
                                         <label class="error_mess" id="class_identifier_error" style="display:none" for="class_identifier"></label>
                                     </div>

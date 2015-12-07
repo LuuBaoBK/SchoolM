@@ -62,7 +62,7 @@
                                             <label class="error_mess" id="student_dateofbirth_error" style="display:none" for="student_dateofbirth"></label>
                                         </div>
                                         <div class="form-group col-lg-4">
-                                            <label for="enrolled_year">Enrolled Year</label>
+                                            <label for="enrolled_year">Enrolled Year<small> *</small> </label>
                                             <input type="text" class="form-control" name="enrolled_year" id="enrolled_year" placeholder="Enrolled Year">
                                             <label class="error_mess" id="enrolled_year_error" style="display:none" for="enrolled_year"></label>
                                         </div>

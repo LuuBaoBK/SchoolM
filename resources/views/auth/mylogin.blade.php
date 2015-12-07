@@ -50,7 +50,7 @@
             <form style="margin-top : 5px" action="auth/login" method="post" class="navbar-form navbar-right form-horizontal">
             <!-- <ul class="nav navbar-nav navbar-right">     -->
             {!! csrf_field() !!}
-                <div class="form-group">
+                <div style = "margin-top: 2px; margin-right: 0px" class="form-group">
                     <input type="email" name="email" class="form-control" placeholder="User Email"/>
                     <input type="password" name="password" class="form-control" placeholder="Password"/>
                     <button style="display:none" type="submit" class="btn bg-olive btn-block">Sign me in</button>

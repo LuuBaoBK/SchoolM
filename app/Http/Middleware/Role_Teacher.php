@@ -2,10 +2,17 @@
 
 namespace App\Http\Middleware;
 
+use Illuminate\Contracts\Auth\Guard;
 use Closure;
 
 class Role_Teacher
 {
+    protected $auth;
+
+    public function __construct(Guard $auth)
+    {
+        $this->auth = $auth;
+    }
     /**
      * Handle an incoming request.
      *
@@ -15,6 +22,21 @@ class Role_Teacher
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        if($this->auth->check())
+        {
+            $user = $this->auth->user();
+            if($user->role > 1)
+            {
+                return Redirect('/');
+            }
+            else
+            {
+                return $next($request);
+            }
+            
+        }
+        else{
+            return Redirect('/');
+        }
     }
 }
