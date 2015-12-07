@@ -32,9 +32,9 @@
 <!-- Site wrapper -->
 <div class="wrapper">
 
-  @include('mytemplate.header_ad')
+  @include('mytemplate.header_te')
 
-  @include('mytemplate.sidebar_ad')
+  @include('mytemplate.sidebar_te')
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     @yield('content')

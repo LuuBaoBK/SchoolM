@@ -12,6 +12,7 @@ return [
     | as the size rules. Feel free to tweak each of these messages here.
     |
     */
+    'inrange'              =>  'This :attribute must be inrange: :min - :max',
     'isexistclasses'       => 'This class is existed in this scholastic',
     'isexistparent'        => 'The :attribute is not exist.',
     'greater_than'         => 'The :attribute and must be greater than The :other.',

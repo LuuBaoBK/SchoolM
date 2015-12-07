@@ -62,7 +62,7 @@
                         <label class="error_mess" id="dateofbirth_error" style="display:none" for="dateofbirth"></label>
                     </div>
                     <div class="form-group col-lg-3">
-                        <label for="enrolled_year">Enrolled Year</label>
+                        <label for="enrolled_year">Enrolled Year <small>*</small> </label>
                         <input type="text" class="form-control" name="enrolled_year" id="enrolled_year" placeholder="Mobile Phone" value={{$student->enrolled_year}}>
                         <label class="error_mess" id="enrolled_year_error" style="display:none" for="enrolled_year"></label>
                     </div>

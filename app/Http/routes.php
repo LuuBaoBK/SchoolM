@@ -16,11 +16,17 @@ Route::get('/', 'Auth\MyAuthController@getview');
 Route::post('auth/login', 'Auth\MyAuthController@authenticate');
 Route::get('auth/logout', 'Auth\MyAuthController@logout');
 
+// Error Route
+Route::get('permission_denied', 'Auth\MyAuthController@permission_denied');
+
+
+//common route
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('/dashboard','Auth\MyAuthController@get_dashboard');
 });
 
 
+//Admin Route
 Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 
 	Route::get('dashboard', 'Admin\ProfileController@get_ad_dashboard' );
@@ -88,8 +94,11 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::post('transcript', 'Admin\TranscriptController@store');
 });
 
+//Teacher Route
 Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () {
 	Route::get('dashboard', 'Teacher\ProfileController@get_te_dashboard' );
+	//error
+	Route::get('permission_denied', 'Teacher\ProfileController@permission_denied' );
 
 });
 
