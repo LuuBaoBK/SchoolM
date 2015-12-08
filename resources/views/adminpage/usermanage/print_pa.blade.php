@@ -65,8 +65,5 @@
          { "width": "60%" }]
    });
   });
-  
-
-
 </script>
-
+@endsection

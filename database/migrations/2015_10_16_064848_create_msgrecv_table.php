@@ -18,6 +18,7 @@ class CreateMsgrecvTable extends Migration
             $table->string('recvby',9);
             $table->foreign('recvby')->references('id')->on('users');
             $table->integer('isdelete');
+            $table->integer('isread');
             $table->primary(['id','recvby']);
 
         });

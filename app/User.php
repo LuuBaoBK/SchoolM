@@ -51,4 +51,14 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->hasOne('App\Model\Parent' , 'id' ,'id');
     }
+
+    public function msg_send()
+    {
+        return $this->hasMany('App\Model\MsgSend' , 'sendby' ,'id');
+    }
+
+    public function msg_recv()
+    {
+        return $this->hasMany('App\Model\MsgRecv' , 'recvby' ,'id');
+    }
 }

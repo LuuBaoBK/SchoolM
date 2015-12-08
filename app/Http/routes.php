@@ -23,6 +23,10 @@ Route::get('permission_denied', 'Auth\MyAuthController@permission_denied');
 //common route
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('/dashboard','Auth\MyAuthController@get_dashboard');
+
+	Route::group(['prefix'=>'mailbox'],function(){
+		Route::post('update_mailbox','MailBox\MailBoxController@update_mailbox');
+	});
 });
 
 
@@ -32,6 +36,7 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::get('dashboard', 'Admin\ProfileController@get_ad_dashboard' );
 	Route::post('dashboard', 'Admin\ProfileController@edit_info' );
 	Route::post('dashboard/changepassword', 'Admin\ProfileController@changepassword' );
+	Route::get('mailbox', 'MailBox\MailBoxController@get_mailbox');
 
 	Route::group(['prefix'=>'manage-user', 'namespace' => 'Admin\UserManage'], function(){
 		Route::get ('admin', 'AdminManageController@get_ad');
@@ -94,6 +99,7 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::post('transcript', 'Admin\TranscriptController@store');
 	Route::post('transcript/getstudent', 'Admin\TranscriptController@getstudent');
 	Route::post('transcript/gettranscript', 'Admin\TranscriptController@gettranscript');
+
 });
 
 //Teacher Route
