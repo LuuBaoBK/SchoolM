@@ -64,7 +64,6 @@ class StudentManageController extends Controller
 
     public function store_stu(Request $request)
     {   
-
         $check = $request['createNew'];
         if($check == 'true'){
             $rules = array(

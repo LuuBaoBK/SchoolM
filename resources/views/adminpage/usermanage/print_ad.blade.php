@@ -44,10 +44,6 @@
 </div>
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
 <script src="{{asset("/adminlte/bootstrap/js/bootstrap.min.js")}}"></script>
-<!-- jQuery 2.1.4 -->
-<script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
-<!-- Bootstrap 3.3.5 -->
-<script src="{{asset("/adminlte/bootstrap/js/bootstrap.min.js")}}"></script>
 <!-- DataTables -->
 <script src="{{asset("/adminlte/plugins/datatables/jquery.dataTables.min.js")}}"></script>
 <script src="{{asset("/adminlte/plugins/datatables/dataTables.bootstrap.min.js")}}"></script>

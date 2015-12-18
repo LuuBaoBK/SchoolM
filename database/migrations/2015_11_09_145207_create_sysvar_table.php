@@ -13,7 +13,7 @@ class CreateSysvarTable extends Migration
     public function up()
     {
         Schema::create('sysvar', function (Blueprint $table) {
-            $table->string('id',20);
+            $table->string('id',25);
             $table->string('value');
         });
     }

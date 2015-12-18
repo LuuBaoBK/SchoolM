@@ -15,7 +15,7 @@
       </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
-            <li class="active">
+            <li class="">
                 <a href="/admin/dashboard">
                     <i class="fa fa-home"></i> <span>Dashboard</span>
                 </a>

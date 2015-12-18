@@ -143,19 +143,19 @@ class UserTableSeeder extends Seeder
                 'dateofbirth' => "2015-11-1".$i,
                 'role' => '2',
             ]);
-            $firstname = $firstnamelist[rand(0, 9)];
-            $middlename = $middlenamelist[rand(0, 9)];
-            $lastname = $lastnamelist[rand(0, 9)];
-            DB::table('users')->insert([
-                'id' => 'p_000001'.$i,
-                'firstname' => $firstname,
-                'middlename' => $middlename,
-                'lastname' => $lastname,
-                'email' => 'p_000001'.$i.'@schoolm.com',
-                'password' => bcrypt('1234'),
-                'dateofbirth' => "2015-11-1".$i,
-                'role' => '2',
-            ]);
+            // $firstname = $firstnamelist[rand(0, 9)];
+            // $middlename = $middlenamelist[rand(0, 9)];
+            // $lastname = $lastnamelist[rand(0, 9)];
+            // DB::table('users')->insert([
+            //     'id' => 'p_000001'.$i,
+            //     'firstname' => $firstname,
+            //     'middlename' => $middlename,
+            //     'lastname' => $lastname,
+            //     'email' => 'p_000001'.$i.'@schoolm.com',
+            //     'password' => bcrypt('1234'),
+            //     'dateofbirth' => "2015-11-1".$i,
+            //     'role' => '2',
+            // ]);
         }
     }
 }

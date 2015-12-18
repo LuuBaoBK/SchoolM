@@ -134,31 +134,38 @@ class ClassController extends Controller
             return redirect('/admin/class/classinfo/edit/'.$id);
         }
         else{
-            $rules = array(
-                'classname' => 'required|max:2',
-                'id'   => 'isexistclasses'
-            );
-            $needvalidate['classname'] = $request['classname'];
-            $needvalidate['id'] = $request['scholastic']."_".$request['grade']."_".$request['group']."_".$request['classname'];
-            $validator = Validator::make($needvalidate, $rules);
-            if($validator->fails())
-            {
-               return redirect('/admin/class/classinfo/edit/'.$id)->withErrors($validator);
+            $student_count = $myclass->students()->count();
+            if($student_count == 0){
+                $rules = array(
+                    'classname' => 'required|max:2',
+                    'id'   => 'isexistclasses'
+                );
+                $needvalidate['classname'] = $request['classname'];
+                $needvalidate['id'] = $request['scholastic']."_".$request['grade']."_".$request['group']."_".$request['classname'];
+                $validator = Validator::make($needvalidate, $rules);
+                if($validator->fails())
+                {
+                   return redirect('/admin/class/classinfo/edit/'.$id)->withErrors($validator);
+                }
+                else
+                {
+                    $myclass->id                  = $needvalidate['id'];
+                    $myclass->classname           = $request['grade'].$request['group'].$needvalidate['classname'];
+                    $myclass->scholastic          = $request['scholastic'];
+                    if($request['homeroomteacher'] == ""){
+                        //do nothing
+                    }
+                    else{
+                        $myclass->homeroom_teacher = $request['homeroomteacher'];
+                    }
+                    $myclass->save();
+                    $request->session()->flash('alert-success', 'Success Edit Class Info');
+                    return redirect('/admin/class/classinfo/edit/'.$needvalidate['id']);
+                }
             }
-            else
-            {
-                $myclass->id                  = $needvalidate['id'];
-                $myclass->classname           = $request['grade'].$request['group'].$needvalidate['classname'];
-                $myclass->scholastic          = $request['scholastic'];
-                if($request['homeroomteacher'] == ""){
-                    //do nothing
-                }
-                else{
-                    $myclass->homeroom_teacher = $request['homeroomteacher'];
-                }
-                $myclass->save();
-                $request->session()->flash('alert-success', 'Success Edit Class Info');
-                return redirect('/admin/class/classinfo/edit/'.$needvalidate['id'])->with('message', 'Success!');
+            else{
+                $request->session()->flash('alert-danger', 'This class have : '.$student_count.' students, cannot change any factor except homeroom\'s teacher');
+                return redirect('/admin/class/classinfo/edit/'.$id);
             }
         }
         

@@ -45,7 +45,7 @@
     </style>
 </head>
 <body onload="window.print();" class="layout-boxed">
-@yield('content')
+@yield('mycontent')
 <!-- ./wrapper -->
 
 </body>

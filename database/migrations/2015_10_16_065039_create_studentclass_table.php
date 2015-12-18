@@ -19,6 +19,7 @@ class CreateStudentclassTable extends Migration
             $table->string('conduct');
             $table->integer('ispassed');
             $table->string('note');
+            $table->double('GPA',2,1);
             $table->primary(array('class_id','student_id'));
             $table->foreign('class_id')->references('id')->on('classes');
             $table->foreign('student_id')->references('id')->on('students');

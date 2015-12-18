@@ -91,7 +91,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-3 col-xs-7">
-                            <label for="classname">Class Name</label>
+                            <label for="classname">Class Identifier<em>*</em></label>
                             <input type="text" id="classname" name="classname" class="form-control" value={{$record['classname']}}>
                             @if (count($errors) > 0)
 							    <div class="alert alert-warning">
@@ -135,7 +135,7 @@
  $(function () {
 	setTimeout(function() {
 		    $('.alert').slideUp('slow');
-		}, 2500); // <-- time in milliseconds
+		}, 5000); // <-- time in milliseconds
 });
 
 </script>

@@ -16,7 +16,7 @@
     <div class="box-header">
        <h3 class="box-title">Add New Class</h3>
         <div class="box-tools pull-right">
-            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
         </div>   
     </div>
     <form id="class_form" role="form">

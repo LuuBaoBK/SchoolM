@@ -17,7 +17,7 @@
     <div class="box-header">
        <h3 class="box-title">Regist New Student</h3>
         <div class="box-tools pull-right">
-            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
         </div>   
     </div>
     <form id="st_form" method="POST" role="form">
@@ -329,7 +329,7 @@ $(document).ready(function() {
                     'enrolled_year'         :enrolled_year,   
                     'graduated_year'        :graduated_year,   
                     'student_address'       :student_address,  
-                    'parent_id'     :parent_id, 
+                    'parent_id'             :parent_id, 
                     'parent_firstname'      :parent_firstname,   
                     'parent_middlename'     :parent_middlename,  
                     'parent_lastname'       :parent_lastname,   
@@ -341,6 +341,7 @@ $(document).ready(function() {
                     '_token'                :token
                 },
                 success:function(record){
+                    console.log(record);
                    if(record.isSuccess == 1){
                         $('#success_mess').show("medium");
                         setTimeout(function() {

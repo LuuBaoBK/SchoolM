@@ -60,12 +60,12 @@
         </div>
         <div class="form-group col-lg-3">
             <label for="enrolled_year">Enrolled Year <small>*</small> </label>
-            <input type="text" class="form-control" name="enrolled_year" id="enrolled_year" placeholder="Mobile Phone" value={{$student->enrolled_year}}>
+            <input type="text" class="form-control" name="enrolled_year" id="enrolled_year" placeholder="Enrolled Year" value={{$student->enrolled_year}}>
             <label class="error_mess" id="enrolled_year_error" style="display:none" for="enrolled_year"></label>
         </div>
          <div class="form-group col-lg-3">
             <label for="graduated_year">Graduated Year</label>
-            <input type="text" class="form-control" name="graduated_year" id="graduated_year" placeholder="Mobile Phone" value={{$student->graduated_year}}>
+            <input type="text" class="form-control" name="graduated_year" id="graduated_year" placeholder="Graduated Year" value={{$student->graduated_year}}>
             <label class="error_mess" id="graduated_year_error" style="display:none" for="graduated_year"></label>
         </div>
     </div>
@@ -96,7 +96,7 @@
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Error</h4>
+            <h4 class="modal-title">Reset Password</h4>
         </div>
         <div class="modal-body">
             <p>Please Confirm That You Want To Reset Password Of This Student</p>

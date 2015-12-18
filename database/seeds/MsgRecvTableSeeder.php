@@ -11,12 +11,12 @@ class MsgRecvTableSeeder extends Seeder
      */
     public function run()
     {
-        for($i=0;$i<10;$i++){
+        for($i=1;$i<=40;$i++){
             DB::table('msgrecv')->insert([
                 'id' => $i,
                 'recvby' => 'a_0000001',
-                'isdelete' => '0',
-                'isread' => '0',      
+                'isdelete' => rand(0,1),
+                'isread' => rand(0,1),      
             ]);
         }
     }

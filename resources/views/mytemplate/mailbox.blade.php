@@ -4,8 +4,17 @@
 	background-color: 	#F8F8F8   !important;
 }
 .nav-pills > li.active > a:focus {
-  	color: black !important;
-  	background-color: white !important;
+	color: black !important;
+	background-color: white !important;
+}
+.table tbody tr.read {
+  background-color: #F8F8F8;
+}
+.table tbody tr.not_read {
+  background-color: white;
+}
+.table tbody tr:hover{
+  background-color: #E0E0E0 !important;
 }
 </style>
 <!-- bootstrap wysihtml5 - text editor -->
@@ -55,7 +64,7 @@
         <h3 class="box-title">Inbox</h3>
       </div><!-- /.box-header -->
       <div class="box-body table-responsive">
-        <table id="messages_table" class="table table-hover">
+        <table id="messages_table" class="table table-hover dataTable">
           <thead>
             <tr>
               <td>Id</td>
@@ -66,11 +75,49 @@
           </thead>
           <tbody>
           <div class="mess_list">
-            @foreach ($inbox as $message)
-              <tr>
+            @foreach ($msg_list['msg_recv_new'] as $message)
+              <tr class={{$message->class}} >
                 <td>{{$message->id}}</td>
                 <td><?= $message->content->title ?></td>
-                <td><?= substr($message->content->content, 0, 30)."..." ?></td>
+                <td><?= $message->content->mycontent ?></td>
+                <td><?= $message->content->date_diff ?></td>
+              </tr>
+            @endforeach
+            @foreach ($msg_list['msg_recv_read'] as $message)
+              <tr class={{$message->class}} >
+                <td>{{$message->id}}</td>
+                <td><?= $message->content->title ?></td>
+                <td><?= $message->content->mycontent ?></td>
+                <td><?= $message->content->date_diff ?></td>
+              </tr>
+            @endforeach
+          </div>
+          </tbody>
+        </table>
+        <table id="messages_table_1" class="table table-hover dataTable">
+          <thead>
+            <tr>
+              <td>Id</td>
+              <td>Title</td>
+              <td>Content</td>
+              <td>Time</td>
+            </tr>
+          </thead>
+          <tbody>
+          <div class="mess_list">
+            @foreach ($msg_list['msg_recv_new'] as $message)
+              <tr class={{$message->class}} >
+                <td>{{$message->id}}</td>
+                <td><?= $message->content->title ?></td>
+                <td><?= $message->content->mycontent ?></td>
+                <td><?= $message->content->date_diff ?></td>
+              </tr>
+            @endforeach
+            @foreach ($msg_list['msg_recv_read'] as $message)
+              <tr class={{$message->class}} >
+                <td>{{$message->id}}</td>
+                <td><?= $message->content->title ?></td>
+                <td><?= $message->content->mycontent ?></td>
                 <td><?= $message->content->date_diff ?></td>
               </tr>
             @endforeach
@@ -83,7 +130,7 @@
 </div>
 </section>
 <section class="editor">
-<div id="editor" class="modal modal-info">
+<div id="editor" class="modal fade modal-info">
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
@@ -112,7 +159,29 @@
         </form>
         </div>
         <div class="modal-footer">
-            <button id="confirm_button" type="button" class="btn btn-warning pull-right">Confirm</button>
+            <button id="confirm_button" type="button" class="btn btn-default pull-right">Confirm</button>
+            <button id="save_draft" type="button" class="btn btn-default pull-left" data-dismiss="modal">Save</button>
+        </div>
+    </div>
+<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div>
+</section>
+<section class="mail_content">
+<div id="mail_content" class="modal fade modal-default">
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #3c8dbc; color: white">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title text-center">Mail Box</h4>
+        </div>
+        <div class="modal-body">
+          <div class="content">
+          </div>
+        </div>
+        <div class="modal-footer">
             <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">Close</button>
         </div>
     </div>
@@ -128,34 +197,88 @@
 <script src="{{asset("/adminlte/plugins/datatables/dataTables.bootstrap.min.js")}}"></script>
 <script src="{{asset("/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js")}}"></script>
 <!-- CK Editor -->
-<script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
+<script src="{{asset("/mylib/ckeditor/ckeditor.js")}}"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 
-  CKEDITOR.replace('mail_editor');
+    CKEDITOR.replace('mail_editor', {
+      toolbarGroups: [
+      { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup',  ] },
+      { name: 'document',    groups: [ 'mode', 'document' ] },
+      { name: 'tools' },
+    ]
+
+    // NOTE: Remember to leave 'toolbar' property with the default value (null).
+    });
+  CKEDITOR.instances['mail_editor'].setData('');
+
   var messages_table = $('#messages_table').dataTable({
       "lengthChange": false,
       "searching": true,
       "ordering": false,
-      "iDisplayLength": 15
+      "iDisplayLength": 15,
+      "columns": [
+         { "width": "10%" },
+         { "width": "35%" },
+         { "width": "35%" },
+         { "width": "20%" }]
   });
 
   $(function () {
   	$("#compose").click(function(){
-  		$('#editor').modal({keyboard:true});
+  		$('#editor').modal('toggle',{keyboard:true});
   	});
 
-    $('#confirm_button').click(function(){
-      var mycaseText = CKEDITOR.instances['mail_editor'].getData();
-      var caseforlen = CKEDITOR.instances['mail_editor'].document.getBody().getText();
-      
-      console.log(mycaseText.length);
-      console.log(caseforlen.length);
+    $('#save_draft').click(function(){
+      var content = CKEDITOR.instances['mail_editor'].getData();
+      var title   = $('#title').val();
+      var type  = $("ul#folder li.active").index();
+      var token        = $('input[name="_token"]').val();
       CKEDITOR.instances['mail_editor'].setData('');
-      // if (strlen(caseforlen) > 4000) {
-      //     alert("maxnum is 2000");
-      //     return;
-      // });
+      $.ajax({
+        url     :"<?= URL::to('/mailbox/save_draft') ?>",
+        type    :"POST",
+        async   :false,
+        data    :{
+                'content'       :content,
+                'title'         :title,
+                'type'          :type,
+                '_token'        :token
+                },
+        success:function(record){
+          if(record==2){
+            update_mailbox(2);
+          }
+        },
+        error:function(){
+            alert("something went wrong, contact master admin to fix");
+        }
+      });
+    });
+
+    $('#confirm_button').click(function(){
+      var content = CKEDITOR.instances['mail_editor'].getData();
+      var title   = $('#title').val();
+      var to_list = $('#to').val();
+      var token   = $('input[name="_token"]').val();
+      CKEDITOR.instances['mail_editor'].setData('');
+      $.ajax({
+        url     :"<?= URL::to('/mailbox/send_mail') ?>",
+        type    :"POST",
+        async   :false,
+        data    :{
+                'content'       :content,
+                'title'         :title,
+                'type'          :type,
+                '_token'        :token
+                },
+        success:function(record){
+          console.log(record);
+        },
+        error:function(){
+            alert("something went wrong, contact master admin to fix");
+        }
+      });
     });
 
     $('ul#folder li').click(function(){
@@ -174,6 +297,17 @@ $(document).ready(function(){
       }
     });
   });
+
+  $('#messages_table tbody').on( 'click', 'tr', function () {
+     if( $('#messages_table').dataTable().fnGetData(this) != null){
+        var id = $('#messages_table').dataTable().fnGetData(this)[0];
+        read_msg(id);
+     }
+     else{
+     }          
+  });
+
+  
   
   function update_mailbox(type){
     messages_table.fnClearTable();
@@ -187,13 +321,72 @@ $(document).ready(function(){
               '_token'        :token
               },
       success:function(record){
-          console.log(record)
+        //console.log(record);
+        messages_table.fnClearTable();
+        if(record.type == 0 || record.type == 3){
+          $.each(record.msg_list.msg_recv_new ,function(i,row){
+            var newrow = messages_table.fnAddData([
+              row.id,
+              row.content.title,
+              row.content.mycontent,
+              row.content.date_diff
+            ]);
+            messages_table.fnSettings().aoData[ newrow[0] ].nTr.className = "not_read";
+          });
+          $.each(record.msg_list.msg_recv_read ,function(i,row){
+            var newrow = messages_table.fnAddData([
+              row.id,
+              row.content.title,
+              row.content.mycontent,
+              row.content.date_diff
+            ]);
+            messages_table.fnSettings().aoData[ newrow[0] ].nTr.className = "read";
+          });
+        }
+        else{
+          $.each(record.msg_list ,function(i,row){
+            var newrow = messages_table.fnAddData([
+              row.id,
+              row.content.title,
+              row.content.mycontent,
+              row.content.date_diff
+            ]);
+            messages_table.fnSettings().aoData[ newrow[0] ].nTr.className = "not_read";
+          });
+        }
       },
       error:function(){
           alert("something went wrong, contact master admin to fix");
       }
     });
   }
+
+  function read_msg(id){
+    var type  = $("ul#folder li.active").index();
+    var token = $('input[name="_token"]').val();
+    $.ajax({
+      url     :"<?= URL::to('/mailbox/read_msg') ?>",
+      type    :"POST",
+      async   :false,
+      data    :{
+              'id'            :id,
+              'type'          :type,
+              '_token'        :token
+              },
+      success:function(record){
+          console.log(record);
+          $('#mail_content div.modal-header h4').empty();
+          $('#mail_content div.modal-header h4').append(record.msg_list[0].content.title);
+          $('#mail_content div.modal-body div.content').empty();
+          $('#mail_content div.modal-body div.content').append(record.msg_list[0].content.content);
+          $('#mail_content').modal('show');
+      },
+      error:function(){
+          alert("something went wrong, contact master admin to fix");
+      }
+    });
+  }
+
 })
 </script>
 @endsection

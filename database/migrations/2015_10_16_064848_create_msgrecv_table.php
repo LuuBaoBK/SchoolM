@@ -13,7 +13,7 @@ class CreateMsgrecvTable extends Migration
     public function up()
     {
         Schema::create('msgrecv', function (Blueprint $table) {
-            $table->integer('id');
+            $table->integer('id')->unsigned();
             $table->foreign('id')->references('id')->on('messages');
             $table->string('recvby',9);
             $table->foreign('recvby')->references('id')->on('users');

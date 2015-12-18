@@ -26,6 +26,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::group(['prefix'=>'mailbox'],function(){
 		Route::post('update_mailbox','MailBox\MailBoxController@update_mailbox');
+		Route::post('read_msg','MailBox\MailBoxController@read_msg');
+		Route::post('save_draft','MailBox\MailBoxController@save_draft');
+		Route::post('send_mail','MailBox\MailBoxController@send_mail');
 	});
 });
 
