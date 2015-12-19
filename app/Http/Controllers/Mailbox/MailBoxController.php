@@ -25,11 +25,10 @@ class MailBoxController extends Controller
         $user = Auth::user();
         $id   = $user->id;
         $user = User::find($id);
-        $date = date('Y-m-d H:i:s');
-        $to_date = date_create($date);
+        $count_msg = 0;
 
-        $msg_list = $user->msg_send()->where('id','=',$msg_id)->count();
-        if($msg_list > 0){
+        $count_msg = $user->msg_send()->where('id','=',$msg_id)->count();
+        if($count_msg > 0){
             $msg_list = $user->msg_send()->where('id','=',$msg_id)->get();
         }
         else{
@@ -37,28 +36,19 @@ class MailBoxController extends Controller
         }
 
         foreach ($msg_list as $key => $value) {
-            $value->content;
-            $value->content->mycontent = substr($value->content->content,0,30)."...";
-            $date_mess = date_create($value->content->created_at);
-            $diff = date_diff($to_date,$date_mess);
-            if($diff->y > 0){
-                $value->content->date_diff = $diff->y." years ago";
-            }
-            elseif($diff->m > 0){
-                $value->content->date_diff = $diff->m." months ago";
-            }
-            elseif($diff->d > 0){
-                $value->content->date_diff = $diff->d." days ago";
-            }
-            elseif($diff->h > 0){
-                $value->content->date_diff = $diff->h." hours ago";
-            }
-            elseif($diff->i > 0){
-                $value->content->date_diff = $diff->i." minutes ago";
+            if($count_msg == 0){
+                $value->isread = "1";
+                $value->save();
+                $value->send_by->author;
+                $value->author_name = $value->send_by->author->firstname." ".$value->send_by->author->middlename." ".$value->send_by->author->lastname;
             }
             else{
-                $value->content->date_diff = "1 minute ago";
+                $value->author;
+                $value->author_name = $value->author->firstname." ".$value->author->middlename." ".$value->author->lastname;
             }
+            $value->content;
+            $value->content->mycontent = substr($value->content->content,0,30)."...";
+            $value->content->date_diff = $this->date_diff($value->content->created_at);
         }
         $record['msg_list'] = $msg_list;
         return $record;
@@ -94,69 +84,33 @@ class MailBoxController extends Controller
         $user = Auth::user();
         $id = $user->id;
         $user = User::find($id);
-        $date = date('Y-m-d H:i:s');
-        $to_date = date_create($date);
         $msg_recv_new  = $user->msg_recv()->where('isread','=','0')->where('isdelete','=','0')->orderBy('id', 'desc')->get();
         $msg_recv_read = $user->msg_recv()->where('isread','=','1')->where('isdelete','=','0')->orderBy('id', 'desc')->get();
         foreach ($msg_recv_new as $key => $value) {
             $value->class = "not_read";
             $value->content;
+            $value->send_by->author;
+            $value->author_name = $value->send_by->author->firstname." ".$value->send_by->author->middlename." ".$value->send_by->author->lastname;
             if($value->content->content == ""){
                 $value->content->mycontent = "N/A";
             }
             else{
                 $value->content->mycontent = substr($value->content->content,0,30)."...";
             }
-            $date_mess = date_create($value->content->created_at);
-            $diff = date_diff($to_date,$date_mess);
-            if($diff->y > 0){
-                $value->content->date_diff = $diff->y." years ago";
-            }
-            elseif($diff->m > 0){
-                $value->content->date_diff = $diff->m." months ago";
-            }
-            elseif($diff->d > 0){
-                $value->content->date_diff = $diff->d." days ago";
-            }
-            elseif($diff->h > 0){
-                $value->content->date_diff = $diff->h." hours ago";
-            }
-            elseif($diff->i > 0){
-                $value->content->date_diff = $diff->i." minutes ago";
-            }
-            else{
-                $value->content->date_diff = "1 minute ago";
-            }
+            $value->content->date_diff = $this->date_diff($value->content->created_at);
         }
         foreach ($msg_recv_read as $key => $value) {
             $value->class = "read";
             $value->content;
+            $value->send_by->author;
+            $value->author_name = $value->send_by->author->firstname." ".$value->send_by->author->middlename." ".$value->send_by->author->lastname;
             if($value->content->content == ""){
                 $value->content->mycontent = "N/A";
             }
             else{
                 $value->content->mycontent = substr($value->content->content,0,30)."...";
             }
-            $date_mess = date_create($value->content->created_at);
-            $diff = date_diff($to_date,$date_mess);
-            if($diff->y > 0){
-                $value->content->date_diff = $diff->y." years ago";
-            }
-            elseif($diff->m > 0){
-                $value->content->date_diff = $diff->m." months ago";
-            }
-            elseif($diff->d > 0){
-                $value->content->date_diff = $diff->d." days ago";
-            }
-            elseif($diff->h > 0){
-                $value->content->date_diff = $diff->h." hours ago";
-            }
-            elseif($diff->i > 0){
-                $value->content->date_diff = $diff->i." minutes ago";
-            }
-            else{
-                $value->content->date_diff = "1 minute ago";
-            }
+            $value->content->date_diff = $this->date_diff($value->content->created_at);
         }
         $msg_list['msg_recv_new'] = $msg_recv_new;
         $msg_list['msg_recv_read'] = $msg_recv_read;
@@ -167,38 +121,19 @@ class MailBoxController extends Controller
         $user = Auth::user();
         $id = $user->id;
         $user = User::find($id);
-        $date = date('Y-m-d H:i:s');
-        $to_date = date_create($date);
         $msg_list = $user->msg_send()->where('isdelete','=','0')->where('isdraft','=','0')->orderBy('id','desc')->get();
         foreach ($msg_list as $key => $value) {
             $value->class = "not_read";
             $value->content;
+            $value->author;
+            $value->author_name = $value->author->firstname." ".$value->author->middlename." ".$value->author->lastname;
             if($value->content->content == ""){
                 $value->content->mycontent = "N/A";
             }
             else{
                 $value->content->mycontent = substr($value->content->content,0,30)."...";
             }
-            $date_mess = date_create($value->content->created_at);
-            $diff = date_diff($to_date,$date_mess);
-            if($diff->y > 0){
-                $value->content->date_diff = $diff->y." years ago";
-            }
-            elseif($diff->m > 0){
-                $value->content->date_diff = $diff->m." months ago";
-            }
-            elseif($diff->d > 0){
-                $value->content->date_diff = $diff->d." days ago";
-            }
-            elseif($diff->h > 0){
-                $value->content->date_diff = $diff->h." hours ago";
-            }
-            elseif($diff->i > 0){
-                $value->content->date_diff = $diff->i." minutes ago";
-            }
-            else{
-                $value->content->date_diff = "1 minute ago";
-            }
+            $value->content->date_diff = $this->date_diff($value->content->created_at);
         }
         return $msg_list;
     }
@@ -207,38 +142,19 @@ class MailBoxController extends Controller
         $user = Auth::user();
         $id = $user->id;
         $user = User::find($id);
-        $date = date('Y-m-d H:i:s');
-        $to_date = date_create($date);
         $msg_list = $user->msg_send()->where('isdelete','=','0')->where('isdraft','=','1')->orderBy('id','desc')->get();
         foreach ($msg_list as $key => $value) {
             $value->class = "not_read";
             $value->content;
+            $value->author;
+            $value->author_name = $value->author->firstname." ".$value->author->middlename." ".$value->author->lastname;
            if($value->content->content == ""){
                 $value->content->mycontent = "N/A";
             }
             else{
                 $value->content->mycontent = substr($value->content->content,0,30)."...";
             }
-            $date_mess = date_create($value->content->created_at);
-            $diff = date_diff($to_date,$date_mess);
-            if($diff->y > 0){
-                $value->content->date_diff = $diff->y." years ago";
-            }
-            elseif($diff->m > 0){
-                $value->content->date_diff = $diff->m." months ago";
-            }
-            elseif($diff->d > 0){
-                $value->content->date_diff = $diff->d." days ago";
-            }
-            elseif($diff->h > 0){
-                $value->content->date_diff = $diff->h." hours ago";
-            }
-            elseif($diff->i > 0){
-                $value->content->date_diff = $diff->i." minutes ago";
-            }
-            else{
-                $value->content->date_diff = "1 minute ago";
-            }
+            $value->content->date_diff = $this->date_diff($value->content->created_at);
         }
         return $msg_list;
     }
@@ -247,69 +163,37 @@ class MailBoxController extends Controller
         $user = Auth::user();
         $id = $user->id;
         $user = User::find($id);
-        $date = date('Y-m-d H:i:s');
-        $to_date = date_create($date);
+        //msg_recv_new is recv list
         $msg_recv_new  = $user->msg_recv()->where('isdelete','=','1')->orderBy('id', 'desc')->get();
+        //msg_recv_read is send list
         $msg_recv_read = $user->msg_send()->where('isdelete','=','1')->orderBy('id', 'desc')->get();
         foreach ($msg_recv_new as $key => $value) {
             $value->class = "not_read";
             $value->content;
+            $value->send_by->author;
+            $value->author_name = $value->send_by->author->firstname." ".$value->send_by->author->middlename." ".$value->send_by->author->lastname;
             if($value->content->content == ""){
                 $value->content->mycontent = "N/A";
             }
             else{
                 $value->content->mycontent = substr($value->content->content,0,30)."...";
             }
-            $date_mess = date_create($value->content->created_at);
-            $diff = date_diff($to_date,$date_mess);
-            if($diff->y > 0){
-                $value->content->date_diff = $diff->y." years ago";
-            }
-            elseif($diff->m > 0){
-                $value->content->date_diff = $diff->m." months ago";
-            }
-            elseif($diff->d > 0){
-                $value->content->date_diff = $diff->d." days ago";
-            }
-            elseif($diff->h > 0){
-                $value->content->date_diff = $diff->h." hours ago";
-            }
-            elseif($diff->i > 0){
-                $value->content->date_diff = $diff->i." minutes ago";
-            }
-            else{
-                $value->content->date_diff = "1 minute ago";
-            }
+            $value->content->date_diff = $this->date_diff($value->content->created_at);
         }
         foreach ($msg_recv_read as $key => $value) {
             $value->class = "read";
             $value->content;
+            $value->author;
+            $value->author_name = $value->author->firstname." ".$value->author->middlename." ".$value->author->lastname;
             if($value->content->content == ""){
                 $value->content->mycontent = "N/A";
             }
             else{
                 $value->content->mycontent = substr($value->content->content,0,30)."...";
             }
-            $date_mess = date_create($value->content->created_at);
-            $diff = date_diff($to_date,$date_mess);
-            if($diff->y > 0){
-                $value->content->date_diff = $diff->y." years ago";
-            }
-            elseif($diff->m > 0){
-                $value->content->date_diff = $diff->m." months ago";
-            }
-            elseif($diff->d > 0){
-                $value->content->date_diff = $diff->d." days ago";
-            }
-            elseif($diff->h > 0){
-                $value->content->date_diff = $diff->h." hours ago";
-            }
-            elseif($diff->i > 0){
-                $value->content->date_diff = $diff->i." minutes ago";
-            }
-            else{
-                $value->content->date_diff = "1 minute ago";
-            }
+
+            $value->content->date_diff = $this->date_diff($value->content->created_at);
+            
         }
         $msg_list['msg_recv_new'] = $msg_recv_new;
         $msg_list['msg_recv_read'] = $msg_recv_read;
@@ -324,10 +208,10 @@ class MailBoxController extends Controller
         $id = $user->id;
         $user = User::find($id);
         $date = date('Y-m-d H:i:s');
-        $to_date = date_create($date);
         $message = new Messages;
         $message->title = $title;
         $message->content = $content;
+        $message->created_at = $date;
         $message->save();
         $msg_send = new MsgSend;
         $msg_send->id = $message->id;
@@ -349,6 +233,33 @@ class MailBoxController extends Controller
         $record['1'] = $title;
         $record['2'] = $to_list;
         $record['3'] = $content;
+        return $record;
+    }
+
+    public function date_diff($msg_date){
+        $date = date('Y-m-d H:i:s');
+        $to_date = date_create($date);
+
+        $date_mess = date_create($msg_date);
+        $diff = date_diff($to_date,$date_mess);
+        if($diff->y > 0){
+            $record = $diff->y." years ago";
+        }
+        elseif($diff->m > 0){
+            $record = $diff->m." months ago";
+        }
+        elseif($diff->d > 0){
+            $record = $diff->d." days ago";
+        }
+        elseif($diff->h > 0){
+            $record = $diff->h." hours ago";
+        }
+        elseif($diff->i > 0){
+            $record = $diff->i." minutes ago";
+        }
+        else{
+            $record = "1 minute ago";
+        }
         return $record;
     }
     

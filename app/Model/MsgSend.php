@@ -19,4 +19,8 @@ class MsgSend extends Model
     	return $this->belongsToMany('App\Model\MsgSend', 'id','id');
     }
 
+    public function author(){
+        return $this->belongsTo('App\User','sendby','id');
+    }
+
 }

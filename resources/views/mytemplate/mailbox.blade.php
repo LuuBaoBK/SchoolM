@@ -67,7 +67,8 @@
         <table id="messages_table" class="table table-hover dataTable">
           <thead>
             <tr>
-              <td>Id</td>
+              <td>id</td>
+              <td>Author</td>
               <td>Title</td>
               <td>Content</td>
               <td>Time</td>
@@ -78,6 +79,7 @@
             @foreach ($msg_list['msg_recv_new'] as $message)
               <tr class={{$message->class}} >
                 <td>{{$message->id}}</td>
+                <td>{{$message->author_name}}</td>
                 <td><?= $message->content->title ?></td>
                 <td><?= $message->content->mycontent ?></td>
                 <td><?= $message->content->date_diff ?></td>
@@ -86,36 +88,7 @@
             @foreach ($msg_list['msg_recv_read'] as $message)
               <tr class={{$message->class}} >
                 <td>{{$message->id}}</td>
-                <td><?= $message->content->title ?></td>
-                <td><?= $message->content->mycontent ?></td>
-                <td><?= $message->content->date_diff ?></td>
-              </tr>
-            @endforeach
-          </div>
-          </tbody>
-        </table>
-        <table id="messages_table_1" class="table table-hover dataTable">
-          <thead>
-            <tr>
-              <td>Id</td>
-              <td>Title</td>
-              <td>Content</td>
-              <td>Time</td>
-            </tr>
-          </thead>
-          <tbody>
-          <div class="mess_list">
-            @foreach ($msg_list['msg_recv_new'] as $message)
-              <tr class={{$message->class}} >
-                <td>{{$message->id}}</td>
-                <td><?= $message->content->title ?></td>
-                <td><?= $message->content->mycontent ?></td>
-                <td><?= $message->content->date_diff ?></td>
-              </tr>
-            @endforeach
-            @foreach ($msg_list['msg_recv_read'] as $message)
-              <tr class={{$message->class}} >
-                <td>{{$message->id}}</td>
+                <td>{{$message->author_name}}</td>
                 <td><?= $message->content->title ?></td>
                 <td><?= $message->content->mycontent ?></td>
                 <td><?= $message->content->date_diff ?></td>
@@ -175,7 +148,8 @@
         <div class="modal-header" style="background-color: #3c8dbc; color: white">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title text-center">Mail Box</h4>
+            <p><h4 class="2 modal-title">Mail Box</h4><p>
+            <p><h4 class="1 modal-title text-center">Mail Box</h4><p>
         </div>
         <div class="modal-body">
           <div class="content">
@@ -217,11 +191,20 @@ $(document).ready(function(){
       "searching": true,
       "ordering": false,
       "iDisplayLength": 15,
-      "columns": [
-         { "width": "10%" },
-         { "width": "35%" },
-         { "width": "35%" },
-         { "width": "20%" }]
+      "columnDefs":[
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [1],
+                "width" : "12%"
+            },
+            {
+                "targets": [4],
+                "width" : "12%"
+            }]
   });
 
   $(function () {
@@ -301,6 +284,8 @@ $(document).ready(function(){
   $('#messages_table tbody').on( 'click', 'tr', function () {
      if( $('#messages_table').dataTable().fnGetData(this) != null){
         var id = $('#messages_table').dataTable().fnGetData(this)[0];
+        $(this).removeClass('not_read');
+        $(this).addClass('read');
         read_msg(id);
      }
      else{
@@ -327,6 +312,7 @@ $(document).ready(function(){
           $.each(record.msg_list.msg_recv_new ,function(i,row){
             var newrow = messages_table.fnAddData([
               row.id,
+              row.author_name,
               row.content.title,
               row.content.mycontent,
               row.content.date_diff
@@ -336,6 +322,7 @@ $(document).ready(function(){
           $.each(record.msg_list.msg_recv_read ,function(i,row){
             var newrow = messages_table.fnAddData([
               row.id,
+              row.author_name,
               row.content.title,
               row.content.mycontent,
               row.content.date_diff
@@ -347,6 +334,7 @@ $(document).ready(function(){
           $.each(record.msg_list ,function(i,row){
             var newrow = messages_table.fnAddData([
               row.id,
+              row.author_name,
               row.content.title,
               row.content.mycontent,
               row.content.date_diff
@@ -375,8 +363,10 @@ $(document).ready(function(){
               },
       success:function(record){
           console.log(record);
-          $('#mail_content div.modal-header h4').empty();
-          $('#mail_content div.modal-header h4').append(record.msg_list[0].content.title);
+          $('#mail_content div.modal-header h4.2').empty();
+          $('#mail_content div.modal-header h4.2').append("Author : "+record.msg_list[0].author_name);
+          $('#mail_content div.modal-header h4.1').empty();
+          $('#mail_content div.modal-header h4.1').append(record.msg_list[0].content.title);
           $('#mail_content div.modal-body div.content').empty();
           $('#mail_content div.modal-body div.content').append(record.msg_list[0].content.content);
           $('#mail_content').modal('show');
