@@ -215,8 +215,8 @@ $(document).ready(function(){
     $('#save_draft').click(function(){
       var content = CKEDITOR.instances['mail_editor'].getData();
       var title   = $('#title').val();
-      var type  = $("ul#folder li.active").index();
-      var token        = $('input[name="_token"]').val();
+      var type    = $("ul#folder li.active").index();
+      var token   = $('input[name="_token"]').val();
       CKEDITOR.instances['mail_editor'].setData('');
       $.ajax({
         url     :"<?= URL::to('/mailbox/save_draft') ?>",
@@ -243,6 +243,7 @@ $(document).ready(function(){
       var content = CKEDITOR.instances['mail_editor'].getData();
       var title   = $('#title').val();
       var to_list = $('#to').val();
+      var type    = $("ul#folder li.active").index();
       var token   = $('input[name="_token"]').val();
       CKEDITOR.instances['mail_editor'].setData('');
       $.ajax({
@@ -253,6 +254,7 @@ $(document).ready(function(){
                 'content'       :content,
                 'title'         :title,
                 'type'          :type,
+                'to_list'       :to_list,
                 '_token'        :token
                 },
         success:function(record){

@@ -257,6 +257,8 @@ table tr.selected{
 $(document).ready(function() {
     $(function() {
         var selected_row_index;
+        $('#sidebar_list_2').addClass('active');
+        $('#sidebar_list_2_4').addClass('active');
         $('#parent_table').dataTable({
             "columns": [
                         { "width": "20%" },

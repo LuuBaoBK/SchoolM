@@ -152,6 +152,8 @@
 <script>
 $(document).ready(function() {
     $(function () {
+        $('#sidebar_list_2').addClass('active');
+        $('#sidebar_list_2_1').addClass('active');
         $("#admin_table").DataTable({
             "order": [[ 0, "desc" ]],
         }

@@ -161,7 +161,7 @@ table tr.selected{
 <script type="text/javascript">
     $(document).ready(function()
     {
-        console.log("abc");
+        $('#sidebar_list_6').addClass('active');
         $(function() {
             //$('#student_table_filter').css("float","left");
             

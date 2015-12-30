@@ -40,7 +40,7 @@
 		        <ul class="nav nav-tabs">
 		          <li class="active"><a href="#info" data-toggle="tab">Personal Info</a></li>
 		          <li><a href="#changepassword" data-toggle="tab">Change Password</a></li>
-		          <li><a href="#settings" data-toggle="tab">Settings</a></li>
+		          <!-- <li><a href="#settings" data-toggle="tab">Settings</a></li> -->
 		        </ul>
 		        <div class="tab-content">
 		            <div class="active tab-pane" id="info">       
@@ -148,6 +148,7 @@
 <script src="{{asset("/adminlte/bootstrap/js/bootstrap.min.js")}}"></script>
 <script type="text/javascript">
     $(function() {
+    	$('#sidebar_list_1').addClass('active');
         $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
         $("[data-mask]").inputmask();
 

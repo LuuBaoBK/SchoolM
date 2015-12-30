@@ -89,6 +89,7 @@
 <!-- page script -->
 <script>
     $(function () {
+        $('#sidebar_list_4').addClass('active');
         $("#subject_table").DataTable(
             {"order": [[ 0, "desc" ]]}
         );

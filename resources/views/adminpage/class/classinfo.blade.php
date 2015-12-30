@@ -172,6 +172,8 @@
 <!-- page script -->
 <script type="text/javascript">
     $(function() {
+        $('#sidebar_list_3').addClass('active');
+        $('#sidebar_list_3_1').addClass('active');
         $('#class_table').dataTable();
     });
 
@@ -189,7 +191,7 @@
                     },
             success:function(record){
                 $.each(record, function(i, row){
-                    $('#homeroomteacher').append("<option>"+row.id+"  |  "+row.user.firstname+" "+row.user.middlename+" "+row.user.lastnam+"</option>");
+                    $('#homeroomteacher').append("<option>"+row.id+"  |  "+row.user.firstname+" "+row.user.middlename+" "+row.user.lastname+"</option>");
                 });
             },
             error:function(){
@@ -240,7 +242,7 @@
                         ])
                     $("#homeroomteacher").empty();
                     $.each(record.teacherlist, function(i, row){
-                        $('#homeroomteacher').append("<option>"+row.id+"  |  "+row.user.firstname+" "+row.user.middlename+" "+row.user.lastnam+"</option>");
+                        $('#homeroomteacher').append("<option>"+row.id+"  |  "+row.user.firstname+" "+row.user.middlename+" "+row.user.lastname+"</option>");
                     });
                 }
                 else{
@@ -277,7 +279,7 @@
                         row.id,
                         row.classname,
                         "20"+row.scholastic,
-                        row.teacher.user.firstname+" "+row.teacher.user.middlename+" "+row.teacher.user.lastnam,
+                        row.teacher.user.firstname+" "+row.teacher.user.middlename+" "+row.teacher.user.lastname,
                         button
                         ]
                     );   

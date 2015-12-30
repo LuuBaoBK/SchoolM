@@ -196,6 +196,8 @@
 
 <script>
     $(function () {
+        $('#sidebar_list_2').addClass('active');
+        $('#sidebar_list_2_2').addClass('active');
         $("#teacher_table").DataTable({
             "order": [[ 0, "desc" ]],   
         });

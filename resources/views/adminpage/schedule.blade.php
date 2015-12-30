@@ -112,6 +112,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $(function() {
+            $('#sidebar_list_5').addClass('active');
             $('#schedule_table').dataTable(
             {
                 "bSort" : false,

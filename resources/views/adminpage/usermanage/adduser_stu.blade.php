@@ -272,6 +272,8 @@
 <script>
 $(document).ready(function() {
     $(function () {
+        $('#sidebar_list_2').addClass('active');
+        $('#sidebar_list_2_3').addClass('active');
         var isCheck = 1;
     //Flat red color scheme for iCheck
         $('input[type="checkbox"].minimal-blue').iCheck({

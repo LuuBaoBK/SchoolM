@@ -323,6 +323,8 @@ table tr.selected{
 $(document).ready(function() {
 
     $(function() {
+        $('#sidebar_list_3').addClass('active');
+        $('#sidebar_list_3_2').addClass('active');
         $('#student_table').dataTable({
             "scrollCollapse": true,
             "scrollY" : "350px",

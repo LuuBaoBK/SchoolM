@@ -228,11 +228,48 @@ class MailBoxController extends Controller
         $title   = $request['title'];
         $to_list = $request['to_list'];
         $type    = $request['type'];
-        
-        $record['0'] = $type;
-        $record['1'] = $title;
-        $record['2'] = $to_list;
-        $record['3'] = $content;
+
+        if(strpos($to_list,'@') === false){
+            $record = "wrong format";
+            return $record;
+        }
+
+        $success_list = array();
+        $not_found_list = array();
+        $wrong_format_list = array();
+        $temp_list = array();
+        $email_list = explode(" ", $to_list);
+
+        foreach ($email_list as $key => $value) {
+            $is_email = strpos($value,'@');
+            if($is_email !== false ){
+                $email = explode("@", $value);
+                if($email[1] == "schoolm.com"){
+                    array_push($not_found_list, $email[0]);
+                }
+                else{
+                    array_push($wrong_format_list, $value);
+                }
+            }
+            else{
+                array_push($wrong_format_list,$value);
+            }
+        }
+
+        $success_list = User::whereIn('id',$not_found_list)->get();
+        foreach ($success_list as $key => $value) {
+            // $recv = new MsgRecv;
+            // $recv->
+            array_push($temp_list, $value->id);
+        }
+
+        $not_found_list = array_merge(array_diff($not_found_list, $temp_list));
+                $mycount = count($success_list);
+
+        $record[0] = $success_list;
+        $record[1] = $not_found_list;
+        $record[2] = $wrong_format_list;
+        $record[3] = $mycount;
         return $record;
     }
 
