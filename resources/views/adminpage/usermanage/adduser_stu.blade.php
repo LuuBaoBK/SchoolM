@@ -58,9 +58,23 @@
                                 <label class="error_mess" id="student_dateofbirth_error" style="display:none" for="student_dateofbirth"></label>
                             </div>
                             <div class="form-group col-lg-4">
-                                <label for="enrolled_year">Enrolled Year<small> *</small> </label>
-                                <input type="text" class="form-control" name="enrolled_year" id="enrolled_year" placeholder="Enrolled Year">
-                                <label class="error_mess" id="enrolled_year_error" style="display:none" for="enrolled_year"></label>
+                                <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+                                <label for="scholastic">Scholastic</label>
+                                <select id="scholastic" name="scholastic" class="form-control">
+                                    <?php
+                                        $year = date("Y") + 2;
+                                        $selected = "";
+                                        for($year;$year >=2010 ;$year--){
+                                            if($year == date("Y")){
+                                               $selected = "selected";
+                                            }
+                                            else{
+                                                $selected = "";
+                                            }
+                                            echo ("<option value='".substr($year,2)."'".$selected.">".$year."</option>");
+                                        }
+                                    ?>
+                                </select>
                             </div>
                             <div class="form-group col-lg-4">
                                 <label for="graduated_year">Graduated Year</label>
@@ -149,6 +163,26 @@
         </div>
     </form>
 </div>
+<div class="row">
+<div class="col-lg-4">
+    <div class="box box-solid box-primary">
+        <div class="box-header">
+        <h3 class="box-title">Filter</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>                                    
+    </div><!-- /.box-header -->
+    <form id="filter_form" method="POST" role="form">
+        <div class="box-body">
+            <div class="form-group">
+                <label for="filter_fullname">Full Name</label>
+                <input type="text" class="form-control" name="filter_fullname" id="filter_fullname" placeholder="Full Name">
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+<div class="col-lg-8">
 <div class="box box-solid box-primary">
     <div class="box-header">
         <h3 class="box-title">Student List</h3>
@@ -158,74 +192,6 @@
     </div><!-- /.box-header -->
 
     <div class="box-body table-responsive">
-        <div class="box box-primary">
-            <div class="box-header">
-                <p class="box-title">Select Enrolled Year Range</p>
-            </div>
-            <div class="box-body">
-                <form id="student_filter">
-                    <div id="from_to_warning" style="display: none"class="alert alert-warning">
-                        <i class="icon fa fa-warning"></i>From_Year can not be greater than To_Year
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-3 col-xs-7">
-                            <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-                            <label for="from_year">From</label>
-                            <select id="from_year" name="from_year" class="form-control">
-                                <?php
-                                    $year = date("Y") + 2;
-                                    for($year;$year >=2010 ;$year--){
-                                        if($year == 2010)
-                                        {
-                                            echo "<option selected>".$year."</option>";
-                                        }
-                                        else
-                                        {
-                                            echo "<option>".$year."</option>";
-                                        }
-                                    }  
-                                ?>
-                            </select>                                       
-                        </div>
-                        <div class="form-group col-lg-3 col-xs-7">
-                            <label for="to_year">To</label>
-                            <select id="to_year" name="to_year" class="form-control">
-                                <?php
-                                    $year = date("Y") + 2;
-                                    for($year;$year >=2010 ;$year--){
-                                        if($year == 2017)
-                                        {
-                                            echo "<option selected>".$year."</option>";
-                                        }
-                                        else
-                                        {
-                                            echo "<option>".$year."</option>";
-                                        }
-                                    }
-                                ?>
-                            </select>
-                        </div>                                                                      
-                    </div>    
-                    <div class="row">
-                        <div class="form-group col-lg-3 col-xs-7">
-                            <label for="firstname">First Name</label>
-                            <input id="firstname" type="text" class="form-control" name="firstname" id="firstname" placeholder="Student First Name">
-                        </div>
-                        <div class="form-group col-lg-3 col-xs-7">
-                            <label for="middlename">Middle Name</label>
-                            <input id="middlename" type="text" class="form-control" name="middlename" id="middlename" placeholder="Student Middle Name">
-                        </div>
-                        <div class="form-group col-lg-3 col-xs-7">
-                            <label for="lastname">Last Name</label>
-                            <input id="lastname" type="text" class="form-control" name="lastname" id="lastname" placeholder="Student Last Name">
-                        </div>        
-                    </div>                                    
-                    <div class="box-footer">
-                        <button id ="student_search" type="button" class="btn btn-primary btn-flatt">Search</button>
-                    </div>
-                </form>
-            </div>
-        </div>
         <table id="student_table" class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -263,6 +229,8 @@
         </table>
     </div>
 </div><!-- /.box -->
+</div>
+</div>
 </section>
 <!-- DataTables -->
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>

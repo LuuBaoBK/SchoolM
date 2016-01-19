@@ -53,11 +53,13 @@ class UserTableSeeder extends Seeder
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
+            $fullname = $firstname." ".$middlename." ".$lastname;
     		DB::table('users')->insert([
     			'id' =>	'a_000000'.$i,
 	            'firstname' => $firstname,
                 'middlename' => $middlename,
                 'lastname' => $lastname,
+                'fullname' => $fullname,
 	            'email' => 'a_000000'.$i.'@schoolm.com',
 	            'password' => bcrypt('1234'),
                 'dateofbirth' => "2015-11-1".$i,
@@ -66,11 +68,13 @@ class UserTableSeeder extends Seeder
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
+            $fullname = $firstname." ".$middlename." ".$lastname;
             DB::table('users')->insert([
                 'id' => 't_000000'.$i,
                 'firstname' => $firstname,
                 'middlename' => $middlename,
                 'lastname' => $lastname,
+                'fullname' => $fullname,
                 'email' => 't_000000'.$i.'@schoolm.com',
                 'dateofbirth' => "2014-11-1".$i,
                 'password' => bcrypt('1234'),
@@ -79,11 +83,13 @@ class UserTableSeeder extends Seeder
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
+            $fullname = $firstname." ".$middlename." ".$lastname;
             DB::table('users')->insert([
                 'id' => 's_000000'.$i,
                 'firstname' => $firstname,
                 'middlename' => $middlename,
                 'lastname' => $lastname,
+                'fullname' => $fullname,
                 'email' => 's_000000'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
                 'dateofbirth' => "2015-11-1".$i,
@@ -92,11 +98,13 @@ class UserTableSeeder extends Seeder
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
+            $fullname = $firstname." ".$middlename." ".$lastname;
             DB::table('users')->insert([
                 'id' => 'p_000000'.$i,
                 'firstname' => $firstname,
                 'middlename' => $middlename,
                 'lastname' => $lastname,
+                'fullname' => $fullname,
                 'email' => 'p_000000'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
                 'dateofbirth' => "2015-11-1".$i,
@@ -112,6 +120,7 @@ class UserTableSeeder extends Seeder
                 'firstname' => $firstname,
                 'middlename' => $middlename,
                 'lastname' => $lastname,
+                'fullname' => $fullname,
                 'email' => 'a_000001'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
                 'dateofbirth' => "2015-11-1".$i,
@@ -120,11 +129,13 @@ class UserTableSeeder extends Seeder
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
+            $fullname = $firstname." ".$middlename." ".$lastname;
             DB::table('users')->insert([
                 'id' => 't_000001'.$i,
                 'firstname' => $firstname,
                 'middlename' => $middlename,
                 'lastname' => $lastname,
+                'fullname' => $fullname,
                 'email' => 't_000001'.$i.'@schoolm.com',
                 'dateofbirth' => "2014-11-1".$i,
                 'password' => bcrypt('1234'),
@@ -133,11 +144,13 @@ class UserTableSeeder extends Seeder
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
+            $fullname = $firstname." ".$middlename." ".$lastname;
             DB::table('users')->insert([
                 'id' => 's_000001'.$i,
                 'firstname' => $firstname,
                 'middlename' => $middlename,
                 'lastname' => $lastname,
+                'fullname' => $fullname,
                 'email' => 's_000001'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
                 'dateofbirth' => "2015-11-1".$i,

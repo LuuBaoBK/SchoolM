@@ -19,6 +19,8 @@ class CreateStudentsTable extends Migration
             $table->integer('graduated_year');
             $table->string('parent_id',9);
             $table->foreign('parent_id')->references('id')->on('parents');
+            $table->text('note');
+            $table->text('comment');
         });
     }
 

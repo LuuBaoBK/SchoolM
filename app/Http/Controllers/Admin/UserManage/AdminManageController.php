@@ -73,6 +73,7 @@ class AdminManageController extends Controller
             $user->firstname = $request['firstname'];
             $user->middlename = $request['middlename'];
             $user->lastname = $request['lastname'];
+            $user->fullname = $request['firstname']." ".$request['middlename']." ".$request['lastname'];
             $user->address = $request['address'];
             $user->role = "0";
             $user->dateofbirth = $dateofbirth;
@@ -152,6 +153,7 @@ class AdminManageController extends Controller
             $user->firstname   = $request['firstname'];
             $user->middlename  = $request['middlename'];
             $user->lastname    = $request['lastname'];
+            $user->fullname = $request['firstname']." ".$request['middlename']." ".$request['lastname'];
             $user->dateofbirth = $dateofbirth;
             $user->address     = $request['address'];
             $user->save();

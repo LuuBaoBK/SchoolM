@@ -10,13 +10,16 @@ use App\User;
 use App\Model\MsgSend;
 use App\Model\MsgRecv;
 use App\Model\Messages;
+use App;
 
 class MailBoxController extends Controller
 {
     public function get_mailbox(){
         $msg_list = array();
         $msg_list = $this->get_inbox();
-        return view('adminpage.mailbox' , ['msg_list' => $msg_list]);
+        $user = Auth::user();
+        $id   = $user->id;
+        return view('adminpage.mailbox' , ['msg_list' => $msg_list, 'my_id' => $id]);
     }
 
     public function read_msg(Request $request){
@@ -85,6 +88,7 @@ class MailBoxController extends Controller
         $id = $user->id;
         $user = User::find($id);
         $msg_recv_new  = $user->msg_recv()->where('isread','=','0')->where('isdelete','=','0')->orderBy('id', 'desc')->get();
+        $msg_recv_new_count  = $user->msg_recv()->where('isread','=','0')->where('isdelete','=','0')->get()->count();
         $msg_recv_read = $user->msg_recv()->where('isread','=','1')->where('isdelete','=','0')->orderBy('id', 'desc')->get();
         foreach ($msg_recv_new as $key => $value) {
             $value->class = "not_read";
@@ -114,6 +118,7 @@ class MailBoxController extends Controller
         }
         $msg_list['msg_recv_new'] = $msg_recv_new;
         $msg_list['msg_recv_read'] = $msg_recv_read;
+        $msg_list['msg_recv_new_count'] = $msg_recv_new_count;
         return $msg_list;
     }
 
@@ -230,13 +235,13 @@ class MailBoxController extends Controller
         $type    = $request['type'];
 
         if(strpos($to_list,'@') === false){
-            $record = "wrong format";
+            $record[0] = "wrong format";
             return $record;
         }
 
         $success_list = array();
         $not_found_list = array();
-        $wrong_format_list = array();
+        $wrong_format_list = [];
         $temp_list = array();
         $email_list = explode(" ", $to_list);
 
@@ -252,24 +257,59 @@ class MailBoxController extends Controller
                 }
             }
             else{
+                if($value != "")
                 array_push($wrong_format_list,$value);
             }
         }
 
         $success_list = User::whereIn('id',$not_found_list)->get();
         foreach ($success_list as $key => $value) {
-            // $recv = new MsgRecv;
-            // $recv->
             array_push($temp_list, $value->id);
         }
 
         $not_found_list = array_merge(array_diff($not_found_list, $temp_list));
-                $mycount = count($success_list);
 
-        $record[0] = $success_list;
-        $record[1] = $not_found_list;
-        $record[2] = $wrong_format_list;
-        $record[3] = $mycount;
+        $mycount = count($success_list);
+        if($mycount > 0){
+            $date = date('Y-m-d H:i:s');
+            $message = new Messages;
+            $message->content = $content;
+            $message->title = $title;
+            $message->created_at = $date;
+            $message->save();
+            foreach ($success_list as $key => $value) {
+                $msg_recv = new MsgRecv;
+                $msg_recv->recvby = $value->id;
+                $msg_recv->isdelete = 0;
+                $msg_recv->isread = 0;
+                $msg_recv->id = $message->id;
+                $msg_recv->save();
+            }
+            $user = Auth::user();
+            $msg_send = new MsgSend;
+            $msg_send->id = $message->id;
+            $msg_send->sendby = $user->id;
+            $msg_send->isdelete = 0;
+            $msg_send->isdraft = 0;  
+            $msg_send->save();
+            $record[0] = "send";
+
+            foreach($temp_list as $key => $value){
+                $temp_list[$key] = $value."-channel";
+            }
+            $pusher = App::make('pusher');
+            $pusher->trigger( $temp_list,
+                          'new_mail_event', 
+                          $temp_list);
+            }
+            else{
+                $record[0] = "not_send";
+        }
+
+        $record[1] = $success_list;
+        $record[2] = $not_found_list;
+        $record[3] = $wrong_format_list;
+
         return $record;
     }
 

@@ -102,6 +102,7 @@ class ParentManageController extends Controller
             $parent->user->firstname      = $request['firstname'];
             $parent->user->middlename     = $request['middlename'];
             $parent->user->lastname       = $request['lastname'];
+            $parent->user->fullname       = $request['firstname']." ".$request['middlename']." ".$request['lastname'];
             $parent->mobilephone          = $request['mobilephone'];
             $parent->homephone            = $request['homephone'];
             $parent->user->address        = $request['address'];
@@ -189,6 +190,7 @@ class ParentManageController extends Controller
             $user->firstname = $request['firstname'];
             $user->middlename = $request['middlename'];
             $user->lastname = $request['lastname'];
+            $user->fullname = $request['firstname']." ".$request['middlename']." ".$request['lastname'];
             $user->address = $request['address'];
             $user->dateofbirth = $dateofbirth;
             $user->save();

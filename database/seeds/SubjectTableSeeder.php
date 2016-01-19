@@ -13,7 +13,7 @@ class SubjectTableSeeder extends Seeder
     {
 		DB::table('subjects')->insert([
             'id'           => '0',
-            'subject_name' => 'Toán Đại Số',
+            'subject_name' => 'Toán',
             'total_time' => '6'	  
     	]);
         DB::table('subjects')->insert([
@@ -43,7 +43,7 @@ class SubjectTableSeeder extends Seeder
         ]);
         DB::table('subjects')->insert([
             'id'           => '6',
-            'subject_name' => 'Toán Hình Học',
+            'subject_name' => 'Ngữ Văn',
             'total_time' => '6'   
         ]);
         DB::table('subjects')->insert([

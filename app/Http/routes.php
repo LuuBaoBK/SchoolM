@@ -13,6 +13,7 @@
 
 // Authentication routes...
 Route::get('/', 'Auth\MyAuthController@getview');
+Route::get('/test', 'Auth\MyAuthController@test');
 Route::post('auth/login', 'Auth\MyAuthController@authenticate');
 Route::get('auth/logout', 'Auth\MyAuthController@logout');
 
@@ -48,8 +49,9 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 		Route::post ('admin/edit', 'AdminManageController@edit_ad');
 		Route::get ('admin/edit/{id}/reset_password',  'AdminManageController@reset_password');
 
-		Route::get ('teacher', 'TeacherManageController@get_te');
+		Route::get ('teacher', 'TeacherManageController@get_view');
 		Route::post('teacher', 'TeacherManageController@store_te');
+		Route::post('teacher/search', 'TeacherManageController@search_te');
 		Route::get ('teacher/edit/{id}', 'TeacherManageController@get_edit_form');
 		Route::post ('teacher/edit', 'TeacherManageController@edit_te');
 		Route::get ('teacher/edit/{id}/reset_password',  'TeacherManageController@reset_password');
@@ -111,5 +113,15 @@ Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () 
 	//error
 	Route::get('permission_denied', 'Teacher\ProfileController@permission_denied' );
 
+});
+
+Route::get('/bridge', function() {
+    $pusher = App::make('pusher');
+
+    $pusher->trigger( 'my_channel',
+                      'my-event', 
+                      array('text' => 'Preparing the Pusher Laracon.eu workshop!', 'messages' => "my fucking message"));
+
+    return view('welcome');
 });
 

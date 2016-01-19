@@ -83,8 +83,19 @@
         <div class="row">
             <div class="form-group col-lg-3">
                 <label for="group">Group</label>
-                <input type="text" class="form-control" name="group" id="group" placeholder="Group" value='<?=$teacher->group?>'>
-                <label class="error_mess" id="group_error" style="display:none" for="group"></label>
+                <select id="group" name="group" class="form-control">
+                <option value="-1" selected>-- All --</option>
+                <?php
+                    $selected = "";
+                    foreach($group as $subject){
+                        if($subject->subject_name == $teacher->group)
+                            $selected = "selected";
+                        else
+                            $selected = "";
+                        echo ("<option value='".$subject->subject_name."'".$selected.">".$subject->subject_name."</option>");
+                    }
+                ?>
+                </select>
             </div>
             <div class="form-group col-lg-3">
                 <label for="specialized">Specialized</label>

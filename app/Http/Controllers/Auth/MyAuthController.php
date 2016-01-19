@@ -88,4 +88,8 @@ class MyAuthController extends Controller
         }
     }
 
+    public function test(){
+        return view('test');
+    }
+
 }

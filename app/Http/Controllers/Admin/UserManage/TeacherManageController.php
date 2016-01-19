@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Model\Admin;
 use App\Model\Teacher;
+use App\Model\Subject;
 use App\Model\Student;
 use App\Model\Parents;
 use App\Model\Sysvar;
@@ -18,9 +19,25 @@ use Validator;
 
 class TeacherManageController extends Controller
 {
-    public function get_te(){
-        $teacherlist = Teacher::orderBy('id', 'desc')->get();
-        return view('adminpage.usermanage.adduser_te', ['teacherlist' => $teacherlist]);
+    public function get_view(){
+        $subject_list = Subject::all();
+        return view('adminpage.usermanage.adduser_te')->with('subject_list',$subject_list);
+    }
+
+    public function search_te(Request $request){
+        $fullname = "%".$request['fullname']."%";
+        $group = $request['group'];
+        if($request['group'] == "-1"){
+            $teacher_list = Teacher::select('id')->get();
+        }
+        else{
+            $teacher_list = Teacher::select('id')->where('group','=',$group)->get();
+        }
+        $record = User::whereIn('id',$teacher_list)->where('fullname','LIKE',$fullname)->get();
+        foreach ($record as $key => $value) {
+            $value->teacher;
+        }
+        return $record;
     }
 
     public function store_te(Request $request)
@@ -34,10 +51,8 @@ class TeacherManageController extends Controller
             'mobilephone'   => 'digits_between:10,11',
             'dateofbirth'   => 'date_format:d/m/Y',
             'incomingday'   => 'date_format:d/m/Y',
-            'group'         => 'max:20',
             'specialized'   => 'max:20',
-            'position'      => 'max:20'
-            
+            'position'      => 'max:20',            
         );
 
         $validator = Validator::make($request->all(), $rules);
@@ -91,6 +106,7 @@ class TeacherManageController extends Controller
             $user->firstname = $request['firstname'];
             $user->middlename = $request['middlename'];
             $user->lastname = $request['lastname'];
+            $user->fullname = $request['firstname']." ".$request['middlename']." ".$request['lastname'];
             $user->address = $request['address'];
             $user->role = "1";
             $user->dateofbirth = $dateofbirth;
@@ -145,7 +161,8 @@ class TeacherManageController extends Controller
             
         $teacher['mydateofbirth'] = $dateofbirth;
         $teacher['myincomingday'] = $incomingday;
-        return view('adminpage.usermanage.edit_te')->with('teacher',$teacher);
+        $group = Subject::all();
+        return view('adminpage.usermanage.edit_te',['teacher' => $teacher, 'group' => $group]);
     }
 
     public function edit_te(Request $request){
@@ -162,7 +179,6 @@ class TeacherManageController extends Controller
             'mobilephone'   => 'digits_between:10,11',
             'dateofbirth'   => 'date_format:d/m/Y',
             'incomingday'   => 'date_format:d/m/Y',
-            'group'         => 'max:20',
             'specialized'   => 'max:20',
             'position'      => 'max:20'
         );
@@ -198,6 +214,7 @@ class TeacherManageController extends Controller
             $user->firstname = $request['firstname'];
             $user->middlename = $request['middlename'];
             $user->lastname = $request['lastname'];
+            $user->fullname = $request['firstname']." ".$request['middlename']." ".$request['lastname'];
             $user->address = $request['address'];
             $user->dateofbirth = $dateofbirth;
             $user->save();

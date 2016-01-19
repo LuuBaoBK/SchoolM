@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('firstname',20);
             $table->string('middlename',20);
             $table->string('lastname',20);
+            $table->string('fullname',60);
             $table->date('dateofbirth');
             $table->string('address',120);
             $table->rememberToken();

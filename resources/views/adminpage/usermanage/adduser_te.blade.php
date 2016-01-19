@@ -78,8 +78,14 @@
     <div class="row">
         <div class="form-group col-lg-3">
             <label for="group">Group</label>
-            <input type="text" class="form-control" name="group" id="group" placeholder="Group">
-            <label class="error_mess" id="group_error" style="display:none" for="group"></label>
+            <select id="group" name="group" class="form-control">
+                <option value="-1" selected>-- Select Subject --</option>
+                <?php
+                    foreach($subject_list as $subject){
+                        echo ("<option value='".$subject->id."'>".$subject->subject_name."</option>");
+                    }
+                ?>
+            </select>
         </div>
        <div class="form-group col-lg-3">
             <label for="specialized">Specialized</label>
@@ -98,6 +104,41 @@
 </div>
 </form>
 </div><!-- /.box -->
+<div class="row">
+    <div class="col-lg-4">
+<div class="box box-solid box-primary">
+    <div class="box-header">
+        <h3 class="box-title">Filter</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>
+    </div>
+    <form id="filter_form" method="POST" role="form">
+        {!! csrf_field() !!}
+        <div class="box-body">
+            <div class="form-group">
+                <label for="fullname_filter">Full Name</label>
+                <input type="text" class="form-control" name="fullname_filter" id="fullname_filter" placeholder="Full Name">
+            </div>
+            <div class="form-group">
+                <label for="filter_group">Group</label>
+                <select id="filter_group" name="filter_group" class="form-control">
+                <option value="-1" selected>-- All --</option>
+                <?php
+                    foreach($subject_list as $subject){
+                        echo ("<option value='".$subject->subject_name."'>".$subject->subject_name."</option>");
+                    }
+                ?>
+                </select>
+            </div>
+        </div><!-- /.box-body -->
+        <div style = " " class="box-footer">
+                <button id ="filter_form_submit" type="button" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+</div>
+</div>
+<div class="col-lg-8">
 <div class="box box-solid box-primary">
     <div class="box-header">
         <h3 class="box-title">Teacher List</h3>
@@ -105,90 +146,38 @@
             <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
         </div>                                    
     </div><!-- /.box-header -->
-
     <div class="box-body table-responsive">
         <table id="teacher_table" class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Full Name</th>
                 <th>Email</th>
-                <th>Home Phone</th>
-                <th>Mobile Phone</th>
                 <th>Group</th>
-                <th>Specialized</th>
                 <th>Position</th>
                 <th>Date Of Birth</th>
-                <th>Incoming Day</th>
-                <th>Address</th>
-                <th>role</th>
-                <th></th>
+                <th>Action</th>
             </tr>
         </thead>
 
         <tbody class="displayrecord">
-            <?php foreach ($teacherlist as $row) :?>
-                <tr>
-                    <td> <?php echo $row->id ?></td>
-                    <td> <?php echo $row->user->firstname." ".$row->user->middlename." ".$row->user->lastname ?></td>
-                    <td> <?php echo $row->user->email ?></td>
-                    <td> <?php echo $row->homephone ?></td>
-                    <td> <?php echo $row->mobilephone ?></td>
-                    <td> <?php echo $row->group ?></td>
-                    <td> <?php echo $row->specialized ?></td>
-                    <td> <?php echo $row->position ?></td>
-                    <td> <?php 
-                        $dateofbirth = $row->user->dateofbirth;
-                        if($dateofbirth != "0000-00-00"){
-                            $dateofbirth = date_create($row->user->dateofbirth);
-                            $dateofbirth = date_format($dateofbirth,"d/m/Y");
-                        }
-                        else{
-                           $dateofbirth = "";
-                        }
-                        echo $dateofbirth;
-                    ?></td>
-                    <td> <?php 
-                        $incomingday = $row->incomingday;
-                        if($incomingday != "0000-00-00"){
-                            $incomingday = date_create($row->incomingday);
-                            $incomingday = date_format($incomingday,"d/m/Y");
-                        }
-                        else{
-                           $incomingday = "";
-                        }
-                        echo $incomingday;
-                    ?></td>
-                    <td> <?php echo $row->user->address ?></td>
-                    <td> <?php echo $row->user->role ?></td>
-                    <td>
-                        <a href="<?php echo 'teacher/edit/'.$row->id ?>"><i class = "glyphicon glyphicon-edit"></i></a>
-                       <!-- <a href="<?php echo 'teacher/edit/'.$row->id ?>">Edit</a> -->
-                    </td>
-                </tr>
-            <?php endforeach;?>
+            
         </tbody>
         
         <tfoot>
             <tr>
-                <th>Id</th>
                 <th>Full Name</th>
                 <th>Email</th>
-                <th>Home Phone</th>
-                <th>Mobile Phone</th>
                 <th>Group</th>
-                <th>Specialized</th>
                 <th>Position</th>
                 <th>Date Of Birth</th>
-                <th>Incoming Day</th>
-                <th>Address</th>
-                <th>role</th>
-                <th></th>
+                <th>Action</th>
             </tr>
         </tfoot>
         </table>
     </div>
 </div><!-- /.box -->
+</div>
+</div>
 </section>
 <!-- DataTables -->
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
@@ -199,7 +188,8 @@
         $('#sidebar_list_2').addClass('active');
         $('#sidebar_list_2_2').addClass('active');
         $("#teacher_table").DataTable({
-            "order": [[ 0, "desc" ]],   
+            "order": [[ 2, "desc" ]],
+            "columnDefs": [ { "targets": 5, "orderable": false } ]   
         });
         $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
         $("[data-mask]").inputmask();
@@ -218,7 +208,6 @@
             var specialized = $('#specialized').val();
             var position    = $('#position').val();
             var token       = $('input[name="_token"]').val();
-
             $(".form-group").removeClass("has-warning");
             $(".error_mess").empty();
             $.ajax({
@@ -270,6 +259,39 @@
                           $('#'+i+"_error").css("display","block").append("<i class='icon fa fa-warning'></i> "+item);
                         });
                    }    
+                },
+                error:function(){
+                    alert("something went wrong, contact master admin to fix");
+                }
+            });
+        });
+        $("#filter_form_submit").click(function() {
+            var fullname   = $('#fullname_filter').val();
+            var group       = $('#filter_group').val();
+            var token       = $('input[name="_token"]').val();
+            $.ajax({
+                url     :"<?= URL::to('/admin/manage-user/teacher/search') ?>",
+                type    :"POST",
+                async   :false,
+                data    :{
+                    'fullname'     :fullname,
+                    'group'         :group,
+                    '_token'        :token
+                },
+                success:function(record){
+                   $('#teacher_table').dataTable().fnClearTable();
+                    $.each(record, function(i, row){
+                        console.log(row.id);
+                        button = " <a href='teacher/edit/"+row.id+"'<i class = 'glyphicon glyphicon-edit'></i></a>";
+                        $('#teacher_table').dataTable().fnAddData([
+                            row.fullname,
+                            row.email,
+                            row.teacher.group,
+                            row.teacher.position,
+                            row.dateofbirth,
+                            button
+                        ]);
+                    });
                 },
                 error:function(){
                     alert("something went wrong, contact master admin to fix");
