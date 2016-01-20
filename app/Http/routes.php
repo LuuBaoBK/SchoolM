@@ -41,6 +41,7 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::post('dashboard', 'Admin\ProfileController@edit_info' );
 	Route::post('dashboard/changepassword', 'Admin\ProfileController@changepassword' );
 	Route::get('mailbox', 'MailBox\MailBoxController@get_mailbox');
+	Route::get('position', 'Admin\PositionController@get_view');
 
 	Route::group(['prefix'=>'manage-user', 'namespace' => 'Admin\UserManage'], function(){
 		Route::get ('admin', 'AdminManageController@get_ad');
@@ -64,6 +65,7 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 		Route::get ('student/edit/{id}/reset_password',  'StudentManageController@reset_password');
 
 		Route::get ('parent', 'ParentManageController@get_pa');
+		Route::get ('parent/from_child/{id}', 'ParentManageController@get_pa_from_child');
 		Route::post('parent/show', 'ParentManageController@show');
 		Route::post('parent/getdata', 'ParentManageController@getdata');
 		Route::post('parent/edit', 'ParentManageController@editdata');

@@ -22,72 +22,39 @@ table tr.selected{
         <div class="box-header">
             <p class="box-title">Parent List</p>
         </div>
-        <div class="box-body">
-            <!-- <form action ="/admin/manage-user/parent/show" method="POST" id="parent_filter"> -->
-            <form id="parent_filter">    
-                <div id="from_to_warning" style="display: none"class="alert alert-warning">
-                    <i class="icon fa fa-warning"></i>From_Year can not be greater than To_Year
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-4 col-xs-6">
+        <form id="parent_filter">  
+            <div class="box-body">
+                <!-- <form action ="/admin/manage-user/parent/show" method="POST" id="parent_filter"> -->
+                    <div id="from_to_warning" style="display: none"class="alert alert-warning">
+                        <i class="icon fa fa-warning"></i>From year can not be greater than To_Year
+                    </div>                    
+                    <div class="form-group col-lg-8 col-xs-8">
+                        <label for="filter_fullname_parent">Parent Full Name</label>
+                        <input id="filter_fullname_parent" type="text" class="form-control" name="filter_fullname_parent" id="filter_fullname_parent" placeholder="Parent First Name">
+                    </div>
+                    <div class="form-group col-lg-8 col-xs-8">
+                        <label for="filter_fullname_student">Student Full Name</label>
+                        <input id="filter_fullname_student" type="text" class="form-control" name="filter_fullname_student" id="filter_fullname_student" placeholder="Student Middle Name">
+                    </div>                                    
+                    <div class="form-group col-lg-8 col-xs-8">
                         <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-                        <label for="from_year">From</label>
-                        <select id="from_year" name="from_year" class="form-control">
+                        <label for="filter_enrolled_year">Enrolled Year</label>
+                        <select id="filter_enrolled_year" name="filter_enrolled_year" class="form-control">
                             <?php
                                 $year = date("Y") + 2;
                                 for($year;$year >=2010 ;$year--){
-                                    if($year == 2010)
-                                    {
-                                        echo "<option selected>".$year."</option>";
-                                    }
-                                    else
-                                    {
-                                        echo "<option>".$year."</option>";
-                                    }
-                                }  
+                                    echo "<option>".$year."</option>";
+                                }
+                                echo "<option value='0' selected>-- All --</option>";  
                             ?>
                         </select>                                       
-                    </div>
-                    <div class="form-group col-lg-4 col-xs-6">
-                        <label for="to_year">To</label>
-                        <select id="to_year" name="to_year" class="form-control">
-                            <?php
-                                $year = date("Y") + 2;
-                                for($year;$year >=2010 ;$year--){
-                                    if($year == 2017)
-                                    {
-                                        echo "<option selected>".$year."</option>";
-                                    }
-                                    else
-                                    {
-                                        echo "<option>".$year."</option>";
-                                    }
-                                }
-                            ?>
-                        </select>
-                    </div>                              
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-4 col-xs-7">
-                        <label for="search_firstname">First Name</label>
-                        <input id="search_firstname" type="text" class="form-control" name="search_firstname" id="search_firstname" placeholder="Parent First Name">
-                    </div>
-                    <div class="form-group col-lg-4 col-xs-7">
-                        <label for="search_middlename">Middle Name</label>
-                        <input id="search_middlename" type="text" class="form-control" name="search_middlename" id="search_middlename" placeholder="Parent Middle Name">
-                    </div>
-                    <div class="form-group col-lg-4 col-xs-7">
-                        <label for="search_lastname">Last Name</label>
-                        <input id="search_lastname" type="text" class="form-control" name="search_lastname" id="search_lastname" placeholder="Parent Last Name">
-                    </div>        
-                </div>                                    
-                            
-                <p>(* Search Parents Of Students Enrolled In Selected Range With Given Name )</p>                        
-                <div class="box-footer">
-                    <button id ="parent_search" type="button" class="btn btn-primary btn-flatt">Search</button>
-                </div>
-            </form>                            
-        </div> <!-- /.box left body -->  
+                    </div> 
+                                        
+            </div> <!-- /.box left body -->
+            <div class="box-footer">
+                        <button id ="parent_search" type="button" class="btn btn-primary btn-flatt">Search</button>
+                    </div>   
+        </form>     
         <div class="box-footer">
             <table id="parent_table" class="table table-bordered table-striped">
                     <thead>
@@ -130,53 +97,53 @@ table tr.selected{
                         <div class="row form-group">
                             <div class="col-lg-4">
                                 <label for="id">Id</label>
-                                <input type="text" class="form-control" name="id" id="id"  disabled>
+                                <input type="text" class="form-control" name="id" id="id"  disabled value={{$parent['id']}}>
                                 <input type="hidden" class="form-control" name="id" id="id">
                             </div>
                             <div class="col-lg-8">
                                 <label for="email">Email</label>
-                                <input type="text" class="form-control" name="email" id="email"  disabled>
+                                <input type="text" class="form-control" name="email" id="email"  disabled value={{$parent['email']}} >
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-lg-4">
                                 <label for="firstname">First Name</label>
                                 <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-                                <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" >
+                                <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value={{$parent['firstname']}} >
                                 <label class="info_error_mess" id="firstname_error" style="display:none" for="firstname"></label>
                             </div>
                             <div class="form-group col-lg-4">
                                 <label for="middlename">Middle Name</label>
-                                <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" >
+                                <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" value={{$parent['middlename']}} >
                                 <label class="info_error_mess" id="middlename_error" style="display:none" for="middlename"></label>
                             </div>
                             <div class="form-group col-lg-4">
                                 <label for="lastname">Last Name</label>
-                                <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" >
+                                <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value={{$parent['lastname']}} >
                                 <label class="info_error_mess" id="lastname_error" style="display:none" for="lastname"></label>        
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-lg-4">
                                 <label for="mobilephone">Mobile Phone</label>
-                                <input type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone">
+                                <input type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone" value={{$parent['mobilephone']}}>
                                 <label class="info_error_mess" id="mobilephone_error" style="display:none" for="mobilephone"></label>
                             </div>
                             <div class="form-group col-lg-4">
                                 <label for="homephone">Home Phone</label>
-                                <input type="text" class="form-control" name="homephone" id="homephone" placeholder="Mobile Phone">
+                                <input type="text" class="form-control" name="homephone" id="homephone" placeholder="Mobile Phone" value={{$parent['homephone']}}>
                                 <label class="info_error_mess" id="homephone_error" style="display:none" for="homephone"></label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-lg-4">
                                 <label for="dateofbirth">Date Of Birth</label>
-                                <input type="text" id="dateofbirth" name="dateofbirth" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/>
+                                <input type="text" id="dateofbirth" name="dateofbirth" class="form-control"  data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/ value={{$parent['dateofbirth']}} >
                                 <label class="info_error_mess" id="dateofbirth_error" style="display:none" for="dateofbirth"></label>
                             </div>
                             <div class="form-group col-lg-8">
                                 <label for="address">Address</label>
-                                <input type="text" class="form-control" name="address" id="address" placeholder="Address">
+                                <input type="text" class="form-control" name="address" id="address" placeholder="Address" value={{$parent['address']}}>
                                 <label class="info_error_mess" id="address_error" style="display:none" for="address"></label>
                             </div>
                         </div>
@@ -191,30 +158,54 @@ table tr.selected{
                 <table id="student_table" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Id</th>
                             <th>Full Name</th>
                             <th>Email</th>
                             <th>Enrolled Year</th>
                             <th>Graduated Year</th>
                             <th>Date Of Birth</th>
-                            <th>Address</th>
-                            <th></th>
+                            <th>Action</th>
                         </tr>
                     </thead>
 
                     <tbody class="children_table_info">
+                        <?php foreach ($parent['studentlist'] as $row) :?>
+                            <tr>
+                                <td> <?php echo $row->user->fullname ?></td>
+                                <td> <?php echo $row->user->email ?></td>
+                                <td> <?php echo $row->enrolled_year ?></td>
+                                <td> <?php echo $row->graduated_year ?></td>
+                                <td> <?php 
+                                    $dateofbirth = $row->user->dateofbirth;
+                                    if($dateofbirth != "0000-00-00"){
+                                        $dateofbirth = date_create($row->user->dateofbirth);
+                                        $dateofbirth = date_format($dateofbirth,"d/m/Y");
+                                    }
+                                    else{
+                                       $dateofbirth = "";
+                                    }
+                                    echo $dateofbirth;
+                                ?></td>
+                                <td>
+                                    <?php
+                                    if($row->user->id == Auth::user()->id){
+                                        echo ("<a href='/admin/dashboard'><i class = 'glyphicon glyphicon-edit'></i></a>");
+                                    }
+                                    else{
+                                        echo ("<a href='/admin/manage-user/admin/edit/$row->id'><i class = 'glyphicon glyphicon-edit'></i></a>");  
+                                    }?>
+                                </td>
+                            </tr>
+                        <?php endforeach;?>
                     </tbody>
                     
                     <tfoot>
                         <tr>
-                            <th>Id</th>
                             <th>Full Name</th>
                             <th>Email</th>
                             <th>Enrolled Year</th>
                             <th>Graduated Year</th>
                             <th>Date Of Birth</th>
-                            <th>Address</th>
-                            <th></th>
+                            <th>Action</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -275,46 +266,30 @@ $(document).ready(function() {
         $("[data-mask]").inputmask();
 
         $('#parent_search').click(function(){
-            var from_year           = $('#from_year').val();
-            var to_year             = $('#to_year').val();
-            var search_firstname    = $('#search_firstname').val();
-            var search_middlename   = $('#search_middlename').val();
-            var search_lastname     = $('#search_lastname').val();
+            var filter_fullname_student = $('#filter_fullname_student').val();
+            var filter_fullname_parent   = $('#filter_fullname_parent').val();
+            var filter_enrolled_year   = $('#filter_enrolled_year').val();
             var token       = $('input[name="_token"]').val();
-
-           $.ajax({
+            $.ajax({
                 url     :"<?= URL::to('/admin/manage-user/parent/show') ?>",
                 type    :"POST",
                 async   :false,
                 data    :{
-                    'from_year'             :from_year,
-                    'to_year'               :to_year,
-                    'search_firstname'      :search_firstname,
-                    'search_middlename'     :search_middlename,
-                    'search_lastname'       :search_lastname,
+                    'filter_enrolled_year'             :filter_enrolled_year,
+                    'filter_fullname_parent'      :filter_fullname_parent,
+                    'filter_fullname_student'     :filter_fullname_student,
                     '_token'                :token
                 },
                 success:function(record)
                 {
-                    if(record.isSuccess == 1){
-                        $('#to_year').parent().removeClass('has-warning');
-                        $('#from_year').parent().removeClass('has-warning');
-                        $('#from_to_warning').slideUp('medium');
-                        $('#parent_table').dataTable().fnClearTable();
-                        var button="";
-                        var mydateofbirth,formattedDate,d,m,y;
-                        $.each(record.mydata, function(i, row){
-                            $('#parent_table').dataTable().fnAddData([
-                                row.id,
-                                row.firstname+" "+row.middlename+" "+row.lastname,
-                            ]);
-                        });
-                    }
-                    else{
-                        $('#to_year').parent().addClass('has-warning');
-                        $('#from_year').parent().addClass('has-warning');
-                        $('#from_to_warning').show('medium');
-                    }
+                    $('#parent_table').dataTable().fnClearTable();
+                    var button="";
+                    $.each(record.mydata, function(i, row){
+                        $('#parent_table').dataTable().fnAddData([
+                            row.id,
+                            row.fullname
+                        ]);
+                    });
                 },
                 error:function(){
                     alert("Something went wrong ! Please Contact Your Super Admin");
@@ -369,7 +344,7 @@ $(document).ready(function() {
                         var children_dateofbirth,formattedDate,d,m,y;
                         $('#student_table').dataTable().fnClearTable();
                         $.each(record.student, function(i, row){
-                            button_1 = "<a href='/admin/manage-user/student/edit/"+row.id+"'><i class='glyphicon glyphicon-edit'></i></a>";
+                            button_1 = "<a href='/admin/manage-user/student/edit/"+row.id+"' target='_blank'><i class='glyphicon glyphicon-edit'></i></a>";
                             if(row.user.dateofbirth != "0000-00-00"){
                                 formattedDate = new Date(row.user.dateofbirth);
                                 d = formattedDate.getDate();
@@ -383,13 +358,11 @@ $(document).ready(function() {
                             }
                             
                             $('#student_table').dataTable().fnAddData([
-                                row.id,
-                                row.user.firstname+" "+row.user.middlename+" "+row.user.lastname,
+                                row.user.fullname,
                                 row.user.email,
                                 row.enrolled_year,
                                 row.graduated_year,
                                 children_dateofbirth,
-                                row.user.address,
                                 button_1
                             ]);
                         });
@@ -425,6 +398,7 @@ $(document).ready(function() {
             var token       = $('input[name="_token"]').val();
             $(".form-group").removeClass("has-warning");
             $(".info_error_mess").empty();
+            console.log("abc");
            $.ajax({
                 url     :"<?= URL::to('/admin/manage-user/parent/edit') ?>",
                 type    :"POST",

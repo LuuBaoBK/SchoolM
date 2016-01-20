@@ -59,8 +59,8 @@
                             </div>
                             <div class="form-group col-lg-4">
                                 <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-                                <label for="scholastic">Scholastic</label>
-                                <select id="scholastic" name="scholastic" class="form-control">
+                                <label for="enrolled_year">Enrolled Year</label>
+                                <select id="enrolled_year" name="enrolled_year" class="form-control">
                                     <?php
                                         $year = date("Y") + 2;
                                         $selected = "";
@@ -71,7 +71,7 @@
                                             else{
                                                 $selected = "";
                                             }
-                                            echo ("<option value='".substr($year,2)."'".$selected.">".$year."</option>");
+                                            echo ("<option value='".$year."'".$selected.">".$year."</option>");
                                         }
                                     ?>
                                 </select>
@@ -178,6 +178,22 @@
                 <label for="filter_fullname">Full Name</label>
                 <input type="text" class="form-control" name="filter_fullname" id="filter_fullname" placeholder="Full Name">
             </div>
+            <div class="form-group">
+                <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+                <label for="filter_enrolled_year">Enrolled Year</label>
+                <select id="filter_enrolled_year" name="filter_enrolled_year" class="form-control">
+                    <?php
+                        echo ("<option value='0' selected>-- All --</option>");
+                        $year = date("Y") + 2;
+                        for($year;$year >=2010 ;$year--){
+                            echo ("<option value='".$year."'>".$year."</option>");
+                        }
+                    ?>
+                </select>
+            </div>
+        </div>
+        <div style = " " class="box-footer">
+            <button id ="filter_form_submit" type="button" class="btn btn-block btn-primary pull-right">Search</button>
         </div>
     </form>
     </div>
@@ -195,16 +211,13 @@
         <table id="student_table" class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Full Name</th>
                 <th>Email</th>
                 <th>Enrolled Year</th>
                 <th>Graduated Year</th>
                 <th>Parent Name</th>
                 <th>Date Of Birth</th>
-                <th>Address</th>
-                <th>role</th>
-                <th></th>
+                <th>Action</th>
             </tr>
         </thead>
 
@@ -214,16 +227,13 @@
         
         <tfoot>
             <tr>
-                <th>Id</th>
                 <th>Full Name</th>
                 <th>Email</th>
                 <th>Enrolled Year</th>
                 <th>Graduated Year</th>
                 <th>Parent Name</th>
                 <th>Date Of Birth</th>
-                <th>Address</th>
-                <th>role</th>
-                <th></th>
+                <th>Action</th>
             </tr>
         </tfoot>
         </table>
@@ -260,9 +270,10 @@ $(document).ready(function() {
             $('#parent_id').prop('disabled', false);
         });
 
-        $("#student_table").DataTable(
-            {"order": [[ 0, "desc" ]]}
-        );
+        $("#student_table").DataTable({
+            "order": [[ 1, "desc" ]],
+            "columnDefs": [ { "targets": 6, "orderable": false } ] 
+            });
 
         $('#st_form_submit').click(function(){
             var createNew = $("#isNew").is(":checked");
@@ -283,7 +294,7 @@ $(document).ready(function() {
             var parent_job = $('#parent_job').val();
             var parent_address = $('#parent_address').val();
             var token = $('input[name="_token"]').val();
-
+            console.log(enrolled_year);
             $(".form-group").removeClass("has-warning");
             $(".error_mess").empty();
             $.ajax({
@@ -311,7 +322,6 @@ $(document).ready(function() {
                     '_token'                :token
                 },
                 success:function(record){
-                    console.log(record);
                    if(record.isSuccess == 1){
                         $('#success_mess').show("medium");
                         setTimeout(function() {
@@ -320,15 +330,12 @@ $(document).ready(function() {
                         var button="";
                         button = "<a href='/admin/manage-user/student/edit/"+record.id+"'><i class='glyphicon glyphicon-edit'></i></a>"
                         $('#student_table').dataTable().fnAddData([
-                            record.id,
                             record.user.firstname+" "+record.user.middlename+" "+record.user.lastname,
                             record.user.email,
                             record.enrolled_year,
                             record.graduated_year,
                             record.parent.user.firstname+" "+record.parent.user.middlename+" "+record.parent.user.lastname,
                             student_dateofbirth,
-                            record.user.address,
-                            record.user.role,
                             button
                         ]);
                    }
@@ -348,12 +355,9 @@ $(document).ready(function() {
         });
 
 
-        $('#student_search').click(function(){
-            var from_year = $('#from_year').val();
-            var to_year = $('#to_year').val();
-            var firstname = $('#firstname').val();
-            var middlename = $('#middlename').val();
-            var lastname = $('#lastname').val();
+        $('#filter_form_submit').click(function(){
+            var fullname = $('#filter_fullname').val();
+            var enrolled_year = $('#filter_enrolled_year').val();
             var token = $('input[name="_token"]').val();
 
            $.ajax({
@@ -361,21 +365,15 @@ $(document).ready(function() {
                 type    :"POST",
                 async   :false,
                 data    :{
-                    'from_year'     :from_year,
-                    'to_year'       :to_year,
-                    'firstname'      :firstname,
-                    'middlename'      :middlename,
-                    'lastname'      :lastname,
-                    '_token'        :token
+                    'enrolled_year'  :enrolled_year,
+                    'fullname'       :fullname,
+                    '_token'         :token
                 },
                 success:function(record){
-                    console.log(record);
                    if(record.isSuccess == 1){
-                        $('#to_year').parent().removeClass('has-warning');
-                        $('#from_year').parent().removeClass('has-warning');
-                        $('#from_to_warning').slideUp('medium');
                         $('#student_table').dataTable().fnClearTable();
                         var button="";
+                        var show_name = "";
                         var mydateofbirth,formattedDate,d,m,y;
                         $.each(record.mydata, function(i, row){
                             button = "<a href='/admin/manage-user/student/edit/"+row.id+"'><i class='glyphicon glyphicon-edit'></i></a>";
@@ -390,17 +388,20 @@ $(document).ready(function() {
                             else{
                                 mydateofbirth = "N/A";
                             }
-                            
+                            if(/^\s+$/.test(row.student.parent.user.fullname)){
+                                show_name = row.student.parent.user.id;
+                            }
+                            else{
+                                show_name = row.student.parent.user.fullname;
+                            }
+                            //console.log(row.student.parent.user.fullname);
                             $('#student_table').dataTable().fnAddData([
-                                row.id,
-                                row.firstname+" "+row.middlename+" "+row.lastname,
+                                row.fullname,
                                 row.email,
                                 row.student.enrolled_year,
                                 row.student.graduated_year,
-                                row.student.parent.user.firstname+" "+row.student.parent.user.middlename+" "+row.student.parent.user.lastname,
+                                " <a href='/admin/manage-user/parent/from_child/"+row.student.parent.user.id+"' target='_blank'>"+show_name+"</a>",
                                 mydateofbirth,
-                                row.address,
-                                row.role,
                                 button
                             ]);
                         });

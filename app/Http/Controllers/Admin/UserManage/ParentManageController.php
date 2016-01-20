@@ -19,41 +19,78 @@ use Validator;
 class ParentManageController extends Controller
 {
     public function get_pa(){
-        $parentlist = Parents::orderBy('id', 'desc')->get();
-        return view('adminpage.usermanage.adduser_pa', ['parentlist' => $parentlist, 'studentlist' => $parentlist]);
+        //$parentlist = Parents::orderBy('id', 'desc')->get();
+        $parent = array(
+            'id' => '',
+            'email' => '',
+            'firstname' => '',
+            'middlename' => '',
+            'lastname' => '',
+            'mobilephone' => '',
+            'homephone' => '',
+            'dateofbirth' => '',
+            'address' => '',
+            'studentlist' => array()
+            );
+        return view('adminpage.usermanage.adduser_pa')->with('parent' ,$parent);
     }
 
-    public function show(Request $request){
-        $rules = array(
-            'to_year'     => 'greater_than :from_year'      
-        );
-        $validator = Validator::make($request->all(), $rules);
-        if($validator->fails())
-        {
-           $record['isSuccess'] = 0;
-            return $record;
+    public function get_pa_from_child($id){
+        $parent = Parents::find($id);
+        foreach($parent->student as $child){
+            $child->user;
         }
-        else
-        {   
-            $firstname = $request['search_firstname'];
-            $middlename = $request['search_middlename'];
-            $lastname = $request['search_lastname'];
+        $parent = array(
+            'id' => $parent->id,
+            'email' => $parent->user->email,
+            'firstname' => $parent->user->firstname,
+            'middlename' => $parent->user->middlename,
+            'lastname' => $parent->user->lastname,
+            'mobilephone' => $parent->mobilephone,
+            'homephone' => $parent->homephone,
+            'dateofbirth' => $parent->user->dateofbirth,
+            'address' => $parent->user->address,
+            'studentlist' => $parent->student
+            );
+        return view('adminpage.usermanage.adduser_pa')->with('parent' ,$parent);
+    }
+
+    public function show(Request $request){  
+        $filter_fullname_parent = $request['filter_fullname_parent'];
+        $filter_fullname_student = $request['filter_fullname_student'];
+        $filter_enrolled_year = $request['filter_enrolled_year'];
+        if($filter_enrolled_year == 0){
             $parent_id_list = Parents::select('id')
                                  ->whereIn( 'id', 
                                         Student::select('parent_id')
-                                        ->whereBetween('enrolled_year', [$request['from_year'], $request['to_year']])->get()
+                                        ->whereIn('id',
+                                                User::select('id')
+                                                    ->where('fullname','LIKE','%'.$filter_fullname_student.'%')
+                                                    ->get()
+                                            )
+                                        ->get()
                                         )
                                 ->get();
-            $parentlist =   User::whereIn('id',$parent_id_list)
-                                ->where('firstname','LIKE',$firstname.'%')
-                                ->where('middlename','LIKE','%'.$middlename.'%')
-                                ->where('lastname','LIKE','%'.$lastname)
-                                ->orderBy('id','asc')
-                                ->get();
-            $record['isSuccess'] = 1;
-            $record['mydata'] = $parentlist;
-            return $record;
         }
+        else{
+            $parent_id_list = Parents::select('id')
+                                 ->whereIn( 'id', 
+                                        Student::select('parent_id')
+                                        ->whereIn('id',
+                                                User::select('id')
+                                                    ->where('fullname','LIKE','%'.$filter_fullname_student.'%')
+                                                    ->get()
+                                            )
+                                        ->where('enrolled_year', "=", $filter_enrolled_year)
+                                        ->get()
+                                        )
+                                ->get();
+        }
+        $parentlist =   User::whereIn('id',$parent_id_list)
+                            ->orderBy('id','asc')
+                            ->get();
+        $record['mydata'] = $parentlist;
+        return $record;
     }
 
     public function getdata(Request $request){

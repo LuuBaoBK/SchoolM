@@ -59,6 +59,16 @@
                     <i class="fa fa-file-text-o"></i> <span>Transcript Manager</span>
                 </a>
             </li>
+            <li id="sidebar_list_6">
+                <a href="/admin/mailbox">
+                    <i class="fa fa-envelope-o"></i> <span>Mail Box</span>
+                </a>
+            </li>
+            <li id="sidebar_list_6">
+                <a href="/admin/position">
+                    <i class="fa fa-file-text-o"></i> <span>Position Manager</span>
+                </a>
+            </li>
             <li>
                 <a href="/auth/logout">
                     <i class="glyphicon glyphicon-log-out"></i> <span>Logout</span>

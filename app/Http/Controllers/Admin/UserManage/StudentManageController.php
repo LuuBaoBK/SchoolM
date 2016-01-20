@@ -24,42 +24,28 @@ class StudentManageController extends Controller
     }
 
     public function show(Request $request){
-        $rules = array(
-            'to_year'     => 'greater_than :from_year'      
-        );
-        $validator = Validator::make($request->all(), $rules);
-        if($validator->fails())
-        {
-           $record['isSuccess'] = 0;
-            return $record;
+        $fullname = $request['fullname'];
+        $enrolled_year = $request['enrolled_year'];
+        if($enrolled_year == 0){
+            $student = Student::select('id')->orderBy('id','desc')->get();
         }
-        else
-        {   
-            $firstname = $request['firstname'];
-            $middlename = $request['middlename'];
-            $lastname = $request['lastname'];
+        else{
             $student = Student::select('id')
-                              ->whereBetween('enrolled_year', [$request['from_year'], $request['to_year']])
-                              ->orderBy('id','desc')
-                              ->get();
-            $studentlist =  User::whereIn('id', $student)
-                                ->where('firstname','like',$firstname."%")
-                                ->where('middlename', 'like',"%".$middlename."%")
-                                ->where('lastname','like',"%".$lastname)
-                                ->get();
-            foreach ($studentlist as $key => $value) {
-                $value->student->parent->user;
-            }
-            $record = array(
-                'isSuccess' => 1,
-                'mydata' => $studentlist
-            );
-            $record['isSuccess'] = 1;
-            $record['firstname'] = $firstname;
-            $record['middlename'] = $middlename;
-            $record['lastname'] = $lastname;
-            return $record;
+                          ->where('enrolled_year', "=", $enrolled_year)
+                          ->orderBy('id','desc')
+                          ->get();
         }
+        $studentlist =  User::whereIn('id', $student)
+                            ->where('fullname','like',"%".$fullname."%")
+                            ->get();
+        foreach ($studentlist as $key => $value) {
+            $value->student->parent->user;
+        }
+        $record = array(
+            'isSuccess' => 1,
+            'mydata' => $studentlist
+        );
+        return $record;
     }
 
     public function store_stu(Request $request)
@@ -71,7 +57,6 @@ class StudentManageController extends Controller
                 'student_middlename'  =>  'max:20',     
                 'student_lastname'    =>  'max:20',  
                 'student_dateofbirth' =>  'date_format:d/m/Y',    
-                'enrolled_year'       =>  'required|numeric|inrange:2010,2099',        
                 'graduated_year'      =>  'digits_between:1,4', 
                 'student_address'     =>  'max:120',
                 'parent_firstname'    =>  'max:20',    
@@ -90,7 +75,6 @@ class StudentManageController extends Controller
                 'student_middlename'  =>  'max:20',     
                 'student_lastname'    =>  'max:20',  
                 'student_dateofbirth' =>  'date_format:d/m/Y',    
-                'enrolled_year'       =>  'required|numeric|inrange:2010,2099',        
                 'graduated_year'      =>  'digits_between:1,4', 
                 'student_address'     =>  'max:120',
                 'parent_id'           =>  'required|isexistparent' 

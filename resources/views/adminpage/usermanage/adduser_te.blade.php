@@ -133,7 +133,7 @@
             </div>
         </div><!-- /.box-body -->
         <div style = " " class="box-footer">
-                <button id ="filter_form_submit" type="button" class="btn btn-primary">Search</button>
+                <button id ="filter_form_submit" type="button" class="btn btn-block btn-primary pull-right">Search</button>
         </div>
     </form>
 </div>
