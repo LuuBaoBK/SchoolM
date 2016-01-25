@@ -235,18 +235,11 @@
                             $('#success_mess').slideUp('slow');
                         }, 2000); // <-- time in milliseconds
                         $('#teacher_table').dataTable().fnAddData( [
-                            record.mydata.id,
                             record.mydata.user.firstname+" "+record.mydata.user.middlename+" "+record.mydata.user.lastname,
                             record.mydata.user.email,
-                            record.mydata.homephone,
-                            record.mydata.mobilephone,
                             record.mydata.group,
-                            record.mydata.specialized,
                             record.mydata.position,
                             record.mydata.user.dateofbirth,
-                            record.mydata.incomingday,
-                            record.mydata.user.address,
-                            record.mydata.user.role,
                             record.button
                              ]
                             );
@@ -281,13 +274,12 @@
                 success:function(record){
                    $('#teacher_table').dataTable().fnClearTable();
                     $.each(record, function(i, row){
-                        console.log(row.id);
-                        button = " <a href='teacher/edit/"+row.id+"'<i class = 'glyphicon glyphicon-edit'></i></a>";
+                        button = "<a href='teacher/edit/"+row.id+"'<i class = 'glyphicon glyphicon-edit'></i></a>";
                         $('#teacher_table').dataTable().fnAddData([
                             row.fullname,
                             row.email,
                             row.teacher.group,
-                            row.teacher.position,
+                            row.teacher.my_position.position_name,
                             row.dateofbirth,
                             button
                         ]);

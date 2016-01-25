@@ -18,7 +18,7 @@ class CreateTeachersTable extends Migration
             $table->string('mobilephone',11);
             $table->string('homephone',11);
             $table->string('group',20);
-            $table->string('position',20);
+            $table->integer('position')->unsigned();
             $table->string('specialized',20);
             $table->date('incomingday');
         });

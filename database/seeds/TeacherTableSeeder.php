@@ -37,7 +37,7 @@ class TeacherTableSeeder extends Seeder
                 'mobilephone' => $mobilephone,
                 'homephone' => $homephone,
                 'group' => $group[$i],
-                'position' => 'giao vien',
+                'position' => rand(1,5),
                 'specialized' => 'toan'.$i,
                 'incomingday' => "2015-11-".$i,              
         	]);
@@ -56,7 +56,7 @@ class TeacherTableSeeder extends Seeder
                 'mobilephone' => $mobilephone,
                 'homephone' => $homephone,
                 'group' => $group[$i],
-                'position' => 'giao vien',
+                'position' => rand(1,5),
                 'specialized' => 'toan'.$i,
                 'incomingday' => "2015-11-".$i,              
             ]);

@@ -15,6 +15,11 @@ class Teacher extends Model
         return $this->belongsTo('App\User' , 'id', 'id');
     }
 
+    public function my_position()
+    {
+        return $this->hasOne('App\Model\Position' , 'id', 'position');
+    }
+
     public function classes()
     {
         return $this->hasMany('App\Classes' , 'homeroom_teacher', 'id');

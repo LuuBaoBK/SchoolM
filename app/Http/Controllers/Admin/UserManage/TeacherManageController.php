@@ -33,9 +33,12 @@ class TeacherManageController extends Controller
         else{
             $teacher_list = Teacher::select('id')->where('group','=',$group)->get();
         }
-        $record = User::whereIn('id',$teacher_list)->where('fullname','LIKE',$fullname)->get();
+        if($fullname != "")
+            $record = User::whereIn('id',$teacher_list)->where('fullname','LIKE',$fullname)->get();
+        else
+            $record = User::whereIn('id',$teacher_list)->get();
         foreach ($record as $key => $value) {
-            $value->teacher;
+            $value->teacher->my_position;
         }
         return $record;
     }
