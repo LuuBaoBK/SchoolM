@@ -94,13 +94,32 @@ class TranscriptController extends Controller
 
     public function general_view(Request $request)
     {
-        // $transcript = new Transcript;
-        // $transcript->semester = $request['semester'];
-        // $transcript->student_id = $request['student'];
-        // $transcript->subject_id = $request['subject'];
-        // $transcript->type = $request['type'];
-        // $transcript->score = $request['score'];
-        // $transcript->save();
         return view('adminpage.transcript_general');
+    }
+
+    public function updateclassname(Request $request){
+        $scholastic = $request['scholastic'];
+        $grade      = $request['grade'];
+
+        if($scholastic == '0' || $scholastic == '-1'){
+            $id = "%";
+        }
+        else{
+            $id = $scholastic."_%";
+        }
+
+        $name = "";
+        if($grade != '0' && $grade != '-1'){
+            $name .= $grade;
+        }
+        else{
+            $name .= "%";
+        }
+
+        $name .= "%";
+        
+        $classname = Classes::where('id','like',$id)->where('classname','like',$name)->get();
+        $record = $classname;
+        return $record;
     }
 }

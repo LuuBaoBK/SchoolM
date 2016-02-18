@@ -28,7 +28,6 @@ class TeacherTableSeeder extends Seeder
                 'position' => rand(2,6),
                 'specialized' => 'toan'.$i,
                 'incomingday' => "2015-11-".$i,
-                'doable' => '0'             
         	]);
     	}
         for($i=0; $i<=9; $i++){
@@ -48,7 +47,6 @@ class TeacherTableSeeder extends Seeder
                 'position' => rand(2,6),
                 'specialized' => 'toan'.$i,
                 'incomingday' => "2015-11-".$i,
-                'doable' => '0'              
             ]);
         }
     }

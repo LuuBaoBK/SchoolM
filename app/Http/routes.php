@@ -114,6 +114,7 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::post('transcript/getstudent', 'Admin\TranscriptController@getstudent');
 	Route::post('transcript/gettranscript', 'Admin\TranscriptController@gettranscript');
 	Route::get('transcript/general', 'Admin\TranscriptController@general_view');
+	Route::post('transcript/general/updateclassname', 'Admin\TranscriptController@updateclassname');
 
 });
 

@@ -21,7 +21,6 @@ class CreateTeachersTable extends Migration
             $table->integer('position')->unsigned();
             $table->string('specialized',20);
             $table->date('incomingday');
-            $table->string('doable',1);
         });
     }
 
