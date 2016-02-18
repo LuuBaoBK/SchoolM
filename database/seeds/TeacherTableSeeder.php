@@ -11,18 +11,6 @@ class TeacherTableSeeder extends Seeder
      */
     public function run()
     {
-        $group = array(
-            '0' => 'Toán',
-            '1' => 'Vật Lý',
-            '2' => 'Hóa Học',
-            '3' => 'Sinh Học',
-            '4' => 'Lịch Sử',
-            '5' => 'Địa Lý',
-            '6' => 'Ngữ Văn',
-            '7' => 'GDCD',
-            '8' => 'Thể Dục',
-            '9' => 'Tin Học',
-        );
         for($i=0; $i<=9; $i++){
             $mobilephone = '0';
             $homephone = '08';
@@ -36,10 +24,11 @@ class TeacherTableSeeder extends Seeder
     			'id' =>	't_000000'.$i,
                 'mobilephone' => $mobilephone,
                 'homephone' => $homephone,
-                'group' => $group[$i],
-                'position' => rand(1,5),
+                'group' => $i+2,
+                'position' => rand(2,6),
                 'specialized' => 'toan'.$i,
-                'incomingday' => "2015-11-".$i,              
+                'incomingday' => "2015-11-".$i,
+                'doable' => '0'             
         	]);
     	}
         for($i=0; $i<=9; $i++){
@@ -55,10 +44,11 @@ class TeacherTableSeeder extends Seeder
                 'id' => 't_000001'.$i,
                 'mobilephone' => $mobilephone,
                 'homephone' => $homephone,
-                'group' => $group[$i],
-                'position' => rand(1,5),
+                'group' => rand(2,11),
+                'position' => rand(2,6),
                 'specialized' => 'toan'.$i,
-                'incomingday' => "2015-11-".$i,              
+                'incomingday' => "2015-11-".$i,
+                'doable' => '0'              
             ]);
         }
     }

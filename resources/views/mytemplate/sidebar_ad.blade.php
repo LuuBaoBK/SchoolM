@@ -44,19 +44,31 @@
                     <li id="sidebar_list_3_2"><a href="/admin/class/studentclassinfo"><i class="fa fa-angle-double-right"></i>Student List</a></li>
                 </ul>
             </li>
-            <li id="sidebar_list_4">
-                <a href="/admin/addsubject">
-                    <i class="fa fa-book"></i> <span>Subject Manager</span>
+            <li id="sidebar_list_4" class="treeview">
+                <a href="">
+                    <i class="fa fa-th-list"></i>
+                    <span>Catalog Manage</span>
+                    <i class="fa fa-angle-left pull-right"></i>
                 </a>
+                <ul class="treeview-menu">
+                    <li id="sidebar_list_4_1"><a href="/admin/addsubject"><i class="fa fa-book"></i> <span>Subject Manager</span></a></li>
+                    <li id="sidebar_list_4_2"><a href="/admin/position"><i class="fa fa-file-text-o"></i> <span>Position Manager</span></a></li>
+                </ul>
             </li>
-            <li id="sidebar_list_5">
+            <li id="sidebar_list_5" class="treeview">
+                <a href="">
+                    <i class="fa fa-th-list"></i>
+                    <span>Transcript Manage</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li id="sidebar_list_5_1"><a href="/admin/transcript/general"><i class="fa fa-file-text-o"></i> <span>General Setting</span></a></li>
+                    <li id="sidebar_list_5_2"><a href="/admin/transcript"><i class="fa fa-file-text-o"></i> <span>Transcript</span></a></li>
+                </ul>
+            </li>
+            <li id="sidebar_list_7">
                 <a href="/admin/schedule">
                     <i class="fa fa-calendar"></i> <span>Schedule Manager</span>
-                </a>
-            </li>
-            <li id="sidebar_list_6">
-                <a href="/admin/transcript">
-                    <i class="fa fa-file-text-o"></i> <span>Transcript Manager</span>
                 </a>
             </li>
             <li id="sidebar_list_6">
@@ -64,11 +76,8 @@
                     <i class="fa fa-envelope-o"></i> <span>Mail Box</span>
                 </a>
             </li>
-            <li id="sidebar_list_6">
-                <a href="/admin/position">
-                    <i class="fa fa-file-text-o"></i> <span>Position Manager</span>
-                </a>
-            </li>
+            
+            
             <li>
                 <a href="/auth/logout">
                     <i class="glyphicon glyphicon-log-out"></i> <span>Logout</span>

@@ -12,6 +12,9 @@ class PositionTableSeeder extends Seeder
     public function run()
     {
         DB::table('position')->insert([
+                'position_name' => 'N/A',                 
+        ]);
+        DB::table('position')->insert([
 	            'position_name' => 'Hiệu Trưởng',            	  
     	]);
     	DB::table('position')->insert([

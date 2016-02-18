@@ -14,12 +14,11 @@ class CreateTranscriptsTable extends Migration
     {
         Schema::create('transcript', function (Blueprint $table) {
             $table->string('student_id',9);
-            $table->string('semester',4);
-            $table->integer('subject_id');
-            $table->string('type',15);
+            $table->string('scholastic',2);
+            $table->integer('subject_id')->unsigned();
+            $table->string('type',20);
             $table->integer('score');
-            $table->date('datetime');
-            $table->primary(['student_id','semester','subject_id','type','datetime']);
+            $table->primary(['student_id','scholastic','subject_id','type']);
             $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('subject_id')->references('id')->on('subjects');
         });

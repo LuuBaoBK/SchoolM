@@ -13,7 +13,9 @@
 
 // Authentication routes...
 Route::get('/', 'Auth\MyAuthController@getview');
-Route::get('/test', 'Auth\MyAuthController@test');
+Route::get('/test', 'Test\TestController@test');
+Route::post('/test', 'Test\TestController@test_read');
+Route::post('/test/read', 'Test\TestController@test_read');
 Route::post('auth/login', 'Auth\MyAuthController@authenticate');
 Route::get('auth/logout', 'Auth\MyAuthController@logout');
 
@@ -40,8 +42,11 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::get('dashboard', 'Admin\ProfileController@get_ad_dashboard' );
 	Route::post('dashboard', 'Admin\ProfileController@edit_info' );
 	Route::post('dashboard/changepassword', 'Admin\ProfileController@changepassword' );
+
 	Route::get('mailbox', 'MailBox\MailBoxController@get_mailbox');
+
 	Route::get('position', 'Admin\PositionController@get_view');
+	Route::post('position', 'Admin\PositionController@change_name');
 
 	Route::group(['prefix'=>'manage-user', 'namespace' => 'Admin\UserManage'], function(){
 		Route::get ('admin', 'AdminManageController@get_ad');
@@ -94,9 +99,11 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::get('addsubject', 'Admin\AddsubjectController@getsubject');
 	Route::post('addsubject', 'Admin\AddsubjectController@storesubject');
 
-	Route::get('editsubject/{id}', 'Admin\EditsubjectController@edit');
-	Route::post('editsubject{id}', 'Admin\EditsubjectController@update');
-	Route::get('deletesubject/{id}', 'Admin\EditsubjectController@delete');
+	Route::get('editsubject/{id}', 'Admin\EditsubjectController@get_view');
+	Route::post('editsubject', 'Admin\EditsubjectController@update');
+	Route::post('editsubject/add_type', 'Admin\EditsubjectController@add_type');
+	Route::post('editsubject/edit_type', 'Admin\EditsubjectController@edit_type');
+	Route::post('editsubject/delete_type', 'Admin\EditsubjectController@delete_type');
 
 	Route::get('schedule', 'Admin\ScheduleController@index');
 	Route::post('schedule/getschedule', 'Admin\ScheduleController@getschedule');
@@ -106,15 +113,22 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::post('transcript', 'Admin\TranscriptController@store');
 	Route::post('transcript/getstudent', 'Admin\TranscriptController@getstudent');
 	Route::post('transcript/gettranscript', 'Admin\TranscriptController@gettranscript');
+	Route::get('transcript/general', 'Admin\TranscriptController@general_view');
 
 });
 
 //Teacher Route
 Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () {
 	Route::get('dashboard', 'Teacher\ProfileController@get_te_dashboard' );
-	//error
+	Route::post('dashboard', 'Teacher\ProfileController@edit_info' );
+	Route::post('dashboard/changepassword', 'Teacher\ProfileController@changepassword');
 	Route::get('permission_denied', 'Teacher\ProfileController@permission_denied' );
 
+	//transcript
+	Route::get('transcript', 'Teacher\Transcript\TranscriptController@view');
+	Route::post('transcript/updateclassname', 'Teacher\Transcript\TranscriptController@updateclassname');
+	Route::get('transcript/download/{class_id}', 'Teacher\Transcript\TranscriptController@download');
+	Route::post('transcript/import_file', 'Teacher\Transcript\TranscriptController@import_file');
 });
 
 Route::get('/bridge', function() {

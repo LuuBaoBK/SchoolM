@@ -90,8 +90,7 @@
                 <th>Date Of Birth</th>
                 <th>Address</th>
                 <th>Create By</th>
-                <th>role</th>
-                <th></th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody class="displayrecord">
@@ -114,7 +113,6 @@
                     ?></td>
                     <td> <?php echo $row->user->address ?></td>
                     <td> <?php echo $row->create_by ?></td>
-                    <td> <?php echo $row->user->role ?></td>
                     <td>
                         <?php
                         if($row->user->id == Auth::user()->id){
@@ -127,20 +125,6 @@
                 </tr>
             <?php endforeach;?>
         </tbody>
-        
-        <tfoot>
-            <tr>
-                <th>Id</th>
-                <th>Onwer Name</th>
-                <th>Email</th>
-                <th>Mobile</th>
-                <th>Date Of Birth</th>
-                <th>Address</th>
-                <th>Create By</th>
-                <th>role</th>
-                <th></th>
-            </tr>
-        </tfoot>
         </table>
     </div>
 </div><!-- /.box -->
@@ -156,6 +140,9 @@ $(document).ready(function() {
         $('#sidebar_list_2_1').addClass('active');
         $("#admin_table").DataTable({
             "order": [[ 0, "desc" ]],
+            "columnDefs": [ { "targets": 3, "orderable": false } ],
+            "columnDefs": [ { "targets": 5, "orderable": false } ],
+            "columnDefs": [ { "targets": 7, "orderable": false } ]
         }
         );
         $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});

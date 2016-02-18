@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 * text=auto
 *.css linguist-vendored
 *.less linguist-vendored
+=======
+/Build export-ignore
+/unitTests export-ignore
+README.md export-ignore
+>>>>>>> 36d2ba12e38b6be60429e31f217c09afe781d620

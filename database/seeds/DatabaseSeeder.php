@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder
         $this->call(MsgRecvTableSeeder::class);
         $this->call(MsgSendTableSeeder::class);
         $this->call(PositionTableSeeder::class);
+        $this->call(ScoretypeTableSeeder::class);
+        $this->call(ClassteacherTableSeeder::class);
         Model::reguard();
     }
 }

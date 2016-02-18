@@ -815,7 +815,6 @@ $(document).ready(function() {
                     },
             success:function(record){
                 $('#student_table_1').dataTable().fnDeleteRow(myRow);
-                console.log(record);
             },
             error:function(){
                 alert("something went wrong, contact master admin to fix");

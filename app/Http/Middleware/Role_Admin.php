@@ -25,7 +25,7 @@ class Role_Admin
         if($this->auth->check())
         {
             $user = $this->auth->user();
-            if($user->role > 0)
+            if($user->role != 0)
             {
                 return Redirect('/permission_denied');
             }

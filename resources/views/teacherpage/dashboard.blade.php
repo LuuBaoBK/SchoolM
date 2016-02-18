@@ -24,10 +24,13 @@
 		                  <b>Role</b> <a class="pull-right">Teacher</a>
 		                </li>
 		                <li class="list-group-item">
-		                  <b>Position</b> <a class="pull-right">{{$teacher->position}}</a>
+		                  <b>Position</b> <a class="pull-right">{{$teacher->my_position->position_name}}</a>
 		                </li>
 		                <li class="list-group-item">
 		                  <b>Mobile Phone</b> <a class="pull-right"><?php $mobilephone = ($teacher->mobilephone =="")? "N/A" : $teacher->mobilephone; echo $mobilephone ?></a>
+		                </li>
+		                <li class="list-group-item">
+		                  <b>Home Phone</b> <a class="pull-right"><?php $homephone = ($teacher->homephone =="")? "N/A" : $teacher->homephone; echo $homephone ?></a>
 		                </li>
 		                <li class="list-group-item"><b>Date Of Birth</b><a class="pull-right">{{$teacher->mydateofbirth}}</a>
 		                </li>
@@ -49,7 +52,6 @@
 		        <ul class="nav nav-tabs">
 		          <li class="active"><a href="#info" data-toggle="tab">Personal Info</a></li>
 		          <li><a href="#changepassword" data-toggle="tab">Change Password</a></li>
-		          <li><a href="#settings" data-toggle="tab">Settings</a></li>
 		        </ul>
 		        <div class="tab-content">
 		            <div class="active tab-pane" id="info">       
@@ -67,10 +69,6 @@
 				                    <div class="col-xs-12 col-lg-3">
 				                        <label for="email">Email</label>
 				                        <input type="text" class="form-control" name="email" id="email" value={{$teacher->user->email}} disabled>
-				                    </div>
-				                    <div class="col-xs-12 col-lg-3">
-				                        <label for="create_by">Create By</label>
-				                        <input type="text" class="form-control" name="create_by" id="create_by" value={{$teacher->create_by}} disabled>
 				                    </div>
 				                </div>
 				                <div class="row">
@@ -98,6 +96,11 @@
 				                        <label class="error_mess" id="mobilephone_error" style="display:none" for="mobilephone"></label>
 				                    </div>
 				                    <div class="form-group col-lg-3">
+				                        <label for="homephone">Home Phone</label>
+				                        <input type="text" class="form-control" name="homephone" id="homephone" placeholder="Mobile Phone" value={{$teacher->homephone}}>
+				                        <label class="error_mess" id="homephone_error" style="display:none" for="homephone"></label>
+				                    </div>
+				                    <div class="form-group col-lg-3">
 				                        <label for="dateofbirth">Date Of Birth:</label>
 				                        <input type="text" id="dateofbirth" name="dateofbirth" class="form-control"  data-inputmask="'alias': 'dd/mm/yyyy'" data-mask / value={{$teacher->mydateofbirth}} >
 				                        <label class="error_mess" id="dateofbirth_error" style="display:none" for="dateofbirth"></label>
@@ -112,7 +115,7 @@
 				                </div>
 				            </div><!-- /.box-body -->
 				            <div class="box-footer">
-				                    <button id ="ad_form_submit" type="button" class="btn btn-primary">Edit</button>		                
+				                    <button id ="te_form_submit" type="button" class="btn btn-primary">Edit</button>		                
 				            </div>
 			            </form>
 		            </div>
@@ -143,8 +146,6 @@
 				            </div>
 			            </form>
 		          	</div>
-		          	<div class="tab-pane" id="settings">
-		          	</div>
 			          <!-- /.tab-pane -->
 		        </div>
 		        <!-- /.tab-content -->
@@ -157,16 +158,18 @@
 <script src="{{asset("/adminlte/bootstrap/js/bootstrap.min.js")}}"></script>
 <script type="text/javascript">
     $(function() {
+    	$('#list_1').addClass("active");
         $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
         $("[data-mask]").inputmask();
 
-        $("#ad_form_submit").click(function() {
+        $("#te_form_submit").click(function() {
             /* Act on the event */
             var id 			= $('#id').val();
             var firstname   = $('#firstname').val();
             var middlename  = $('#middlename').val();
             var lastname    = $('#lastname').val();
             var mobilephone = $('#mobilephone').val();
+            var homephone = $('#homephone').val();
             var dateofbirth = $('#dateofbirth').val();
             var address     = $('#address').val();
             var token       = $('input[name="_token"]').val();
@@ -175,7 +178,7 @@
             $(".error_mess").empty();
 
             $.ajax({
-                url     :"<?= URL::to('/admin/dashboard') ?>",
+                url     :"<?= URL::to('/teacher/dashboard') ?>",
                 type    :"POST",
                 async   :false,
                 data    :{
@@ -184,6 +187,7 @@
                     'middlename'    :middlename,
                     'lastname'      :lastname,
                     'mobilephone'   :mobilephone,
+                    'homephone'		:homephone,
                     'dateofbirth'   :dateofbirth,
                     'address'       :address,
                     '_token'        :token
@@ -214,7 +218,7 @@
 			$(".form-group").removeClass("has-warning");
             $(".error_mess").empty();
 			$.ajax({
-                url     :"<?= URL::to('/admin/dashboard/changepassword') ?>",
+                url     :"<?= URL::to('/teacher/dashboard/changepassword') ?>",
                 type    :"POST",
                 async   :false,
                 data    :{

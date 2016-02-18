@@ -5,30 +5,112 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use validator;
 use App\Model\Subject;
+use App\Model\Scoretype;
 
 class EditsubjectController extends Controller
 {
-    public function edit($id)
+    public function get_view($id)
     {
-    	$row = Subject::where('id', $id)->first();
-    	return view("adminpage.subjectmanage.editsubject", ['row' => $row]);
+    	$subject = Subject::where('id', $id)->first();
+        // $score_type = $subject->score_type;
+        $record['subject'] = $subject;
+        // $record['score_type'] = $score_type;
+        //dd($record['score_type']);
+    	return view("adminpage.subjectmanage.editsubject", ['record' => $record]);
     }
 
     public function update(Request $request)
     {	
-    	$data = Subject::where('id', $request['id'])->first();
-    	$data->id = $request['id'];
-    	$data->subject_name = $request['name'];
-    	$data->total_time = $request['totaltime'];
-    	$data->update();
-    	return Redirect('admin/addsubject');
+        $rules = array(
+            'subject_name'     => 'required|max:40',
+            'total_time'    => 'digits_between:1,3',
+        );
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->fails())
+        {
+           $record =  $validator->messages();
+           return $record;
+        }
+        else
+        {
+        	$data = Subject::where('id', $request['id'])->first();
+        	$data->subject_name = $request['subject_name'];
+        	$data->total_time = $request['total_time'];
+        	$data->update();
+            $record['isDone'] = 1;
+        	return $record;
+        }
     }
 
-    public function delete($id)
-    {
-        $i = Subject::where('id', $id)->delete();
-        return redirect('admin/addsubject');
+    public function add_type(Request $request){
+        $rules = array(
+            'score_type' =>     'required|max:40',
+        );
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->fails())
+        {
+           $record =  $validator->messages();
+           return $record;
+        }
+        else
+        {
+            $data = Scoretype::where('subject_id','=',$request['subject_id'])
+                             ->where('type','=',$request['score_type'])
+                             ->first();
+            if($data != null){
+                $record['score_type'] = 'This score type is already existed';
+                return $record;
+            }
+            else{
+                $data = new Scoretype;
+                $data->subject_id = $request['subject_id'];
+                $data->factor = $request['factor'];
+                $data->type = $request['score_type'];
+                $data->save();
+                $record['isDone'] = 1;
+                return $record;
+            } 
+        }
     }
+
+    public function edit_type(Request $request){
+        $rules = array(
+            'score_type' =>     'required|max:40',
+        );
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->fails())
+        {
+           $record =  $validator->messages();
+           return $record;
+        }
+        else
+        {
+            $data = Scoretype::where('subject_id','=',$request['subject_id'])
+                             ->where('type','=',$request['score_type'])
+                             ->first();
+            if($data != null){
+                $record['score_type'] = 'This score type is already existed';
+                return $record;
+            }
+            else{
+                $data = Scoretype::where('subject_id','=',$request['subject_id'])
+                             ->where('type','=',$request['old_score_type'])
+                             ->update(['factor'=> $request['factor'], 'type' => $request['score_type']]);
+                $record['isDone'] = $data;
+                return $record;
+            } 
+        }
+    }
+
+    public function delete_type(Request $request){
+
+    }
+
 }

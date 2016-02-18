@@ -14,4 +14,14 @@ class Subject extends Model
     {
         return $this->beLongtoMany('App\Schedule', 'subject_id', 'id');
     }
+
+    public function members()
+    {
+        return $this->hasMany('App\Model\Teacher', 'group', 'id');
+    }
+
+    public function score_type()
+    {
+        return $this->hasMany('App\Model\Scoretype', 'subject_id', 'id');
+    }
 }

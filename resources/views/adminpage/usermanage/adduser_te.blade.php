@@ -79,10 +79,13 @@
         <div class="form-group col-lg-3">
             <label for="group">Group</label>
             <select id="group" name="group" class="form-control">
-                <option value="-1" selected>-- Select Subject --</option>
                 <?php
-                    foreach($subject_list as $subject){
-                        echo ("<option value='".$subject->id."'>".$subject->subject_name."</option>");
+                    foreach($record['subject_list'] as $key => $subject){
+                        if($key == "0"){
+                            echo ("<option value='1' selected>-- Select Subject --</option>");
+                        }
+                        else
+                            echo ("<option value='".$subject->id."'>".$subject->subject_name."</option>");
                     }
                 ?>
             </select>
@@ -94,7 +97,16 @@
         </div>
         <div class="form-group col-lg-3">
             <label for="position">Position</label>
-            <input type="text" class="form-control" name="position" id="position" placeholder="Position">
+            <select id="position" name="position" class="form-control">
+                <?php
+                    foreach($record['position_list'] as $key => $position){
+                        if($key == '0')
+                            echo ("<option value='1' selected>-- Select Position --</option>");
+                        else            
+                            echo ("<option value='".$position->id."'>".$position->position_name."</option>");
+                    }
+                ?>
+            </select>
             <label class="error_mess" id="position_error" style="display:none" for="position"></label>
         </div>
     </div>
@@ -123,10 +135,12 @@
             <div class="form-group">
                 <label for="filter_group">Group</label>
                 <select id="filter_group" name="filter_group" class="form-control">
-                <option value="-1" selected>-- All --</option>
                 <?php
-                    foreach($subject_list as $subject){
-                        echo ("<option value='".$subject->subject_name."'>".$subject->subject_name."</option>");
+                    foreach($record['subject_list'] as $key => $subject){
+                        if($key == "0")
+                            echo ("<option value='1' selected>-- Select Subject --</option>");
+                        else
+                            echo ("<option value='".$subject->id."'>".$subject->subject_name."</option>");
                     }
                 ?>
                 </select>
@@ -188,7 +202,7 @@
         $('#sidebar_list_2').addClass('active');
         $('#sidebar_list_2_2').addClass('active');
         $("#teacher_table").DataTable({
-            "order": [[ 2, "desc" ]],
+            "order": [[ 1, "desc" ]],
             "columnDefs": [ { "targets": 5, "orderable": false } ]   
         });
         $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
@@ -235,9 +249,9 @@
                             $('#success_mess').slideUp('slow');
                         }, 2000); // <-- time in milliseconds
                         $('#teacher_table').dataTable().fnAddData( [
-                            record.mydata.user.firstname+" "+record.mydata.user.middlename+" "+record.mydata.user.lastname,
+                            record.mydata.user.fullname,
                             record.mydata.user.email,
-                            record.mydata.group,
+                            record.mydata.teach.subject_name,
                             record.mydata.position,
                             record.mydata.user.dateofbirth,
                             record.button
@@ -272,6 +286,7 @@
                     '_token'        :token
                 },
                 success:function(record){
+                    console.log(record);
                    $('#teacher_table').dataTable().fnClearTable();
                     $.each(record, function(i, row){
                         button = "<a href='teacher/edit/"+row.id+"'<i class = 'glyphicon glyphicon-edit'></i></a>";

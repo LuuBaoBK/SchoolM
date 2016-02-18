@@ -1,5 +1,17 @@
+<<<<<<< HEAD
 /vendor
 /node_modules
 Homestead.yaml
 Homestead.json
 .env
+=======
+build/PHPExcel.phar
+unitTests/codeCoverage
+analysis
+
+## IDE support
+*.buildpath
+*.project
+/.settings
+/.idea
+>>>>>>> 36d2ba12e38b6be60429e31f217c09afe781d620

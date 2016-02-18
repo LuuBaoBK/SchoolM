@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTeachersubjectTable extends Migration
+class CreateScoretypeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,10 @@ class CreateTeachersubjectTable extends Migration
      */
     public function up()
     {
-        Schema::create('teachersubject', function (Blueprint $table) {
-            $table->string('teacher_id',9);
-            $table->integer('subject_id');
+        Schema::create('scoretype', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('type',40);
+            $table->string('factor',1);
         });
     }
 
@@ -25,6 +26,6 @@ class CreateTeachersubjectTable extends Migration
      */
     public function down()
     {
-        Schema::drop('teachersubject');
+        Schema::drop('scoretype');
     }
 }

@@ -24,7 +24,7 @@
     <!-- form start -->
     <form id="subject_form" method="POST" role="form">
     {!! csrf_field() !!}
-    <div style = "display: none" class="box-body">
+    <div class="box-body">
         <div id="error_mess" style = "display: none" class="alert alert-warning alert-dismissable">
             <h4></h4>        
         </div>
@@ -35,6 +35,7 @@
             <div class="form-group col-lg-6">
                 <label for="subject_name">Subject Name</label>
                 <input type="text" class="form-control" name="subject_name" id="subject_name">
+                <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
             </div>
         </div>
         <div class="row">
@@ -44,7 +45,7 @@
             </div>
         </div>
     </div><!-- /.box-body -->
-    <div style = "display: none" class="box-footer">
+    <div class="box-footer">
             <button id ="subject_form_submit" type="button" class="btn btn-primary">Create New Subject</button>
     </div>
     </form>
@@ -89,6 +90,7 @@
 <!-- page script -->
 <script>
     $(function () {
+        $('#sidebar_list_4_1').addClass('active');
         $('#sidebar_list_4').addClass('active');
         $("#subject_table").DataTable(
             {"order": [[ 0, "desc" ]]}
@@ -129,7 +131,6 @@
                         $.each(subject, function(i, item){
                           $('#error_mess').append("<h4><i class='icon fa fa-warning'></i>"+item+"</h4>");
                         });
-                        
                    }    
                 }
             });

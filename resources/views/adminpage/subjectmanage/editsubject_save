@@ -1,0 +1,104 @@
+<div class="box box-solid box-primary">
+     <div class="box-header">
+        <h3 class="box-title">Edit Subject Score List</h3> 
+        <div class="box-tools pull-right">
+            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>                              
+    </div><!-- /.box-header -->
+    <div class="box-body table-responsive">
+        <div style class="box-body">
+            <div class="row">
+                <!-- half left -->
+                <div class="col-lg-4 col-xs-12">
+                    <div class="box box-primary">
+                        <form id="score_list_form">
+                            {!! csrf_field() !!}
+                            <div style class="box-body">
+                                <div class="form-group">
+                                    <label for="score_type">Score Type</label>
+                                    <label id="score_type_error" for="score_type" style="display:none">Score type is required and may not be greater than 40 characters</label>
+                                    <input type="text" class="form-control" name="score_type" id="score_type">          
+                                </div>
+                                <div class="form-group">
+                                    <label for="factor">factor</label>
+                                    <select id="factor" name="factor" class="form-control">
+                                        <option value='1' selected>1</option>
+                                        <option value='2' >2</option>
+                                        <option value='3' >3</option>
+                                    </select>
+                                </div>
+                            </div><!-- /.box-body -->
+                            <div style class="box-footer">
+                                <button type="submit" class="btn btn-primary btn-block">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- half right -->
+                <div class="col-lg-8 col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-body">
+                            <table id="score_type_table" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Factor</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="displayrecord">
+                                    <?php foreach ($record['score_type'] as $row) :?>
+                                        <tr>
+                                            <td> <?php echo $row->type ?></td>
+                                            <td> <?php echo $row->factor ?></td>
+                                        </tr>
+                                    <?php endforeach;?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="editModal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit Score Type</h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="modal_form">
+                    <div class="form-group">
+                        <label for="subject_name">Subject Name</label>
+                        <input type="text" class="form-control" name="subject_name" id="subject_name" value="{{$record['subject']['subject_name']}}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal_score_type">Score Type</label>
+                        <label id="modal_score_type_error" for="modal_score_type" style="display:none">Score type is required and may not be greater than 40 characters</label>
+                        <input type="text" class="form-control" name="modal_score_type" id="modal_score_type">
+                        <input type="hidden" class="form-control" name="modal_score_type" id="modal_old_score_type">          
+                    </div>
+                    <div class="form-group">
+                        <label for="modal_factor">factor</label>
+                        <select id="modal_factor" name="modal_factor" class="form-control">
+                            <option value='1' selected>1</option>
+                            <option value='2' >2</option>
+                            <option value='3' >3</option>
+                        </select>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button id="modal_edit" type="button" class="btn btn-primary btn-info btn-block pull-left">Edit</button>
+                <button id="modal_delete" type="button" class="btn btn-primary btn-block btn-danger pull-left">Delete</button>
+                <button type="button" class="btn btn-primary btn-block pull-right" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    <!-- /.modal-content -->
+    </div>
+  <!-- /.modal-dialog -->
+</div>

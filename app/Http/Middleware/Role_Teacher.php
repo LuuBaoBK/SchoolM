@@ -25,7 +25,7 @@ class Role_Teacher
         if($this->auth->check())
         {
             $user = $this->auth->user();
-            if($user->role > 1)
+            if($user->role != 1)
             {
                 return Redirect('/');
             }

@@ -15,12 +15,17 @@
       </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
-            <li class="">
+            <li id="list_1" class="">
                 <a href="/teacher/dashboard">
                     <i class="fa fa-home"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li>
+            <li id="list_2" class="">
+                <a href="/teacher/transcript">
+                    <i class="fa fa-book"></i> <span>Transcript</span>
+                </a>
+            </li>
+            <li id="list_3">
                 <a href="/auth/logout">
                     <i class="glyphicon glyphicon-log-out"></i> <span>Logout</span>
                 </a>

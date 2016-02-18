@@ -20,7 +20,7 @@ class AddsubjectController extends Controller
     {
         $rules = array(
             'subject_name'     => 'required|max:40',
-            'total_time'    => 'max:50',
+            'total_time'    => 'digits_between:1,3',
         );
         $validator = Validator::make($request->all(), $rules);
 
@@ -33,19 +33,11 @@ class AddsubjectController extends Controller
         {
             $subject = new Subject;
             
-            //Create ID
-            $sub_next_id = Sysvar::find('sub_next_id');
-            $sub_next_id->value = $sub_next_id->value + 1;
-            $id = $sub_next_id->value;
-
             // Create User
-            $subject->id = $id;
             $subject->subject_name = $request['subject_name'];
             $subject->total_time = $request['total_time'];
             $subject->save();
-            
-            $sub_next_id->save();
-
+            $id = $subject->id;
             $record = array
             (
                 "id" => $id,

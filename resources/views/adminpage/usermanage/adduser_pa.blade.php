@@ -197,17 +197,6 @@ table tr.selected{
                             </tr>
                         <?php endforeach;?>
                     </tbody>
-                    
-                    <tfoot>
-                        <tr>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Enrolled Year</th>
-                            <th>Graduated Year</th>
-                            <th>Date Of Birth</th>
-                            <th>Action</th>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
             <!-- /.tab-pane -->
@@ -421,7 +410,7 @@ $(document).ready(function() {
                         setTimeout(function() {
                                 $('#success_mess').slideUp('slow');
                         }, 2000); // <-- time in milliseconds
-                        $('#parent_table').dataTable().fnUpdate( firstname+" "+middlename+" "+lastname, selected_row_index, 1 );;
+                        $('#parent_table').dataTable().fnUpdate( firstname+" "+middlename+" "+lastname, selected_row_index, 1 );
                     }
                     else{
                         if(record.isSuccess == 0){

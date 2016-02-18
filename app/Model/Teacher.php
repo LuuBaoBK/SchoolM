@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Teacher extends Model
 {
     protected $table = 'teachers';
-    protected $fillable = ['id', 'mobilephone' , 'homephone', 'group', 'position', 'incomingday'];
+    protected $fillable = ['id', 'mobilephone' , 'homephone', 'group', 'position', 'incomingday', 'doable'];
     public $timestamps = false;
     
     public function user()
@@ -22,6 +22,11 @@ class Teacher extends Model
 
     public function classes()
     {
-        return $this->hasMany('App\Classes' , 'homeroom_teacher', 'id');
+        return $this->hasMany('App\Model\Classes' , 'homeroom_teacher', 'id');
+    }
+
+    public function teach()
+    {
+        return $this->hasOne('App\Model\Subject' , 'id', 'group');
     }
 }

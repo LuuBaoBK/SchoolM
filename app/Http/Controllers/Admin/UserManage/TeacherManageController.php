@@ -13,6 +13,7 @@ use App\Model\Subject;
 use App\Model\Student;
 use App\Model\Parents;
 use App\Model\Sysvar;
+use App\Model\Position;
 use Input;
 use Validator;
 
@@ -21,24 +22,48 @@ class TeacherManageController extends Controller
 {
     public function get_view(){
         $subject_list = Subject::all();
-        return view('adminpage.usermanage.adduser_te')->with('subject_list',$subject_list);
+        $position_list = Position::where('position_name','<>','custome')->where('position_name','<>','Customem')->get();
+
+        $record['subject_list'] = $subject_list;
+        $record['position_list'] = $position_list;
+        return view('adminpage.usermanage.adduser_te')->with('record',$record);
     }
 
     public function search_te(Request $request){
-        $fullname = "%".$request['fullname']."%";
+        $fullname = $request['fullname'];
         $group = $request['group'];
-        if($request['group'] == "-1"){
+        if($request['group'] == "1"){
             $teacher_list = Teacher::select('id')->get();
         }
         else{
             $teacher_list = Teacher::select('id')->where('group','=',$group)->get();
         }
         if($fullname != "")
-            $record = User::whereIn('id',$teacher_list)->where('fullname','LIKE',$fullname)->get();
+            $record = User::whereIn('id',$teacher_list)->where('fullname','LIKE',"%".$fullname."%")->get();
         else
             $record = User::whereIn('id',$teacher_list)->get();
         foreach ($record as $key => $value) {
             $value->teacher->my_position;
+            if($value->dateofbirth == "0000-00-00"){
+                $dateofbirth = "";
+            }
+            else
+            {
+                $dateofbirth = date_create($value->dateofbirth);
+                $dateofbirth = date_format($dateofbirth, "d/m/Y");
+            }
+
+            if($value->teacher->incomingday == "0000-00-00"){
+                $incomingday = "";
+            }
+            else
+            {
+                $incomingday = date_create($value->teacher->incomingday);
+                $incomingday = date_format($incomingday, "d/m/Y");
+            }
+            $record[$key]->dateofbirth = $dateofbirth;
+            $record[$key]->teacher->incomingday = $incomingday;
+            $record[$key]->teacher->group = Subject::find($value->teacher->group)->subject_name;
         }
         return $record;
     }
@@ -55,7 +80,6 @@ class TeacherManageController extends Controller
             'dateofbirth'   => 'date_format:d/m/Y',
             'incomingday'   => 'date_format:d/m/Y',
             'specialized'   => 'max:20',
-            'position'      => 'max:20',            
         );
 
         $validator = Validator::make($request->all(), $rules);
@@ -128,6 +152,28 @@ class TeacherManageController extends Controller
 
             $teacher = Teacher::find($newid);
             $teacher->user;
+            $teacher->teach;
+            if($teacher->user->dateofbirth == "0000-00-00"){
+                $dateofbirth = "";
+            }
+            else
+            {
+                $dateofbirth = date_create($teacher->user->dateofbirth);
+                $dateofbirth = date_format($dateofbirth, "d/m/Y");
+            }
+
+            if($teacher->incomingday == "0000-00-00"){
+                $incomingday = "";
+            }
+            else
+            {
+                $incomingday = date_create($teacher->incomingday);
+                $incomingday = date_format($incomingday, "d/m/Y");
+            }
+            $teacher->user->dateofbirth = $dateofbirth;
+            $teacher->incomingday = $incomingday;
+            $teacher->group = Subject::find($teacher->group)->subject_name;
+            $teacher->position = Position::find($teacher->position)->position_name;
             $record = array
             (
                 'button'        => "<a href='/admin/manage-user/teacher/edit/$newid' ><i class = 'glyphicon glyphicon-edit'></i></a>",
@@ -165,7 +211,8 @@ class TeacherManageController extends Controller
         $teacher['mydateofbirth'] = $dateofbirth;
         $teacher['myincomingday'] = $incomingday;
         $group = Subject::all();
-        return view('adminpage.usermanage.edit_te',['teacher' => $teacher, 'group' => $group]);
+        $position_list = Position::where('position_name','<>','custome')->where('position_name','<>','Customem')->get();
+        return view('adminpage.usermanage.edit_te',['teacher' => $teacher, 'group' => $group, 'position_list' => $position_list]);
     }
 
     public function edit_te(Request $request){

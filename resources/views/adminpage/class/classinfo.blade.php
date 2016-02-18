@@ -145,7 +145,7 @@
                 <th>Class Name</th>
                 <th>Scholastic</th>
                 <th>Homeroom Teacher</th>
-                <th></th>
+                <th>Action</th>
             </tr>
         </thead>
 
@@ -153,15 +153,6 @@
            
         </tbody>
         
-        <tfoot>
-            <tr>
-                <th>Id</th>
-                <th>Class Name</th>
-                <th>Scholastic</th>
-                <th>Homeroom Teacher</th>
-                <th></th>
-            </tr>
-        </tfoot>
         </table>
     </div>
 </div><!-- /.box -->
@@ -174,7 +165,9 @@
     $(function() {
         $('#sidebar_list_3').addClass('active');
         $('#sidebar_list_3_1').addClass('active');
-        $('#class_table').dataTable();
+        $('#class_table').dataTable({
+            "columnDefs": [ { "targets": 4, "orderable": false } ]
+        });
     });
 
     $( "#scholastic" ).change(function() {

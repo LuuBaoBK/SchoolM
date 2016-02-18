@@ -91,4 +91,16 @@ class TranscriptController extends Controller
         $transcript->save();
         return Redirect('/admin/transcript');
     }
+
+    public function general_view(Request $request)
+    {
+        // $transcript = new Transcript;
+        // $transcript->semester = $request['semester'];
+        // $transcript->student_id = $request['student'];
+        // $transcript->subject_id = $request['subject'];
+        // $transcript->type = $request['type'];
+        // $transcript->score = $request['score'];
+        // $transcript->save();
+        return view('adminpage.transcript_general');
+    }
 }

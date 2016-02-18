@@ -88,11 +88,11 @@
                 <?php
                     $selected = "";
                     foreach($group as $subject){
-                        if($subject->subject_name == $teacher->group)
+                        if($subject->id == $teacher->group)
                             $selected = "selected";
                         else
                             $selected = "";
-                        echo ("<option value='".$subject->subject_name."'".$selected.">".$subject->subject_name."</option>");
+                        echo ("<option value='".$subject->id."'".$selected.">".$subject->subject_name."</option>");
                     }
                 ?>
                 </select>
@@ -104,7 +104,19 @@
             </div>
             <div class="form-group col-lg-3">
                 <label for="position">Position</label>
-                <input type="text" class="form-control" name="position" id="position" placeholder="Position" value='<?=$teacher->position?>'}>
+                <select id="position" name="position" class="form-control">
+                <option value="-1" selected>-- All --</option>
+                <?php
+                    $selected = "";
+                    foreach($position_list as $position){
+                        if($position->id == $teacher->position)
+                            $selected = "selected";
+                        else
+                            $selected = "";
+                        echo ("<option value='".$position->id."'".$selected.">".$position->position_name."</option>");
+                    }
+                ?>
+                </select>
                 <label class="error_mess" id="position_error" style="display:none" for="position"></label>
             </div>
         </div>

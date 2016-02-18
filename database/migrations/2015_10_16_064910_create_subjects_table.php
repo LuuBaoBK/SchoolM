@@ -13,9 +13,10 @@ class CreateSubjectsTable extends Migration
     public function up()
     {
         Schema::create('subjects', function (Blueprint $table) {
-            $table->integer('id')->primary();
-            $table->string('subject_name',20);
+            $table->increments('id');
+            $table->string('subject_name',40);
             $table->integer('total_time');
+            $table->integer('score_editable');
         });
     }
 

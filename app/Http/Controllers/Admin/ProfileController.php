@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Model\Teacher;
 use App\Model\Admin;
 use Auth;
 use Validator;
@@ -32,7 +33,7 @@ class ProfileController extends Controller
     public function edit_info(Request $request){
         $id = $request['id'];
         $user  = User::find($id);
-        $admin = Admin::find($id);
+        $Teacher = Teacher::find($id);
 
         $rules = array(
             'firstname'     => 'max:20',
@@ -69,8 +70,8 @@ class ProfileController extends Controller
             $user->address     = $request['address'];
 
             $user->save();
-            $admin->mobilephone = $request['mobilephone'];
-            $admin->save();
+            $Teacher->mobilephone = $request['mobilephone'];
+            $Teacher->save();
 
             $record['isDone'] = 1;
             return $record;
