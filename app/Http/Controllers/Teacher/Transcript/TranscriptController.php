@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Classes;
 use App\Model\StudentClass;
 use App\User;
+use App\Model\Classteacher;
 use Excel;
 use Storage;
 use Auth;
@@ -17,31 +18,32 @@ use Input;
 class TranscriptController extends Controller
 {
     public function view()
-    {
+    {        
         return view('teacherpage.transcript.template');
     }
 
     public function updateclassname(Request $request){
         $scholastic = $request['scholastic'];
         $grade      = $request['grade'];
-
+        $teacher_id = Auth::user()->id;
         if($scholastic == '0' || $scholastic == '-1'){
-            $id = "%";
+            $class_id = "%";
         }
         else{
-            $id = $scholastic."_%";
+            $class_id = $scholastic;
         }
-
-        $name = "";
         if($grade != '0' && $grade != '-1'){
-            $name .= $grade;
+            $class_id .= "_".$grade."%"; 
         }
         else{
-            $name .= "%";
+            $class_id .= "%";
         }
-        $name .= "%";
-        $classname = Classes::where('id','like',$id)->where('classname','like',$name)->get();
-        $count = Classes::where('id','like', $id)->where('classname','like',$name)->count();
+        $classes = Classteacher::select('class_id')
+                               ->where('teacher_id', '=', $teacher_id)
+                               ->where('class_id','like',$class_id)
+                               ->get();
+        $classname = Classes::whereIn('id', $classes)->get();
+        $count = Classes::whereIn('id',$classes)->count();
         $record['count'] = $count;
         $record['data'] = $classname;
         return $record;
@@ -68,17 +70,11 @@ class TranscriptController extends Controller
                 $sheet->setFitToWidth('true');
                 $col1 = StudentClass::select('student_id')->where('class_id','=',$class_id)->get();
                 $col2 = User::select('fullname')->whereIn('id',$col1)->get();
-                $heading = array('Id','Full Name','Score','Note');
+                $heading = array('Id','Full Name','Score_15', 'Score_45', 'Score_GK ', 'Score_CK', 'Note');
                 $sheet->fromArray($heading, null, 'A1', true, false);
                 foreach ($col1 as $key => $value) {
                     $sheet->row($key+2, array( $col1[$key]['student_id'], $col2[$key]['fullname'] ));
                 }
-                $sheet->protect('password');
-            });
-            $excel->sheet('Info', function($sheet) {
-                $sheet->setFitToHeight('true');
-                $sheet->setFitToWidth('true');
-                $heading = array('Factor','Name');
             });
         });
         $my_excel->export('xlsx');

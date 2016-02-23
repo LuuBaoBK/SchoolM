@@ -12,9 +12,62 @@
     </ol>
 </section>
 <section class="content">
-<div class="box box-solid box-primary">
+<div class="box box-solid box-primary collapsed-box">
     <div class="box-header">
         <h3 class="box-title">Download Transcript Template</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
+        </div>
+    </div><!-- /.box-header -->
+<!-- form start -->
+    <form id="download_form" name="download_form" enctype="multipart/form-data">
+     {!! csrf_field() !!}
+    <div class="box-body">
+        <div class="form-group col-lg-6">
+            <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+            <label for="scholastic">Scholastic</label>
+            <select id="scholastic" name="scholastic" class="form-control">
+                <option value="-1" selected>-- Select --</option>;
+                <?php
+                    $year = date("Y");
+                    for($year;$year >=2010 ;$year--){
+                        echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
+                    }
+                ?>
+                <option value="0">-- All --</option>;
+            </select>
+        </div>
+        <div class="form-group col-lg-6">
+            <label for="grade">Grade</label>
+            <select id="grade" name="grade" class="form-control">
+                <option value="-1" selected>-- Select --</option>;                                            
+                <option>6</option>;
+                <option>7</option>;
+                <option>8</option>;
+                <option>9</option>;
+                <option value="0"> All </option>;
+            </select>
+        </div>
+        <div class="form-group col-lg-12">
+            <label for="classname">Class Name</label>
+            <select id="classname" name="classname" class="form-control">
+                <option value="-1" selected>Select Scholastic First</option>;
+            </select> 
+        </div>  
+    </div><!-- /.box-body -->
+    <div class="box-footer">
+        <div class="col-lg-12 col-xs-12">
+            <div class="has-warning form-group">
+                <label class="error_mess" id="download_error" style="display:none"  for="download">Please Select Class To Download</label>                              
+                <button id="download" type="button" class="btn btn-primary btn-block">Download</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</div> <!-- box -->
+<div class="box box-solid box-primary">
+    <div class="box-header">
+        <h3 class="box-title">Import Transcript</h3>
         <div class="box-tools pull-right">
             <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
         </div>
@@ -53,36 +106,18 @@
             <select id="classname" name="classname" class="form-control">
                 <option value="-1" selected>Select Scholastic First</option>;
             </select> 
-        </div>
-        <div class="form-group col-lg-12">
-            <div class="input-group">
-                <div class="input-group-btn">
-                    <button id="choose_file" type="button" class="btn btn-primary" >Choose File (.xlsx)</button>
-                </div>
-                <input id="import_text" name="import_text" type="text" class="form-control" disabled>
-                <input id="import_text_hidden" name="import_text_hidden" type="text" class="form-control" style="display:none">
-            </div>
-        </div>
+        </div>  
     </div><!-- /.box-body -->
     <div class="box-footer">
-        <div class="col-lg-6 col-xs-12">
+        <div class="col-lg-12 col-xs-12">
             <div class="has-warning form-group">
-                <label class="error_mess" id="import_error" style="display:none"  for="import">Please Select File & Class To Import</label>
-                <label class="error_mess" id="type_error" style="display:none"  for="import">Wrong file type (.xlsx is required)</label>
-                <button id="import" type="submit" class="btn btn-primary btn-block submit" >Import</button>
-                <input type="file" name="fileToUpload" id="fileToUpload" style="display:none"> 
+                <label class="error_mess" id="upload_error" style="display:none"  for="upload">Please Select Class To Download</label>                              
+                <button id="upload" type="button" class="btn btn-primary btn-block">Download</button>
             </div>
         </div>
-        <div class="col-lg-6 col-xs-12">
-            <div class="has-warning form-group">
-                <label class="error_mess" id="download_error" style="display:none"  for="download">Please Select Class To Download</label>                              
-                <button id="download" type="button" class="btn btn-primary btn-block">Download</button>
-            </div>
-        </div>
-    </div>
     </div>
     </form>
-</div><!-- /.box -->
+</div> <!-- box -->
 </section>
 <script src="{{asset("/mylib/jquery/jquery.min.js")}}" type="text/javascript"></script>
 <script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
@@ -173,6 +208,7 @@ $(document).ready(function() {
         }
     });
     $('#download').click(function(){
+        $('#download_error').slideUp('medium');
     	var class_id = $("#classname").val();
     	if(class_id == -1){
             $('#download_error').show('medium');

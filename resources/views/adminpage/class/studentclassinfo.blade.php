@@ -705,17 +705,6 @@ $(document).ready(function() {
 
                 }
                 
-                // $('#student_table_1').dataTable().fnClearTable();
-                // button="";
-                // $.each(record, function(i, row){
-                //     $('#student_table_1').dataTable().fnAddData([
-                //         row.student_id,
-                //         row.student.user.firstname+" "+row.student.user.middlename+" "+row.student.user.lastname,
-                //         row.student.user.dateofbirth,
-                //         row.ispassed
-                //     ]);
-                // });
-                
             },
             error:function(){
                 alert("something went wrong, contact master admin to fix");

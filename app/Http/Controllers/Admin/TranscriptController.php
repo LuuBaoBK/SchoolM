@@ -12,6 +12,7 @@ use App\Model\Student;
 use App\Model\Subject;
 use App\Model\Classes;
 use App\Model\StudentClass;
+use Validator;
 
 class TranscriptController extends Controller
 {
@@ -121,5 +122,32 @@ class TranscriptController extends Controller
         $classname = Classes::where('id','like',$id)->where('classname','like',$name)->get();
         $record = $classname;
         return $record;
+    }
+
+    public function set_time(Request $request){
+        $class_list = $request['class_list'];
+        $to_date    = $request['to_date'];
+        $from_date  = $request['from_date'];
+        $doable_type = $request['doable_type'];
+        $rules = array(
+            'to_date'   => 'required|date_format:d/m/Y',
+            'from_date'     => 'required|date_format:d/m/Y|before:to_date'
+        );
+        $validator = Validator::make($request->all(), $rules);
+        if($validator->fails())
+        {
+           $record =  $validator->messages();
+           return $record;
+        }
+        else
+        {
+            $classes = Classes::whereIn('id',$class_list)->get();
+            foreach ($classes as $key => $value) {
+                $value->update(['doable_from' => $from_date, 'doable_to' => $to_date, 'doable_type' => $doable_type]);
+            }
+            $record['isSuccess'] = 1;
+            $record['data'] = $classes;
+            return $record;
+        }
     }
 }

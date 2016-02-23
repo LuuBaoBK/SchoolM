@@ -17,7 +17,9 @@ class ClassTableSeeder extends Seeder
 	            'scholastic' => '15',
 	            'classname' => '9A'.$i,
 	            'homeroom_teacher' => 't_000000'.$i,
-                'doable' => '0'
+                'doable_from' => '-1',
+                'doable_to' => '-1',
+                'doable_type' => '1'
         	]);
     	}
     }

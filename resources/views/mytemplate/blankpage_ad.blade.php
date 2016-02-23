@@ -84,6 +84,6 @@
 <script src="{{asset("/adminlte/plugins/datatables/dataTables.bootstrap.min.js")}}"></script>
 <!-- iCheck 1.0.1 -->
 <script src="{{asset("/adminlte/plugins/iCheck/icheck.min.js")}}"></script>
-
+<script src="{{asset("/mylib/jquery-ui-custom/jquery-ui.min.js")}}"></script>
 </body>
 </html>
