@@ -29,4 +29,8 @@ class Teacher extends Model
     {
         return $this->hasOne('App\Model\Subject' , 'id', 'group');
     }
+
+    public function teacher_class(){
+        return $this->hasMany('App\Model\Classteacher','teacher_id','id');
+    }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Input;
 use Excel;
 use Storage;
+use App\User;
 
 class TestController extends Controller 
 {
@@ -24,7 +25,8 @@ class TestController extends Controller
             //     dd($record);
 
             // }, 'UTF-8');
-        return view('test');
+        $record = User::where('id','like', 'a_000000%')->get();
+        dd($record);
     }
 
     public function uploadFiles() {

@@ -19,9 +19,9 @@ class CreateClassesTable extends Migration
             $table->string('classname',6);
             $table->string('homeroom_teacher',9);
             $table->foreign('homeroom_teacher')->references('id')->on('teachers');
-            $table->string('doable_from',10);
-            $table->string('doable_to',10);
-            $table->string('doable_type',1);
+            $table->date('doable_from');
+            $table->date('doable_to');
+            $table->string('doable_month',2);
         });
     }
 

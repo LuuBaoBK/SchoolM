@@ -28,7 +28,7 @@ class Transcript extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['student', 'semester', 'subject', 'type', 'score'];
+    protected $fillable = ['student', 'semester', 'subject', 'scoretype_id', 'score'];
 
     /**
      * The attributes excluded from the model's JSON form.

@@ -14,9 +14,9 @@ class EditsubjectController extends Controller
     public function get_view($id)
     {
     	$subject = Subject::where('id', $id)->first();
-        // $score_type = $subject->score_type;
+        $score_type = $subject->score_type;
         $record['subject'] = $subject;
-        // $record['score_type'] = $score_type;
+        $record['score_type'] = $score_type;
         //dd($record['score_type']);
     	return view("adminpage.subjectmanage.editsubject", ['record' => $record]);
     }
@@ -71,6 +71,8 @@ class EditsubjectController extends Controller
                 $data->subject_id = $request['subject_id'];
                 $data->factor = $request['factor'];
                 $data->type = $request['score_type'];
+                $data->month = $request['month'];
+                $data->applyfrom = $request['applyfrom'];
                 $data->save();
                 $record['isDone'] = 1;
                 return $record;
@@ -90,6 +92,15 @@ class EditsubjectController extends Controller
            $record =  $validator->messages();
            return $record;
         }
+        elseif($request['score_type'] == $request['old_score_type'])
+        {
+            $data = Scoretype::where('subject_id','=',$request['subject_id'])
+                             ->where('type','=',$request['score_type'])
+                             ->update(['factor' => $request['factor'], 'month' => $request['month']]);
+            $record['isDone'] = 1;
+            $record['data'] = $data;
+            return $record;
+        }
         else
         {
             $data = Scoretype::where('subject_id','=',$request['subject_id'])
@@ -102,15 +113,11 @@ class EditsubjectController extends Controller
             else{
                 $data = Scoretype::where('subject_id','=',$request['subject_id'])
                              ->where('type','=',$request['old_score_type'])
-                             ->update(['factor'=> $request['factor'], 'type' => $request['score_type']]);
-                $record['isDone'] = $data;
+                             ->update(['factor'=> $request['factor'], 'type' => $request['score_type'], 'month' => $request['month']]);
+                $record['isDone'] = 1;
+                $record['data'] = $data;
                 return $record;
             } 
         }
     }
-
-    public function delete_type(Request $request){
-
-    }
-
 }

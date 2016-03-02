@@ -64,7 +64,159 @@ table tr.selected{
     </form>
     </div>
 </div><!-- /.box -->
-
+<div class="box box-solid box-primary">
+     <div class="box-header">
+        <h3 class="box-title">Edit Subject Score List</h3> 
+        <div class="box-tools pull-right">
+            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>                              
+    </div><!-- /.box-header -->
+    <div class="box-body table-responsive">
+        <div style class="box-body">
+            <div class="row">
+                <!-- half left -->
+                <div class="col-lg-4 col-xs-12">
+                    <div class="box box-primary">
+                        <form id="score_list_form">
+                            {!! csrf_field() !!}
+                            <div style class="box-body">
+                                <div class="form-group">
+                                    <label for="score_type">Score Type</label>
+                                    <label id="score_type_error" for="score_type" style="display:none">Score type is required and may not be greater than 40 characters</label>
+                                    <input type="text" class="form-control" name="score_type" id="score_type">          
+                                </div>
+                                <div class="form-group">
+                                    <label for="factor">Factor</label>
+                                    <select id="factor" name="factor" class="form-control">
+                                        <option value='1' selected>1</option>
+                                        <option value='2' >2</option>
+                                        <option value='3' >3</option>
+                                        <option value='4' >4</option>
+                                        <option value='5' >5</option>
+                                        <option value='6' >6</option>
+                                        <option value='7' >7</option>
+                                        <option value='8' >8</option>
+                                        <option value='9' >9</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="month">Month</label>
+                                    <select id="month" name="month" class="form-control">
+                                        <?php 
+                                            for($i=1;$i<=12;$i++){
+                                                echo ("<option value='".$i."' >".$i."</option>");
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="applyfrom">Apply From</label>
+                                    <select id="applyfrom" name="applyfrom" class="form-control">
+                                        <?php 
+                                            $year = date("Y");
+                                            for($i=$year;$i<=$year+2;$i++){
+                                                echo ("<option value='".substr($i, 2)."' >".$i."</option>");
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div><!-- /.box-body -->
+                            <div style class="box-footer">
+                                <button type="submit" class="btn btn-primary btn-block">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- half right -->
+                <div class="col-lg-8 col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-body">
+                            <table id="score_type_table" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Factor</th>
+                                        <th>Month</th>
+                                        <th>Apply From</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="displayrecord">
+                                    <?php foreach ($record['score_type'] as $row) :?>
+                                        <tr>
+                                            <td> <?php echo $row->type ?></td>
+                                            <td> <?php echo $row->factor ?></td>
+                                            <td> <?php echo $row->month ?></td>
+                                            <td> <?php echo ($row->applyfrom < 10 ? '200' : '20').$row->applyfrom  ?></td>
+                                        </tr>
+                                    <?php endforeach;?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="editModal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit Score Type</h4>
+            </div>
+            <form id="modal_form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="subject_name">Subject Name</label>
+                        <input type="text" class="form-control" name="subject_name" id="subject_name" value="{{$record['subject']['subject_name']}}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal_score_type">Score Type</label>
+                        <label id="modal_score_type_error" for="modal_score_type" style="display:none">Score type is required and may not be greater than 40 characters</label>
+                        <input type="text" class="form-control" name="modal_score_type" id="modal_score_type">
+                        <input type="hidden" class="form-control" name="modal_score_type" id="modal_old_score_type">          
+                    </div>
+                    <div class="form-group">
+                        <label for="modal_factor">factor</label>
+                        <select id="modal_factor" name="modal_factor" class="form-control">
+                            <option value='1' selected>1</option>
+                            <option value='2' >2</option>
+                            <option value='3' >3</option>
+                            <option value='4' >4</option>
+                            <option value='5' >5</option>
+                            <option value='6' >6</option>
+                            <option value='7' >7</option>
+                            <option value='8' >8</option>
+                            <option value='9' >9</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal_month">Month</label>
+                        <select id="modal_month" name="modal_month" class="form-control">
+                            <?php 
+                                for($i=1;$i<=12;$i++){
+                                    echo ("<option value='".$i."' >".$i."</option>");
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal_applyfrom">Apply From</label>
+                        <input type="text" class="form-control" id="modal_applyfrom" name="modal_applyfrom" disabled>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="modal_edit" type="button" class="btn btn-primary btn-info btn-block">Edit</button>
+                    <button type="button" class="btn btn-primary btn-block pull-right" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    <!-- /.modal-content -->
+    </div>
+  <!-- /.modal-dialog -->
+</div>
 </section><!-- DATA TABES SCRIPT -->
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
 <script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
@@ -75,16 +227,18 @@ table tr.selected{
         $('#score_type_table').dataTable({
             "scrollCollapse": true,
             "scrollY" : "350px",
-            "paging": false,
-            "lengthChange": false,
-            "searching": false,
-            "order": [[ 1, "asc" ]],
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "order": [[ 2, "desc" ],[1, "asc"]],
             "ordering": true,
             "info": true,
             "autoWidth": false,
             "columns": [
-                { "width": "50%" },
-                { "width": "50%" },
+                { "width": "25%" },
+                { "width": "25%" },
+                { "width": "25%" },
+                { "width": "25%" }
             ]
         });
 
@@ -123,127 +277,108 @@ table tr.selected{
             });
         });
 
-        // $('#score_list_form').on('submit',function(e){
-        //     e.preventDefault();
-        //     $('#score_type_error').parent().removeClass('has-warning');
-        //     $('#score_type_error').css("display","none");
-        //     $('#score_type_error').empty();
-        //     var score_type = $('#score_type').val();
-        //     var factor     = $('#factor').val();
-        //     var subject_id = $('#id').val();
-        //     var token      = $('input[name="_token"]').val();
-        //     $.ajax({
-        //         url     :"<?= URL::to('admin/editsubject/add_type') ?>",
-        //         type    :"POST",
-        //         async   :false,
-        //         data    :{
-        //             'score_type'      : score_type,
-        //             'factor'          :factor,
-        //             'subject_id'      :subject_id,
-        //             '_token'        :token
-        //         },
-        //         success:function(record){
-        //             if(record.isDone == 1){
-        //                 $('#score_type_table').dataTable().fnAddData( [
-        //                     score_type,
-        //                     factor    
-        //                 ]);
-        //             }
-        //             else{
-        //                 $('#score_type_error').parent().addClass('has-warning');
-        //                 $('#score_type_error').css("display","block");
-        //                 $('#score_type_error').append("<i class='icon fa fa-warning'></i> "+record.score_type);
-        //             }
-        //         }
-        //     });
-        // });
+        $('#score_list_form').on('submit',function(e){
+            e.preventDefault();
+            $('#score_type_error').parent().removeClass('has-warning');
+            $('#score_type_error').css("display","none");
+            $('#score_type_error').empty();
+            var score_type = $('#score_type').val();
+            var factor     = $('#factor').val();
+            var subject_id = $('#id').val();
+            var month      = $('#month').val();
+            var applyfrom  = $('#applyfrom').val();
+            var token      = $('input[name="_token"]').val();
+            $.ajax({
+                url     :"<?= URL::to('admin/editsubject/add_type') ?>",
+                type    :"POST",
+                async   :false,
+                data    :{
+                    'score_type'      : score_type,
+                    'factor'          :factor,
+                    'subject_id'      :subject_id,
+                    'month'           :month,
+                    'applyfrom'       :applyfrom,
+                    '_token'        :token
+                },
+                success:function(record){
+                    if(record.isDone == 1){
+                        $('#score_type_table').dataTable().fnAddData( [
+                            score_type,
+                            factor,
+                            month,
+                            '20'+applyfrom,
+                        ]);
+                    }
+                    else{
+                        $('#score_type_error').parent().addClass('has-warning');
+                        $('#score_type_error').css("display","block");
+                        $('#score_type_error').append("<i class='icon fa fa-warning'></i> "+record.score_type);
+                    }
+                }
+            });
+        });
 
-        // var selected_row_index;
-        // $('#score_type_table tbody').on( 'click', 'tr', function () {
-        //     $('#score_type_table').dataTable().$('tr.selected').removeClass('selected');
-        //     $(this).addClass('selected');
-        //     selected_row_index = $('#score_type_table').dataTable().fnGetPosition(this);
-        //     if( $('#score_type_table').dataTable().fnGetData(this) != null){
-        //         var score_type = $('#score_type_table').dataTable().fnGetData(this)[0];
-        //         var factor = $('#score_type_table').dataTable().fnGetData(this)[1];
-        //         $('#modal_score_type').val(score_type);
-        //         $('#modal_old_score_type').val(score_type);
-        //         $('#modal_factor').val(factor);
-        //         $('#editModal').modal('show');
-        //     }
-        //     else{   
-        //         //do nothing
-        //     }          
-        // });
+        var selected_row_index;
+        $('#score_type_table tbody').on( 'click', 'tr', function () {
+            $('#score_type_table').dataTable().$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            selected_row_index = $('#score_type_table').dataTable().fnGetPosition(this);
+            if( $('#score_type_table').dataTable().fnGetData(this) != null){
+                var score_type = $('#score_type_table').dataTable().fnGetData(this)[0];
+                var factor = $('#score_type_table').dataTable().fnGetData(this)[1];
+                var month = $('#score_type_table').dataTable().fnGetData(this)[2];
+                var year = $('#score_type_table').dataTable().fnGetData(this)[3];
+                var disablefrom = $('#score_type_table').dataTable().fnGetData(this)[4];
+                $('#modal_score_type').val(score_type);
+                $('#modal_old_score_type').val(score_type);
+                $('#modal_factor').val(factor);
+                $('#modal_month').val(month);
+                $('#modal_applyfrom').val(year);
+                $('#editModal').modal('show');
+            }
+            else{   
+                //do nothing
+            }          
+        });
 
-        // $('#modal_edit').on('click',function(){
-        //     $('#modal_score_type_error').parent().removeClass('has-warning');
-        //     $('#modal_score_type_error').css("display","none");
-        //     $('#modal_score_type_error').empty();
-        //     var subject_id = $('#id').val();
-        //     var score_type = $('#modal_score_type').val();
-        //     var old_score_type = $('#modal_old_score_type').val();
-        //     var factor     = $('#modal_factor').val();
-        //     var token      = $('input[name="_token"]').val();
-        //     if(score_type == old_score_type){
-        //         $('#editModal').modal('hide');
-        //     }
-        //     else{
-        //         $.ajax({
-        //             url     :"<?= URL::to('admin/editsubject/edit_type') ?>",
-        //             type    :"POST",
-        //             async   :false,
-        //             data    :{
-        //                 'score_type'    : score_type,
-        //                 'factor'        :factor,
-        //                 'subject_id'    :subject_id,
-        //                 'old_score_type':old_score_type,
-        //                 '_token'        :token
-        //             },
-        //             success:function(record){
-        //                 if(record.isDone == 1){
-        //                     $('#editModal').modal('hide');
-        //                     $('#score_type_table').dataTable().fnUpdate( score_type, selected_row_index, 0 );
-        //                     $('#score_type_table').dataTable().fnUpdate( factor, selected_row_index, 1 );
-        //                 }
-        //                 else{
-        //                     $('#modal_score_type_error').parent().addClass('has-warning');
-        //                     $('#modal_score_type_error').css("display","block");
-        //                     $('#modal_score_type_error').append("<i class='icon fa fa-warning'></i> "+record.score_type);
-        //                 }
-        //             }
-        //         });
-        //     }                
-        // });
-
-        // $('#modal_delete').click(function(){
-        //     var subject_id = $('#id').val();
-        //     var score_type = $('#modal_score_type').val();
-        //     var token      = $('input[name="_token"]').val();
-        //     $.ajax({
-        //         url     :"<?= URL::to('admin/editsubject/delete_type') ?>",
-        //         type    :"POST",
-        //         async   :false,
-        //         data    :{
-        //             'score_type'      : score_type,
-        //             'subject_id'      :subject_id,
-        //             '_token'        :token
-        //         },
-        //         success:function(record){
-        //             if(record.isDone == 1){
-        //                 $('#score_type_table').dataTable().fnAddData( [
-        //                     score_type,
-        //                     factor    
-        //                 ]);
-        //             }
-        //             else{
-        //                 $('#score_type_error').parent().addClass('has-warning');
-        //                 $('#score_type_error').css("display","block");
-        //                 $('#score_type_error').append("<i class='icon fa fa-warning'></i> "+record.score_type);
-        //             }
-        //         }
-        //     });
-        // });
+        $('#modal_edit').on('click',function(){
+            $('#modal_score_type_error').parent().removeClass('has-warning');
+            $('#modal_score_type_error').css("display","none");
+            $('#modal_score_type_error').empty();
+            var subject_id = $('#id').val();
+            var score_type = $('#modal_score_type').val();
+            var old_score_type = $('#modal_old_score_type').val();
+            var factor     = $('#modal_factor').val();
+            var month      = $('#modal_month').val();
+            var token      = $('input[name="_token"]').val();
+            $.ajax({
+                url     :"<?= URL::to('admin/editsubject/edit_type') ?>",
+                type    :"POST",
+                async   :false,
+                data    :{
+                    'score_type'    : score_type,
+                    'factor'        :factor,
+                    'subject_id'    :subject_id,
+                    'old_score_type':old_score_type,
+                    'month'         :month,
+                    '_token'        :token
+                },
+                success:function(record){
+                    console.log(record);
+                    if(record.isDone == 1){
+                        $('#editModal').modal('hide');
+                        $('#score_type_table').dataTable().fnUpdate( score_type, selected_row_index, 0 );
+                        $('#score_type_table').dataTable().fnUpdate( factor, selected_row_index, 1 );
+                        $('#score_type_table').dataTable().fnUpdate( month, selected_row_index, 2 );
+                    }
+                    else{
+                        $('#modal_score_type_error').parent().addClass('has-warning');
+                        $('#modal_score_type_error').css("display","block");
+                        $('#modal_score_type_error').append("<i class='icon fa fa-warning'></i> "+record.score_type);
+                    }
+                }
+            });              
+        });
     });
 </script>
 

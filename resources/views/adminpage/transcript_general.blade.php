@@ -31,37 +31,59 @@ table tr.selected{
      {!! csrf_field() !!}
     <div class="box-body">  
         <div class="row">
-            <div class="form-group col-lg-4">
-                <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-                <label for="scholastic">Scholastic</label>
-                <select id="scholastic" name="scholastic" class="form-control">
-                    <option value="-1" selected>-- Select --</option>;
-                    <?php
-                        $year = date("Y");
-                        for($year;$year >=2010 ;$year--){
-                            echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
-                        }
-                    ?>
-                    <option value="0">-- All --</option>;
-                </select>
-            </div>
-            <div class="form-group col-lg-4">
-                <label for="grade">Grade</label>
-                <select id="grade" name="grade" class="form-control">
-                    <option value="-1" selected>-- Select --</option>;                                            
-                    <option>6</option>;
-                    <option>7</option>;
-                    <option>8</option>;
-                    <option>9</option>;
-                    <option value="0">-- All --</option>;
-                </select>
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="form-group col-lg-8">
+                        <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+                        <label for="scholastic_show">Scholastic</label>
+                        <!-- <select id="scholastic" name="scholastic" class="form-control">
+                            <option value="-1" selected>-- Select --</option>;
+                            <?php
+                                $year = date("Y");
+                                $month = date("m");
+                                if($month <= 7){
+                                    $year = $year - 1;
+                                }
+                                $selected = "selected";
+                                for($year;$year >=2010 ;$year--){
+                                    echo ("<option value='".substr($year,2)."'".$selected.">".$year." - ".($year+1)."</option>");
+                                    $selected = "";
+                                }
+                            ?>
+                            <option value="0">-- All --</option>;
+                        </select> -->
+                        <?php
+                            $year = date("Y");
+                            $month = date("m");
+                            if($month <= 7){
+                                $year = $year - 1;
+                            }
+                            echo ("<input class='form-control' type='text' id='scholastic_show' name='scholastic_show' value='".$year." - ".($year+1)."' disabled>");
+                            echo ("<input class='form-control' type='hidden' id='scholastic' name='scholastic' value='".substr($year,2)."' disabled>");
+                        ?>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-8">
+                        <label for="grade">Grade</label>
+                        <select id="grade" name="grade" class="form-control">
+                            <option value="-1" selected>-- Select --</option>;                                            
+                            <option>6</option>;
+                            <option>7</option>;
+                            <option>8</option>;
+                            <option>9</option>;
+                            <option value="0">-- All --</option>;
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-8">
+                        <button id="get_class_list" type="button" class="btn btn-block btn-primary">Get Class List</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="form-group col-lg-8">
-                <button id="get_class_list" type="button" class="btn btn-block btn-primary">Get Class List</button>
-            </div>
-        </div>
+        
     </div><!-- /.box-body -->
     </form>
     <div class="box-footer">
@@ -71,7 +93,7 @@ table tr.selected{
             </div>
             <div class="box-body">
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="box box-primary">
@@ -86,7 +108,7 @@ table tr.selected{
                                                     <td>Name</td>
                                                     <td>From</td>
                                                     <td>To</td>
-                                                    <td>Type</td>
+                                                    <td>For Month</td>
                                                 </tr>
                                             </thead>
                                             <tbody id="class_list_table_body">
@@ -100,7 +122,7 @@ table tr.selected{
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-8">
                         <div class="box box-primary">
                             <div class="box-header">
                                 <b>Setting Import Transcript Time</b>
@@ -128,11 +150,29 @@ table tr.selected{
                                     <label class="error_mess" id="to_date_error" for="to_date"></label>
                                 </div>
                                 <div class="form-group col-lg-6">
-                                    <label for="doable_type">Select Type</label>
-                                    <select id="doable_type" name="doable_type" class="form-control">
-                                        <option value="1" selected> HK 1 </option>;                                            
-                                        <option value="2"> HK 2 </option>;
-                                        <option value="3"> HK 1 & HK 2 </option>;
+                                    <label for="input_month">Select Month To Import</label>
+                                    <select id="input_month" name="input_month" class="form-control">
+                                        <?php
+                                            $month = date("m");
+                                            for($i=8;$i<=12;$i++){
+                                                if($i == $month){
+                                                    $selected = "selected";
+                                                }
+                                                else{
+                                                    $selected = "";
+                                                }
+                                                echo ("<option ".$selected.">".$i."</option>");
+                                            }
+                                            for($i=1;$i<=5;$i++){
+                                                if($i == $month){
+                                                    $selected = "selected";
+                                                }
+                                                else{
+                                                    $selected = "";
+                                                }
+                                                echo ("<option ".$selected.">".$i."</option>");
+                                            }
+                                        ?>
                                     </select>
                                 </div>
                                 <div class="form-group has-warning">
@@ -195,10 +235,10 @@ $(document).ready(function()
         "order": [[ 1, "desc" ]],
         "columns": [
             { "width": "20%" },
-            { "width": "20%" },
-            { "width": "20%" },
-            { "width": "20%" },
-            { "width": "20%" }
+            { "width": "10%" },
+            { "width": "30%" },
+            { "width": "30%" },
+            { "width": "10%" }
         ],
     });
 
@@ -246,8 +286,8 @@ $(document).ready(function()
         //start
         var to_date = $('#to_date').val();
         var from_date = $('#from_date').val();
+        var input_month = $('#input_month').val();
         var class_list = [];
-        var doable_type = $('#doable_type').val();
         var token      = $('input[name="_token"]').val();
         var count = 0;
         $('#result_message').empty();
@@ -269,7 +309,7 @@ $(document).ready(function()
                         'to_date'    :to_date,
                         'from_date'  :from_date,
                         'class_list' :class_list,
-                        'doable_type':doable_type,
+                        'input_month' :input_month,
                         '_token'        :token
                         },
                 success:function(record){
@@ -277,7 +317,9 @@ $(document).ready(function()
                         var temp_index;
                         $.each(record.data,function(i,j){
                             temp_index = $('#class_list_table').dataTable().fnFindCellRowIndexes(record.data[i]['id'],0);
-                            $('#class_list_table').dataTable().fnUpdate( [j.id, j.classname, j.doable_from, j.doable_to, j.doable_type], temp_index ); // updating row
+                            var doable_from = j.doable_from.substring(8,10) +"/"+ j.doable_from.substring(5,7) +"/"+ j.doable_from.substring(0,4);
+                            var doable_to = j.doable_to.substring(8,10) +"/"+ j.doable_to.substring(5,7) +"/"+ j.doable_to.substring(0,4)
+                            $('#class_list_table').dataTable().fnUpdate( [j.id, j.classname, doable_from, doable_to, j.doable_month], temp_index ); // updating row
                         });
                     }
                     else{
@@ -322,12 +364,14 @@ $(document).ready(function()
     function updateClassTable(class_list){
         $('#class_list_table').dataTable().fnClearTable();
         $.each(class_list, function(i,item){
+            var doable_from = item.doable_from.substring(8,10) +"/"+ item.doable_from.substring(5,7) +"/"+ item.doable_from.substring(0,4);
+            var doable_to = item.doable_to.substring(8,10) +"/"+ item.doable_to.substring(5,7) +"/"+ item.doable_to.substring(0,4)
             $('#class_list_table').dataTable().fnAddData( [
                 item.id,
                 item.classname,
-                item.doable_from,
-                item.doable_to,
-                item.doable_type
+                doable_from,
+                doable_to,
+                item.doable_month,
             ]);
         });
     }

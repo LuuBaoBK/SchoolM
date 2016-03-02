@@ -25,7 +25,12 @@
                     <i class="fa fa-book"></i> <span>Transcript</span>
                 </a>
             </li>
-            <li id="list_3">
+            <li id="sidebar_mailbox">
+                <a href="/teacher/mailbox">
+                    <i class="fa fa-envelope-o"></i> <span>Mail Box</span>
+                </a>
+            </li>
+            <li id="list_4">
                 <a href="/auth/logout">
                     <i class="glyphicon glyphicon-log-out"></i> <span>Logout</span>
                 </a>

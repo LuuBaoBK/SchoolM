@@ -221,6 +221,7 @@
 <script src="{{asset("/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js")}}"></script>
 <!-- CK Editor -->
 <script src="{{asset("/mylib/ckeditor/ckeditor.js")}}"></script>
+
 <!-- Pusher -->
 <script src="{{asset("/mylib/bower_components/pusher/dist/pusher.min.js")}}"></script>
 <script src="{{asset("/mylib/pnotify-master/src/pnotify.js")}}"></script>
@@ -274,6 +275,7 @@ $(document).ready(function(){
   });
 
   $(function () {
+    $('#sidebar_mailbox').addClass('active');
   	$("#compose").click(function(){
   		$('#editor').modal('toggle',{keyboard:true});
   	});

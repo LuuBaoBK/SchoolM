@@ -1,7 +1,26 @@
 @extends('mytemplate.blankpage_te')
 
 @section('content')
-
+<style type="text/css">
+table tr.selected{
+    background-color: #3399CC !important; 
+}
+table tr.waiting{
+    background-color: #CAF97A !important; 
+}
+table tr.missing{
+    background-color: #FA6060 !important; 
+}
+table tr.one{
+    background-color: #f9f9f9; 
+}
+table tr td i.glyphicon-import.enable{
+    color: blue;
+}
+table tr td i.glyphicon-edit.enable{
+    color: green;
+}
+</style>
 <section class="content-header">
     <h1>
         Teacher
@@ -12,139 +31,247 @@
     </ol>
 </section>
 <section class="content">
-<div class="box box-solid box-primary collapsed-box">
-    <div class="box-header">
-        <h3 class="box-title">Download Transcript Template</h3>
-        <div class="box-tools pull-right">
-            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
-        </div>
-    </div><!-- /.box-header -->
-<!-- form start -->
-    <form id="download_form" name="download_form" enctype="multipart/form-data">
-     {!! csrf_field() !!}
-    <div class="box-body">
-        <div class="form-group col-lg-6">
-            <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-            <label for="scholastic">Scholastic</label>
-            <select id="scholastic" name="scholastic" class="form-control">
-                <option value="-1" selected>-- Select --</option>;
-                <?php
-                    $year = date("Y");
-                    for($year;$year >=2010 ;$year--){
-                        echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
-                    }
-                ?>
-                <option value="0">-- All --</option>;
-            </select>
-        </div>
-        <div class="form-group col-lg-6">
-            <label for="grade">Grade</label>
-            <select id="grade" name="grade" class="form-control">
-                <option value="-1" selected>-- Select --</option>;                                            
-                <option>6</option>;
-                <option>7</option>;
-                <option>8</option>;
-                <option>9</option>;
-                <option value="0"> All </option>;
-            </select>
-        </div>
-        <div class="form-group col-lg-12">
-            <label for="classname">Class Name</label>
-            <select id="classname" name="classname" class="form-control">
-                <option value="-1" selected>Select Scholastic First</option>;
-            </select> 
-        </div>  
-    </div><!-- /.box-body -->
-    <div class="box-footer">
-        <div class="col-lg-12 col-xs-12">
-            <div class="has-warning form-group">
-                <label class="error_mess" id="download_error" style="display:none"  for="download">Please Select Class To Download</label>                              
-                <button id="download" type="button" class="btn btn-primary btn-block">Download</button>
-            </div>
-        </div>
-    </div>
-    </form>
-</div> <!-- box -->
 <div class="box box-solid box-primary">
     <div class="box-header">
         <h3 class="box-title">Import Transcript</h3>
         <div class="box-tools pull-right">
-            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
         </div>
     </div><!-- /.box-header -->
-<!-- form start -->
-    <form id="upload_form" name="upload_form" enctype="multipart/form-data">
-     {!! csrf_field() !!}
     <div class="box-body">
         <div class="form-group col-lg-6">
             <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
             <label for="scholastic">Scholastic</label>
-            <select id="scholastic" name="scholastic" class="form-control">
-                <option value="-1" selected>-- Select --</option>;
-                <?php
-                    $year = date("Y");
-                    for($year;$year >=2010 ;$year--){
-                        echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
-                    }
-                ?>
-                <option value="0">-- All --</option>;
-            </select>
+            <?php
+                $year = date("Y");
+                $month = date("m");
+                if($month <= 8){
+                    $year = $year - 1;
+                }
+                echo ("<input class='form-control' type='text' id='scholastic_show' name='scholastic_show' value='".$year." - ".($year+1)."' disabled>");
+                echo ("<input class='form-control' type='hidden' id='scholastic' name='scholastic' value='".substr($year,2)."' disabled>");
+            ?>
         </div>
         <div class="form-group col-lg-6">
             <label for="grade">Grade</label>
             <select id="grade" name="grade" class="form-control">
-                <option value="-1" selected>-- Select --</option>;                                            
-                <option>6</option>;
-                <option>7</option>;
-                <option>8</option>;
-                <option>9</option>;
-                <option value="0"> All </option>;
+                <option value='all' selected>All</option>
+                <?php
+                    for($i=6; $i<=9; $i++){
+                        if($i == $grade){
+                            $selected = "selected";
+                        }
+                        else{
+                            $selected = "";
+                        }
+                        echo ("<option value='".$i."' ".$selected." >".$i."</option>");
+                    }
+                ?>
             </select>
         </div>
         <div class="form-group col-lg-12">
-            <label for="classname">Class Name</label>
-            <select id="classname" name="classname" class="form-control">
-                <option value="-1" selected>Select Scholastic First</option>;
-            </select> 
-        </div>  
+            <button class="btn btn-primary btn-block" type="button" id="get_button" name="get_button">get</button>
+        </div>
+        <table id="class_list_table" class="table row-border">
+            <thead>
+                <tr>
+                    <th rowspan="2">Class Name</th>
+                    <th colspan="2">Import Detail</th>
+                    <th colspan="5">Score Type Detail</th>
+                </tr>
+                <tr>
+                    <th>Duration</th>
+                    <th>Month</th>
+                    <th>#</th>
+                    <th>Score Type</th>
+                    <th>Factor</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="class_list_table_tbody">
+                <?php
+                    foreach($class_list as $key => $value){
+                        $row = "<tr class='".$value->addclass." ".($key%2 ? 'one' : 'two')."'>";
+                        $row .= "<td>".$value->classname."<br><span class='pull-left'><a href='/teacher/transcript/download/".$value->id."' target='_blank'>Student List <i class='glyphicon glyphicon-download-alt' value='".$value->id."'></i></span></td>";
+                        $row .= "<td>".$value->duration."</td>";
+                        $row .= "<td>".$value->doable_month."</td>";
+                        $row .= "<td> </td>";
+                        $row .= "<td> </td>";
+                        $row .= "<td> </td>";
+                        $row .= "<td> </td>";
+                        $row .= "<td> </td></tr>";
+                        echo $row;
+                        foreach ($value['score_type_list'] as $key2 => $scoretype) {
+                            $badge_color = ($scoretype->status == "new" ? "bg-blue" : "bg-green");
+                            $row = "<tr class='".$value->addclass." ".($key%2 ? 'one' : 'two')."'>";
+                            $row .= "<td></td>";
+                            $row .= "<td></td>";
+                            $row .= "<td></td>";
+                            $row .= "<td>".($key2+1)."</td>";
+                            $row .= "<td>".$scoretype->type."</td>";
+                            $row .= "<td>".$scoretype->factor."</td>";
+                            $row .= "<td><span class='badge ".$badge_color."'>".$scoretype->status."</span></td>";
+                            if($value->addclass == "enable"){
+                                if($scoretype->status == "new"){
+                                    $row .= "<td><a href='#'><i class='glyphicon glyphicon-import ".$value->addclass."' my_value='".$value->classname."|".$value->id."|".$scoretype->type."|".$scoretype->id."'> Import</i></td>";
+                                }
+                                else{
+                                    $row .= "<td><a href='#'><i class='glyphicon glyphicon-edit ".$value->addclass."' my_value='".$value->classname."|".$value->id."|".$scoretype->type."|".$scoretype->id."'> Edit</i></td>";
+                                }
+                            }
+                            else{
+                                if($scoretype->status == "new"){
+                                    $row .= "<td><i class='glyphicon glyphicon-import ".$value->addclass."' my_value='".$value->classname."|".$value->id."|".$scoretype->type."|".$scoretype->id."'> Import</i></td>";
+                                }
+                                else{
+                                    $row .= "<td><i class='glyphicon glyphicon-edit ".$value->addclass."' my_value='".$value->classname."|".$value->id."|".$scoretype->type."|".$scoretype->id."'> Edit</i></td>";
+                                }
+                            }
+                           
+                            $row .= "</tr>";
+                            echo $row;
+                        }
+                    }
+                ?>
+            </tbody>
+        </table> 
     </div><!-- /.box-body -->
     <div class="box-footer">
-        <div class="col-lg-12 col-xs-12">
-            <div class="has-warning form-group">
-                <label class="error_mess" id="upload_error" style="display:none"  for="upload">Please Select Class To Download</label>                              
-                <button id="upload" type="button" class="btn btn-primary btn-block">Download</button>
+        <div id="waiting_record" style="display:none"  class="text-center">
+            <i class="fa fa-spin fa-refresh"></i>&nbsp; Loading...
+        </div>
+        <div style="display:none" id="div_result" class="box box-primary">
+            <div class="box-header">
+                <h3 id="result_table_header" class="box-title"></h3>
             </div>
+            <div class="box box-body">
+                <table id="result_table" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Full Name</th>
+                            <th>15'</th>
+                            <th>45'</th>
+                            <th>Midterm</th>
+                            <th>Final</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody id="result_table_body">
+                    </tbody>
+                </table>
+            </div>
+            <button id="confirm_table" type="button" class="btn btn-primary pull-right">Confirm</button>
         </div>
     </div>
-    </form>
 </div> <!-- box -->
+<!-- Edit Modal -->
+<div id="importModal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Import Transcript</h4>
+            </div>
+            <form id="upload_form">
+                <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="import_classid">Class Name</label>
+                                <input class="form-control" type="text" id="import_class" disabled>
+                                <input class="form-control" type="hidden" id="import_class_hidden">  
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="import_typeid">Type</label>
+                                <input class="form-control" type="text" id="import_type" disabled>
+                                <input class="form-control" type="hidden" id="import_type_hidden">  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button id="choose_file" type="button" class="btn btn-primary" >Choose File (.xlsx)</button>
+                            </div>
+                            <input id="import_text" name="import_text" type="text" class="form-control" disabled>
+                            <input id="import_text_hidden" name="import_text_hidden" type="text" class="form-control" style="display:none">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="has-warning form-group">
+                        <label class="error_mess" id="import_error" style="display:none"  for="import">Please Select File To Import</label>
+                        <label class="error_mess" id="type_error" style="display:none"  for="import">Wrong file type (.xlsx is required)</label>
+                        <label id="process"></label>
+                        <button id="import" type="submit" class="btn btn-primary btn-block submit" >Import</button>
+                        <input type="file" name="fileToUpload" id="fileToUpload" style="display:none"> 
+                    </div>
+                    <button type="button" class="btn btn-primary btn-block pull-right" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    <!-- /.modal-content -->
+    </div>
+  <!-- /.modal-dialog -->
+</div>
 </section>
+<script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
 <script src="{{asset("/mylib/jquery/jquery.min.js")}}" type="text/javascript"></script>
 <script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
 <script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
+<!-- CK Editor -->
+<script src="{{asset("/mylib/ckeditor/ckeditor.js")}}"></script>
         
 <!-- page script -->
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#list_2").addClass('active');
-    $( "#scholastic" ).change(function() {
-        if($('#scholastic').val() != -1){
-            updateClassname();
-            $("#scholastic option[value='-1']").remove();
-        }
-        else{
-            // do nothing
-        }
+    
+    // First Box
+    $('#class_list_table').dataTable({
+            "lengthChange": false,
+            "searching": false,
+            "ordering": false,
+            "scrollY": "500px",
+            "scrollCollapse": true,
+            "info" : false,
+            "paging": false,
+            "columns": [
+                { "width": "10%" },
+                { "width": "10%" },
+                { "width": "10%" },
+                { "width": "5%" },
+                { "width": "15%" },
+                { "width": "5%" },
+                { "width": "10%" },
+                { "width": "35%" }
+            ]
+        });
+
+    $('i.glyphicon.glyphicon-import.enable').on('click',function(){
+        console.log($(this).attr('my_value'));
+        $('#importModal').modal('show');
+        var data = $(this).attr('my_value').split("|");
+        $('#import_class').val(data[0]);
+        $('#import_class_hidden').val(data[1]);
+        $('#import_type').val(data[2]);
+        $('#import_type_hidden').val(data[3]);
     });
-    $( "#grade" ).change(function() {
-        if($('#grade').val() != -1){
-            updateClassname();
-            $("#grade option[value='-1']").remove();
-        }
-        else{
-            // do nothing
-        }
+
+    $('i.glyphicon.glyphicon-edit.enable').on('click',function(){
+        console.log($(this).attr('my_value'));
     });
+
+    $('#get_button').click(function(){
+        window.location.replace("/teacher/transcript/"+$('#grade').val());
+    })
+
     $('#choose_file').click(function(){
         $('#fileToUpload').click();
     });
@@ -159,96 +286,70 @@ $(document).ready(function() {
     });
     $('#upload_form').submit(function(e) { // capture submit
         e.preventDefault();
+        $('#import_error').slideUp('fast');
+        $('#type_error').slideUp('fast');
         var fd = new FormData(this); // XXX: Neex AJAX2
-        var class_id = $('#classname').val();
         var filename = $('#import_text').val();
-        if(class_id == "-1" || filename == ""){
+        var file_ext = filename.substr(filename.lastIndexOf('.')+1);
+
+        if(filename == ""){
             $('#import_error').show('medium');
-            setTimeout(function(){
-                $('#import_error').slideUp('medium');
-            }, 3500);
+        }
+        else if(file_ext != "xlsx"){
+            $('#type_error').show('medium');
         }
         else{
-             $.ajax({
-              url: '/teacher/transcript/import_file',
-              xhr: function() { // custom xhr (is the best)
+            $('#waiting_record').css('display','block');
+            $.ajax({
+                url: '/teacher/transcript/import_file',
+                xhr: function() { // custom xhr (is the best)
 
-                   var xhr = new XMLHttpRequest();
-                   var total = 0;
+                    var xhr = new XMLHttpRequest();
+                    var total = 0;
 
-                   // Get the total size of files
-                   $.each(document.getElementById('fileToUpload').files, function(i, file) {
-                          total += file.size;
-                   });
+                    // Get the total size of files
+                    $.each(document.getElementById('fileToUpload').files, function(i, file) {
+                        total += file.size;
+                    });
 
-                   // Called when upload progress changes. xhr2
-                   // xhr.upload.addEventListener("progress", function(evt) {
-                   //        // show progress like example
-                   //        var loaded = (evt.loaded / total).toFixed(2)*100; // percent
+                    //   Called when upload progress changes. xhr2
+                    xhr.upload.addEventListener("progress", function(evt) {
+                        // show progress like example
+                        var loaded = (evt.loaded / total).toFixed(2)*100; // percent
 
-                   //        $('#progress').text('Uploading... ' + loaded + '%' );
-                   // }, false);
+                        $('#progress').text('Uploading... ' + loaded + '%' );
+                    }, false);
 
-                   return xhr;
-              },
-              type: 'post',
-              processData: false,
-              contentType: false,
-              data: fd,
-              success: function(record) {
-                   if(record == "type_error"){
-                        $('#type_error').show('medium');
-                        setTimeout(function() {
-                            $('#type_error').slideUp('slow');
-                        }, 4000);
-                   }
-                   console.log(record);
-              }
+                    return xhr;
+                },
+                type: 'post',
+                processData: false,
+                contentType: false,
+                data: fd,
+                success: function(record) {
+                    console.log(record);
+                    $('#waiting_record').css('display','none');
+                    // $('#importModal').modal('hide');
+                    //     $('#result_table_header').empty();
+                    //     $('#result_table_header').append(class_id);
+                    //     $('#result_table').dataTable().fnClearTable();
+                    //     $.each(record, function(i, row){
+                    //         $('#result_table').dataTable().fnAddData([
+                    //             row.id,
+                    //             row.full_name,
+                    //             row.score_15,
+                    //             row.score_45,
+                    //             row.score_gk,
+                    //             row.score_ck,
+                    //             row.note
+                    //         ]);
+                    //     });
+                    //     $('#div_result').css('display','block');
+                }
             });
         }
     });
-    $('#download').click(function(){
-        $('#download_error').slideUp('medium');
-    	var class_id = $("#classname").val();
-    	if(class_id == -1){
-            $('#download_error').show('medium');
-        }
-        else{
-            window.open('/teacher/transcript/download/'+class_id,'_blank');
-        }
-    });
     
-    function updateClassname(){
-        var scholastic      = $('#scholastic').val();
-        var grade           = $('#grade').val();
-        var token           = $('input[name="_token"]').val();
-        $.ajax({
-            url     :"<?= URL::to('/teacher/transcript/updateclassname') ?>",
-            type    :"POST",
-            async   :false,
-            data    :{
-                    'scholastic'    :scholastic,
-                    'grade'         :grade,
-                    '_token'        :token
-                    },
-            success:function(record){
-               $("#classname").empty();
-                if(record.count > 0){
-                    $('#classname').append("<option value='-1' selected>-- Select --</option>");
-                    $.each(record.data, function(i, row){
-                        $('#classname').append("<option value='"+row.id+"'>"+row.id+"  |  "+row.classname+"</option>");
-                    });
-                }
-                else{
-                    $('#classname').append("<option value='-1'>No Record</option>");
-                }
-            },
-            error:function(){
-                alert("something went wrong, contact master admin to fix");
-            }
-        });
-    }
- 
 });
 </script>
 @endsection

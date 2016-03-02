@@ -27,7 +27,7 @@ class Role_Teacher
             $user = $this->auth->user();
             if($user->role != 1)
             {
-                return Redirect('/');
+                return Redirect('/permission_denied');
             }
             else
             {

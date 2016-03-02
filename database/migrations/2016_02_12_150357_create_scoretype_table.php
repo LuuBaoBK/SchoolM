@@ -14,8 +14,11 @@ class CreateScoretypeTable extends Migration
     {
         Schema::create('scoretype', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('subject_id')->unsigned();
             $table->string('type',40);
             $table->string('factor',1);
+            $table->integer('applyfrom');
+            $table->string('month',2);
         });
     }
 

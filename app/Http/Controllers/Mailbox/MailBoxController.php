@@ -19,7 +19,14 @@ class MailBoxController extends Controller
         $msg_list = $this->get_inbox();
         $user = Auth::user();
         $id   = $user->id;
-        return view('adminpage.mailbox' , ['msg_list' => $msg_list, 'my_id' => $id]);
+        $prefix = substr($id,0,1);
+        if($prefix == "a"){
+            return view('adminpage.mailbox' , ['msg_list' => $msg_list, 'my_id' => $id]);
+        }
+        else if($prefix == "t"){
+            return view('teacherpage.mailbox' , ['msg_list' => $msg_list, 'my_id' => $id]);
+        }
+        
     }
 
     public function read_msg(Request $request){
