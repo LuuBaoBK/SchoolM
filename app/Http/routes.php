@@ -41,10 +41,12 @@ Route::group(['middleware' => 'auth'], function () {
 
 //Admin Route
 Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
+	Route::get('permission_denied', 'Admin\ProfileController@permission_denied' );
 
 	Route::get('dashboard', 'Admin\ProfileController@get_ad_dashboard' );
 	Route::post('dashboard', 'Admin\ProfileController@edit_info' );
 	Route::post('dashboard/changepassword', 'Admin\ProfileController@changepassword' );
+
 
 	Route::get('mailbox', 'MailBox\MailBoxController@get_mailbox');
 
@@ -108,16 +110,18 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::post('editsubject/edit_type', 'Admin\EditsubjectController@edit_type');
 	Route::post('editsubject/delete_type', 'Admin\EditsubjectController@delete_type');
 
+	//Manage Schedule
 	Route::get('schedule', 'Admin\ScheduleController@index');
 	Route::post('schedule/getschedule', 'Admin\ScheduleController@getschedule');
 	Route::post('schedule', 'Admin\ScheduleController@store');
 
+	//Manage Transcript
 	Route::get('transcript', 'Admin\TranscriptController@index');
-	Route::post('transcript', 'Admin\TranscriptController@store');
 	Route::post('transcript/getstudent', 'Admin\TranscriptController@getstudent');
 	Route::post('transcript/gettranscript', 'Admin\TranscriptController@gettranscript');
 	Route::get('transcript/general', 'Admin\TranscriptController@general_view');
 	Route::post('transcript/general/updateclassname', 'Admin\TranscriptController@updateclassname');
+	Route::post('transcript/general/set_time', 'Admin\TranscriptController@set_time');
 
 	//Route::group(['prefix' => 'schedule','middleware' => 'authrole_te'], function () {
 	Route::get('/menuschedule', 'ScheduleControler@menu');
@@ -152,24 +156,21 @@ Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () 
 	Route::post('dashboard/changepassword', 'Teacher\ProfileController@changepassword');
 	Route::get('permission_denied', 'Teacher\ProfileController@permission_denied' );
 
-	//transcript
+	//Mailbox
+	Route::get('mailbox', 'MailBox\MailBoxController@get_mailbox');
+
+	//transcript manage
 	Route::get('transcript', 'Teacher\Transcript\TranscriptController@view');
-	Route::post('transcript/updateclassname', 'Teacher\Transcript\TranscriptController@updateclassname');
+	Route::get('transcript/{grade}', 'Teacher\Transcript\TranscriptController@sort');
 	Route::get('transcript/download/{class_id}', 'Teacher\Transcript\TranscriptController@download');
 	Route::post('transcript/import_file', 'Teacher\Transcript\TranscriptController@import_file');
+	Route::post('transcript/save_transcript','Teacher\Transcript\TranscriptController@save_transcript' );
+	Route::post('transcript/get_transcript','Teacher\Transcript\TranscriptController@get_transcript' );
+	Route::post('transcript/edit_transcript','Teacher\Transcript\TranscriptController@edit_transcript' );
+
+	//view transcript
+	Route::get('view_transcript', 'Teacher\Transcript\TranscriptController@view_transcript');
+
 });
 
-
-
-
-
-Route::get('/bridge', function() {
-    $pusher = App::make('pusher');
-
-    $pusher->trigger( 'my_channel',
-                      'my-event', 
-                      array('text' => 'Preparing the Pusher Laracon.eu workshop!', 'messages' => "my fucking message"));
-
-    return view('welcome');
-});
 

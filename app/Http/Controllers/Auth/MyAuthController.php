@@ -76,7 +76,7 @@ class MyAuthController extends Controller
         if(Auth::check())
         {
             if($user->role == 0){
-                return redirect('admin/dashboard');
+                return redirect('admin/permission_denied');
             }
             elseif($user->role == 1){
                 return redirect('teacher/permission_denied');

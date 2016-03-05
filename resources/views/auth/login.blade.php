@@ -23,7 +23,7 @@
             <div class="header">
                Sign In
             </div>
-            <form action="auth/login" method="post">
+            <form id="form_login" action="auth/login" method="post">
                  {!! csrf_field() !!}
                 <div class="body bg-gray">
                     <div class="form-group">
@@ -64,7 +64,7 @@
         }
     </style>
     <script type="text/javascript">
-       setTimeout(function() {
+        setTimeout(function() {
             $('#flashmsg').fadeOut('slow');
         }, 1500); // <-- time in milliseconds
     </script>

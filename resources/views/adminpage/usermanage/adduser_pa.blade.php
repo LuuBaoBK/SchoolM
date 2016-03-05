@@ -251,7 +251,6 @@ $(document).ready(function() {
             "searching": false,
             "ordering": false,
         });
-        $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
         $("[data-mask]").inputmask();
 
         $('#parent_search').click(function(){

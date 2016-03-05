@@ -47,7 +47,7 @@
     <div class="container-fluid">
     <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="navbar-collapse">
-            <form style="margin-top : 5px" action="auth/login" method="post" class="navbar-form navbar-right form-horizontal">
+            <form id="form_login" style="margin-top : 5px" action="auth/login" method="post" class="navbar-form navbar-right form-horizontal">
             <!-- <ul class="nav navbar-nav navbar-right">     -->
             {!! csrf_field() !!}
                 <div style = "margin-top: 2px; margin-right: 0px" class="form-group">
@@ -187,7 +187,7 @@
             <div class="col-lg-4">
               <div class="box box-primary">
                 <div class="box-header">
-                  <h4 class="text-center">Board Rector</h3>
+                  <h4 class="text-center">Board Rector</h4>
                 </div>
                 <div class="box-body">
                   <ul class="list-group list-group-unbordered">
@@ -210,7 +210,7 @@
             <div class="col-lg-8">
               <div class="box box-primary">
                 <div class="box-header">
-                  <h4 class="text-center">Commitment To Quality</h3>
+                  <h4 class="text-center">Commitment To Quality</h4>
                 </div>
                 <div class="box-body">
                   <ul class="list-group list-group-unbordered">
@@ -286,5 +286,15 @@
     });
   </script>
 @endif
+  <script type="text/javascript">
+    $(function(){
+      $('input').keypress(function (e) {
+            if (e.which == 13) {
+                $('form#form_login').submit();
+                return false;    //<---- Add this line
+            }
+        });
+    });
+  </script>
 </body>
 </html>

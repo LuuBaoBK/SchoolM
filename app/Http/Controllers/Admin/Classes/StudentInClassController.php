@@ -124,9 +124,7 @@ class StudentInClassController extends Controller
     public function showstudent(Request $request){
         $enrolled_year      = $request['enrolled_year'];
         $studentid          = $request['studentid'];
-        $search_firstname   = $request['search_firstname'];
-        $search_middlename  = $request['search_middlename'];
-        $search_lastname    = $request['search_lastname'];
+        $search_fullname   = $request['search_fullname'];
 
         if($enrolled_year == "-1"){
             $record['error'] = '0';
@@ -135,9 +133,7 @@ class StudentInClassController extends Controller
 
         $student_id_list = User::select('id')
                                ->where('id','like','s_%')
-                               ->where('firstname','like',$search_firstname.'%')
-                               ->where('middlename','like','%'.$search_middlename.'%')
-                               ->where('lastname','like','%'.$search_lastname)
+                               ->where('fullname','like',$search_fullname.'%')
                                ->get();
 
         $studentlist = Student::whereIn('id',$student_id_list)

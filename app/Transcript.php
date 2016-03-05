@@ -22,13 +22,13 @@ class Transcript extends Model implements AuthenticatableContract,
      * @var string
      */
     protected $table = 'transcript';
-
+    public $timestamps = false;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['student', 'semester', 'subject', 'type', 'score'];
+    protected $fillable = ['student', 'semester', 'subject', 'scoretype_id', 'score', 'note'];
 
     /**
      * The attributes excluded from the model's JSON form.

@@ -14,6 +14,8 @@ use App\Model\Teacher;
 use App\Model\Subject;
 use App\Model\Classes;
 use App\Model\Phancong;
+use App\User;
+use App\Transcript;
 
 class TestController extends Controller 
 {
@@ -205,6 +207,7 @@ class TestController extends Controller
         echo "</table";
         
         
+       $score = Transcript::truncate();
     }
 
     public function uploadFiles() {

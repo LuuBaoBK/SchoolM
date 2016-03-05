@@ -205,7 +205,6 @@
             "order": [[ 1, "desc" ]],
             "columnDefs": [ { "targets": 5, "orderable": false } ]   
         });
-        $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
         $("[data-mask]").inputmask();
 
         $("#te_form_submit").click(function() {

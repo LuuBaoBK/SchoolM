@@ -12,6 +12,7 @@ use App\Model\Student;
 use App\Model\Subject;
 use App\Model\Classes;
 use App\Model\StudentClass;
+use Validator;
 
 class TranscriptController extends Controller
 {
@@ -35,61 +36,6 @@ class TranscriptController extends Controller
                 'mydata' => $kq
             );
         return $record;
-    }
-
-    public function gettranscript(Request $request)
-    {
-        $id = $request['id'];
-        $kq = array();
-        $listsubject = Subject::select('id', 'subject_name')->orderBy('subject_name', 'asc')->get();
-        $type = Transcript::select('type')->distinct()->orderBy('type', 'asc')->get();
-        $i = 0;
-        foreach ($listsubject as $key) {
-            $kq[$i][0] = $key->subject_name;
-            $j=0;
-            foreach ($type as $key1) {
-                $score = Transcript::select('score')->where('student_id', '=', $id)->where('subject_id', '=', $key->id)->where('type', '=', $key1->type)->first();
-                $temp = count($score);
-                $j++;
-                $kq[$i][$j] = "";
-                if ($temp>0)
-                    //foreach ($score as $key2) {
-                        $kq[$i][$j] = $score->score;
-                    //}        
-            }
-            $i++;
-            // $score = Transcript::select('score')->where('student_id', '=', $id)->where('subject_id', $key->id)->orderBy('type', 'asc')->get();
-            // $kq[$i][0] = $key->subject_name;
-            // $j = 0;
-            // foreach ($score as $key1) {
-            //     $j++;
-            //     $kq[$i][$j] = $key1->score;      
-            // }
-            // if ($j < $type)
-            //     for ($z = $j+1; $z <= $type; $z++)
-            //     {
-            //         $kq[$i][$z] = "";
-            //     }
-
-            // $i++;
-        }
-        $record = array(
-                'isSuccess' => 1,
-                'mydata' => $kq
-            );
-        return $record;
-    }
-
-    public function store(Request $request)
-    {
-        $transcript = new Transcript;
-        $transcript->semester = $request['semester'];
-        $transcript->student_id = $request['student'];
-        $transcript->subject_id = $request['subject'];
-        $transcript->type = $request['type'];
-        $transcript->score = $request['score'];
-        $transcript->save();
-        return Redirect('/admin/transcript');
     }
 
     public function general_view(Request $request)
@@ -121,5 +67,37 @@ class TranscriptController extends Controller
         $classname = Classes::where('id','like',$id)->where('classname','like',$name)->get();
         $record = $classname;
         return $record;
+    }
+
+    public function set_time(Request $request){
+        $class_list = $request['class_list'];
+        $to_date    = $request['to_date'];
+        $from_date  = $request['from_date'];
+        $input_month = $request['input_month'];
+        $rules = array(
+            'to_date'   => 'required|date_format:d/m/Y',
+            'from_date'     => 'required|date_format:d/m/Y|before:to_date'
+        );
+        $validator = Validator::make($request->all(), $rules);
+        if($validator->fails())
+        {
+           $record =  $validator->messages();
+           return $record;
+        }
+        else
+        {
+            $classes = Classes::whereIn('id',$class_list)->get();
+            $to_date = date_create_from_format("d/m/Y", $request['to_date']);
+            $to_date = date_format($to_date,"Y-m-d");
+            $from_date = date_create_from_format("d/m/Y", $request['from_date']);
+            $from_date = date_format($from_date,"Y-m-d");
+
+            foreach ($classes as $key => $value) {
+                $value->update(['doable_month' => $input_month, 'doable_from' => $from_date, 'doable_to' => $to_date]);
+            }
+            $record['isSuccess'] = 1;
+            $record['data'] = $classes;
+            return $record;
+        }
     }
 }

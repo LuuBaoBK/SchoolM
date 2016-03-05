@@ -113,7 +113,7 @@ table tr.selected{
                 <form id="student_search_form_2" method="POST" role="form">
                     <div class="box-body">
                         <div class="row">
-                            <div class="form-group col-lg-4">
+                            <div class="form-group col-lg-4 col-xs-4">
                                 <label for="enrolled_year">Enrolled Year</label>
                                 <select id="enrolled_year" name="enrolled_year" class="form-control">
                                     <option value="-1" selected>-- Select --</option>;
@@ -126,20 +126,10 @@ table tr.selected{
                                     <option value="0">-- All --</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-4 col-xs-7">
-                                <label for="search_firstname">First Name</label>
-                                <input id="search_firstname" type="text" class="form-control" name="search_firstname" id="search_firstname" placeholder="Student First Name">
-                            </div>
-                            <div class="form-group col-lg-4 col-xs-7">
-                                <label for="search_middlename">Middle Name</label>
-                                <input id="search_middlename" type="text" class="form-control" name="search_middlename" id="search_middlename" placeholder="Student Middle Name">
-                            </div>
-                            <div class="form-group col-lg-4 col-xs-7">
-                                <label for="search_lastname">Last Name</label>
-                                <input id="search_lastname" type="text" class="form-control" name="search_lastname" id="search_lastname" placeholder="Student Last Name">
-                            </div>        
+                            <div class="form-group col-lg-8 col-xs-8">
+                                <label for="search_fullname">Full Name</label>
+                                <input id="search_fullname" type="text" class="form-control" name="search_fullname" id="search_fullname" placeholder="Student Full Name">
+                            </div>       
                         </div>
                         <div class="row">
                             <div class="form-group">
@@ -600,9 +590,7 @@ $(document).ready(function() {
     function searchbyid(){
         var enrolled_year      = $('#enrolled_year').val();
         var studentid          = $('#studentid').val();
-        var search_firstname   = $('#search_firstname').val();
-        var search_middlename  = $('#search_middlename').val();
-        var search_lastname    = $('#search_lastname').val();
+        var search_fullname   = $('#search_fullname').val();
         var token              = $('input[name="_token"]').val();
         $.ajax({
             url     :"<?= URL::to('/admin/class/studentclassinfo/showstudent') ?>",
@@ -611,9 +599,7 @@ $(document).ready(function() {
             data    :{
                     'enrolled_year'     :enrolled_year,
                     'studentid'         :studentid,
-                    'search_firstname'  :search_firstname,
-                    'search_middlename' :search_middlename,
-                    'search_lastname'   :search_lastname,
+                    'search_fullname'  :search_fullname,
                     '_token'            :token
                     },
             success:function(record){
@@ -704,17 +690,6 @@ $(document).ready(function() {
                     showClass_1();
 
                 }
-                
-                // $('#student_table_1').dataTable().fnClearTable();
-                // button="";
-                // $.each(record, function(i, row){
-                //     $('#student_table_1').dataTable().fnAddData([
-                //         row.student_id,
-                //         row.student.user.firstname+" "+row.student.user.middlename+" "+row.student.user.lastname,
-                //         row.student.user.dateofbirth,
-                //         row.ispassed
-                //     ]);
-                // });
                 
             },
             error:function(){

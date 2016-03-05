@@ -33,7 +33,7 @@ class ProfileController extends Controller
     public function edit_info(Request $request){
         $id = $request['id'];
         $user  = User::find($id);
-        $Teacher = Teacher::find($id);
+        $admin = Admin::find($id);
 
         $rules = array(
             'firstname'     => 'max:20',
@@ -70,8 +70,8 @@ class ProfileController extends Controller
             $user->address     = $request['address'];
 
             $user->save();
-            $Teacher->mobilephone = $request['mobilephone'];
-            $Teacher->save();
+            $admin->mobilephone = $request['mobilephone'];
+            $admin->save();
 
             $record['isDone'] = 1;
             return $record;
@@ -101,5 +101,9 @@ class ProfileController extends Controller
             $record['isSuccess'] = '1';
             return $record;
         }
+    }
+
+    public function permission_denied(){
+        return view('adminpage.permission_denied');
     }
 }

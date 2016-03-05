@@ -71,7 +71,7 @@
                     <i class="fa fa-calendar"></i> <span>Schedule Manager</span>
                 </a>
             </li>
-            <li id="sidebar_list_6">
+            <li id="sidebar_mailbox">
                 <a href="/admin/mailbox">
                     <i class="fa fa-envelope-o"></i> <span>Mail Box</span>
                 </a>

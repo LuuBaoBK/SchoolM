@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Classes extends Model
 {
     protected $table    = 'classes';
-    protected $fillable = ['id', 'scholastic' , 'classname', 'homeroom_teacher', 'doable'];
+    protected $fillable = ['id', 'scholastic' , 'classname', 'homeroom_teacher', 'doable_from', 'doable_to', 'doable_month'];
     public $timestamps  = false;
 
     public function students()

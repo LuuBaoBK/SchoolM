@@ -111,5 +111,9 @@ class ProfileController extends Controller
             $record['isSuccess'] = '1';
             return $record;
         }
+    }
+
+    public function permission_denied(){
+        return view('teacherpage.permission_denied');
     }	
 }

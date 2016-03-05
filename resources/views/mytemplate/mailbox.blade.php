@@ -221,6 +221,7 @@
 <script src="{{asset("/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js")}}"></script>
 <!-- CK Editor -->
 <script src="{{asset("/mylib/ckeditor/ckeditor.js")}}"></script>
+
 <!-- Pusher -->
 <script src="{{asset("/mylib/bower_components/pusher/dist/pusher.min.js")}}"></script>
 <script src="{{asset("/mylib/pnotify-master/src/pnotify.js")}}"></script>
@@ -274,6 +275,7 @@ $(document).ready(function(){
   });
 
   $(function () {
+    $('#sidebar_mailbox').addClass('active');
   	$("#compose").click(function(){
   		$('#editor').modal('toggle',{keyboard:true});
   	});
@@ -298,6 +300,8 @@ $(document).ready(function(){
           if(record==2){
             update_mailbox(2);
           }
+          $('#to').val("");
+          $('#title').val("");
         },
         error:function(){
             alert("something went wrong, contact master admin to fix");
@@ -397,14 +401,12 @@ $(document).ready(function(){
             }
           }
         }
-        read_msg(id);
+        read_msg(id,type);
      }
      else{
      }          
   });
 
-  
-  
   function update_mailbox(type){
     messages_table.fnClearTable();
     var token        = $('input[name="_token"]').val();
@@ -469,7 +471,7 @@ $(document).ready(function(){
     });
   }
 
-  function read_msg(id){
+  function read_msg(id,type){
     var type  = $("ul#folder li.active").index();
     var token = $('input[name="_token"]').val();
     $.ajax({
