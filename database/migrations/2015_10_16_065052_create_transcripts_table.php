@@ -18,6 +18,7 @@ class CreateTranscriptsTable extends Migration
             $table->integer('subject_id')->unsigned();
             $table->integer('scoretype_id')->unsigned();
             $table->float('score');
+            $table->string('note',100);
             $table->primary(['student_id','scholastic','subject_id','scoretype_id']);
             $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('subject_id')->references('id')->on('subjects');

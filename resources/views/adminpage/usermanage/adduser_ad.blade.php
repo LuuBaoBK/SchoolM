@@ -145,7 +145,6 @@ $(document).ready(function() {
             "columnDefs": [ { "targets": 7, "orderable": false } ]
         }
         );
-        $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
         $("[data-mask]").inputmask();
 
         $("#ad_form_submit").click(function() {

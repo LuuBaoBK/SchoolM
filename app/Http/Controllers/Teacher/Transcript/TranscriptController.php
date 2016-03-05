@@ -118,7 +118,7 @@ class TranscriptController extends Controller
                 $sheet->setFitToWidth('true');
                 $col1 = StudentClass::select('student_id')->where('class_id','=',$class_id)->get();
                 $col2 = User::select('fullname')->whereIn('id',$col1)->get();
-                $heading = array('Id','Full Name','Score_15', 'Score_45', 'Score_GK ', 'Score_CK', 'Note');
+                $heading = array('Id','Full Name','Score','Note');
                 $sheet->fromArray($heading, null, 'A1', true, false);
                 foreach ($col1 as $key => $value) {
                     $sheet->row($key+2, array( $col1[$key]['student_id'], $col2[$key]['fullname'] ));
@@ -132,38 +132,140 @@ class TranscriptController extends Controller
         $input = Input::all();
         $file = array_get($input,'fileToUpload');
         $extension = $file->getClientOriginalExtension();
-        // $user = Auth::user();
-        // $class_id = array_get($input,'import_text_hidden');
-        // $class_id = str_replace(".xlsx","",$class_id);
-        // $year = "20".substr($class_id, 0, 2);
-        // $destinationPath = 'uploads\\'.$user->id.'\\'.$year."\\".$class_id;
-        // $date = date("Y_d_m");
-        // $time = date("h_i");
-        // $filename = $class_id."_".$date."_".$time.".xlsx";
-        // $upload_success = $file->move($destinationPath, $filename );
-        // $record = "";
         $record = Excel::load($file->getRealPath(), function($reader) {}, 'UTF-8')->get();
+        //Check Import File
+        //check key
+        $key_missing = [];
+        $key_list = [];
+        $error_list = [];
+        $data = [];
+        foreach ($record[0] as $key => $value) {
+            $key_list[$key] = $key;
+        }
+        if(!array_key_exists('id', $key_list)){
+            $key_missing['id'] = 'id';
+        }
+        if(!array_key_exists('score', $key_list)){
+            $key_missing['score'] = 'score';
+        }
+        if(!array_key_exists('note', $key_list)){
+            $key_missing['note'] = 'note';
+        }
+        if(count($key_missing) > 0){
+            $error_list['key_missing'] = 'Key Missing';
+            $data['key_missing'] = $key_missing;
+        }
+
+        //check number of import row
+        $class_id = $input['import_class_hidden'];
+        $scoretype_id = $input['import_type_hidden'];
+        $student_import_id = [];
+        foreach ($record as $key => $value) {
+            if($value['id'] != null){
+                array_push($student_import_id, $value['id']);
+            }
+        }
+        $student_not_import = StudentClass::select('student_id')
+                                        ->where('class_id','=',$class_id)
+                                        ->whereNotIn('student_id',$student_import_id)
+                                        ->get();
+        if(count($student_not_import) > 0){
+            $error_list['row_missing'] = 'Row Missing';
+            $student_not_import_full = User::whereIn('id',$student_not_import)->get();
+            $data['row_missing'] = $student_not_import_full; 
+        }
+        else{
+            //do nothing
+        }
+        $student_count      = StudentClass::select('student_id')
+                                        ->where('class_id','=',$class_id)
+                                        ->count();
+        $student_import_count = count($student_import_id);
+        $count =  $student_import_count - $student_count;
+        if($count > 0){
+            $error_list['row_redundancy'] = 'Row Redundancy';
+            $data['row_redundancy'] = $count;
+        }
+
+            if(count($error_list) > 0){
+            $data['error_list'] = $error_list;
+            return $data;
+        }
+
+        // //Pass 3 test (key , row_missing , row_redundancy) 
         $pattern = '/^[0-1]{0,1}[0-9](\.{1}\d{1,2})?$/';
         foreach ($record as $key1 => $row) {
-            if(!preg_match($pattern, $row['score_15'])){
-                $record[$key1]['score_15'] = 0;
+            if(!preg_match($pattern, $row['score'])){
+                $record[$key1]['score'] = 11;
             }
-            if(!preg_match($pattern, $row['score_45'])){
-                $record[$key1]['score_45'] = 0;
+            if($row['score'] > 10){
+                $record[$key1]['score'] = 11;
             }
-            if(!preg_match($pattern, $row['score_gk'])){
-                $record[$key1]['score_gk'] = 0;
-            }
-            if(!preg_match($pattern, $row['score_ck'])){
-                $record[$key1]['score_ck'] = 0;
+            if(strlen($row['note']) > 100){
+                $record[$key1]['note'] = substr($row['note'], 0,100);
             }
          }
         return $record;
     }
 
     public function save_transcript(Request $request){
+        $temp = explode('|', $request['class_n_type']);
+        $class_id = $temp[0];
+        $scoretype_id = $temp[1];
+        $subject_id = Teacher::find(Auth::user()->id)->group;
+        $scholastic = substr($class_id, 0,2);
         $data = $request['data'];
-        $class_id = $request['id'];
+        foreach ($data as $key => $value) {
+           $score = new Transcript;
+           $score->student_id = $value[0];
+           $score->scholastic = $scholastic;
+           $score->subject_id = $subject_id;
+           $score->scoretype_id = $scoretype_id;
+           $score->score = $value[2];
+           $score->note = $value[3];
+           $score->save();
+        }
+        $record = "success";
         return $record;
+    }
+
+    public function get_transcript(Request $request){
+        $scholastic = substr($request['class_id'], 0,2);
+        $student_id_list = StudentClass::select('student_id')
+                                       ->where('class_id','=',$request['class_id'])
+                                       ->get();
+        $data = Transcript::whereIn('student_id',$student_id_list)
+                          ->where('scholastic','=',$scholastic)
+                          ->where('scoretype_id','=',$request['scoretype_id'])
+                          ->get();
+        foreach ($data as $key => $value) {
+            $fullname = User::find($value->student_id)->fullname;
+            $data[$key]['full_name'] = $fullname;
+        }
+        return $data;
+    }
+
+    public function edit_transcript(Request $request){
+        $temp = explode('|', $request['class_n_type']);
+        $class_id = $temp[0];
+        $scoretype_id = $temp[1];
+        $subject_id = Teacher::find(Auth::user()->id)->group;
+        $scholastic = substr($class_id, 0,2);
+        $data = $request['data'];
+        $scholastic = substr($class_id, 0,2);
+        foreach ($data as $key => $value) {
+           $score = Transcript::where('scholastic','=',$scholastic)
+                              ->where('student_id','=',$value[0])
+                              ->where('scoretype_id','=',$scoretype_id)
+                              ->update(['score' => $value[2], 'note' => $value[3] ]);
+        }
+        $record = "success";
+        return $record;
+    }
+
+    public function view_transcript(){
+        $subject_id = Teacher::find(Auth::user()->id)->group;
+        $scoretype_list= Scoretype::where('subject_id','=',$subject_id);
+        return view('teacherpage.transcript.view_transcript');
     }
 }

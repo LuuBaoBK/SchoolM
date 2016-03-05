@@ -22,7 +22,7 @@ class Schedule extends Model implements AuthenticatableContract,
      * @var string
      */
     protected $table = 'schedules';
-
+    public $timestamps = false;
     /**
      * The attributes that are mass assignable.
      *

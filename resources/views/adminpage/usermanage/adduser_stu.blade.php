@@ -257,7 +257,6 @@ $(document).ready(function() {
         $('input[type="checkbox"].minimal-blue').iCheck({
             checkboxClass: 'icheckbox_minimal-blue'
         });
-        $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
         $("[data-mask]").inputmask();
 
         $('input[type="checkbox"].minimal-blue').on('ifChecked', function(event){

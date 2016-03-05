@@ -20,10 +20,16 @@
                     <i class="fa fa-home"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li id="list_2" class="">
-                <a href="/teacher/transcript">
-                    <i class="fa fa-book"></i> <span>Transcript</span>
+            <li id="sidebar_list_2" class="treeview">
+                <a href="">
+                    <i class="fa fa-list-ul"></i>
+                    <span>Transcript</span>
+                    <i class="fa fa-angle-left pull-right"></i>
                 </a>
+                <ul class="treeview-menu">
+                    <li id="sidebar_list_2_1"><a href="/teacher/transcript"><i class="fa fa-angle-double-right"></i>Transcript Manage</a></li>
+                    <li id="sidebar_list_2_2"><a href="/teacher/view_transcript"><i class="fa fa-angle-double-right"></i>View Transcript</a></li>
+                </ul>
             </li>
             <li id="sidebar_mailbox">
                 <a href="/teacher/mailbox">

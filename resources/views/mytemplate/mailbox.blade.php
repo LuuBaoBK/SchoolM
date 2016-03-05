@@ -300,6 +300,8 @@ $(document).ready(function(){
           if(record==2){
             update_mailbox(2);
           }
+          $('#to').val("");
+          $('#title').val("");
         },
         error:function(){
             alert("something went wrong, contact master admin to fix");
@@ -399,14 +401,12 @@ $(document).ready(function(){
             }
           }
         }
-        read_msg(id);
+        read_msg(id,type);
      }
      else{
      }          
   });
 
-  
-  
   function update_mailbox(type){
     messages_table.fnClearTable();
     var token        = $('input[name="_token"]').val();
@@ -471,7 +471,7 @@ $(document).ready(function(){
     });
   }
 
-  function read_msg(id){
+  function read_msg(id,type){
     var type  = $("ul#folder li.active").index();
     var token = $('input[name="_token"]').val();
     $.ajax({

@@ -132,21 +132,17 @@ Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () 
 	//Mailbox
 	Route::get('mailbox', 'MailBox\MailBoxController@get_mailbox');
 
-	//transcript
+	//transcript manage
 	Route::get('transcript', 'Teacher\Transcript\TranscriptController@view');
 	Route::get('transcript/{grade}', 'Teacher\Transcript\TranscriptController@sort');
 	Route::get('transcript/download/{class_id}', 'Teacher\Transcript\TranscriptController@download');
 	Route::post('transcript/import_file', 'Teacher\Transcript\TranscriptController@import_file');
 	Route::post('transcript/save_transcript','Teacher\Transcript\TranscriptController@save_transcript' );
+	Route::post('transcript/get_transcript','Teacher\Transcript\TranscriptController@get_transcript' );
+	Route::post('transcript/edit_transcript','Teacher\Transcript\TranscriptController@edit_transcript' );
+
+	//view transcript
+	Route::get('view_transcript', 'Teacher\Transcript\TranscriptController@view_transcript');
 });
 
-// Route::get('/bridge', function() {
-//     $pusher = App::make('pusher');
-
-//     $pusher->trigger( 'my_channel',
-//                       'my-event', 
-//                       array('text' => 'Preparing the Pusher Laracon.eu workshop!', 'messages' => "my fucking message"));
-
-//     return view('welcome');
-// });
 

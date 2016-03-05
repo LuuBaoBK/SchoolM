@@ -9,6 +9,7 @@ use Input;
 use Excel;
 use Storage;
 use App\User;
+use App\Transcript;
 
 class TestController extends Controller 
 {
@@ -25,8 +26,7 @@ class TestController extends Controller
             //     dd($record);
 
             // }, 'UTF-8');
-        $record = User::where('id','like', 'a_000000%')->get();
-        dd($record);
+       $score = Transcript::truncate();
     }
 
     public function uploadFiles() {
