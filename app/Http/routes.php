@@ -11,6 +11,9 @@
 |
 */
 
+
+
+
 // Authentication routes...
 Route::get('/', 'Auth\MyAuthController@getview');
 Route::get('/test', 'Test\TestController@test');
@@ -116,6 +119,30 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::get('transcript/general', 'Admin\TranscriptController@general_view');
 	Route::post('transcript/general/updateclassname', 'Admin\TranscriptController@updateclassname');
 
+	//Route::group(['prefix' => 'schedule','middleware' => 'authrole_te'], function () {
+	Route::get('/menuschedule', 'ScheduleControler@menu');
+	Route::post('/menuschedule/check', 'ScheduleControler@menucheck');
+	Route::get('/xemphancongcu', 'ScheduleControler@xemphancongcu');
+	Route::get('/phancong','ScheduleControler@phancong');
+	//Route::get('/tkbgv', 'ScheduleControler@tkbgv');
+	Route::get('/tkbgvtaomoi', 'ScheduleControler@tkbgvtaomoi');
+	Route::get('/tkbgvthaydoi', 'ScheduleControler@tkbgvthaydoi');
+	Route::get('/tkblop', 'ScheduleControler@tkblop');
+	Route::get('/tkblopcu', 'ScheduleControler@tkblop');
+	Route::post('/phancong/edit', 'ScheduleControler@edit');	
+	Route::post('/phancong/addnew', 'ScheduleControler@addnew');
+	Route::post('/phancong/removeclass', 'ScheduleControler@removeclass');
+	Route::post('/phancong/check', "ScheduleControler@check");
+	Route::post('/tkbgv/check', 'ScheduleControler@checkTkb');
+	Route::get('/tkbhientai', 'ScheduleControler@tkbhientai');
+	Route::get('/phancongcacnam', 'ScheduleControler@phancongcacnam');
+	Route::get('/phanconglop', 'ScheduleControler@phanconglop');
+	Route::post('/bangphancongcu', 'ScheduleControler@bangphancongcu');
+	
+
+//});
+
+
 });
 
 //Teacher Route
@@ -131,6 +158,10 @@ Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () 
 	Route::get('transcript/download/{class_id}', 'Teacher\Transcript\TranscriptController@download');
 	Route::post('transcript/import_file', 'Teacher\Transcript\TranscriptController@import_file');
 });
+
+
+
+
 
 Route::get('/bridge', function() {
     $pusher = App::make('pusher');

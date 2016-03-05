@@ -170,5 +170,26 @@ class UserTableSeeder extends Seeder
             //     'role' => '2',
             // ]);
         }
+
+
+        for($i=0; $i<=9; $i++){
+            $firstname = $firstnamelist[rand(0, 9)];
+            $middlename = $middlenamelist[rand(0, 9)];
+            $lastname = $lastnamelist[rand(0, 9)];
+            $fullname = $firstname." ".$middlename." ".$lastname;
+            DB::table('users')->insert([
+                'id' => 't_000002'.$i,
+                'firstname' => $firstname,
+                'middlename' => $middlename,
+                'lastname' => $lastname,
+                'fullname' => $fullname,
+                'email' => 't_000002'.$i.'@schoolm.com',
+                'dateofbirth' => "2014-11-1".$i,
+                'password' => bcrypt('1234'),
+                'role' => '1',
+            ]);
+            
+            
+        }
     }
 }

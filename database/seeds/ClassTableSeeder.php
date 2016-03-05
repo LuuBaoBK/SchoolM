@@ -11,11 +11,21 @@ class ClassTableSeeder extends Seeder
      */
     public function run()
     {
-        for($i=1; $i<=3; $i++){
+
+        for($i=0; $i < 5; $i++){
+            DB::table('classes')->insert([
+                'id' => '14_9_A_'.($i+1),
+                'scholastic' => '14',
+                'classname' => '9A'.($i+1),
+                'homeroom_teacher' => 't_000000'.$i,
+                'doable' => '0'
+            ]);
+        }
+        for($i=0; $i < 10; $i++){
     		DB::table('classes')->insert([
-    			'id' =>	'15_9_A_'.$i,
+    			'id' =>	'15_9_A_'.($i+1),
 	            'scholastic' => '15',
-	            'classname' => '9A'.$i,
+	            'classname' => '9A'.($i+1),
 	            'homeroom_teacher' => 't_000000'.$i,
                 'doable' => '0'
         	]);

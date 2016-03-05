@@ -15,6 +15,11 @@ class Classes extends Model
         return $this->hasMany('App\Model\StudentClass' , 'class_id', 'id');
     }
 
+    public function phancongs()
+    {
+        return $this->hasMany('App\Model\Phancong' , 'class_id', 'id');
+    }
+
     public function teacher()
     {
         return $this->belongsTo('App\Model\Teacher' , 'homeroom_teacher', 'id');   
