@@ -62,7 +62,7 @@ table tr.selected{
             </div>
             <div class="tab-pane" id="searchbyid">
                 <div class="box-body table-responsive">
-			        <table id="messages_table" class="table table-hover dataTable">
+			        <table id="" class="table table-hover dataTable">
 					    <thead>
 					        <tr>
 					          <th>Lớp</th>
@@ -145,35 +145,6 @@ table tr.selected{
   		</div>
 	</div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

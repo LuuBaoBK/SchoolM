@@ -18,7 +18,9 @@ class ClassTableSeeder extends Seeder
                 'scholastic' => '14',
                 'classname' => '9A'.($i+1),
                 'homeroom_teacher' => 't_000000'.$i,
-                'doable' => '0'
+                'doable_from' => '',
+                'doable_to' => '',
+                'doable_month' => '0',
             ]);
         }
         for($i=0; $i < 10; $i++){

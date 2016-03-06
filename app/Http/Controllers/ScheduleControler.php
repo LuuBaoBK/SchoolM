@@ -44,7 +44,10 @@ class ScheduleControler extends Controller
         if($tongtiet > 46)
             $dktaotkb = false;
         $DSNguonLuc[$somon] = $addnew;
-        return view("schedule.menu")->with('nguonluc', $DSNguonLuc)->with("dk", $dktaotkb);
+        $cotkb = false;
+        if(tkb::all()->count() > 0)
+            $cotkb = true;
+        return view("schedule.menu")->with('nguonluc', $DSNguonLuc)->with("dk", $dktaotkb)->with('cotkb', $cotkb);
     }
 
     public function xemphancongcu(){

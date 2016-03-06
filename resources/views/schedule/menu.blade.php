@@ -45,10 +45,22 @@
                       </button>
                     </li>
                     <li class="list-group-item">
-                      <button id = "xemhientai"><a href="/admin/tkbhientai">XEM THỜI KHÓA BIỂU HIỆN TẠI</a></button>
-                     </li>
+                      <button id = "xemhientai"><?php
+                            if($cotkb)
+                              echo "<a href='/admin/tkbhientai'>XEM THỜI KHÓA BIỂU HIỆN TẠI</a>";
+                            else
+                              echo "XEM THỜI KHÓA BIỂU HIỆN TẠI";
+                                    ?>
+                      </button>
+                    </li>
                     <li class="list-group-item">
-                      <button id="suacu"><a href="/admin/xemphancongcu">CHỈNH SỬA THỜI KHÓA BIỂU HIỆN TẠI</a></button>
+                      <button id = "suacu"><?php
+                            if($cotkb)
+                              echo "<a href='/admin/xemphancongcu'>CHỈNH SỬA THỜI KHÓA BIỂU HIỆN TẠI</a>";
+                            else
+                              echo "CHỈNH SỬA THỜI KHÓA BIỂU HIỆN TẠI";
+                                    ?>
+                      </button>
                     </li>
                     <li class="list-group-item">
                       <button id="xemcu"><a href="/admin/phancongcacnam">XEM BẢNG PHÂN CÔNG CÁC NĂM TRƯỚC</a></button>

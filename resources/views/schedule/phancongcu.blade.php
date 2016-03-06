@@ -14,90 +14,167 @@ table tr.selected{
 }
 
 </style>
- <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-<div class="col-md-9">
-		<div class="box box-primary">
-      <div class="box-header with-border">
-        <h3 class="box-title">BẢNG PHÂN CÔNG GIÁO VIÊN</h3>
-      </div><!-- /.box-header -->
-      <div class="box-body table-responsive">
-        <table id="messages_table" class="table table-hover dataTable">
-          <thead>
-            <tr>
-              <td>ID</td>
-              <td>Giáo viên</td>
-              <td>Môn</td>
-              <td>Lớp CN</td>
-              <td>Phân công</td>
-            </tr>
-          </thead>
-          <tbody>
-           	<?php
-           		foreach ($danhsachgv as $gv) {
-           			echo "<tr><td>". $gv[0]. "</td><td>".$gv[1]. "</td><td>". $gv[2]. "</td><td>". $gv[3]."</td><td>";
-           			$sll = 0;
-           			$sll = count($gv) - 4;
-           			for($i = 0; $i < $sll; $i++){
-           				echo "<span>" . $gv[$i + 4] . " </span>";
-           			}
-           		}
-           	?>
-          </tbody>
-          <tfoot>
-        	<button><a href="/admin/menuschedule">MENU</a></button>	<button id = "tkb_lop"><a href="/admin/tkbgvthaydoi">THỜI KHÓA BIỂU GIÁO VIÊN</a></button>
-        </tfoot>
-        </table>
-      </div>
-		</div>
-	</div>
+<input type="hidden" name="_token" value="<?= csrf_token(); ?>">
 
-	<div class="col-md-3">
-		<div class="box box-primary box-solid bg-yellow">
-      		<div class="box-header with-border">
-        		<h3 class="box-title">Thông báo</h3>
-      		</div><!-- /.box-header -->
-      		<div class="box-body table-responsive ">
-        		<table id="loptrung_table" class="table dataTable">
-		          <thead>
-		          	<tr>
-		              <td>Lớp bị trùng</td>
-		            </tr>
-		          </thead>
-		          <tbody>
-		           	<tr><td>
-		           		<?php 
-		           		$dsloptrung = $check['dsloptrung'];
-		           		if($dsloptrung)
-		           		foreach ($dsloptrung as $key => $value) {
-		           			echo "<span> ".$value[0]."(".$value[1].") </span>";
-		           			}
-		           		?>
-		           	</td></tr>
-		          </tbody>
-        		</table>
-      		</div>
-      		<div class="box-body table-responsive">
-        		<table id="lopchuaxep_table" class="table dataTable">
-		          <thead>
-		          	<tr>
-		              <td>Lớp chứa xếp môn</td>
-		            </tr>
-		          </thead>
-		          <tbody>
-		          <tr><td>
-		          	<?php 
-		           		$dschuaphan = $check['dschuaphan'];
-		           		if($dschuaphan)
-		           		foreach ($dschuaphan as $key => $value) {
-		           			echo "<span> ".$value[0]."(".$value[1].") </span>";
-		           			}
-		           		?>
-		          </td></tr>
-		          </tbody>
-        		</table>
-      		</div>
-		</div>
+
+<div class="row">
+	<div class="form-group col-lg-3 col-xs-7">
+		<button><a href="/admin/menuschedule">MENU</a></button>	<button id = "tkb_lop"><a href="/admin/tkbgvthaydoi">THỜI KHÓA BIỂU GIÁO VIÊN</a></button>
 	</div>
+</div>
+<div class="col-lg-9">
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+        	<li class="active"><a href="#searchbyclass" data-toggle="tab">THEO GIÁO VIÊN</a></li>
+            <li><a href="#searchbyid" class="first_time" value="0" data-toggle="tab">THEO LỚP</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="active tab-pane" id="searchbyclass">
+                <div class="box-body table-responsive">
+			        <table id="" class="table table-hover dataTable">
+				        <thead>
+				            <tr>
+				              <th>ID</th>
+				              <th>Giáo viên</th>
+				              <th>Môn</th>
+				              <th>Lớp CN</th>
+				              <th>Phân công</th>
+				            </tr>
+				        </thead>
+			          	<tbody>
+				           	<?php
+				           		
+				           		foreach ($danhsachgv as $gv) {
+				           			echo "<tr><td>". $gv[0]. "</td><td>".$gv[1]. "</td><td>". $gv[2]. "</td><td>". $gv[3]."</td><td>";
+				           			$sll = 0;
+				           			$sll = count($gv) - 4;
+				           			for($i = 0; $i < $sll; $i++){
+				           				echo "<span>" . $gv[$i + 4] . " </span>";
+				           			}
+				           		}
+				           	?>
+			          	</tbody>
+				        <tfoot>
+				        	
+				        </tfoot>
+			        </table>
+			    </div>
+            </div>
+            <div class="tab-pane" id="searchbyid">
+                <div class="box-body table-responsive">
+			        <table id="messages_table" class="table table-hover dataTable">
+					    <thead>
+					        <tr>
+					          <th>Lớp</th>
+					          <?php 
+					          	foreach ($listsubject as $value) {
+					          		echo "<th>". $value. "</th>";
+					          	}
+					          ?>
+					        </tr>
+					    </thead>
+					  	<tbody>
+					       	<?php
+					    	   		
+					    	   	$dsmon = null;
+					    	   	//$append
+					       		foreach ($dshtheolop as $lop) {
+					       			echo "<tr><td>". $lop[0]. "</td>";
+					       			$slmon = count($listsubject);
+					       			for($i = 0; $i < $slmon; $i++){
+					       				echo "<td>".$lop[$i+1]."</td>";
+					       			}
+					       		}
+					       	?>
+					  	</tbody>
+					    <tfoot>
+					    	
+					    </tfoot>
+					</table>
+			    </div>
+            </div>
+        </div>
+    </div>      
+</div> <!-- </.half left>  -->
+
+
+<div class="col-md-3">
+	<div class="box box-primary box-solid bg-yellow">
+  		<div class="box-header with-border">
+    		<h3 class="box-title">Thông báo</h3>
+  		</div><!-- /.box-header -->
+  		<div class="box-body table-responsive ">
+    		<table id="loptrung_table" class="table dataTable">
+	          <thead>
+	          	<tr>
+	              <td>Lớp bị trùng</td>
+	            </tr>
+	          </thead>
+	          <tbody>
+	           	<tr><td>
+	           		<?php 
+	           		$dsloptrung = $check['dsloptrung'];
+	           		if($dsloptrung)
+	           		foreach ($dsloptrung as $key => $value) {
+	           			echo "<span> ".$value[0]."(".$value[1].") </span>";
+	           			}
+	           		?>
+	           	</td></tr>
+	          </tbody>
+    		</table>
+  		</div>
+  		<div class="box-body table-responsive">
+    		<table id="lopchuaxep_table" class="table dataTable">
+	          <thead>
+	          	<tr>
+	              <td>Lớp chứa xếp môn</td>
+	            </tr>
+	          </thead>
+	          <tbody>
+	          <tr><td>
+	          	<?php 
+	           		$dschuaphan = $check['dschuaphan'];
+	           		if($dschuaphan)
+	           		foreach ($dschuaphan as $key => $value) {
+	           			echo "<span> ".$value[0]."(".$value[1].") </span>";
+	           			}
+	           		?>
+	          </td></tr>
+	          </tbody>
+    		</table>
+  		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	<div id="edit" class="modal fade modal-default">
@@ -518,4 +595,19 @@ $(document).ready(function(){
 </script>
 
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
