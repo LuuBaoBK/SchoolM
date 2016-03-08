@@ -49,7 +49,7 @@ table tr.selected{
 				           			$sll = 0;
 				           			$sll = count($gv) - 4;
 				           			for($i = 0; $i < $sll; $i++){
-				           				echo "<span>" . $gv[$i + 4] . " </span>";
+				           				echo "<span> ".$gv[$i + 4]." </span>";
 				           			}
 				           		}
 				           	?>

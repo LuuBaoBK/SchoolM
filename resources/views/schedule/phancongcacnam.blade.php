@@ -99,7 +99,7 @@ $(document).ready(function(){
 							var gv = rs[i];
 							append += "<tr><td>" + gv[0] + "</td><td>" + gv[1] + "</td><td>" + gv[2] + "</td><td>" + gv[3] + "</td><td>";
 							for(var j = 0; j < gv.length - 4;j++){
-								append += "<span>" + gv[j+4] + "</span>";
+								append += "<span> &nbsp " + gv[j+4] + "</span>";
 							}
 							append += "</td></tr>";
 						}

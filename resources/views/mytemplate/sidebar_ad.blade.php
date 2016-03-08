@@ -63,11 +63,10 @@
                 </a>
                 <ul class="treeview-menu">
                     <li id="sidebar_list_5_1"><a href="/admin/transcript/general"><i class="fa fa-file-text-o"></i> <span>General Setting</span></a></li>
-                    <li id="sidebar_list_5_2"><a href="/admin/transcript"><i class="fa fa-file-text-o"></i> <span>Transcript</span></a></li>
                 </ul>
             </li>
             <li id="sidebar_list_7">
-                <a href="/admin/schedule">
+                <a href="/admin/menuschedule">
                     <i class="fa fa-calendar"></i> <span>Schedule Manager</span>
                 </a>
             </li>

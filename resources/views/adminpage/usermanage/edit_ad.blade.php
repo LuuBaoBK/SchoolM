@@ -27,15 +27,15 @@
         <div class="row">
             <div class="col-xs-12 col-lg-3">
                 <label for="id">Id</label>
-                <input type="text" class="form-control" name="id" id="id" value={{$admin->id}} disabled>
+                <input type="text" class="form-control" name="id" id="id" readonly value={{$admin->id}}>
             </div>
             <div class="col-xs-12 col-lg-3">
                 <label for="email">Email</label>
-                <input type="text" class="form-control" name="email" id="email" value={{$admin->user->email}} disabled>
+                <input type="text" class="form-control" name="email" id="email" readonly value={{$admin->user->email}}>
             </div>
             <div class="col-xs-12 col-lg-3">
                 <label for="create_by">Create By</label>
-                <input type="text" class="form-control" name="create_by" id="create_by" value={{$admin->create_by}} disabled>
+                <input type="text" class="form-control" name="create_by" id="create_by" readonly value={{$admin->create_by}}>
             </div>
         </div>
         <div class="row">

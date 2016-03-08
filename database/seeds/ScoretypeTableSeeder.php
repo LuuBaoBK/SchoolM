@@ -18,6 +18,7 @@ class ScoretypeTableSeeder extends Seeder
                     'type' => '15_'.$k,
                     'factor' => '1',
                     'applyfrom' => '9',
+                    'disablefrom' => '3000',
                     'month' => $k,
                 ]);
                 DB::table('scoretype')->insert([
@@ -25,6 +26,7 @@ class ScoretypeTableSeeder extends Seeder
                     'type' => '45_'.$k,
                     'factor' => '2',
                     'applyfrom' => '9',
+                    'disablefrom' => '3000',
                     'month' => $k,
                 ]);
                 if($k == 9 || $k == 11){
@@ -33,6 +35,7 @@ class ScoretypeTableSeeder extends Seeder
                         'type' => 'M_'.$k,
                         'factor' => '1',
                         'applyfrom' => '9',
+                        'disablefrom' => '3000',
                         'month' => $k,
                     ]);
                 }
@@ -42,6 +45,7 @@ class ScoretypeTableSeeder extends Seeder
                 'type' => 'CK_1',
                 'factor' => '3',
                 'applyfrom' => '9',
+                'disablefrom' => '3000',
                 'month' => '12',
             ]); 
             for($k=1; $k<=4; $k++){
@@ -50,6 +54,7 @@ class ScoretypeTableSeeder extends Seeder
                     'type' => '15_'.$k,
                     'factor' => '1',
                     'applyfrom' => '9',
+                    'disablefrom' => '3000',
                     'month' => $k,
                 ]);
                 DB::table('scoretype')->insert([
@@ -57,6 +62,7 @@ class ScoretypeTableSeeder extends Seeder
                     'type' => '45_'.$k,
                     'factor' => '2',
                     'applyfrom' => '9',
+                    'disablefrom' => '3000',
                     'month' => $k,
                 ]);
                 if($k == 2 || $k == 4){
@@ -65,6 +71,7 @@ class ScoretypeTableSeeder extends Seeder
                         'type' => 'M_'.$k,
                         'factor' => '1',
                         'applyfrom' => '9',
+                        'disablefrom' => '3000',
                         'month' => $k,
                     ]);
                 }
@@ -74,6 +81,7 @@ class ScoretypeTableSeeder extends Seeder
                 'type' => 'CK_2',
                 'factor' => '3',
                 'applyfrom' => '9',
+                'disablefrom' => '3000',
                 'month' => '12',
             ]);   
         } 

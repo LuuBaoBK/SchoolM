@@ -128,7 +128,7 @@ table tr td i.glyphicon-edit.enable{
                                     $row .= "<td><i class='glyphicon glyphicon-edit ".$value->addclass."' my_value='".$value->classname."|".$value->id."|".$scoretype->type."|".$scoretype->id."'> Edit</i></td>";
                                 }
                             }
-                           
+
                             $row .= "</tr>";
                             echo $row;
                         }

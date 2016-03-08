@@ -59,24 +59,17 @@ class EditsubjectController extends Controller
         }
         else
         {
-            $data = Scoretype::where('subject_id','=',$request['subject_id'])
-                             ->where('type','=',$request['score_type'])
-                             ->first();
-            if($data != null){
-                $record['score_type'] = 'This score type is already existed';
-                return $record;
-            }
-            else{
-                $data = new Scoretype;
-                $data->subject_id = $request['subject_id'];
-                $data->factor = $request['factor'];
-                $data->type = $request['score_type'];
-                $data->month = $request['month'];
-                $data->applyfrom = $request['applyfrom'];
-                $data->save();
-                $record['isDone'] = 1;
-                return $record;
-            } 
+            $data = new Scoretype;
+            $data->subject_id = $request['subject_id'];
+            $data->factor = $request['factor'];
+            $data->type = $request['score_type'];
+            $data->month = $request['month'];
+            $data->applyfrom = $request['applyfrom'];
+            $data->disablefrom = 3000;
+            $data->save();
+            $record['isDone'] = 1;
+            $record['data'] = $data;
+            return $record;
         }
     }
 
@@ -94,8 +87,7 @@ class EditsubjectController extends Controller
         }
         elseif($request['score_type'] == $request['old_score_type'])
         {
-            $data = Scoretype::where('subject_id','=',$request['subject_id'])
-                             ->where('type','=',$request['score_type'])
+            $data = Scoretype::where('id','=',$request['scoretype_id'])
                              ->update(['factor' => $request['factor'], 'month' => $request['month']]);
             $record['isDone'] = 1;
             $record['data'] = $data;
@@ -103,21 +95,25 @@ class EditsubjectController extends Controller
         }
         else
         {
-            $data = Scoretype::where('subject_id','=',$request['subject_id'])
-                             ->where('type','=',$request['score_type'])
-                             ->first();
-            if($data != null){
-                $record['score_type'] = 'This score type is already existed';
-                return $record;
-            }
-            else{
-                $data = Scoretype::where('subject_id','=',$request['subject_id'])
-                             ->where('type','=',$request['old_score_type'])
-                             ->update(['factor'=> $request['factor'], 'type' => $request['score_type'], 'month' => $request['month']]);
-                $record['isDone'] = 1;
-                $record['data'] = $data;
-                return $record;
-            } 
+            $data = Scoretype::where('id','=',$request['scoretype_id'])
+                         ->update(['factor'=> $request['factor'], 'type' => $request['score_type'], 'month' => $request['month']]);
+            $record['isDone'] = 1;
+            $record['data'] = $data;
+            return $record;
         }
+    }
+
+    public function disable_scoretype(Request $request){
+        $year = date("Y");
+        $month = date("M");
+        if($month <= 8){
+            $year = $year - 1;
+        }
+        $year = substr($year, 2,2);
+
+        $data = Scoretype::where('id','=',$request['scoretype_id'])
+                     ->update(['disablefrom' => $year]);
+        $record['year'] = $year;
+        return $record;
     }
 }

@@ -24,7 +24,11 @@ class TestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function test(){
+
+     public function test(){
+        tkb::truncate();
+     }
+    public function test123(){
             // Excel::load('public\uploads\16783.xlsx', function($reader) {
 
             //     $results = $reader->all();

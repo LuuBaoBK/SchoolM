@@ -108,7 +108,7 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::post('editsubject', 'Admin\EditsubjectController@update');
 	Route::post('editsubject/add_type', 'Admin\EditsubjectController@add_type');
 	Route::post('editsubject/edit_type', 'Admin\EditsubjectController@edit_type');
-	Route::post('editsubject/delete_type', 'Admin\EditsubjectController@delete_type');
+	Route::post('editsubject/disable_scoretype', 'Admin\EditsubjectController@disable_scoretype');
 
 	//Manage Schedule
 	Route::get('schedule', 'Admin\ScheduleController@index');
@@ -116,9 +116,6 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::post('schedule', 'Admin\ScheduleController@store');
 
 	//Manage Transcript
-	Route::get('transcript', 'Admin\TranscriptController@index');
-	Route::post('transcript/getstudent', 'Admin\TranscriptController@getstudent');
-	Route::post('transcript/gettranscript', 'Admin\TranscriptController@gettranscript');
 	Route::get('transcript/general', 'Admin\TranscriptController@general_view');
 	Route::post('transcript/general/updateclassname', 'Admin\TranscriptController@updateclassname');
 	Route::post('transcript/general/set_time', 'Admin\TranscriptController@set_time');

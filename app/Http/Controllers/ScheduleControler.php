@@ -80,8 +80,30 @@ class ScheduleControler extends Controller
                 $DSPHANCONG[$dem++] = $addnew;
             }
         }
-        $check = $this->check();    
-        return view('schedule.phancongcu')->with('danhsachgv', $DSPHANCONG)->with("check", $check);
+        $check = $this->check();
+        $listsubject = null;
+        foreach (Subject::all() as $key => $Mon) {
+            $listsubject[$key] = $Mon->subject_name;
+        }
+        $DSTHEOLOP = null;
+        
+        foreach (Classes::where("id", "like", $year."%")->get() as $key => $Lop) {
+            $addnew = null;
+            $addnew[0] = $Lop->classname;
+            foreach (Subject::all() as $key2 => $Mon) {
+                $addnew[$key2 + 1] = "";
+                $PCL = Phancong::where("class_id", "=", $Lop->id)->get();
+                //echo "count". $PCL->count();
+                foreach ($PCL as $Gv) {
+                    if($Gv->teacher->teach->id == $Mon->id){
+                        $addnew[$key2+1] = $Gv->teacher->user->fullname;
+                        break;
+                    }
+                }
+            }
+            $DSTHEOLOP[$key] = $addnew;
+        }    
+        return view('schedule.phancongcu')->with('danhsachgv', $DSPHANCONG)->with("check", $check)->with("listsubject", $listsubject)->with("dshtheolop", $DSTHEOLOP);
     }
 
     public function phancong()

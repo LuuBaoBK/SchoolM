@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Scoretype extends Model
 {
     protected $table    = 'Scoretype';
-    protected $fillable = ['id', 'subject_id', 'type' , 'factor', 'applyfrom', 'month'];
+    protected $fillable = ['id', 'subject_id', 'type' , 'factor', 'applyfrom', 'month', 'disablefrom'];
     public $timestamps  = false;
 }

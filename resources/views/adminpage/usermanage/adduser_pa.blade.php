@@ -97,12 +97,12 @@ table tr.selected{
                         <div class="row form-group">
                             <div class="col-lg-4">
                                 <label for="id">Id</label>
-                                <input type="text" class="form-control" name="id" id="id"  disabled value={{$parent['id']}}>
+                                <input type="text" class="form-control" name="id" id="id" readonly value={{$parent['id']}}>
                                 <input type="hidden" class="form-control" name="id" id="id">
                             </div>
                             <div class="col-lg-8">
                                 <label for="email">Email</label>
-                                <input type="text" class="form-control" name="email" id="email"  disabled value={{$parent['email']}} >
+                                <input type="text" class="form-control" name="email" id="email" readonly value={{$parent['email']}} >
                             </div>
                         </div>
                         <div class="row">

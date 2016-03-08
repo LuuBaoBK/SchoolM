@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Classes;
 use App\Model\StudentClass;
 use App\User;
-use App\Model\Classteacher;
+use App\Model\Phancong;
 use App\Model\Teacher;
 use App\Model\Scoretype;
 use Excel;
@@ -18,6 +18,7 @@ use Auth;
 use Input;
 use Validator;
 use App\Transcript;  
+use DB;
 
 class TranscriptController extends Controller
 {
@@ -44,7 +45,7 @@ class TranscriptController extends Controller
             $year = $year - 1;
         }
         $year = substr($year, 2);
-        $class_id_list = Classteacher::select('class_id')
+        $class_id_list = Phancong::select('class_id')
                                       ->where('teacher_id','=',$teacher->id)
                                       ->where('class_id','like',$year.$grade)
                                       ->get();
@@ -53,7 +54,9 @@ class TranscriptController extends Controller
         foreach ($class_list as $key => $value) {
             //Score type 
             $scoretype_list = Scoretype::where('subject_id','=',$teacher->group)
-                                        ->where('applyfrom','<=','15')
+                                        ->where('applyfrom','<=',$year)
+                                        ->where('disablefrom','>=',$year)
+                                        ->where('disablefrom','<>',DB::raw('applyfrom'))
                                         ->where('month','=',$value->doable_month)
                                         ->get();
             $studentId_list = StudentClass::select('student_id')->where('class_id','=',$value->id)->get();

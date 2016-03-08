@@ -36,22 +36,6 @@ table tr.selected{
                     <div class="form-group col-lg-8">
                         <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
                         <label for="scholastic_show">Scholastic</label>
-                        <!-- <select id="scholastic" name="scholastic" class="form-control">
-                            <option value="-1" selected>-- Select --</option>;
-                            <?php
-                                $year = date("Y");
-                                $month = date("m");
-                                if($month <= 7){
-                                    $year = $year - 1;
-                                }
-                                $selected = "selected";
-                                for($year;$year >=2010 ;$year--){
-                                    echo ("<option value='".substr($year,2)."'".$selected.">".$year." - ".($year+1)."</option>");
-                                    $selected = "";
-                                }
-                            ?>
-                            <option value="0">-- All --</option>;
-                        </select> -->
                         <?php
                             $year = date("Y");
                             $month = date("m");

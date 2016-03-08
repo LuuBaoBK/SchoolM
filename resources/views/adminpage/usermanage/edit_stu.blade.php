@@ -27,11 +27,11 @@
     <div class="row">
         <div class="col-xs-12 col-lg-3">
             <label for="id">Id</label>
-            <input type="text" class="form-control" name="id" id="id" placeholder="Id" value={{$student->id}} disabled>
+            <input type="text" class="form-control" name="id" id="id" placeholder="Id" readonly value={{$student->id}}>
         </div>
         <div class="col-xs-12 col-lg-3">
             <label for="email">Email</label>
-            <input type="text" class="form-control" name="email" id="email" placeholder="Email" value={{$student->user->email}} disabled>
+            <input type="text" class="form-control" name="email" id="email" placeholder="Email" readonly value={{$student->user->email}}>
         </div>
     </div>
     <div class="row">
