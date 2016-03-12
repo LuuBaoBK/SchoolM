@@ -19,7 +19,7 @@ use Input;
 use Validator;
 use App\Transcript;  
 use DB;
-
+use App\Model\subject;
 class TranscriptController extends Controller
 {
     public function view()
@@ -267,8 +267,140 @@ class TranscriptController extends Controller
     }
 
     public function view_transcript(){
+        //installizing data
+        $teacher = Teacher::find(Auth::user()->id);
+        $year = substr(date("Y"), 2,2);
+        $year = (date("M") <= 8) ? $year-1 : $year;
         $subject_id = Teacher::find(Auth::user()->id)->group;
-        $scoretype_list= Scoretype::where('subject_id','=',$subject_id);
-        return view('teacherpage.transcript.view_transcript');
+        $scoretype_list = Scoretype::select('id')
+                                    ->where('subject_id','=',$teacher->group)
+                                    ->where('applyfrom','<=',$year)
+                                    ->where('disablefrom','>=',$year)
+                                    ->where('applyfrom','<>',DB::raw('disablefrom'))
+                                    ->get();
+        $class_list = Phancong::select('class_id')
+                              ->where('teacher_id','=',$teacher->id)
+                              ->where('class_id','like',$year."_%")
+                              ->get();
+        $class_list = Classes::whereIn('id',$class_list)->get();
+        foreach ($class_list as $key => $value) {
+            $value->teacher->user;
+        }
+        return view('teacherpage.transcript.view_transcript',['class_list' => $class_list, 'scoretype_list' => $scoretype_list]);
+    }
+
+    public function view_transcript_get_class(Request $request){
+        $scholastic = $request['scholastic'];
+        $grade      = $request['grade'];
+        if($grade == 0){
+            $grade = "_%";
+        }
+        else{
+            $grade = "_".$grade."_%";
+        }
+        $teacher_id = Auth::user()->id;
+        $subject_id = Teacher::find(Auth::user()->id)->group;
+        $class_list = Phancong::select('class_id')
+                              ->where('teacher_id','=',$teacher_id)
+                              ->where('class_id','like',$scholastic.$grade)
+                              ->get();
+        $class_list = Classes::whereIn('id',$class_list)->get();
+        foreach ($class_list as $key => $value) {
+            $value->teacher->user;
+        }
+        return $class_list;
+    }
+
+    public function view_transcript_get_score(Request $request){
+        $class_id = $request['class_id'];
+        $scholastic = substr($class_id, 0, 2);
+        $teacher = Teacher::find(Auth::user()->id);
+        $subject = subject::find($teacher->group);
+        $student_list = StudentClass::where('class_id','=',$class_id)
+                                    ->get();
+        foreach ($student_list as $student_list_key => $student) {
+            //Add Score
+            $student_score = [];
+            $hk1_average = 0;
+            $hk2_average = 0;
+            $scholastic_average = 0;
+
+            $hk_factor_total = 1;
+            for($i=8;$i<=12;$i++){
+                $month_average = 0;
+                $month_factor_total = 0;
+                $scoretype_list = Scoretype::where('subject_id','=',$teacher->group)
+                                    ->where('applyfrom','<=',$scholastic)
+                                    ->where('disablefrom','>=',$scholastic)
+                                    ->where('month','=',$i)
+                                    ->get();
+                if(count($scoretype_list) != 0){
+                    foreach ($scoretype_list as $scoretype_key => $scoretype) {
+                        $hk_factor_total += $scoretype->factor;
+                        $month_factor_total += $scoretype->factor;
+                        $score = Transcript::where('scholastic','=',$scholastic)
+                                            ->where('student_id','=',$student->student_id)
+                                            ->where('scoretype_id','=',$scoretype->id)
+                                            ->first();
+                        if(count($score) != 0){
+                            $real_score = ($score->score > 10) ? 0 : $score->score;
+                            $month_average += $real_score * $scoretype->factor;
+                            $hk1_average += $real_score * $scoretype->factor;
+                            $month_average = $month_average / $month_factor_total;
+                            $student_score['month_'.$i][$scoretype->type] = $score->score;
+                        }
+                        else{
+                            $student_score['month_'.$i][$scoretype->type] = "13";
+                        }
+                    }
+                    $student_score['month_'.$i]['month_average'] = number_format($month_average,2);
+                }
+            }
+            $hk1_average = $hk1_average / $hk_factor_total;
+            
+            $hk_factor_total = 1;
+            for($i=1;$i<=5;$i++){
+                $month_average = 0;
+                $month_factor_total = 0;
+                $scoretype_list = Scoretype::where('subject_id','=',$teacher->group)
+                                    ->where('applyfrom','<=',$scholastic)
+                                    ->where('disablefrom','>=',$scholastic)
+                                    ->where('month','=',$i)
+                                    ->get();
+                if(count($scoretype_list) != 0){
+                    foreach ($scoretype_list as $scoretype_key => $scoretype) {
+                        $hk_factor_total += $scoretype->factor;
+                        $month_factor_total += $scoretype->factor;
+                        $score = Transcript::where('scholastic','=',$scholastic)
+                                            ->where('student_id','=',$student->student_id)
+                                            ->where('scoretype_id','=',$scoretype->id)
+                                            ->first();
+                        if(count($score) != 0){
+                            $real_score = ($score->score > 10) ? 0 : $score->score;
+                            $month_average += $real_score * $scoretype->factor;
+                            $hk2_average += $real_score * $scoretype->factor;
+                            $month_average = $month_average / $month_factor_total;
+                            $student_score['month_'.$i][$scoretype->type] = $score->score;
+                        }
+                        else{
+                            $student_score['month_'.$i][$scoretype->type] = "13";
+                        }
+                    }
+                    $student_score['month_'.$i]['month_average'] = number_format($month_average,2);
+                }
+            }
+            $hk2_average = $hk2_average / $hk_factor_total;
+
+            $scholastic_average = $hk1_average + 2*$hk2_average / 3;
+            $student_score['hk1_average'] = number_format($hk1_average,2);
+            $student_score['hk2_average'] = number_format($hk2_average,2);
+            $student_score['scholastic_average'] = number_format($scholastic_average,2);
+            $student_list[$student_list_key]['score_list'] = $student_score;
+
+            //Add Name
+            $fullname = User::find($student->student_id)->fullname;
+            $student_list[$student_list_key]['fullname'] = $fullname;
+        }
+        return $student_list;
     }
 }

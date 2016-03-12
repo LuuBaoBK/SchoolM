@@ -164,6 +164,8 @@ Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () 
 	Route::post('transcript/save_transcript','Teacher\Transcript\TranscriptController@save_transcript' );
 	Route::post('transcript/get_transcript','Teacher\Transcript\TranscriptController@get_transcript' );
 	Route::post('transcript/edit_transcript','Teacher\Transcript\TranscriptController@edit_transcript' );
+	Route::post('transcript/view_transcript_get_class', 'Teacher\Transcript\TranscriptController@view_transcript_get_class');
+	Route::post('transcript/view_transcript_get_score', 'Teacher\Transcript\TranscriptController@view_transcript_get_score');
 
 	//view transcript
 	Route::get('view_transcript', 'Teacher\Transcript\TranscriptController@view_transcript');

@@ -49,7 +49,7 @@ table tr td i.glyphicon-edit.enable{
                     $year = $year - 1;
                 }
                 echo ("<input class='form-control' type='text' id='scholastic_show' name='scholastic_show' value='".$year." - ".($year+1)."' disabled>");
-                echo ("<input class='form-control' type='hidden' id='scholastic' name='scholastic' value='".substr($year,2)."' disabled>");
+                echo ("<input class='form-control' type='hidden' id='scholastic' name='scholastic' value='".substr($year,2)."' dioptionabled>");
             ?>
         </div>
         <div class="form-group col-lg-6">
@@ -71,7 +71,7 @@ table tr td i.glyphicon-edit.enable{
         </div>
         <div class="form-group col-lg-12">
             <button class="btn btn-primary btn-block" type="button" id="get_button" name="get_button">get</button>
-        </div>
+        </div>option
         <table id="class_list_table" class="table row-border">
             <thead>
                 <tr>
