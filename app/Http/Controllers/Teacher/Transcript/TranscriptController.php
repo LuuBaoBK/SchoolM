@@ -41,7 +41,7 @@ class TranscriptController extends Controller
         $teacher = Teacher::find($user->id);
         $year = date("Y");
         $month = date("m");
-        if($month <= 8){
+        if($month < 8){
             $year = $year - 1;
         }
         $year = substr($year, 2);
@@ -270,7 +270,7 @@ class TranscriptController extends Controller
         //installizing data
         $teacher = Teacher::find(Auth::user()->id);
         $year = substr(date("Y"), 2,2);
-        $year = (date("M") <= 8) ? $year-1 : $year;
+        $year = (date("M") < 8) ? $year-1 : $year;
         $subject_id = Teacher::find(Auth::user()->id)->group;
         $scoretype_list = Scoretype::select('id')
                                     ->where('subject_id','=',$teacher->group)

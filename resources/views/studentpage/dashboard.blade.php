@@ -1,14 +1,13 @@
-@extends('mytemplate.blankpage_te')
+@extends('mytemplate.blankpage_stu')
 
 @section('content')
-
 <section class="content-header">
     <h1>
-        Teacher
+        Student
         <small>Dash Board</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="/teacher/dashboard"><i class="fa fa-home"></i>Dashboard</a></li>
+        <li><a href="/student/dashboard"><i class="fa fa-home"></i>Dashboard</a></li>
     </ol>
 </section>
 <section class="content">
@@ -16,32 +15,26 @@
 		<div class="col-md-4 col-xs-12">
 			<div class="box box-primary">
 	            <div class="box-header">
-	              <h4 class="text text-center ">{{$teacher->user->firstname}} {{$teacher->user->middlename}} {{$teacher->user->lastname}}</h4>
+	            	<h4 class="text text-center ">{{$student->user->firstname}} {{$student->user->middlename}} {{$student->user->lastname}}</h4>
 	            </div>
 	            <div class="box-body">
 		      		<ul class="list-group list-group-unbordered">
 		                <li class="list-group-item">
-		                  <b>Role</b> <a class="pull-right">Teacher</a>
+		                  	<b>Role</b> <a class="pull-right">Student</a>
 		                </li>
 		                <li class="list-group-item">
-		                  <b>Position</b> <a class="pull-right">{{$teacher->my_position->position_name}}</a>
+                			<b>Date Of Birth</b><a class="pull-right">{{$student->mydateofbirth}}</a>
 		                </li>
 		                <li class="list-group-item">
-		                  <b>Mobile Phone</b> <a class="pull-right"><?php $mobilephone = ($teacher->mobilephone =="")? "N/A" : $teacher->mobilephone; echo $mobilephone ?></a>
+		                  	<b>Class</b> <a class="pull-right">{{$student->nowClass}}</a>
 		                </li>
 		                <li class="list-group-item">
-		                  <b>Home Phone</b> <a class="pull-right"><?php $homephone = ($teacher->homephone =="")? "N/A" : $teacher->homephone; echo $homephone ?></a>
+		                  	<b>Enrolled Year</b> <a class="pull-right">{{$student->enrolled_year}}</a>
 		                </li>
-		                <li class="list-group-item"><b>Date Of Birth</b><a class="pull-right">{{$teacher->mydateofbirth}}</a>
-		                </li>
-		                <li class="list-group-item">
-		                  <b>Specialize</b> <a class="pull-right">{{$teacher->specialized}}</a>
-		                </li>
-		                <li class="list-group-item">
-		                  <b>Group</b> <a class="pull-right">{{$teacher->group}}</a>
-		                </li>
-		                <li class="list-group-item">
-		                  <b>Incoming Day</b> <a class="pull-right">{{$teacher->myincomingday}}</a>
+		      			<li class="list-group-item">
+		                  	<h5 class="text text-center">Parent Info</h5>
+		                  	<a class="pull-left">{{$student->parent->user->id}}</a> <a class="pull-right">{{$student->parent->user->fullname}}</a>
+		                  	</br>	
 		                </li>
 	              	</ul>
 		      	</div>
@@ -59,63 +52,51 @@
 				            {!! csrf_field() !!}
 				            <div class="box-body">
 				                 <div id="success_mess" style = "display: none" class="alert alert-success">
-				                    <h4><i class="icon fa fa-check"></i>Success edit teacher info</h4>
+				                    <h4><i class="icon fa fa-check"></i>Success edit student info</h4>
 				                </div>
 				                <div class="row form-group">
 				                    <div class="col-xs-12 col-lg-3">
 				                        <label for="id">Id</label>
-				                        <input type="text" class="form-control" name="id" id="id" value={{$teacher->id}} disabled>
+				                        <input type="text" class="form-control" name="id" id="id" value={{$student->id}} disabled>
 				                    </div>
 				                    <div class="col-xs-12 col-lg-3">
 				                        <label for="email">Email</label>
-				                        <input type="text" class="form-control" name="email" id="email" value={{$teacher->user->email}} disabled>
+				                        <input type="text" class="form-control" name="email" id="email" value={{$student->user->email}} disabled>
 				                    </div>
 				                </div>
 				                <div class="row">
 				                    <div class="form-group col-lg-3 col-xs-12">
 				                        <label for="firstname">First Name</label>
 				                        <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-				                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value='<?=$teacher->user->firstname?>'>
+				                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value='<?=$student->user->firstname?>'>
 				                        <label class="error_mess" id="firstname_error" style="display:none" for="firstname"></label>
 				                    </div>
 				                    <div class="form-group col-lg-3 col-xs-12">
 				                        <label for="middlename">Middle Name</label>
-				                        <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" value='<?=$teacher->user->middlename?>'>
+				                        <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" value='<?=$student->user->middlename?>'>
 				                        <label class="error_mess" id="middlename_error" style="display:none" for="middlename"></label>
 				                    </div>
 				                    <div class="form-group col-lg-3 col-xs-12">
 				                        <label for="lastname">Last Name</label>
-				                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value='<?=$teacher->user->lastname?>'>
+				                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value='<?=$student->user->lastname?>'>
 				                        <label class="error_mess" id="lastname_error" style="display:none" for="lastname"></label>        
 				                    </div>
 				                </div>
 				                <div class="row">
 				                    <div class="form-group col-lg-3">
-				                        <label for="mobilephone">Mobile Phone</label>
-				                        <input type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone" value={{$teacher->mobilephone}}>
-				                        <label class="error_mess" id="mobilephone_error" style="display:none" for="mobilephone"></label>
-				                    </div>
-				                    <div class="form-group col-lg-3">
-				                        <label for="homephone">Home Phone</label>
-				                        <input type="text" class="form-control" name="homephone" id="homephone" placeholder="Mobile Phone" value={{$teacher->homephone}}>
-				                        <label class="error_mess" id="homephone_error" style="display:none" for="homephone"></label>
-				                    </div>
-				                    <div class="form-group col-lg-3">
 				                        <label for="dateofbirth">Date Of Birth:</label>
-				                        <input type="text" id="dateofbirth" name="dateofbirth" class="form-control"  data-inputmask="'alias': 'dd/mm/yyyy'" data-mask / value={{$teacher->mydateofbirth}} >
+				                        <input type="text" id="dateofbirth" name="dateofbirth" class="form-control"  data-inputmask="'alias': 'dd/mm/yyyy'" data-mask / value={{$student->mydateofbirth}} >
 				                        <label class="error_mess" id="dateofbirth_error" style="display:none" for="dateofbirth"></label>
 				                    </div>
-				                </div>
-				                <div class="row">
 				                    <div class="form-group col-lg-6">
 				                        <label for="address">Address</label>
-				                        <input type="text" class="form-control" name="address" id="address" placeholder="Address" value='<?=$teacher->user->address?>'>
+				                        <input type="text" class="form-control" name="address" id="address" placeholder="Address" value='<?=$student->user->address?>'>
 				                        <label class="error_mess" id="address_error" style="display:none" for="address"></label>
 				                    </div>
 				                </div>
 				            </div><!-- /.box-body -->
 				            <div class="box-footer">
-				                    <button id ="te_form_submit" type="button" class="btn btn-primary">Edit</button>		                
+				                    <button id ="stu_form_submit" type="button" class="btn btn-primary">Edit</button>		                
 				            </div>
 			            </form>
 		            </div>
@@ -131,12 +112,12 @@
 				                    <div class="form-group col-lg-7 col-xs-12">
 				                        <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
 				                        <label for="new_password">New Password</label>
-				                        <input type="password" class="form-control" name="new_password" id="new_password" placeholder="New Password" value='<?=$teacher->user->new_password?>'>
+				                        <input type="password" class="form-control" name="new_password" id="new_password" placeholder="New Password" value='<?=$student->user->new_password?>'>
 				                        <label class="error_mess" id="new_password_error" style="display:none" for="new_password"></label>
 				                    </div>
 				                    <div class="form-group col-lg-7 col-xs-12">
 				                        <label for="confirm_password">Confirm Passworld</label>
-				                        <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Passworld" value='<?=$teacher->user->confirm_password?>'>
+				                        <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Passworld" value='<?=$student->user->confirm_password?>'>
 				                        <label class="error_mess" id="confirm_password_error" style="display:none" for="confirm_password"></label>        
 				                    </div>
 				                </div>
@@ -162,14 +143,12 @@
         $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
         $("[data-mask]").inputmask();
 
-        $("#te_form_submit").click(function() {
+        $("#stu_form_submit").click(function() {
             /* Act on the event */
             var id 			= $('#id').val();
             var firstname   = $('#firstname').val();
             var middlename  = $('#middlename').val();
             var lastname    = $('#lastname').val();
-            var mobilephone = $('#mobilephone').val();
-            var homephone = $('#homephone').val();
             var dateofbirth = $('#dateofbirth').val();
             var address     = $('#address').val();
             var token       = $('input[name="_token"]').val();
@@ -178,7 +157,7 @@
             $(".error_mess").empty();
 
             $.ajax({
-                url     :"<?= URL::to('/teacher/dashboard') ?>",
+                url     :"<?= URL::to('/student/dashboard') ?>",
                 type    :"POST",
                 async   :false,
                 data    :{
@@ -186,8 +165,6 @@
                     'firstname'     :firstname,
                     'middlename'    :middlename,
                     'lastname'      :lastname,
-                    'mobilephone'   :mobilephone,
-                    'homephone'		:homephone,
                     'dateofbirth'   :dateofbirth,
                     'address'       :address,
                     '_token'        :token
@@ -218,7 +195,7 @@
 			$(".form-group").removeClass("has-warning");
             $(".error_mess").empty();
 			$.ajax({
-                url     :"<?= URL::to('/teacher/dashboard/changepassword') ?>",
+                url     :"<?= URL::to('/student/dashboard/changepassword') ?>",
                 type    :"POST",
                 async   :false,
                 data    :{
@@ -250,7 +227,5 @@
             });
 		});
     });
-
-
 </script>
 @endsection

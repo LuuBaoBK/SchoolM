@@ -118,7 +118,7 @@ class StudentManageController extends Controller
             $s_user->middlename     = $request['student_middlename'];    
             $s_user->lastname       = $request['student_lastname'];
             $s_user->fullname       = $request['student_firstname']." ".$request['student_middlename']." ".$request['student_lastname'];
-            $s_user->role           = '3';
+            $s_user->role           = '2';
             $s_user->dateofbirth    = $student_dateofbirth;
             $s_user->address        = $request['student_address'];
             $s_user->save();
@@ -155,7 +155,7 @@ class StudentManageController extends Controller
                 $p_user->middlename     = $request['parent_middlename'];    
                 $p_user->lastname       = $request['parent_lastname'];
                 $p_user->fullname       = $request['parent_firstname']." ".$request['parent_middlename']." ".$request['parent_lastname'];
-                $p_user->role           = '4';
+                $p_user->role           = '3';
                 $p_user->dateofbirth    = $parent_dateofbirth;
                 $p_user->address        = $request['parent_address'];
                 $p_user->save();

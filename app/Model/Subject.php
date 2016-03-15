@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Subject extends Model 
 {
     protected $table = 'subjects';
-    protected $fillable = ['id', 'name' , "totaltime"];
+    protected $fillable = ['id', 'subject_name' , "totaltime"];
     public $timestamps = false;
     public function schedule()
     {

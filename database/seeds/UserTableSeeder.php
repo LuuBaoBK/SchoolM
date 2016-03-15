@@ -108,7 +108,7 @@ class UserTableSeeder extends Seeder
                 'email' => 'p_000000'.$i.'@schoolm.com',
                 'password' => bcrypt('1234'),
                 'dateofbirth' => "2015-11-1".$i,
-                'role' => '2',
+                'role' => '3',
             ]);
     	}
         for($i=0; $i<=9; $i++){

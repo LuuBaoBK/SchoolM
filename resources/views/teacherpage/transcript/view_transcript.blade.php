@@ -46,7 +46,7 @@ table.dataTable {
                                     <?php
                                         $year = date("Y");
                                         $month = date("m");
-                                        if($month <= 8){
+                                        if($month < 8){
                                             $year = $year - 1;
                                         }
                                         echo "<select name='scholastic' id='scholastic' class='form-control'>";

@@ -172,4 +172,22 @@ Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () 
 
 });
 
+//Teacher Route
+Route::group(['prefix' => 'student','middleware' => 'authrole_stu'], function () {
+	Route::get('dashboard', 'Student\ProfileController@get_stu_dashboard' );
+	Route::post('dashboard', 'Student\ProfileController@edit_info' );
+	Route::post('dashboard/changepassword', 'Student\ProfileController@changepassword');
+	Route::get('permission_denied', 'Student\ProfileController@permission_denied' );
+
+	//Mailbox
+	Route::get('mailbox', 'MailBox\MailBoxController@get_mailbox');
+
+	//Transcript
+	Route::get('transcript', 'Student\TranscriptController@get_view');
+	Route::post('transcript/select_class', 'Student\TranscriptController@select_class');
+	Route::post('transcript/select_subject', 'Student\TranscriptController@select_subject');
+	
+
+});
+
 

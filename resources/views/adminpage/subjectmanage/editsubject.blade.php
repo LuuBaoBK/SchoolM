@@ -132,7 +132,7 @@ table tr.selected{
                                         <?php 
                                             $year = date("Y");
                                             $month = date("M");
-                                            if($month <= 8){
+                                            if($month < 8){
                                                 $year = $year - 1;
                                             }
                                             for($i=$year;$i<=$year+2;$i++){
