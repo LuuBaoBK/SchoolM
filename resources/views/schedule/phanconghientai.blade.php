@@ -14,139 +14,150 @@ table tr.selected{
 }
 
 </style>
+
+
 <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
 
-
-<div class="row">
-	<div class="form-group col-lg-3 col-xs-7">
-		<button><a href="/admin/menuschedule">MENU</a></button>	<button id = "tkb_lop"><a href="/admin/tkbgvthaydoi">THỜI KHÓA BIỂU GIÁO VIÊN</a></button>
+<section class="content-header">
+    <h1>
+        Admin
+        <small>Schedule Manager</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin/dashboard"><i class="fa fa-home"></i>Admin > Schedule Manager</a></li>
+    </ol>
+</section>
+<section class="content">
+	<div class="box">
+		<div class="box-header"><h3 class="box-title">QUẢN LÝ PHÂN CÔNG GIẢNG DẠY (HIỆN TẠI)</h3></div>
+		<div class="box-body">
+			<button class="btn btn-primary" id="menuschedule">MENU</button>	
+			<button class="btn btn-primary" id = "tkb_lop">TẠO MỚI THỜI KHÓA BIỂU GIÁO VIÊN</button>
+		</div>
 	</div>
-</div>
-<div class="col-lg-9">
-    <div class="nav-tabs-custom">
-        <ul class="nav nav-tabs">
-        	<li class="active"><a href="#searchbyclass" data-toggle="tab">THEO GIÁO VIÊN</a></li>
-            <li><a href="#searchbyid" class="first_time" value="0" data-toggle="tab">THEO LỚP</a></li>
-        </ul>
-        <div class="tab-content">
-            <div class="active tab-pane" id="searchbyclass">
-                <div class="box-body table-responsive">
-			        <table id="messages_table" class="table table-hover dataTable">
-				        <thead>
-				            <tr>
-				              <th>ID</th>
-				              <th>Giáo viên</th>
-				              <th>Môn</th>
-				              <th>Lớp CN</th>
-				              <th>Phân công</th>
-				            </tr>
-				        </thead>
-			          	<tbody>
-				           	<?php
+	<div class="row">
+		<div class="col-lg-9">
+		    <div class="nav-tabs-custom">
+		        <ul class="nav nav-tabs">
+		        	<li class="active"><a href="#searchbyclass" data-toggle="tab">PHÂN CÔNG THEO GIÁO VIÊN</a></li>
+		            <li><a href="#searchbyid" class="first_time" value="0" data-toggle="tab">PHÂN CÔNG THEO LỚP</a></li>
+		        </ul>
+		        <div class="tab-content">
+		            <div class="active tab-pane box" id="searchbyclass">
+		                <div id="loading" class="box-body table-responsive">
+					        <table id="messages_table" class="table table-hover dataTable" >
+						        <thead style="background:#CECEF6">
+						            <tr>
+						              <th>ID</th>
+						              <th>Giáo viên</th>
+						              <th>Môn</th>
+						              <th>Lớp CN</th>
+						              <th>Phân công</th>
+						            </tr>
+						        </thead>
+					          	<tbody>
+					          	<?php
 				           		
-				           		foreach ($danhsachgv as $gv) {
-				           			echo "<tr><td>". $gv[0]. "</td><td>".$gv[1]. "</td><td>". $gv[2]. "</td><td>". $gv[3]."</td><td>";
-				           			$sll = 0;
-				           			$sll = count($gv) - 4;
-				           			for($i = 0; $i < $sll; $i++){
-				           				echo "<span>" . $gv[$i + 4] . " </span>";
-				           			}
-				           		}
-				           	?>
-			          	</tbody>
-				        <tfoot>
-				        	
-				        </tfoot>
-			        </table>
-			    </div>
-            </div>
-            <div class="tab-pane" id="searchbyid">
-                <div class="box-body table-responsive">
-			        <table id="" class="table table-hover dataTable">
-					    <thead>
-					        <tr>
-					          <th>Lớp</th>
-					          <?php 
-					          	foreach ($listsubject as $value) {
-					          		echo "<th>". $value. "</th>";
-					          	}
-					          ?>
-					        </tr>
-					    </thead>
-					  	<tbody>
-					       	<?php
-					    	   		
-					    	   	$dsmon = null;
-					    	   	//$append
-					       		foreach ($dshtheolop as $lop) {
-					       			echo "<tr><td>". $lop[0]. "</td>";
-					       			$slmon = count($listsubject);
-					       			for($i = 0; $i < $slmon; $i++){
-					       				echo "<td>".$lop[$i+1]."</td>";
-					       			}
-					       		}
-					       	?>
-					  	</tbody>
-					    <tfoot>
-					    	
-					    </tfoot>
-					</table>
-			    </div>
-            </div>
-        </div>
-    </div>      
-</div> <!-- </.half left>  -->
+					           		foreach ($danhsachgv as $gv) {
+					           			echo "<tr><td>". $gv[0]. "</td><td>".$gv[1]. "</td><td>". $gv[2]. "</td><td>". $gv[3]."</td><td>";
+					           			$sll = 0;
+					           			$sll = count($gv) - 4;
+					           			for($i = 0; $i < $sll; $i++){
+					           				echo "<span>" . $gv[$i + 4] . "</span>&nbsp;";
+					           			}
+					           		}
+				           		?>
+					          	</tbody>
+						        <tfoot>
+						        	
+						        </tfoot>
+					        </table>
+					    </div>
+		            </div>
+		            <div class="tab-pane" id="searchbyid">
+		                <div class="box-body table-responsive">
+					        <table id="table_lop" class="table table-hover dataTable">
+							    <thead>
+							        <tr>
+							          <th>Lớp</th>
+							          <?php 
+							          	foreach ($listsubject as $value) {
+							          		echo "<th>". $value. "</th>";
+							          	}
+							          ?>
+							        </tr>
+							    </thead>
+							  	<tbody>
+							       	<?php
+							    	   		
+							    	   	$dsmon = null;
+							    	   	//$append
+							       		foreach ($dshtheolop as $lop) {
+							       			echo "<tr><td>". $lop[0]. "</td>";
+							       			$slmon = count($listsubject);
+							       			for($i = 0; $i < $slmon; $i++){
+							       				echo "<td>".$lop[$i+1]."</td>";
+							       			}
+							       		}
+							       	?>
+							  	</tbody>
+							</table>
+					    </div>
+		            </div>
+		        </div>
+		    </div>      
+		</div> <!-- </.half left>  -->
 
 
-<div class="col-md-3">
-	<div class="box box-primary box-solid bg-yellow">
-  		<div class="box-header with-border">
-    		<h3 class="box-title">Thông báo</h3>
-  		</div><!-- /.box-header -->
-  		<div class="box-body table-responsive ">
-    		<table id="loptrung_table" class="table dataTable">
-	          <thead>
-	          	<tr>
-	              <td>Lớp bị trùng</td>
-	            </tr>
-	          </thead>
-	          <tbody>
-	           	<tr><td>
-	           		<?php 
-	           		$dsloptrung = $check['dsloptrung'];
-	           		if($dsloptrung)
-	           		foreach ($dsloptrung as $key => $value) {
-	           			echo "<span> ".$value[0]."(".$value[1].") </span>";
-	           			}
-	           		?>
-	           	</td></tr>
-	          </tbody>
-    		</table>
-  		</div>
-  		<div class="box-body table-responsive">
-    		<table id="lopchuaxep_table" class="table dataTable">
-	          <thead>
-	          	<tr>
-	              <td>Lớp chứa xếp môn</td>
-	            </tr>
-	          </thead>
-	          <tbody>
-	          <tr><td>
-	          	<?php 
-	           		$dschuaphan = $check['dschuaphan'];
-	           		if($dschuaphan)
-	           		foreach ($dschuaphan as $key => $value) {
-	           			echo "<span> ".$value[0]."(".$value[1].") </span>";
-	           			}
-	           		?>
-	          </td></tr>
-	          </tbody>
-    		</table>
-  		</div>
-	</div>
-</div>
-
-
+		<div class="col-md-3">
+			<div class="box box-primary box-solid bg-yellow">
+		  		<div class="box-header with-border ">
+		    		<h3 class="box-title">Thông báo</h3>
+		  		</div><!-- /.box-header -->
+		  		<div class="box-body table-responsive">
+		    		<table id="loptrung_table" class="table dataTable">
+			          <thead>
+			          	<tr>
+			              <td>Lớp bị trùng</td>
+			            </tr>
+			          </thead>
+			          <tbody>
+			           	<tr><td>
+			           		<?php 
+			           		$dsloptrung = $check['dsloptrung'];
+			           		if($dsloptrung)
+			           		foreach ($dsloptrung as $key => $value) {
+			           			echo "<span> ".$value[0]."(".$value[1].") </span>";
+			           			}
+			           		?>
+			           	</td></tr>
+			          </tbody>
+		    		</table>
+		  		</div>
+		  		<div class="box-body table-responsive">
+		    		<table id="lopchuaxep_table" class="table dataTable">
+			          <thead>
+			          	<tr>
+			              <td>Lớp chứa xếp môn</td>
+			            </tr>
+			          </thead>
+			          <tbody>
+			          <tr><td>
+			          	<?php 
+			           		$dschuaphan = $check['dschuaphan'];
+			           		if($dschuaphan)
+			           		foreach ($dschuaphan as $key => $value) {
+			           			echo "<span> ".$value[0]."(".$value[1].") </span>";
+			           			}
+			           		?>
+			          </td></tr>
+			          </tbody>
+		    		</table>
+		  		</div>
+			</div>
+		</div>
+	</div><!-- end div row -->
+</section>
 	<div id="edit" class="modal fade modal-default">
 		<div class="modal-dialog modal-lg">
 		    <div class="modal-content">
@@ -359,7 +370,7 @@ $(document).ready(function(){
 							$(this).children("td").slice(4).empty();
 							if(_length >= 1){
 								for( i = 0; i < _length; i++){
-									$(this).children("td").slice(4).append( "<span>" + $('#lopdathem_t').children('tr').eq(i).text() + " </span>");
+									$(this).children("td").slice(4).append( "<span>" + $('#lopdathem_t').children('tr').eq(i).text() + "</span>&nbsp;");
 								}
 							}
 						}
@@ -397,8 +408,7 @@ $(document).ready(function(){
 					lopchuathem += "</td>";
 					$('#lopchuaxep_table tbody tr').append(lopchuathem);
 //----------------------------------------------------------------------
-
-
+					updatephanconglop();
 
 				},
 				error: function(){
@@ -408,7 +418,59 @@ $(document).ready(function(){
 		}
 	});
 
+	function updatephanconglop(){
 
+		var dslophoc = [];
+					
+		$('#messages_table tbody tr').each(function(index1, element){
+			var row = [];	
+			row[0] = $(this).children("td").slice(1,2).text();
+			row[1] = $(this).children("td").slice(2,3).text();
+			$(this).children("td").slice(4).children("span").each(function(index2, element){
+				row[index2+2] = $(this).text();
+			});
+			dslophoc[index1] = row;
+
+		});
+
+		var printlophoc = [];
+		var dsmonhoc = [];
+		$('#table_lop thead tr').each(function (index1, element){
+			$(this).children('th').each(function(index2, element){
+					dsmonhoc[index2] = $(this).text();//bat dau tu 1
+			});
+		});
+		var somon = dsmonhoc.length - 1;
+
+		$("#table_lop tbody tr").each(function(index, element){
+			var row = []
+			row[0] = $(this).children("td").slice(0,1).text();//tenlop
+			for(var i = 1; i <= somon; i++){
+				row[i] = "";
+				for(var j = 0; j < dslophoc.length; j++){
+					if(dslophoc[j][1] == dsmonhoc[i]){
+						for(var k = 2; k < dslophoc[j].length; k++){
+							if( dslophoc[j][k] == row[0])
+								row[i] = dslophoc[j][0];
+						}
+					}
+				}
+			}
+			printlophoc[index] = row;
+		});
+
+		$('#table_lop tbody').empty();
+		var append = "";
+		for(var i = 0; i < printlophoc.length;i++){
+				
+			append+= "<tr>"
+			for(var j = 0; j < printlophoc[i].length; j++)
+				append+= "<td>"+ printlophoc[i][j] + "</td>"
+			append += "</tr>";
+		}
+		$('#table_lop tbody').append(append);
+		console.log(printlophoc);
+	}
 
 	$('#removeclass').click(function(){
 		var listClass = [];
@@ -450,7 +512,7 @@ $(document).ready(function(){
 							$(this).children('td').slice(4).empty();
 							if(_length >= 1){
 								for(i = 0; i < _length; i++){
-									$(this).children("td").slice(4).append("<span>" + $('#lopdathem_t').children('tr').eq(i).text() + " </span>");
+									$(this).children("td").slice(4).append("<span>" + $('#lopdathem_t').children('tr').eq(i).text() + "</span>&nbsp;");
 								}
 							}
 						}
@@ -489,6 +551,8 @@ $(document).ready(function(){
 					$('#lopchuaxep_table tbody tr').append(lopchuathem);
 
 					//dosomething in here
+					//-------------------------------------------------------------------
+					updatephanconglop();
 				},
 				error:function(){
 					console.log('remove error');
@@ -498,6 +562,9 @@ $(document).ready(function(){
 
 	});
 
+	$('#menuschedule').click(function(){
+		$(location).attr('href','menuschedule');
+	});
 
 	$('#tkb_lop').click(function(){
 		var token = $('input[name="_token"]').val();
@@ -547,7 +614,7 @@ $(document).ready(function(){
 				$('#lopchuaxep_table tbody tr').append(lopchuathem);
 
 				if(dsloptrung == null && dschuaphan == null)
-					$(location).attr('href', "tkbgvtaomoi");
+					$(location).attr('href', "tkbgvthaydoi_index");
 				else{
 					alert("Việc phân công không hoàn tất, không thể săp thời khóa biểu!!");
 				}

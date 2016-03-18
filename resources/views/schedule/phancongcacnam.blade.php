@@ -6,57 +6,69 @@
 <input type="hidden" name="_token" value="<?= csrf_token(); ?>">	
 </div>
 
-<div class="box-body table-responsive">
-        <div class="box box-primary">
-            <div class="box-header">
-                <p class="box-title">Select Scholastic</p>
-            </div>
-            <div class="box-body">
-                <form id="class_filter">
-                    <div class="box-body">
-                    <div class="row">
-                    	<div class="form-group col-lg-3 col-xs-7">
-                    		<button><a href="/admin/menuschedule">MENU</a></button>
-                    	</div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-3 col-xs-7">
-                            <label>Năm học</label>
-                            <select id="namhoc" class="form-control">
-                                <option value="-1" selected>Select One</option>
-                                <?php
-                                    $year = date("Y");
 
-                                    if(date("M") < 8)
-                                    	$year--;
-                                    for($year;$year >=2010 ;$year--){
-                                        
-                                            echo ("<option value='".substr($year,2)."' >".$year." - ".($year+1)."</option>");
-                                    }
-                                ?>
-                            </select>
-                        </div>
-                    </div> 
-                    <table id="class_table" class="table table-bordered table-striped">
-				        <thead>
-				            <tr>
-				              <th>ID</th>
-				              <th>Giáo viên</th>
-				              <th>Môn</th>
-				              <th>Lớp CN</th>
-				              <th>Phân công</th>
-				            </tr>
-				        </thead>
-				        <tbody id="displayrecord">
-				        </tbody>
-			        </table>                                 
-                    </div>                                        
-                </form>
-            </div>
-        </div>
+<section class="content-header">
+    <h1>
+        Admin
+        <small>Schedule Manager</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin/dashboard"><i class="fa fa-home"></i>Admin > Schedule Manager</a></li>
+    </ol>
+</section>
+<section class="content">
+<div class="box box-primary">
+    <div class="box-header">
+        <h3 class="box-title">XEM BẢNG PHÂN CÔNG CÁC NĂM</h3>
     </div>
-</div><!-- /.box -->
-	
+    <div class="box-body">
+    	<button class="btn btn-primary" id="menuschedule">BACK</button>
+    </div>
+</div>
+<div class="box box-primary">
+    <div class="box-body">
+        <form id="class_filter">
+            <div class="box-body">
+	            <div class="row">
+	            	<div class="form-group col-lg-3 col-xs-7">
+	            	</div>
+	            </div>
+	            <div class="row">
+	                <div class="form-group col-lg-3 col-xs-7">
+	                    <label>Năm học</label>
+	                    <select id="namhoc" class="form-control">
+	                        <option value="-1" selected>Select One</option>
+	                        <?php
+	                            $year = date("Y");
+
+	                            if(date("M") < 8)
+	                            	$year--;
+	                            for($year;$year >=2010 ;$year--){
+	                                
+	                                    echo ("<option value='".substr($year,2)."' >".$year." - ".($year+1)."</option>");
+	                            }
+	                        ?>
+	                    </select>
+	                </div>
+	            </div> 
+	            <table id="class_table" class="table table-bordered table-striped">
+			        <thead style="background:#CECEF6">
+			            <tr>
+			              <th>ID</th>
+			              <th>Giáo viên</th>
+			              <th>Môn</th>
+			              <th>Lớp CN</th>
+			              <th>Phân công</th>
+			            </tr>
+			        </thead>
+			        <tbody id="displayrecord">
+			        </tbody>
+		        </table>                                 
+            </div>                                        
+        </form>
+    </div>
+</div>
+</section>
 
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
 <script src="{{asset("/adminlte/bootstrap/js/bootstrap.min.js")}}"></script>
@@ -76,6 +88,11 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$(function(){
+
+		$('#menuschedule').click(function(){
+			$(location).attr('href', 'menuschedule');
+		});
+
 		$('#namhoc').change(function(){
 			var token = $("input[name='_token'").val();
 			//console.log(token);

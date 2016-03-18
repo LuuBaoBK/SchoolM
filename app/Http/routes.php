@@ -122,24 +122,28 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 
 	//Route::group(['prefix' => 'schedule','middleware' => 'authrole_te'], function () {
 	Route::get('/menuschedule', 'ScheduleControler@menu');
-	Route::post('/menuschedule/check', 'ScheduleControler@menucheck');
-	Route::get('/xemphancongcu', 'ScheduleControler@xemphancongcu');
-	Route::get('/phancong','ScheduleControler@phancong');
-	//Route::get('/tkbgv', 'ScheduleControler@tkbgv');
-	Route::get('/tkbgvtaomoi', 'ScheduleControler@tkbgvtaomoi');
-	Route::get('/tkbgvthaydoi', 'ScheduleControler@tkbgvthaydoi');
-	Route::get('/tkblop', 'ScheduleControler@tkblop');
-	Route::get('/tkblopcu', 'ScheduleControler@tkblop');
+	//Route::post('/menuschedule/check', 'ScheduleControler@menucheck');
+	Route::get('/chinhsuaphancong', 'ScheduleControler@chinhsuaphancong');
+	Route::get('/phancong','ScheduleControler@phancong_index');
+	Route::post('/phancong/createnew','ScheduleControler@createnewphancong');
 	Route::post('/phancong/edit', 'ScheduleControler@edit');	
 	Route::post('/phancong/addnew', 'ScheduleControler@addnew');
 	Route::post('/phancong/removeclass', 'ScheduleControler@removeclass');
-	Route::post('/phancong/check', "ScheduleControler@check");
-	Route::post('/tkbgv/check', 'ScheduleControler@checkTkb');
-	Route::get('/tkbhientai', 'ScheduleControler@tkbhientai');
-	Route::get('/phancongcacnam', 'ScheduleControler@phancongcacnam');
-	Route::get('/phanconglop', 'ScheduleControler@phanconglop');
-	Route::post('/bangphancongcu', 'ScheduleControler@bangphancongcu');
+	Route::post('/phancong/check', "ScheduleControler@checkredirection");
+
+	Route::get('/tkbgv_index','ScheduleControler@tkbgv_index');
+	Route::post('/tkbgv_index/createNewSchedule','ScheduleControler@getNewSchedule');
+	Route::get('/tkblop_index', 'ScheduleControler@tkblop_index');
 	
+	Route::get('/tkbhientai', 'ScheduleControler@tkbhientai');
+	Route::post('/tkbhientai/updatetkbgv', 'ScheduleControler@updatetkbgv');
+	Route::get('/tkblopcu', 'ScheduleControler@tkblop_index');
+	Route::post('/tkblopcu/updatetkbclass', 'ScheduleControler@updatetkbclass');
+	
+	Route::get('/tkbgvthaydoi_index', 'ScheduleControler@tkbgvthaydoi_index');
+	Route::post('/tkbgvthaydoi_index/capnhat', 'ScheduleControler@tkbgvthaydoi_capnhat');
+	Route::get('/phancongcacnam', 'ScheduleControler@phancongcacnam');
+	Route::post('/bangphancongcu', 'ScheduleControler@bangphancongcu');
 
 //});
 
