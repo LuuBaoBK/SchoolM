@@ -272,12 +272,6 @@ class TranscriptController extends Controller
         $year = substr(date("Y"), 2,2);
         $year = (date("M") < 8) ? $year-1 : $year;
         $subject_id = Teacher::find(Auth::user()->id)->group;
-        $scoretype_list = Scoretype::select('id')
-                                    ->where('subject_id','=',$teacher->group)
-                                    ->where('applyfrom','<=',$year)
-                                    ->where('disablefrom','>=',$year)
-                                    ->where('applyfrom','<>',DB::raw('disablefrom'))
-                                    ->get();
         $class_list = Phancong::select('class_id')
                               ->where('teacher_id','=',$teacher->id)
                               ->where('class_id','like',$year."_%")
@@ -286,7 +280,7 @@ class TranscriptController extends Controller
         foreach ($class_list as $key => $value) {
             $value->teacher->user;
         }
-        return view('teacherpage.transcript.view_transcript',['class_list' => $class_list, 'scoretype_list' => $scoretype_list]);
+        return view('teacherpage.transcript.view_transcript',['class_list' => $class_list]);
     }
 
     public function view_transcript_get_class(Request $request){

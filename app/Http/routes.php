@@ -167,12 +167,15 @@ Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () 
 	Route::post('transcript/view_transcript_get_class', 'Teacher\Transcript\TranscriptController@view_transcript_get_class');
 	Route::post('transcript/view_transcript_get_score', 'Teacher\Transcript\TranscriptController@view_transcript_get_score');
 
+	//class Manage
+	Route::get('manage-class', 'Teacher\ManageclassController@get_view');
+	Route::post('manage-class/update', 'Teacher\ManageclassController@update');
 	//view transcript
 	Route::get('view_transcript', 'Teacher\Transcript\TranscriptController@view_transcript');
 
 });
 
-//Teacher Route
+//Student Route
 Route::group(['prefix' => 'student','middleware' => 'authrole_stu'], function () {
 	Route::get('dashboard', 'Student\ProfileController@get_stu_dashboard' );
 	Route::post('dashboard', 'Student\ProfileController@edit_info' );

@@ -301,10 +301,7 @@ table tr td i.glyphicon-edit.enable{
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
 <script src="{{asset("/mylib/jquery/jquery.min.js")}}" type="text/javascript"></script>
 <script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
-<script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
-<!-- CK Editor -->
-<script src="{{asset("/mylib/ckeditor/ckeditor.js")}}"></script>
-        
+<script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>        
 <!-- page script -->
 <script type="text/javascript">
 $(document).ready(function() {
