@@ -20,8 +20,11 @@ class MyAuthController extends Controller
             if($user->role == 0){
                 return redirect('admin/dashboard');
             }
-            elseif($user->role ==1){
+            elseif($user->role == 1){
                 return redirect('teacher/dashboard');
+            }
+            elseif($user->role == 2){
+                return redirect('student/dashboard');
             }
         }
         else
@@ -69,6 +72,9 @@ class MyAuthController extends Controller
         elseif($user->role == 1){
             return redirect('teacher/dashboard');
         }
+        elseif($user->role == 2){
+            return redirect('student/dashboard');
+        }
     }
 
     public function permission_denied(){
@@ -80,6 +86,9 @@ class MyAuthController extends Controller
             }
             elseif($user->role == 1){
                 return redirect('teacher/permission_denied');
+            }
+            elseif($user->role == 2){
+                return redirect('student/permission_denied');
             }
         }
         else

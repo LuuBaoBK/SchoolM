@@ -103,9 +103,25 @@ table tr.selected{
                                 <div class="form-group">
                                     <label for="month">Month</label>
                                     <select id="month" name="month" class="form-control">
-                                        <?php 
-                                            for($i=1;$i<=12;$i++){
-                                                echo ("<option value='".$i."' >".$i."</option>");
+                                        <?php
+                                            $month = date("m");
+                                            for($i=8;$i<=12;$i++){
+                                                if($i == $month){
+                                                    $selected = "selected";
+                                                }
+                                                else{
+                                                    $selected = "";
+                                                }
+                                                echo ("<option ".$selected.">".$i."</option>");
+                                            }
+                                            for($i=1;$i<=5;$i++){
+                                                if($i == $month){
+                                                    $selected = "selected";
+                                                }
+                                                else{
+                                                    $selected = "";
+                                                }
+                                                echo ("<option ".$selected.">".$i."</option>");
                                             }
                                         ?>
                                     </select>
@@ -116,7 +132,7 @@ table tr.selected{
                                         <?php 
                                             $year = date("Y");
                                             $month = date("M");
-                                            if($month <= 8){
+                                            if($month < 8){
                                                 $year = $year - 1;
                                             }
                                             for($i=$year;$i<=$year+2;$i++){
@@ -215,9 +231,25 @@ table tr.selected{
                     <div class="form-group">
                         <label for="modal_month">Month</label>
                         <select id="modal_month" name="modal_month" class="form-control">
-                            <?php 
-                                for($i=1;$i<=12;$i++){
-                                    echo ("<option value='".$i."' >".$i."</option>");
+                            <?php
+                                $month = date("m");
+                                for($i=8;$i<=12;$i++){
+                                    if($i == $month){
+                                        $selected = "selected";
+                                    }
+                                    else{
+                                        $selected = "";
+                                    }
+                                    echo ("<option ".$selected.">".$i."</option>");
+                                }
+                                for($i=1;$i<=5;$i++){
+                                    if($i == $month){
+                                        $selected = "selected";
+                                    }
+                                    else{
+                                        $selected = "";
+                                    }
+                                    echo ("<option ".$selected.">".$i."</option>");
                                 }
                             ?>
                         </select>

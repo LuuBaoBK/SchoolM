@@ -32,7 +32,7 @@
 <!-- Site wrapper -->
 <div class="wrapper">
 
-  @include('mytemplate.header_te')
+  @include('mytemplate.header')
 
   @include('mytemplate.sidebar_te')
   <div class="content-wrapper">

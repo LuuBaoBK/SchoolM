@@ -18,7 +18,7 @@ class CreateScoretypeTable extends Migration
             $table->string('type',40);
             $table->string('factor',1);
             $table->integer('applyfrom');
-            $table->string('month',2);
+            $table->integer('month');
             $table->integer('disablefrom');
         });
     }

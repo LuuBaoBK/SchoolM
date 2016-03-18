@@ -690,7 +690,7 @@ $(document).ready(function() {
                     showClass_1();
 
                 }
-                
+                //console.log(record);
             },
             error:function(){
                 alert("something went wrong, contact master admin to fix");

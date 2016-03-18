@@ -168,9 +168,29 @@ Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () 
 	Route::post('transcript/save_transcript','Teacher\Transcript\TranscriptController@save_transcript' );
 	Route::post('transcript/get_transcript','Teacher\Transcript\TranscriptController@get_transcript' );
 	Route::post('transcript/edit_transcript','Teacher\Transcript\TranscriptController@edit_transcript' );
+	Route::post('transcript/view_transcript_get_class', 'Teacher\Transcript\TranscriptController@view_transcript_get_class');
+	Route::post('transcript/view_transcript_get_score', 'Teacher\Transcript\TranscriptController@view_transcript_get_score');
 
 	//view transcript
 	Route::get('view_transcript', 'Teacher\Transcript\TranscriptController@view_transcript');
+
+});
+
+//Teacher Route
+Route::group(['prefix' => 'student','middleware' => 'authrole_stu'], function () {
+	Route::get('dashboard', 'Student\ProfileController@get_stu_dashboard' );
+	Route::post('dashboard', 'Student\ProfileController@edit_info' );
+	Route::post('dashboard/changepassword', 'Student\ProfileController@changepassword');
+	Route::get('permission_denied', 'Student\ProfileController@permission_denied' );
+
+	//Mailbox
+	Route::get('mailbox', 'MailBox\MailBoxController@get_mailbox');
+
+	//Transcript
+	Route::get('transcript', 'Student\TranscriptController@get_view');
+	Route::post('transcript/select_class', 'Student\TranscriptController@select_class');
+	Route::post('transcript/select_subject', 'Student\TranscriptController@select_subject');
+	
 
 });
 

@@ -161,6 +161,8 @@ class StudentInClassController extends Controller
         $classid_old = $request['classid_old'];
         $type        = $request['type'];
 
+        $scholastic = substr($classid_new, 0,2);
+
         if($classid_new == "-1"){
             $record['error'] = "Please Select New Class First";
             return $record;
@@ -174,13 +176,25 @@ class StudentInClassController extends Controller
                                                                 ->where('class_id','=',$classid_new)
                                                                 ->get()
                                                 )
+                                     ->whereNotin(
+                                                    'id',
+                                                    StudentClass::select('student_id')
+                                                                ->where('class_id','like',$scholastic."_%")
+                                                                ->whereIn('student_id',$studentlist[0])
+                                                                ->get()
+                                                )
                                      ->get();
             $errorlist      = Student::select('id')
                                      ->whereIn('id',$studentlist[0])
                                      ->whereIn(
                                                     'id', 
                                                     StudentClass::select('student_id')
-                                                                ->where('class_id','=',$classid_new)
+                                                                ->whereIn( 'student_id',
+                                                                    StudentClass::select('student_id')
+                                                                                ->where('class_id','=',$classid_new)
+                                                                                ->orwhere('class_id','like',$scholastic."_%")
+                                                                                ->get()
+                                                                )
                                                                 ->get()
                                                 )
                                      ->get();
@@ -215,6 +229,14 @@ class StudentInClassController extends Controller
                                                                 ->where('class_id','=',$classid_new)
                                                                 ->get()
                                                 )
+                                     ->whereNotin(
+                                                    'id',
+                                                    StudentClass::select('student_id')
+                                                                ->where('class_id','like',$scholastic."_%")
+                                                                ->whereIn('student_id',$studentlist[0])
+                                                                ->get()
+                                                )
+
                                      ->get();
 
             $errorlist      = Student::select('id')
@@ -222,7 +244,12 @@ class StudentInClassController extends Controller
                                      ->whereIn(
                                                     'id', 
                                                     StudentClass::select('student_id')
-                                                                ->where('class_id','=',$classid_new)
+                                                                ->whereIn( 'student_id',
+                                                                    StudentClass::select('student_id')  
+                                                                                ->where('class_id','=',$classid_new)
+                                                                                ->orwhere('class_id','like',$scholastic."_%")
+                                                                                ->get()
+                                                                )
                                                                 ->get()
                                                 )
                                      ->get();
