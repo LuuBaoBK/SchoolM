@@ -8,7 +8,7 @@
     <section class="content">
       <div class="box box-primary box-solid">
         <div class="box-header">
-          <h3 class="text-center">My School</h3>
+          <h3 class="text-center">My School's Resourse</h3>
         </div>
         <div class="box-body">
           <div class="row">
@@ -47,18 +47,18 @@
                     <li class="list-group-item">
                       <button id = "xemhientai"><?php
                             if($cotkb)
-                              echo "<a href='/admin/tkbhientai'>XEM THỜI KHÓA BIỂU HIỆN TẠI</a>";
+                              echo "<a href='/admin/tkbhientai'>CHỈNH SỬA THỜI KHÓA BIỂU HIỆN TẠI</a>";
                             else
-                              echo "XEM THỜI KHÓA BIỂU HIỆN TẠI";
+                              echo "CHỈNH SỬA THỜI KHÓA BIỂU HIỆN TẠI";
                                     ?>
                       </button>
                     </li>
                     <li class="list-group-item">
                       <button id = "suacu"><?php
                             if($cotkb)
-                              echo "<a href='/admin/xemphancongcu'>CHỈNH SỬA THỜI KHÓA BIỂU HIỆN TẠI</a>";
+                              echo "<a href='/admin/chinhsuaphancong'>CHỈNH SỬA BẢNG PHÂN CÔNG HIỆN TẠI</a>";
                             else
-                              echo "CHỈNH SỬA THỜI KHÓA BIỂU HIỆN TẠI";
+                              echo "CHỈNH SỬA BẢNG PHÂN CÔNG HIỆN TẠI";
                                     ?>
                       </button>
                     </li>

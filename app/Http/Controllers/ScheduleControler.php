@@ -50,16 +50,85 @@ class ScheduleControler extends Controller
         return view("schedule.menu")->with('nguonluc', $DSNguonLuc)->with("dk", $dktaotkb)->with('cotkb', $cotkb);
     }
 
-    public function xemphancongcu(){
-        //kiem tra
-        //neu co tk tham thoi thi lay cai tam toi ra
-        // neu khong co tam thoi thi lay cai moi nhat ra
-        // trong truong hop nay chi don gian la lay cai moi nhat ra
+
+    public function createnewphancong(){
         $year = substr(date('Y'),2);
         if(date("M") < 8)
             $year--;
-        $DSPHANCONG = null;
+        $this->TaoPhanCongMoi();
+
+        $DSPHANCONG  = $this->getDSPCTheoGV($year);
+        
+        $check = $this->checkPhanCong();  
+
+        $DSTHEOLOP = $this->getDSPCTheoClass($year);
+       
+        $result['danhsachgv'] =  $DSPHANCONG;
+        $result["check"] =  $check;
+        $result['danhsachlop'] = $DSTHEOLOP;
+
+       return $result;
+        //return "oke";
+    }
+
+    public function chinhsuaphancong(){
+        $year = substr(date('Y'),2);
+        if(date("M") < 8)
+            $year--;
+
+        $DSPHANCONG = $this->getDSPCTheoGV($year);
+        $check      = $this->checkPhanCong();
+        $listsubject = $this->getListSubject();
+        $DSTHEOLOP  =   $this->getDSPCTheoClass($year);
+
+        return view('schedule.phanconghientai')
+                ->with('danhsachgv',    $DSPHANCONG)
+                ->with("check",         $check)
+                ->with("listsubject",   $listsubject)
+                ->with("dshtheolop",    $DSTHEOLOP);
+    }
+
+
+    public function getListSubject(){
+        foreach (Subject::all() as $key => $Mon) {
+            $listsubject[$key] = $Mon->subject_name;
+        }
+        return $listsubject;
+    }
+
+    public function checkredirection(){
+        return $this->checkPhanCong();
+    }
+
+    public function getDSPCTheoClass($year){
+        //lay theo nam nen tet cua cac lop cung la doc nhat
+        //[classname][gv_toan][gv_van]... theo thu tu ds trong list subject
+
+        $result = null;
+        foreach (Classes::where("id", "like", $year."%")->get() as $key => $Lop) {
+            $addnew = null;
+            $addnew[0] = $Lop->classname;
+            foreach (Subject::all() as $key2 => $Mon) {
+                $addnew[$key2 + 1] = "";
+                $PCL = Phancong::where("class_id", "=", $Lop->id)->get();
+                foreach ($PCL as $Gv) {
+                    if($Gv->teacher->teach->id == $Mon->id){
+                        $addnew[$key2+1] = $Gv->teacher->user->fullname;
+                        break;
+                    }
+                }
+            }
+            $result[$key] = $addnew;
+        }
+
+        return $result;
+    }
+
+    public function getDSPCTheoGV($year){//return ds giao vien sap xep theo thu tu cac mon hoc
+        //[id][fullname][subjectname][classhome][class respond][.....]
+        $result = null;
         $dem  = 0;
+
         foreach (Subject::all() as $Mon) {
             $DSGV = Teacher::where('group', "=", $Mon->id)->get();
             foreach ($DSGV as $GV) {
@@ -77,46 +146,200 @@ class ScheduleControler extends Controller
                 foreach ($DSPC as $key => $Lop) {
                     $addnew[$key + 4] = $Lop->classes->classname;
                 }
-                $DSPHANCONG[$dem++] = $addnew;
+                $result[$dem++] = $addnew;
             }
         }
-        $check = $this->check();
-        $listsubject = null;
-        foreach (Subject::all() as $key => $Mon) {
-            $listsubject[$key] = $Mon->subject_name;
-        }
-        $DSTHEOLOP = null;
-        
-        foreach (Classes::where("id", "like", $year."%")->get() as $key => $Lop) {
-            $addnew = null;
-            $addnew[0] = $Lop->classname;
-            foreach (Subject::all() as $key2 => $Mon) {
-                $addnew[$key2 + 1] = "";
-                $PCL = Phancong::where("class_id", "=", $Lop->id)->get();
-                //echo "count". $PCL->count();
-                foreach ($PCL as $Gv) {
-                    if($Gv->teacher->teach->id == $Mon->id){
-                        $addnew[$key2+1] = $Gv->teacher->user->fullname;
-                        break;
+
+        return $result;
+    }
+
+
+    public function phancong_index(){
+        $listsubject = $this->getListSubject();
+        return view('schedule.phancong_index')->with("listsubject", $listsubject);
+    }
+
+    public function tkbgv_index(){
+        return view("schedule.tkbgv_index");
+    }
+
+    public function getNewSchedule(){
+
+        $year = substr(Date('Y'), 2);
+        if(Date("M") <= 8)
+            $year--;
+        tkb::truncate();
+        $thoikhoabieu   = $this->createnewschedule();
+        $bangphancong   = $this->getDSPCTheoGV($year);
+        $randomngay     = $this->randomlist(5);
+        $randomtietngay = $this->randomlist(10);
+        $randomtiettuan = $this->randomlist(50);
+        $randomteacher  = $this->randomlist(Teacher::all()->count());
+
+
+        foreach ($randomteacher as $row){//Uu tien cho giao vien chu nhiem
+            $teacher = $thoikhoabieu[$row];// = bangphancong[$row]
+            for($ngay = 0; $ngay < 5; $ngay++){//xep theo ngay 1 ngay khong dc qua 2 tiet
+                for($tiet = 0; $tiet < 10; $tiet ++){
+                    $lop = $teacher[3];
+                    if($lop == "")
+                        continue;
+                    $colum = $randomngay[$ngay]*10 + $randomtietngay[$tiet] + 5;//vi tri tren tkb
+                    if($thoikhoabieu[$row][$colum] == "" && $this->count_class_col($lop, $colum, $thoikhoabieu) == 0 
+                        &&  $this->count_class_row($lop, $row, $thoikhoabieu ) < Teacher::where("id", "=", $teacher[0])->first()->teach->total_time 
+                        &&  $this->gioihanngay($lop, $row, $colum, $thoikhoabieu)){
+                        $thoikhoabieu[$row][$colum] = $lop;
+                        $thoikhoabieu[$row][4]--;
                     }
                 }
             }
-            $DSTHEOLOP[$key] = $addnew;
-        }    
-        return view('schedule.phancongcu')->with('danhsachgv', $DSPHANCONG)->with("check", $check)->with("listsubject", $listsubject)->with("dshtheolop", $DSTHEOLOP);
+        }
+
+        foreach ($randomteacher as $row){//Xep cho cac lop con lai, random theo ngay->uu tien xep cac mon nhieu tiet
+            $teacher = $bangphancong[$row];
+            $sllop = count($teacher) - 4;
+            if($sllop <= 0 || $thoikhoabieu[$row][4] == 0)//he tiet day hay da pphan cong xong
+                continue;
+            $randlop = $this->randomlist($sllop);
+            foreach( $randlop as $rowlop){
+                $lop = $teacher[$rowlop + 4];
+                foreach ($randomngay as $key1 => $ngay) {
+                    for($tiet = 0; $tiet < 10; $tiet ++){
+                        $colum = $ngay*10 + $tiet + 5;
+
+                        if($thoikhoabieu[$row][$colum] == "" && $this->count_class_col($lop, $colum, $thoikhoabieu) == 0 
+                        &&  $this->count_class_row($lop, $row, $thoikhoabieu ) < Teacher::where("id", "=", $teacher[0])->first()->teach->total_time 
+                        &&  $this->gioihanngay($lop, $row, $colum, $thoikhoabieu)){
+                            $thoikhoabieu[$row][$colum] = $lop;
+                            $thoikhoabieu[$row][4]--;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        foreach ($randomteacher as $row){//Xep cho cac lop con lai, random theo ngay->uu tien xep cac mon nhieu tiet
+            $teacher = $bangphancong[$row];
+            $sllop = count($teacher) - 4;
+            if($sllop <= 0 || $thoikhoabieu[$row][4] == 0)//he tiet day hay da pphan cong xong
+                continue;
+            $randlop = $this->randomlist($sllop);
+            foreach($randlop as $rowlop){
+                $lop = $teacher[$rowlop + 4];
+                foreach ($randomtiettuan as $tiet) {
+                    $colum = $tiet +  5;
+                    if($thoikhoabieu[$row][$colum] == "" && $this->count_class_col($lop, $colum, $thoikhoabieu) == 0 
+                        &&  $this->count_class_row($lop, $row, $thoikhoabieu ) < Teacher::where("id", "=", $teacher[0])->first()->teach->total_time 
+                        &&  $this->gioihanngay($lop, $row, $colum, $thoikhoabieu)){
+                            $thoikhoabieu[$row][$colum] = $lop;
+                            $thoikhoabieu[$row][4]--;
+                    }
+                }
+            }
+        }
+
+        foreach ($bangphancong as $row => $teacher){
+            $sllop = count($teacher) - 4;
+            if($sllop <= 0 || $thoikhoabieu[$row][4] == 0)//he tiet day hay da pphan cong xong
+                continue;
+          
+            $randlop = $this->randomlist($sllop);
+            foreach ($randlop as $key1 => $rowlop) {
+                $lop = $teacher[$rowlop + 4];
+                foreach ($randomtiettuan as $tiet) {
+                    $colum = $tiet +  5;
+                    if($thoikhoabieu[$row][$colum] == ""
+                        &&  $this->count_class_row($lop, $row, $thoikhoabieu ) < Teacher::where("id", "=", $teacher[0])->first()->teach->total_time 
+                        &&  $this->gioihanngay($lop, $row, $colum, $thoikhoabieu)){
+                            $thoikhoabieu[$row][$colum] = $lop;
+                            $thoikhoabieu[$row][4]--;
+                    }
+                }
+            }
+        }
+
+        
+        foreach ($thoikhoabieu as $row => $Gv) {
+            for($i = 0; $i < 50; $i++){
+                    $col = $i +  5;
+                    $this->xulitrung($thoikhoabieu, $row, $col);
+            }
+            
+        }
+        
+
+        tkb::truncate();
+        for($i = 0; $i < count($thoikhoabieu);$i++){
+            $addnew = null;
+            $addnew = new tkb;
+            $addnew->teacher_id = $thoikhoabieu[$i][0];
+            $addnew->teacher_name = $thoikhoabieu[$i][1];
+            $addnew->subject_name= $thoikhoabieu[$i][2];
+            $addnew->homeroom_class = $thoikhoabieu[$i][3];
+            $addnew->sotietconlai = $thoikhoabieu[$i][4];
+            for($j = 0; $j < 50; $j++){
+                $pro = "T".$j;
+                $addnew->$pro = $thoikhoabieu[$i][$j+5];
+            }
+
+            $addnew->save();
+        }
+        $dsloptrung = $this->checkTKB();
+        $result['dsloptrung'] = $dsloptrung; 
+        $result['thoikhoabieu'] = $thoikhoabieu; 
+        return $result;
+        //return "oke";
     }
 
-    public function phancong()
-    {
+    public function createnewschedule(){
+        $year = substr(Date('Y'), 2);
+       if(Date("M") <= 8)
+            $year--;
+       $listclass = Classes::where("id", "like", $year."%");
+
+       $thoikhoabieu = null;
+       $count_gv = 0;
+       foreach (Subject::all() as $key1 => $subject) {
+           $listTearcherofSub = Teacher::where("group", "=", $subject->id)->get();
+           foreach ($listTearcherofSub as $key2 => $teacher) {
+                $addnew    = null;
+                $addnew[0] = $teacher->id;
+                $addnew[1] = $teacher->user->fullname;
+                $addnew[2] = $teacher->teach->subject_name;
+                $addnew[3] = Classes::where("id", "like", $year."%")->where("homeroom_teacher", "=", $teacher->id)->first();
+                if($addnew[3] == null)
+                    $addnew[3] = "";
+                else
+                    $addnew[3] = $addnew[3]->classname;
+
+                $addnew[4] = Phancong::where("class_id", "like", $year."%")->where("teacher_id", "=", $teacher->id)->get()->count()*$subject->total_time;
+                
+                for($i = 0; $i < 50; $i++)
+                    $addnew[$i + 5] = "";
+                $addnew[5]  = "cc" ;
+                $addnew[14] = "cc";
+                $addnew[49] = "sh";
+                $addnew[54] = "sh";
+
+                $thoikhoabieu[$count_gv] = $addnew;
+                $count_gv++;
+           }
+       }
+       return $thoikhoabieu;
+    }
+
+    public function TaoPhanCongMoi(){
         $year = substr(date('Y'),2);
         if(date("M") < 8)
             $year--;
         tkb::truncate();
-        //Phancong::truncate();
         Phancong::where("class_id", "like", $year."%")->delete();
+        $DSLOPHOC = Classes::where("id", "like", $year."%")->get();
+        $DSMONHOC = Subject::all();
+        $DSGIAOVIEN = Teacher::all();
        
         //xu li cho truong hop co giao vien chu nhiem
-        $DSLOPHOC = Classes::where("id", "like", $year."%")->get();
         foreach ($DSLOPHOC as $Lop) {
             $addnew = new Phancong;
             $addnew->teacher_id = $Lop->Teacher->id ;
@@ -125,8 +348,6 @@ class ScheduleControler extends Controller
         }
 
         //xu li cho tat cac cac lop con lai
-        $DSMONHOC = Subject::all();
-        $DSGIAOVIEN = Teacher::all();
         $DSGVCN = null;
         $num = 0;
         foreach ($DSLOPHOC as $Lop) {
@@ -135,9 +356,7 @@ class ScheduleControler extends Controller
         }
 
         foreach ($DSMONHOC as $Mon) {
-            //ds giao vien day cho mon hoc nay
-            //if($Mon->id != 3)
-              //  continue;
+
             $DSGV1Mon = Teacher::where("group","=", $Mon->id)->get();
             if($DSGV1Mon->count() == 0)
                 continue;
@@ -170,9 +389,6 @@ class ScheduleControler extends Controller
                 }
             }
 
-            //tong so giao vien bo mon
-            // tinh off set
-            // tinh avg
             $agv = 0;
             $offset = 0;
             $agv = (int)(count($DSLOPChuaPC)/count($DSGV1Mon));
@@ -203,68 +419,14 @@ class ScheduleControler extends Controller
             }
         }
 
-        $DSPHANCONG  = null;
-        $DSGIAOVIEN = Teacher::OrderBy("group", "desc")->get();
-        
-        
-        foreach($DSGIAOVIEN as $dem1 => $Gv){
-            //if($Gv->id != "t_0000000")
-              //  continue;
-            $DS1GV = null;
-            $DS1GV = Phancong::where("class_id", "like", $year."%")->where("teacher_id", "=", $Gv->id)->get();
-            $addnew = null;
-            $addnew[0] = $Gv->id;
-            $addnew[1] = $Gv->user->fullname;
-            $addnew[2] = $Gv->teach->subject_name;
-            $addnew[3] = Classes::where("id","like", $year."%")->where("homeroom_teacher", "=", $Gv->id)->first();
-            if($addnew[3] == null)
-                $addnew[3] = "";
-            else
-                $addnew[3] = $addnew[3]->classname;
-            foreach ($DS1GV as $dem2 => $Lop) {
-                $addnew[$dem2 + 4] = $Lop->classes->classname; 
-            }
-            $DSPHANCONG[$dem1] = $addnew;
-        }
-        
-         $check = $this->check();  
-
-        $DSTHEOLOP = null;
-        
-        foreach (Classes::where("id", "like", $year."%")->get() as $key => $Lop) {
-            $addnew = null;
-            $addnew[0] = $Lop->classname;
-            foreach (Subject::all() as $key2 => $Mon) {
-                $addnew[$key2 + 1] = "";
-                $PCL = Phancong::where("class_id", "=", $Lop->id)->get();
-                //echo "count". $PCL->count();
-                foreach ($PCL as $Gv) {
-                    if($Gv->teacher->teach->id == $Mon->id){
-                        $addnew[$key2+1] = $Gv->teacher->user->fullname;
-                        break;
-                    }
-                }
-            }
-            $DSTHEOLOP[$key] = $addnew;
-        }
-
-        $listsubject = null;
-        foreach (Subject::all() as $key => $Mon) {
-            $listsubject[$key] = $Mon->subject_name;
-        }
-        
-       // return view('schedule.phanlop')->with('danhsachgv', $DSPHANCONG)->with("check", $check)
-
-        return view('schedule.bangphancong')->with('danhsachgv', $DSPHANCONG)->with("check", $check)->with('dshtheolop', $DSTHEOLOP)->with('listsubject', $listsubject);
-        //DANG XU LY TIEP O PHAN XY GIAO DIEN VOI LAI PHAN CONG CHO GIAO VIEN , NHUNG THOI KHOA BIEU KHONG SAP XEP DC
     }
 
-
-
     public function edit(Request $request){
+
         $year = substr(date('Y'),2);
         if(date("M") < 8)
             $year--;
+
         $id = $request['id'];
         $PC = Phancong::where("class_id", "like", $year."%")->where("teacher_id", "=", $id)->get();
         $phancong = null;
@@ -295,7 +457,6 @@ class ScheduleControler extends Controller
         $teacher = Teacher::where("id", "=", $id)->get();
         $teacher = $teacher[0];
         $msgv = $id;
-        //$msgv = "t_0008";
         $name = $teacher->user->fullname;
         $subj = $teacher->teach->subject_name;
         $giaovien['id'] = $msgv;
@@ -304,7 +465,6 @@ class ScheduleControler extends Controller
         $giaovien['phancong'] = $phancong;
         $giaovien['chuaphancong'] = $chuaphancong;
         $giaovien['subj'] = $subj;
-        //---------------------------
 
         return $giaovien;
     }
@@ -323,8 +483,11 @@ class ScheduleControler extends Controller
             $addnew->class_id = $class_id->id;
             $addnew->save();
         };
-        $check = $this->check();
-        return $check;
+        
+        
+        $check = $this->checkPhanCong();  
+
+       return $check;
     }
 
     public function removeclass(Request $request){
@@ -338,12 +501,13 @@ class ScheduleControler extends Controller
             $class_id = $class_id->id;
             Phancong::where("class_id", "like", $year."%")->where("teacher_id", "=", $id)->where("class_id", "=", $class_id)->delete();
         }
-        return $this->check();
-
+     
+        return $this->checkPhanCong();
     }
 
 
-    public function check(){
+    public function checkPhanCong(){
+    
         $dsloptrung = null;
         $num_trung = 0;
         $dschuaphan = null;
@@ -363,13 +527,13 @@ class ScheduleControler extends Controller
             }
             
             if($count > 0){//neu trung thi cho vao trong list bi trung
-                $isexist = false;
+                $isexisted = false;
                 for ($i = 0; $i < count($dsloptrung) ;$i++){
                     if($dsloptrung[$i][0] == $pc1->classes->classname and $dsloptrung[$i][1] == $pc1->teacher->teach->subject_name){
-                        $isexist = true;
+                        $isexisted = true;
                     } 
                 }
-                if(!$isexist){
+                if(!$isexisted){
                     $dsloptrung[$num_trung] = array($pc1->classes->classname, $pc1->teacher->teach->subject_name);
                     $num_trung++;
 
@@ -377,18 +541,12 @@ class ScheduleControler extends Controller
             }
         }
 
-        //xu li chua phan cong
         $dsmonhoc = Subject::all();
         $dslophoc = Classes::where("id", "like", $year."%")->get();
         foreach ($dsmonhoc as $mon) {
-            // if($mon->id != 9)
-            //     continue;
-            
             foreach($dslophoc as $lophoc){
                 $chuaday = true;
                 foreach($dsphancong as $phancong){
-                     // echo "pc: gv". $phancong->teacher->teach->id.", mon ". $phancong->teacher->teach->subject_name."<br>";
-                     // echo "xet lop: ".$lophoc->id ." ,mon". $mon->subject_name. "<br>"; 
                     if($phancong->teacher->teach->id == $mon->id and $lophoc->id == $phancong->class_id)
                     {
                         $chuaday = false;
@@ -404,12 +562,11 @@ class ScheduleControler extends Controller
         
         $result['dsloptrung'] = $dsloptrung;
         $result['dschuaphan'] = $dschuaphan;
-        // $this->printcheck1($dsloptrung);
-        // $this->printcheck1($dschuaphan);
+        
         return $result;
     }
 
-    public function checkthoikhoabieu(){
+    public function checkTKB(){
         //kiem tra nhung lop chua phan cong
         $DSLOPChuaPC = null;
         $year = substr(date('Y'),2);
@@ -434,7 +591,6 @@ class ScheduleControler extends Controller
             }
         }
 
-
         // kiem tra nhung lop pan cong bi trung
         $DSTRUNG = null;
         $dem = 0;
@@ -453,402 +609,49 @@ class ScheduleControler extends Controller
             }
             
         }
-        // dang su vi ve vie tra ket qua ve cho phep bi trung
-        //return $DSLOPChuaPC;
+        
         return $DSTRUNG;
     }
 
-    public function checkTkb(){
-        $TKB = null;
-        foreach(tkb::all as $key => $gv){
-            $addnew = null;
-            $addnew[0] = $gv->teacher_id;
-            $addnew[1] = $gv->teacher->user->fullname;
-            $addnew[2] = $gv->teacher->teach->subject_name;
-            $addnew[3] = $gv->sotietconlai;
-            for($i = 0; $i < 50; $i++){
-                $t = "T".$i;
-                $addnew[$i+4] = $gv->$t;
-            }
-            $TKB[$key] = $addnew;
-        }
-        //$this->printcheck1($TKB);   
-        return "oke";
+
+    public function tkbgvthaydoi_index(){
+        return view('schedule.tkbgvthaydoi_index');
     }
 
-    public function tkbgvtaomoi()
-    {
-        $year = substr(date('Y'),2);
-        if(date("M") < 8)
-            $year--;
-        $dsmonhoc1 = Subject::all();
-        $dsmonhoc = null;
-        $dsmonhoc[0] = array("mon", 6, 7, 8, 9);
-        for( $i = 0; $i < $dsmonhoc1->count(); $i++){
-            $mhoc = null;
-            $mhoc[0] = $dsmonhoc1[$i]->subject_name;
-            $mhoc[1] = $dsmonhoc1[$i]->total_time;
-            $mhoc[2] = $dsmonhoc1[$i]->total_time;
-            $mhoc[3] = $dsmonhoc1[$i]->total_time;
-            $mhoc[4] = $dsmonhoc1[$i]->total_time;
-            $dsmonhoc[$i + 1] = $mhoc;
-        }
-
-        $somon = $dsmonhoc1->count();
-        $tong   = 0;
-        $i = 0;
-        $sotiettoida1ngay = 4;
-        $sotiettoida1buoi = 2;
-        foreach ($dsmonhoc as $key) {
-            $tong = 0;
-            for(  $i = 1; $i <= 4; $i++)
-                $tong += $key[$i];
-            $tongtiethoc = $tong;
-        }
-
-        $ds_lh = Classes::where("id", "like", $year."%")->get();
-        for($i = 0; $i < $ds_lh->count(); $i++)
-            $danhsachlop[$i] = $ds_lh[$i]->classname;
-        
-
-        $danhsachgv_1 = Teacher::all();
-        $danhsachgv = null;
-
-        for( $i = 0; $i < $danhsachgv_1->count(); $i++){
-            $gv = $danhsachgv_1[$i];
-            $gv_ = null;
-            $gv_[0] = $gv->id;
-            $gv_[1] = $gv->teach->subject_name;
-            $gv_[2] = Classes::where("homeroom_teacher", "=", $gv->id)->where("id", "like",$year."%")->first();
-            $gv_[2] = $gv_[2]['classname'];
-            if($gv_[2] == null)
-                $gv_[2] = "";
-            $dscaclop = Phancong::where("class_id", "like", $year."%")->where("teacher_id", "=", $gv->id)->get();//sau nay them nam hoc
-            for( $j = 0; $j < $dscaclop->count(); $j++){
-                $gv_[$j + 3] = $dscaclop[$j]->classes ->classname;
-            }
-
-            $danhsachgv[$i] = $gv_;
-        }
-
-        for($i = 1; $i < count($dsmonhoc); $i ++){
-            $count = 0;
-            foreach ($danhsachgv as $gv) {
-                if($gv[1] == $dsmonhoc[$i][0])
-                    $count++;
-            }
-            $sogiaovienBomon[$dsmonhoc[$i][0]] = $count;
-        }
-
-        for( $i = 1; $i < count($dsmonhoc); $i++){
-            $count = 0;
-            foreach ($danhsachlop as $lop) {
-                if($this->soTietTuan($dsmonhoc[$i][0], $lop, $somon, $dsmonhoc) > 0)
-                    $count++;
-            }
-            $solophoc1mon[$dsmonhoc[$i][0]] = $count;
-        }
-
-        for($i = 0; $i < count($danhsachlop); $i++){
-            $lop = $danhsachlop[$i];
-            for($j = 1; $j <= $somon; $j ++){
-                if($this->soTietTuan($dsmonhoc[$j][0], $lop, $somon, $dsmonhoc) > 0 ){//lop co hoc mon nay
-                    $count = 0;
-                    foreach ($danhsachgv as $gv) {
-                        if($gv[1] == $dsmonhoc[$j][0])
-                            for($k = 0; $k < count($gv) - 3; $k ++){
-                                if($gv[$k + 3] == $lop)
-                                    $count++;
-                            }
-                    }
-                }
-            }
-
-            $countGVCN = 0;
-            foreach ($danhsachgv as $gv) {
-                if($gv[2] == $lop)
-                    $countGVCN++;
-            }
-        }
-
-        $sogiaovien = 0;
-
-        foreach ($danhsachgv as $gv){
-            $tong = 0;
-            for( $i = 3; $i < count($gv); $i++){
-                $tong += $this->soTietTuan($gv[1], $gv[$i] , $somon, $dsmonhoc);
-            }
-            $tongtietday[$sogiaovien] = $tong;
-            $sogiaovien++;
-        }
-
-        $sogiaovien = 0;
-        foreach ($danhsachgv as $gv) {
-            for( $i = 0 ; $i < 54; $i++){
-                $gvien[$i] = "";
-            }
-            $gvien[0] = $gv[0]; //msgv
-            $gvien[1] = Teacher::where("id", "=", $gvien[0])->get();
-            $gvien[1] = $gvien[1][0]->user->fullname;
-            $gvien[2] = $gv[1]; //mon hoc
-            $gvien[3] = $tongtietday[$sogiaovien]; //so tiet con lai
-            $gvien[4] = "cc";//chao co
-            $gvien[13] = "cc";//chao co
-            $gvien[48] = "sh";//sinh hoat
-            $gvien[53] = "sh";//sinh hoat
-            $thoikhoabieu[$sogiaovien] = $gvien;
-            $sogiaovien++; 
-        }
-
-
-        $randgv = $this->randomlist($sogiaovien);
-        $randtiet = $this->randomlist(50);
-        $randngay = $this->randomlist(5);//chi hoc thu 2->6
-        $randtiet_ngay = $this->randomlist(10);
-
-
-        foreach ($randgv as $gv){//Uu tien cho giao vien chu nhiem
-            for($ngay = 0; $ngay < 5; $ngay++){//xep theo ngay 1 ngay khong dc qua 2 tiet
-                for($tiet = 0; $tiet < 10; $tiet ++){
-                    $lop = $danhsachgv[$gv][2];
-                    $tiettkb = $randngay[$ngay]*10 + $randtiet_ngay[$tiet] + 4;//vi tri tren tkb
-                    if($thoikhoabieu[$gv][$tiettkb] == "" && $this->chuaCoGVKhacDay($tiettkb, $lop, $thoikhoabieu) && $this->lt_tietTuan($gv, $lop, $thoikhoabieu, $danhsachgv, $somon, $dsmonhoc) &&
-                            $this->khongday1ngayquanhieu($gv, $lop, $tiettkb, $thoikhoabieu)){
-                        $thoikhoabieu[$gv][$tiettkb] = $lop;
-                        $thoikhoabieu[$gv][3]--;
-                    }
-                }
-            }
-        }
-
-
-
-        foreach ($randgv as $gv){//Xep cho cac lop con lai, random theo ngay->uu tien xep cac mon nhieu tiet
-            $sllop = count($danhsachgv[$gv]) - 3;
-            if($sllop <= 0 || $thoikhoabieu[$gv][3]==0)//he tiet day hay da pphan cong xong
-                continue;
-
-            $randlop = $this->randomlist($sllop);
-            for($i = 0; $i < $sllop; $i++){
-                $lop = $danhsachgv[$gv][$randlop[$i] + 3];
-                for($ngay = 0; $ngay < 5; $ngay++){//xep theo ngay 1 ngay khong dc qua 2 tiet
-                    for($tiet = 0; $tiet < 10; $tiet ++){
-                        $tiettkb = $randngay[$ngay]*10 + $tiet + 4;//vi tri tren tkb
-                        if($thoikhoabieu[$gv][$tiettkb] == "" && $this->chuaCoGVKhacDay($tiettkb, $lop, $thoikhoabieu) && $this->lt_tietTuan($gv, $lop, $thoikhoabieu, $danhsachgv, $somon, $dsmonhoc) &&
-                                $this->khongday1ngayquanhieu($gv, $lop, $tiettkb, $thoikhoabieu)){
-                            $thoikhoabieu[$gv][$tiettkb] = $lop;
-                            $thoikhoabieu[$gv][3]--;
-                        }
-                            
-                    }
-                }//LIEU CO XET TRUONG HOP LA SO TIET HON HO SO VOI QUY DINH CHUA
-            }
-        }
-        //ngay tai day co the co them mot ham de dao lon lamcho du lieu co tinh tham my hon
-
-
-        foreach ($randgv as $gv){//Xep cho cac lop con lai, random theo ngay->uu tien xep cac mon nhieu tiet
-            $sllop = count($danhsachgv[$gv]) - 3;
-            if($sllop <= 0 || $thoikhoabieu[$gv][3]==0)
-                continue;
-            $randlop = $this->randomlist($sllop);
-            for($i = 0; $i < $sllop; $i++){
-                $lop = $danhsachgv[$gv][$randlop[$i] + 3];
-                for($_tiet = 0; $_tiet < 50; $_tiet++){//xep theo ngay 1 ngay khong dc qua 2 tiet
-                    $tiettkb = $randtiet[$_tiet] + 4;//vi tri tren tkb
-                    if($thoikhoabieu[$gv][$tiettkb] == "" && $this->chuaCoGVKhacDay($tiettkb, $lop, $thoikhoabieu) && $this->lt_tietTuan($gv, $lop,$thoikhoabieu, $danhsachgv, $somon, $dsmonhoc) &&
-                            $this->khongday1ngayquanhieu($gv, $lop, $tiettkb, $thoikhoabieu )){
-                        $thoikhoabieu[$gv][$tiettkb] = $lop;
-                        $thoikhoabieu[$gv][3]--;
-                    }
-                }
-            }
-        }
-
-        foreach ($randgv as $gv){//giao vien ta lop theo tuan tu, tiet random
-            $sllop = count($danhsachgv[$gv]) - 3;
-            if($sllop <= 0 || $thoikhoabieu[$gv][3]==0)
-                continue;
-            $randlop = $this->randomlist($sllop);
-            for($i = 0; $i < $sllop; $i++){
-                $lop = $danhsachgv[$gv][$randlop[$i] + 3];
-                for($_tiet = 0; $_tiet < 50; $_tiet++){//xep theo ngay 1 ngay khong dc qua 2 tiet
-                    $tiettkb = $randtiet[$_tiet] + 4;//vi tri tren tkb
-                    if($thoikhoabieu[$gv][$tiettkb] == "" && $this->lt_tietTuan($gv, $lop,$thoikhoabieu, $danhsachgv, $somon, $dsmonhoc) &&
-                            $this->khongday1ngayquanhieu($gv, $lop, $tiettkb, $thoikhoabieu )){
-                        $thoikhoabieu[$gv][$tiettkb] = $lop;
-                        $thoikhoabieu[$gv][3]--;
-                    }
-                }
-            }
-        }
-        
-
-        //chap nhan trung de xep tkb
-        //phan xu li ve dich chuyen de duoc du lieu nhu y  muon
-        foreach ($thoikhoabieu as $row => $Gv) {
-            for($i = 0; $i < 5; $i++){
-                for($j = 0; $j < 10; $j++){
-                    $tiet = $i*10 + $j;
-                    $this->xulitrung($thoikhoabieu, $row, $tiet);
-                }
-            }
-            
-        }
-        //end----------------------
-
-        tkb::truncate();
-        for($i = 0; $i < count($thoikhoabieu);$i++){
-            $addnew = null;
-            $addnew = new tkb;
-            $addnew->teacher_id = $thoikhoabieu[$i][0];
-            $addnew->sotietconlai = $thoikhoabieu[$i][3];
-            for($j = 0; $j < 50; $j++){
-                $pro = "T".$j;
-                $addnew->$pro = $thoikhoabieu[$i][$j+4];
-            }
-
-            $addnew->save();
-        }
-
-
-        //$this->printcheck1($thoikhoabieu);
-        $DSLOPChuaPC = $this->checkthoikhoabieu();
-
-       return view('schedule.tkb_giaovien')->with('thoikhoabieu', $thoikhoabieu)->with("chuaphan", $DSLOPChuaPC);
-    }
-
-    public function tkbgvthaydoi(){
+    
+    public function tkbgvthaydoi_capnhat(){
 
         $year = substr(date('Y'),2);
         if(date("M") < 8)
             $year--;
-        $dsmonhoc1 = Subject::all();
-        $dsmonhoc = null;
-        $dsmonhoc[0] = array("mon", 6, 7, 8, 9);
-        for( $i = 0; $i < $dsmonhoc1->count(); $i++){
-            $mhoc = null;
-            $mhoc[0] = $dsmonhoc1[$i]->subject_name;
-            $mhoc[1] = $dsmonhoc1[$i]->total_time;
-            $mhoc[2] = $dsmonhoc1[$i]->total_time;
-            $mhoc[3] = $dsmonhoc1[$i]->total_time;
-            $mhoc[4] = $dsmonhoc1[$i]->total_time;
-          //  echo "mon: ". $mhoc[0] . " sotiet: " . $mhoc[1] . "<br>";
-            $dsmonhoc[$i + 1] = $mhoc;
-        }
-
-        $somon = $dsmonhoc1->count();
-        $tong   = 0;
-        $i = 0;
-        $sotiettoida1ngay = 4;
-        $sotiettoida1buoi = 2;
-        foreach ($dsmonhoc as $key) {
-            $tong = 0;
-            for(  $i = 1; $i <= 4; $i++)
-                $tong += $key[$i];
-            $tongtiethoc = $tong;
-        }
-
-        $ds_lh = Classes::where("id", "like", $year."%")->get();
-        for($i = 0; $i < $ds_lh->count(); $i++){
-            $danhsachlop[$i] = $ds_lh[$i]->classname;
-            //echo "lop: ". $danhsachlop[$i] . "<br>";
-        }
-
-        $danhsachgv_1 = Teacher::all();
-        $danhsachgv = null;
-
-        for( $i = 0; $i < $danhsachgv_1->count(); $i++){
-            $gv = $danhsachgv_1[$i];
-            $gv_ = null;
-            $gv_[0] = $gv->id;
-            $gv_[1] = $gv->teach->subject_name;
-            $gv_[2] = Classes::where("homeroom_teacher", "=", $gv->id)->where("id", "like",$year."%")->first();
-            $gv_[2] = $gv_[2]['classname'];
-            if($gv_[2] == null)
-                $gv_[2] = "";
-            $dscaclop = Phancong::where("class_id", "like", $year."%")->where("teacher_id", "=", $gv->id)->get();//sau nay them nam hoc
-            for( $j = 0; $j < $dscaclop->count(); $j++){
-                $gv_[$j + 3] = $dscaclop[$j]->classes ->classname;
-            }
-
-            $danhsachgv[$i] = $gv_;
-        }
-
-        for($i = 1; $i < count($dsmonhoc); $i ++){
-            $count = 0;
-            foreach ($danhsachgv as $gv) {
-                if($gv[1] == $dsmonhoc[$i][0])
-                    $count++;
-            }
-            $sogiaovienBomon[$dsmonhoc[$i][0]] = $count;
-        }
-
-        for( $i = 1; $i < count($dsmonhoc); $i++){
-            $count = 0;
-            foreach ($danhsachlop as $lop) {
-                if($this->soTietTuan($dsmonhoc[$i][0], $lop, $somon, $dsmonhoc) > 0)
-                    $count++;
-            }
-            $solophoc1mon[$dsmonhoc[$i][0]] = $count;
-        }
-
-        for($i = 0; $i < count($danhsachlop); $i++){
-            $lop = $danhsachlop[$i];
-            for($j = 1; $j <= $somon; $j ++){
-                if($this->soTietTuan($dsmonhoc[$j][0], $lop, $somon, $dsmonhoc) > 0 ){//lop co hoc mon nay
-                    $count = 0;
-                    foreach ($danhsachgv as $gv) {
-                        if($gv[1] == $dsmonhoc[$j][0])
-                            for($k = 0; $k < count($gv) - 3; $k ++){
-                                if($gv[$k + 3] == $lop)
-                                    $count++;
-                            }
-                    }
-                }
-            }
-
-            $countGVCN = 0;
-            foreach ($danhsachgv as $gv) {
-                if($gv[2] == $lop)
-                    $countGVCN++;
-            }
-        }
+        
+        //$thoikhoabieu   = $this->createnewschedule();
+        $bangphancong   = $this->getDSPCTheoGV($year);
+        $randomngay     = $this->randomlist(5);
+        $randomtietngay = $this->randomlist(10);
+        $randomtiettuan = $this->randomlist(50);
+        $randomteacher  = $this->randomlist(Teacher::all()->count());
+        
 
         $sogiaovien = 0;
-
-        foreach ($danhsachgv as $gv){
-            $tong = 0;
-            for( $i = 3; $i < count($gv); $i++){
-                $tong += $this->soTietTuan($gv[1], $gv[$i] , $somon, $dsmonhoc);
-            }
-            $tongtietday[$sogiaovien] = $tong;
-            $sogiaovien++;
-        }
-
-        $sogiaovien = 0;
-         foreach(tkb::all() as $key => $gv){
+        foreach(tkb::all() as $key => $gv){
             $addnew = null;
             $addnew[0] = $gv->teacher_id;
-            $addnew[1] = $gv->teacher->user->fullname;
-
-            $addnew[2] = Classes::where("id", "like", $year."%")->where("homeroom_teacher", "=", $gv->teacher_id)->first();
-            if($addnew[2] == null)
-                $addnew[2] = "";
-            else
-                $addnew[2] = $addnew[2]->classname;
-            //$addnew[3] = $gv->sotietconlai;
+            $addnew[1] = $gv->teacher_name;
+            $addnew[2] = $gv->subject_name;
+            $addnew[3] = $gv->homeroom_class;
+            $addnew[4] = 0;
             $DSPHANCONG = Phancong::where("class_id", "like", $year."%")->where("teacher_id", "=", $gv->teacher_id)->get();
             for($i = 0; $i < 50 ; $i++) {
                 $t = "T".$i;
                 if($i == 0 || $i == 9 || $i == 44 || $i == 49){
-                    $addnew[$i + 4] = $gv->$t;
+                    $addnew[$i + 5] = $gv->$t;
                     continue;
                 }
-                $addnew[$i + 4] = "";
+                $addnew[$i + 5] = "";
                 foreach ($DSPHANCONG as $lop) {
                     if($lop->classes->classname == $gv->$t){
-                        $addnew[$i + 4] = $gv->$t;
+                        $addnew[$i + 5] = $gv->$t;
                         break;
                     }
                 }
@@ -857,107 +660,136 @@ class ScheduleControler extends Controller
             $countdaphan = 0;
             for($i = 0; $i < 50 ; $i++) {
                 if($i == 0 || $i == 9 || $i == 44 || $i == 49){
-                    $addnew[$i + 4] = $gv->$t;
                     continue;
                 }
-                if($addnew[$i + 4] != "")
+                if($addnew[$i + 5] != "")
                 $countdaphan++;
             }
-            $addnew[3] = $DSPHANCONG->count()*$gv->teacher->teach->total_time - $countdaphan;
-            
+            $addnew[4] = $DSPHANCONG->count()*$gv->teacher->teach->total_time - $countdaphan;
+
             $thoikhoabieu[$key] = $addnew;
         }
 
-        $sogiaovien = Teacher::all()->count();
-        $randgv = $this->randomlist($sogiaovien);
-        $randtiet = $this->randomlist(50);
-        $randngay = $this->randomlist(5);//chi hoc thu 2->6
-        $randtiet_ngay = $this->randomlist(10);
-
-        foreach ($randgv as $gv){//giao vien ta lop theo tuan tu, tiet random
-            $sllop = count($danhsachgv[$gv]) - 3;
-            if($sllop <= 0 || $thoikhoabieu[$gv][3]==0)
+        foreach ($bangphancong as $row => $teacher){
+            $sllop = count($teacher) - 4;
+            if($sllop <= 0 || $thoikhoabieu[$row][4] == 0)//he tiet day hay da pphan cong xong
                 continue;
+          
             $randlop = $this->randomlist($sllop);
-            for($i = 0; $i < $sllop; $i++){
-                $lop = $danhsachgv[$gv][$randlop[$i] + 3];
-                for($_tiet = 0; $_tiet < 50; $_tiet++){//xep theo ngay 1 ngay khong dc qua 2 tiet
-                    $tiettkb = $randtiet[$_tiet] + 4;//vi tri tren tkb
-                    if($thoikhoabieu[$gv][$tiettkb] == "" && $this->lt_tietTuan($gv, $lop,$thoikhoabieu, $danhsachgv, $somon, $dsmonhoc) &&
-                            $this->khongday1ngayquanhieu($gv, $lop, $tiettkb, $thoikhoabieu )){
-                        $thoikhoabieu[$gv][$tiettkb] = $lop;
-                        $thoikhoabieu[$gv][3]--;
+            foreach ($randlop as $key1 => $rowlop) {
+                $lop = $teacher[$rowlop + 4];
+                foreach ($randomtiettuan as $tiet) {
+                    $colum = $tiet +  5;
+                    if($thoikhoabieu[$row][$colum] == ""
+                        &&  $this->count_class_row($lop, $row, $thoikhoabieu ) < Teacher::where("id", "=", $teacher[0])->first()->teach->total_time 
+                        &&  $this->gioihanngay($lop, $row, $colum, $thoikhoabieu)){
+                            $thoikhoabieu[$row][$colum] = $lop;
+                            $thoikhoabieu[$row][4]--;
                     }
                 }
             }
         }
-        
 
-        //chap nhan trung de xep tkb
-        //phan xu li ve dich chuyen de duoc du lieu nhu y  muon
         foreach ($thoikhoabieu as $row => $Gv) {
             for($i = 0; $i < 5; $i++){
                 for($j = 0; $j < 10; $j++){
-                    $tiet = $i*10 + $j;
+                    $tiet = $i*10 + $j + 5;
                     $this->xulitrung($thoikhoabieu, $row, $tiet);
                 }
             }
-            
         }
-        //end----------------------
 
         tkb::truncate();
         for($i = 0; $i < count($thoikhoabieu);$i++){
-            $addnew = null;
             $addnew = new tkb;
-            $addnew->teacher_id = $thoikhoabieu[$i][0];
-            $addnew->sotietconlai = $thoikhoabieu[$i][3];
+            $addnew->teacher_id     = $thoikhoabieu[$i][0];
+            $addnew->teacher_name   = $thoikhoabieu[$i][1];
+            $addnew->subject_name   = $thoikhoabieu[$i][2];
+            $addnew->homeroom_class = $thoikhoabieu[$i][3];
+            $addnew->sotietconlai   = $thoikhoabieu[$i][4];
             for($j = 0; $j < 50; $j++){
-                $pro = "T".$j;
-                $addnew->$pro = $thoikhoabieu[$i][$j+4];
+                $t = "T".$j;
+                $addnew->$t = $thoikhoabieu[$i][$j+5];
             }
 
             $addnew->save();
         }
 
-
-        //$this->printcheck1($thoikhoabieu);
-        $DSLOPChuaPC = $this->checkthoikhoabieu();
-
-       return view('schedule.tkb_giaovien_old')->with('thoikhoabieu', $thoikhoabieu)->with("chuaphan", $DSLOPChuaPC);        
+        $DSLOPTRUNG = $this->checkTKB();
+        $result['thoikhoabieu'] = $thoikhoabieu;
+        $result['dsloptrung'] = $DSLOPTRUNG;
+        return $result;        
     }
 
-    public function xulitrung(&$TKB, $row, $tiet){
-        if($this->count_lop($TKB, $tiet, $TKB[$row][$tiet+4]) >= 2){
+
+    public function gioihanngay($lop, $row,  $col, $thoikhoabieu){
+        $countNgay = 0;
+        $countSang = 0;
+        $countChieu = 0;
+
+        $ngay = (int)(($col - 5)/10);
+        $tietdau = $ngay*10 + 5;
+        for($i = 0; $i < 10; $i++){
+            if($thoikhoabieu[$row][$tietdau + $i] == $lop)
+                $countNgay++;
+        }
+
+        $buoi = ($col - 5)%10;
+        if($buoi < 5){
+            for($i = 0; $i < 5; $i++){
+                if($thoikhoabieu[$row][$tietdau + $i] == $lop){
+                    if(abs($buoi - $i) != 1)//neu dung dieu kien nay thi toi da 2 tiet/buoi, khong thay doi dc
+                        return false;
+                    $countSang++;
+                }
+            }
+        }else{//buoi chieu
+            for( $i = 5; $i < 10; $i ++){
+                if($thoikhoabieu[$row][$tietdau + $i] == $lop){
+                    if(abs($buoi - $i) != 1)
+                        return false;
+                    $countChieu++;
+                }
+            }
+        }
+
+        if($countNgay < 4 || $countSang < 2 || $countChieu < 2)    
+            return true;
+        else 
+            return false;
+    }
+
+    public function xulitrung(&$TKB, $row, $col){
+        if($this->count_lop($TKB, $col, $TKB[$row][$col]) > 1){
             $rowT = null;
-            $tiettrong = null;
+            $colempty = null;
             
             for( $i = 0 ; $i < 50 ; $i++){
-                if($TKB[0][$i+4] == 'cc' || $TKB[0][$i+4] == 'sh' )
+                if($TKB[0][$i + 5] == 'cc' || $TKB[0][$i + 5] == 'sh' )
                     continue;
-                if($this->count_lop($TKB, $i, $TKB[$row][$tiet+4]) == 0){
-                    $tiettrong = $i;
+                if($this->count_lop($TKB, $i + 5, $TKB[$row][$col]) == 0){
+                    $colempty = $i + 5;
                     break;
                 }
             }
 
-            if($this->isTrungtren($TKB, $row, $tiet, $rowT)){
+            if($this->isTrungtren($TKB, $row, $col, $rowT))
+            {
             } 
-            else if($this->isTrungduoi($TKB, $row, $tiet, $rowT)){
+            else if($this->isTrungduoi($TKB, $row, $col, $rowT)){
             }    
 
-            $dem = $TKB[$rowT][$tiet + 4];
-            $TKB[$rowT][$tiet + 4] =  $TKB[$rowT][$tiettrong + 4];
-            $TKB[$rowT][$tiettrong + 4] = $dem;
-            $this->xulitrung($TKB, $rowT, $tiettrong);
+            $dem = $TKB[$rowT][$col];
+            $TKB[$rowT][$col] =  $TKB[$rowT][$colempty];
+            $TKB[$rowT][$colempty] = $dem;
+            $this->xulitrung($TKB, $rowT, $colempty);
         }
     }
 
     
-    public function isTrungtren($TKB, $row, $tiet, &$rowT){
+    public function isTrungtren($TKB, $row, $col, &$rowT){
         if($row == 0)
             return false;
-        $col = $tiet + 4;
         $lop = $TKB[$row][$col];
         $row --;
         for($i = $row; $i >= 0; $i--)
@@ -969,10 +801,9 @@ class ScheduleControler extends Controller
     }
 
 
-    public function isTrungduoi($TKB, $row, $tiet, &$rowT){
+    public function isTrungduoi($TKB, $row, $col, &$rowT){
         if($row == count($TKB)-1)
             return false;
-        $col = $tiet+ 4;
         $lop = $TKB[$row][$col];
         $row++;
         for($i = $row; $i < count($TKB) ; $i++)
@@ -985,10 +816,9 @@ class ScheduleControler extends Controller
     }
 
     
-    public function count_lop($tkb,$tiet, $lop){
+    public function count_lop($tkb, $col, $lop){
         
         $count = 0;
-        $col = $tiet + 4;
         if($lop == "cc" || $lop == "" || $lop == "sh" )
             return -1;
 
@@ -1000,116 +830,39 @@ class ScheduleControler extends Controller
         return $count;
     }
 
-    public function printcheck1($arr){
-        if ($arr != null)
-            foreach($arr as $key){
-                echo "<br>";
-                for( $i = 0; $i < count($key); $i++){
-                    echo $key[$i] . " | ";
-                }
-            }
-    }
 
-    public function printcheck2($arr){
-        if($arr){
-            for($i = 0; $i < count($arr); $i++)
-                echo $arr[$i]. "|";
+    public function randomlist($num){
+        $result = null;
+        if($num > 0){
+            for($i = 0; $i < $num; $i++)
+                $result[$i] = $i;
         }
+        shuffle($result);
+
+        return $result;
     }
 
+    public function count_class_col($class, $col, $tkb){
+        $count = 0;
+        for($i = 0; $i < count($tkb); $i++){
+            if($tkb[$i][$col]  == $class)
+                $count++;
+        }
 
-    function lt_tietTuan($gv, $lop, $thoikhoabieu, $danhsachgv, $somon, $dsmonhoc){//vd: giao vien chi gap lop trong 4 tiet/tuan
+        return $count;
+    }
+
+    public function count_class_row($class, $row, $tkb){
         $count = 0;
         for($i = 0; $i < 50; $i++){
-            if($thoikhoabieu[$gv][$i + 4] == $lop)
-                $count ++;
+            if($tkb[$row][$i + 5] == $class)
+                $count++;
         }
-        
-        if ($count < $this->soTietTuan($danhsachgv[$gv][1], $lop, $somon, $dsmonhoc))
-            return true;
-        else 
-            return false;
+
+        return $count;
     }
 
-    function chuaCoGVKhacDay($tiet, $lop, $thoithoikhoabieu){//tra ve true neu chua co ai day
-        foreach ($thoithoikhoabieu as $gv) {
-            if($gv[$tiet] == $lop)
-            return false;
-        }
-        return true;
-    }
-
-    function khongday1ngayquanhieu($gv, $lop, $tiet, $thoikhoabieu){//vi du khong dc day nhieu hon 2 tiet 1 ngay
-
-    //dieu kien kiem tra: 1 buoi khong qua 2 tiet, 1 ngay khong qua 4 tiet, va 2 tiet trong 1 buoi phai lien ke nhau
-        $countNgay = 0;
-        $countSang = 0;
-        $countChieu = 0;
-        $ngay = (int)(($tiet - 4)/10);
-        $tietdautkb = $ngay*10 + 4;
-
-        for($i = 0; $i < 10; $i++){
-            if($thoikhoabieu[$gv][$tietdautkb + $i] == $lop)
-                $countNgay++;
-            
-        }
-
-        $buoi = ($tiet - 4)%10;
-        if($buoi < 5){//buoi sang
-            for($i = 0; $i < 5; $i++){
-                if($thoikhoabieu[$gv][$tietdautkb + $i] == $lop){
-                    if(abs($buoi - $i) != 1)//neu dung dieu kien nay thi toi da 2 tiet/buoi, khong thay doi dc
-                        return false;
-                    $countSang++;
-                }
-            }
-        }else{//buoi chieu
-            for( $i = 5; $i < 10; $i ++){
-                if($thoikhoabieu[$gv][$tietdautkb + $i] == $lop){
-                    if(abs($buoi - $i) != 1)
-                        return false;
-                    $countChieu++;
-                }
-            }
-        }
-        //NOTE: neu tiet roi vao buoi sang thi $countChieu = 0, nen can kiem tra $countNgay de ket qua chinh xac
-
-        if($countNgay < 4 || $countSang < 2 || $countChieu < 2)    
-            return true;
-        else 
-            return false;
-    }
-
-    public function soTietTuan($mon, $lop, $somon, $dsmonhoc){//tra ve so tiet ma mot lop x phai hoc mon y trong tuan
-        $sotiethoc = 0;
-        for($i = 0; $i < $somon; $i ++){
-            if($dsmonhoc[$i+1][0] == $mon){
-                if(substr($lop, 0, 1) == 6){
-                    $sotiethoc = $dsmonhoc[$i + 1][1];
-                }else if(substr($lop, 0, 1) == 7){
-                    $sotiethoc = $dsmonhoc[$i + 1][2];
-                }else if(substr($lop, 0, 1) == 8){
-                    $sotiethoc = $dsmonhoc[$i + 1][3];
-                }else if(substr($lop, 0, 1) == 9){
-                            $sotiethoc = $dsmonhoc[$i + 1][4];
-                }
-
-                break;
-            }
-        }
-
-        return $sotiethoc;
-    }
-
-    function randomlist($num){
-        for( $i = 0 ; $i  < $num; $i++){
-            $order[$i] = $i;
-        }
-        shuffle($order);
-        return $order;
-    }
-
-    public function tkblop(Request $request)
+    public function tkblop_index()
     {
         $year = substr(date('Y'),2);
         if(date("M") < 8)
@@ -1118,8 +871,6 @@ class ScheduleControler extends Controller
         $ds_lh = Classes::where("id", "like", $year."%")->get();
         for($i = 0; $i < $ds_lh->count(); $i++)
             $danhsachlop[$i] = $ds_lh[$i]->classname;
-        
-
 
         for( $i = 0; $i < count($danhsachlop); $i++){
             for( $j = 0; $j < 52; $j ++){
@@ -1139,13 +890,13 @@ class ScheduleControler extends Controller
                 for($i = 0 ; $i < 50; $i++){
                     $pro = "T".$i;
                     if($gv->$pro == $thoikhoabieu_lophoc[$j][1]){
-                        $thoikhoabieu_lophoc[$j][$i + 2] = $gv->teacher->teach->subject_name;
+                        $thoikhoabieu_lophoc[$j][$i + 2] = "<span>".$gv->subject_name . "</span><br><span>". $gv->teacher_id."</span>";
                     }
                 }
             }
         }
 
-        return view('schedule.tkb_lophoc')->with("thoikhoabieu", $thoikhoabieu_lophoc);
+        return view('schedule.tkblop_index')->with("thoikhoabieu", $thoikhoabieu_lophoc);
     }
 
     public function tkbhientai(){
@@ -1155,28 +906,21 @@ class ScheduleControler extends Controller
         foreach(tkb::all() as $key => $gv){
             $addnew = null;
             $addnew[0] = $gv->teacher_id;
-            $addnew[1] = $gv->teacher->user->fullname;
-
-            $addnew[2] = Classes::where("id", "like", $year."%")->where("homeroom_teacher", "=", $gv->teacher_id)->first();
-            if($addnew[2] == null)
-                $addnew[2] = "";
-            else
-                $addnew[2] = $addnew[2]->classname;
-            $addnew[3] = $gv->sotietconlai;
-            $DSPHANCONG = Phancong::where("class_id", "like", $year."%")->where("teacher_id", "=", $gv->teacher_id)->get();
+            $addnew[1] = $gv->teacher_name;
+            $addnew[2] = $gv->subject_name;
+            $addnew[3] = $gv->homeroom_class;
+            $addnew[4] = $gv->sotietconlai;
             for($i = 0; $i < 50 ; $i++) {
                 $t = "T".$i;
-                $addnew[$i + 4] = $gv->$t;
-            
+                $addnew[$i + 5] = $gv->$t;
             }
-
             
             $thoikhoabieu[$key] = $addnew;
         }
 
-        $DSLOPChuaPC = $this->checkthoikhoabieu();
+        $DSLOPChuaPC = $this->checkTKB();
 
-        return view('schedule.xemtkb')->with('thoikhoabieu', $thoikhoabieu)->with("chuaphan", $DSLOPChuaPC);         
+        return view('schedule.xemtkbhientai')->with('thoikhoabieu', $thoikhoabieu)->with("chuaphan", $DSLOPChuaPC);         
     }
 
     public function phancongcacnam(){
@@ -1211,63 +955,120 @@ class ScheduleControler extends Controller
         }
 
         return $DSPHANCONG;
+        //return "oke";
 
     }
 
 
-    public function phanconglop(){
-        $year = substr(date('Y'),2);
-        if(date("M") < 8)
-            $year--;
-        $DSPHANCONG = null;
-        $dem  = 0;
-        foreach (Subject::all() as $Mon) {
-            $DSGV = Teacher::where('group', "=", $Mon->id)->get();
-            foreach ($DSGV as $GV) {
-                $addnew = null;
-                $addnew[0] = $GV->id;
-                $addnew[1] = $GV->user->fullname;
-                $addnew[2]  = $GV->teach->subject_name;
-                $addnew[3] = Classes::where('id', "like", $year.'%')->where("homeroom_teacher", "=", $GV->id)->first();
-                if($addnew[3] == null)
-                    $addnew[3] = "";
-                else
-                    $addnew[3] = $addnew[3]->classname;
+    // public function phanconglop(){
+    //     $year = substr(date('Y'),2);
+    //     if(date("M") < 8)
+    //         $year--;
+    //     $DSPHANCONG = null;
+    //     $dem  = 0;
+    //     foreach (Subject::all() as $Mon) {
+    //         $DSGV = Teacher::where('group', "=", $Mon->id)->get();
+    //         foreach ($DSGV as $GV) {
+    //             $addnew = null;
+    //             $addnew[0] = $GV->id;
+    //             $addnew[1] = $GV->user->fullname;
+    //             $addnew[2]  = $GV->teach->subject_name;
+    //             $addnew[3] = Classes::where('id', "like", $year.'%')->where("homeroom_teacher", "=", $GV->id)->first();
+    //             if($addnew[3] == null)
+    //                 $addnew[3] = "";
+    //             else
+    //                 $addnew[3] = $addnew[3]->classname;
 
-                $DSPC = Phancong::where("class_id", "like", $year."%")->where('teacher_id', '=', $GV->id)->get();
-                foreach ($DSPC as $key => $Lop) {
-                    $addnew[$key + 4] = $Lop->classes->classname;
-                }
-                $DSPHANCONG[$dem++] = $addnew;
-            }
-        }
-        $check = $this->check();    
+    //             $DSPC = Phancong::where("class_id", "like", $year."%")->where('teacher_id', '=', $GV->id)->get();
+    //             foreach ($DSPC as $key => $Lop) {
+    //                 $addnew[$key + 4] = $Lop->classes->classname;
+    //             }
+    //             $DSPHANCONG[$dem++] = $addnew;
+    //         }
+    //     }
+    //     $check = $this->checkPhanCong();    
 
-        $DSTHEOLOP = null;
+    //     $DSTHEOLOP = null;
         
-        foreach (Classes::where("id", "like", $year."%")->get() as $key => $Lop) {
-            $addnew = null;
-            $addnew[0] = $Lop->classname;
-            foreach (Subject::all() as $key2 => $Mon) {
-                $addnew[$key2 + 1] = "";
-                $PCL = Phancong::where("class_id", "=", $Lop->id)->get();
-                //echo "count". $PCL->count();
-                foreach ($PCL as $Gv) {
-                    if($Gv->teacher->teach->id == $Mon->id){
-                        $addnew[$key2+1] = $Gv->teacher->user->fullname;
-                        break;
-                    }
-                }
+    //     foreach (Classes::where("id", "like", $year."%")->get() as $key => $Lop) {
+    //         $addnew = null;
+    //         $addnew[0] = $Lop->classname;
+    //         foreach (Subject::all() as $key2 => $Mon) {
+    //             $addnew[$key2 + 1] = "";
+    //             $PCL = Phancong::where("class_id", "=", $Lop->id)->get();
+    //             //echo "count". $PCL->count();
+    //             foreach ($PCL as $Gv) {
+    //                 if($Gv->teacher->teach->id == $Mon->id){
+    //                     $addnew[$key2+1] = $Gv->teacher->user->fullname;
+    //                     break;
+    //                 }
+    //             }
+    //         }
+    //         $DSTHEOLOP[$key] = $addnew;
+    //     }
+
+    //     $listsubject = null;
+    //     foreach (Subject::all() as $key => $Mon) {
+    //         $listsubject[$key] = $Mon->subject_name;
+    //     }
+
+    //     return view('schedule.phanlop')->with('danhsachgv', $DSPHANCONG)->with("check", $check)->with('dshtheolop', $DSTHEOLOP)->with('listsubject', $listsubject);
+    // }
+
+    public function updatetkbgv(Request $request){
+        $tkb = $request['tkbgv'];
+        foreach ($tkb as $key1 => $rowgv) {
+            $update = tkb::where("teacher_id", "=", $rowgv[0])->first();
+
+            for( $i = 0; $i < 50; $i++){
+                $tiet = "T".$i;
+                $update->$tiet = $rowgv[$i + 5];
             }
-            $DSTHEOLOP[$key] = $addnew;
+            
+            $update->save();
         }
-
-        $listsubject = null;
-        foreach (Subject::all() as $key => $Mon) {
-            $listsubject[$key] = $Mon->subject_name;
-        }
-
-        return view('schedule.phanlop')->with('danhsachgv', $DSPHANCONG)->with("check", $check)->with('dshtheolop', $DSTHEOLOP)->with('listsubject', $listsubject);
+            
+        return $tkb;
     }
 
+    public function printcheck1($arr){
+        if ($arr != null)
+            foreach($arr as $key){
+                echo "<br>";
+                for( $i = 0; $i < count($key); $i++){
+                    echo $key[$i] . " | ";
+                }
+            }
+    }
+
+    public function printcheck2($arr){
+        if($arr){
+            for($i = 0; $i < count($arr); $i++)
+                echo $arr[$i]. "|";
+        }
+    }
+
+
+    public function updatetkbclass(Request $request){
+        $listclass = $request['listclass'];
+        $listteacher = null;
+
+        $listteacher = $this->createnewschedule();
+        foreach ($listteacher as $key1 => $oneteacher) {
+            foreach ($listclass as $class) {
+                for($i = 0; $i < 50; $i++){
+                    if($class[$i + 2] == $oneteacher[0])
+                        $oneteacher[$i + 5] = $class[1];
+                }
+            }
+            $listteacher[$key1] = $oneteacher;   
+            $teacher = tkb::where("teacher_id", "=", $oneteacher[0])->first();
+            for($j = 0; $j < 50; $j++){
+                $t = "T".$j;
+                $teacher->$t = $oneteacher[$j + 5];
+            }
+             $teacher->update();
+        }
+        return $listclass;
+    }
 }

@@ -16,6 +16,9 @@ class CreateTkbTable extends Migration
         Schema::create("tkb", function(Blueprint $table){
             $table->string("teacher_id",9);
             $table->primary("teacher_id");
+            $table->string("teacher_name", 60);
+            $table->string("subject_name", 40);
+            $table->string("homeroom_class", 6);
             $table->foreign("teacher_id")->references("id")->on("teachers");
             $table->integer("sotietconlai");
             for($i = 0; $i < 50; $i++){
