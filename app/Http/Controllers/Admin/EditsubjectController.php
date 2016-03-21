@@ -105,7 +105,7 @@ class EditsubjectController extends Controller
 
     public function disable_scoretype(Request $request){
         $year = date("Y");
-        $month = date("M");
+        $month = date("m");
         if($month < 8){
             $year = $year - 1;
         }

@@ -5,6 +5,10 @@
 table tr.selected{
     background-color: #3399CC !important; 
 }
+textarea {
+   resize: vertical;
+   width: 100%;
+}
 </style>
 <section class="content-header">
     <h1>
@@ -46,15 +50,7 @@ table tr.selected{
 				 			</form>
 			 			</div>
 			 			<div class="box-footer">
-			 				<div class="col-lg-3">
-				 				<ul class="sidebar-menu">
-				 					<li><h4 class="text text-center">Select Action</h4></li>
-				 					<li><button id='update' class='btn btn-primary btn-block' {{$disable}} >Update Status</button></li>
-				 					<br>
-				 					<li><button id="setConduct" class="btn btn-primary btn-block" {{$disable}} >Set Conduct</button></li>
-			 					</ul>
-				 			</div>
-				 			<div class="col-lg-9">
+				 			<div class="col-lg-8">
 				 				<div id="waiting_record2" style="display:none"  class="text-center">
 		                            <br>
 		                            <i class="fa fa-spin fa-refresh"></i>&nbsp; Loading...
@@ -86,46 +82,60 @@ table tr.selected{
 					 					?>
 					 				</tbody>
 					 				<tfoot>
-					 					<tr><td><button id="select_all_button" class="btn btn-flat btn-primary pull-left">Select All</button></td></tr>
+					 					<tr col-span="6">
+                                            <td>
+                                                <button id="select_all_button" class="btn btn-block btn-primary pull-left">Select All</button>
+                                            </td>
+                                        </tr>
 					 				</tfoot>
 					 			</table>
-
 					 		</div>
+                            <div class="col-lg-4">
+                                <div class='box box-primary'>
+                                    <div class="box-header">
+                                        <h4 class="text text-center box-title">Set Conduct</h4>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label for="conduct">Total Selected Student</label>
+                                            <select id="conduct" name="conduct" class="form-control" {{$disable}}>
+                                                <option value="excellent" selected>Excellent</option>;
+                                                <option value="good" >Good</option>;
+                                                <option value="bad" >Bad</option>;
+                                            </select>
+                                        </div> 
+                                        <button id="setConduct" class="btn btn-primary btn-block" {{$disable}} >Set Conduct</button>
+                                    </div>
+                                </div>
+                                <div class='box box-primary'>
+                                    <div class="box-header">
+                                        <h4 class="text text-center box-title">Add Note</h4>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label for="note_add">Note</label>
+                                            <textarea id="note_add" name="note_add" maxlength="255" value="" {{$disable}}>
+                                            </textarea>
+                                        </div>
+                                        <button id='addnote' class='btn btn-primary btn-block' {{$disable}} >Add</button>
+                                    </div>
+                                </div>
+                                <div class='box box-primary'>
+                                    <div class="box-header">
+                                        <h4 class="text text-center box-title">Update Status</h4>
+                                    </div>
+                                    <div class="box-body">
+                                        <button id='update' class='btn btn-primary btn-block' {{$disable}} >Update</button>
+                                    </div>
+                                </div>
+                            </div>
 			 			</div>
 			 		</div>
 			 	</div>
+
 		 	</div>        
 		</div>
 	</div>
-</div>
-<div id="editModal" class="modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
-                <h4 id="modal_title" class="modal-title"></h4>
-                <form id="modal_edit_form">
-                    <div class="form-group col-lg-8">
-                        <label for="modal_score">Score</label>
-                        <input type="text" id="modal_score" name="modal_score" class="form-control" data-mask/>
-                    </div>
-                    <div class="form-group col-lg-12">
-                        <label for="modal_note">Note</label>
-                        <input type="text" id="modal_note" class="form-control" name="modal_note">
-                        <label id="count_text" for="modal_note" class="pull-right"></label>
-                        <input type="hidden" id="modal_hidden_index" class="form-control">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="modal_save_button" class="btn btn-primary pull-right" data-dismiss="">Save</button>
-                <button type="button" id="modal_close_button" class="btn btn-primary pull-left" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    <!-- /.modal-content -->
-    </div>
-  <!-- /.modal-dialog -->
 </div>
 </section>
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
@@ -134,6 +144,7 @@ table tr.selected{
 <script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+    $('#note_add').empty();
 	$('#student_list_table').dataTable({
         "lengthChange": false,
         "searching": true,
@@ -142,7 +153,15 @@ $(document).ready(function() {
         "scrollCollapse": true,
         "info" : false,
         "paging": false,
-        "bAutoWidth": true
+        "bAutoWidth": true,
+        "columns": [
+            { "width": "8%" },
+            { "width": "28%" },
+            { "width": "7%" },
+            { "width": "10%" },
+            { "width": "8%" },
+            { "width": "52%" }
+        ],
     });
     $('#student_list_table tbody tr').on('click',function(){
     	if($(this).hasClass('selected')){
@@ -189,7 +208,65 @@ $(document).ready(function() {
         });
     });
     $('#setConduct').on('click',function(){
-    	$('#editModal').modal('show');
+    	var Idlist = [];
+        $('#student_list_table tr.selected td:first-child').each(function(i,j){
+            Idlist.push(j.innerHTML);
+        }); 
+        var conduct = $('#conduct').val();
+        var token = $('input[name="_token"]').val();
+        if(Idlist.length > 0){
+            $.ajax({
+                url     :"<?= URL::to('/teacher/manage-class/set_conduct') ?>",
+                type    :"POST",
+                async   :false,
+                data    :{
+                        'Idlist'        :Idlist,
+                        'conduct'       :conduct,
+                        '_token'        :token
+                        },
+                success:function(record){
+                    var index;
+                    $('#student_list_table tr.selected').each(function(i,j){
+                        index = $('#student_list_table').dataTable().fnGetPosition(this);
+                        index = $('#student_list_table').dataTable().fnUpdate(conduct,index,3);
+                    });
+                },
+                error:function(){
+                    alert("something went wrong, contact master admin to fix");
+                }
+            });
+        };
+    });
+    
+    $('#addnote').on('click',function(){
+        var Idlist = [];
+        $('#student_list_table tr.selected td:first-child').each(function(i,j){
+            Idlist.push(j.innerHTML);
+        }); 
+        var note_add = $('#note_add').val();
+        var token = $('input[name="_token"]').val();
+        if(Idlist.length > 0){
+            $.ajax({
+                url     :"<?= URL::to('/teacher/manage-class/add_note') ?>",
+                type    :"POST",
+                async   :false,
+                data    :{
+                        'Idlist'        :Idlist,
+                        'note_add'       :note_add,
+                        '_token'        :token
+                        },
+                success:function(record){
+                    var index;
+                    $('#student_list_table tr.selected').each(function(i,j){
+                        index = $('#student_list_table').dataTable().fnGetPosition(this);
+                        index = $('#student_list_table').dataTable().fnUpdate(note_add,index,5);
+                    });
+                },
+                error:function(){
+                    alert("something went wrong, contact master admin to fix");
+                }
+            });
+        };
     });
 });
 </script>

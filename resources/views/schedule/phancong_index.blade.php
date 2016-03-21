@@ -208,26 +208,13 @@ table tr.selected{
 </div>	
 </section>
 
-
-
-
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
 <script src="{{asset("/adminlte/bootstrap/js/bootstrap.min.js")}}"></script>
 <!-- DataTables -->
 <script src="{{asset("/adminlte/plugins/datatables/jquery.dataTables.min.js")}}"></script>
 <script src="{{asset("/adminlte/plugins/datatables/dataTables.bootstrap.min.js")}}"></script>
 <script src="{{asset("/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js")}}"></script>
-<!-- CK Editor -->
-<script src="{{asset("/mylib/ckeditor/ckeditor.js")}}"></script>
-<!-- Pusher -->
-<script src="{{asset("/mylib/bower_components/pusher/dist/pusher.min.js")}}"></script>
-<script src="{{asset("/mylib/pnotify-master/src/pnotify.js")}}"></script>
-<script src="{{asset("/mylib/pnotify-master/src/pnotify.desktop.js")}}"></script>
-<script src="{{asset("/mylib/pnotify-master/src/pnotify.buttons.js")}}"></script>
-<link rel="stylesheet" href="{{asset("/mylib/pnotify-master/src/pnotify.css")}}">
-<link rel="stylesheet" href="{{asset("/mylib/pnotify-master/src/pnotify.buttons.css")}}">
-<link rel="stylesheet" href="{{asset("/mylib/pnotify-master/src/pnotify.buttons.css")}}">
-<link rel="stylesheet" href="{{asset("/mylib/pnotify-master/src/AdminLTE.css")}}">
+
 <script type="text/javascript">
 $(document).ready(function(){
 	$(function(){

@@ -21,11 +21,10 @@
 <link rel="stylesheet" href="{{asset("/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css")}}">
 <section class="content-header">
     <h1>
-        Admin
-        <small>Mail Box</small>
+        Mail Box
     </h1>
     <ol class="breadcrumb">
-        <li><a href="/admin/dashboard"><i class="fa fa-home"></i>Dashboard</a></li>
+        <li><a href="/"><i class="fa fa-home"></i>Dashboard</a></li>
         <li>Mail Box</li>
     </ol>
 </section>

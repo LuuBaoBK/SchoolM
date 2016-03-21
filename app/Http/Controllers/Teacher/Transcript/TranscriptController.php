@@ -270,7 +270,7 @@ class TranscriptController extends Controller
         //installizing data
         $teacher = Teacher::find(Auth::user()->id);
         $year = substr(date("Y"), 2,2);
-        $year = (date("M") < 8) ? $year-1 : $year;
+        $year = (date("m") < 8) ? $year-1 : $year;
         $subject_id = Teacher::find(Auth::user()->id)->group;
         $class_list = Phancong::select('class_id')
                               ->where('teacher_id','=',$teacher->id)

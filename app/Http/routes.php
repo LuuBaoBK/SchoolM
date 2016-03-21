@@ -174,6 +174,8 @@ Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () 
 	//class Manage
 	Route::get('manage-class', 'Teacher\ManageclassController@get_view');
 	Route::post('manage-class/update', 'Teacher\ManageclassController@update');
+	Route::post('manage-class/set_conduct', 'Teacher\ManageclassController@set_conduct');
+	Route::post('manage-class/add_note', 'Teacher\ManageclassController@add_note');
 	//view transcript
 	Route::get('view_transcript', 'Teacher\Transcript\TranscriptController@view_transcript');
 
@@ -194,6 +196,8 @@ Route::group(['prefix' => 'student','middleware' => 'authrole_stu'], function ()
 	Route::post('transcript/select_class', 'Student\TranscriptController@select_class');
 	Route::post('transcript/select_subject', 'Student\TranscriptController@select_subject');
 	
+	//Schedules
+	Route::get('schedule', 'Student\ScheduleController@get_view');
 
 });
 

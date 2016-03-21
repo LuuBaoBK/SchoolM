@@ -1,9 +1,6 @@
 @extends('mytemplate.blankpage_stu')
 @section('content')
 <style type="text/css">
-table tr.selected{
-    background-color: #3399CC !important; 
-}
 table {
     table-layout: fixed !important;
 }
@@ -14,11 +11,17 @@ table tr.odd{
 table tr.sumary{
 	background-color: #C1A5FC !important
 }
+table tr.selected{
+    background-color: #3399CC !important; 
+}
+textarea {
+	resize:none;
+}
 </style>
 <section class="content-header">
     <h1>
         Student
-        <small>Dash Board</small>
+        <small>Transcript</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="/student/dashboard"><i class="fa fa-home"></i>Student</a> -> Transcript</li>
@@ -86,11 +89,39 @@ table tr.sumary{
 				</div>
 			</div>
 			<div  class='col-lg-8'>
-				<div id="score_div" class="box box-primary">
+				<div class="box box-primary collapsed-box">
 					<div class="box-header">
-						<h4 class="box-title">Score List</h4>
+						<h4 class="box-title">Sumary</h4>
+						<div class="box-tools pull-right">
+				            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
+				        </div>
 					</div>
 					<div class="box-body">
+						<div class="form-group col-lg-4">
+							<label for="sumary_classname">Class  Name</label>
+							<input type="text" name="sumary_classname" id="sumary_classname" class="form-control" readonly>		
+						</div>
+						<div class="form-group col-lg-4">
+							<label for="sumary_homeroom_teacher">Homeroom Teacher</label>
+							<input type="text" name="sumary_homeroom_teacher" id="sumary_homeroom_teacher" class="form-control" readonly>
+						</div>
+						<div class="form-group col-lg-4">
+							<label for="sumary_conduct">Conduct</label>
+							<input type="text" name="sumary_conduct" id="sumary_conduct" class="form-control" readonly>
+						</div>
+						<div class="form-group col-lg-4">
+							<label for="sumary_ispassed">Status</label>
+							<input type="text" name="sumary_ispassed" id="sumary_ispassed" class="form-control" readonly>
+						</div>
+						<div class="form-group col-lg-8">
+							<label for="sumary_note">Note</label>
+							<textarea type="text-area" rows="5" name="sumary_note" id="sumary_note" class="form-control" readonly></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="box box-primary">
+					<div class="box-body">
+						<h4 class="box-title">Score List</h4>
 						<table width="100%" style="witdh:100%" id="score_list_table" class="table">
 							<thead>
 								<th width="25%">#</th>
@@ -121,7 +152,6 @@ table tr.sumary{
             "bLengthChange":false,
             "bInfo":false,
             "bPaginate":false,
-            //"sScrollX": true
             "columnDefs": [
 		        { targets: [0], visible: false},
 		    ]
@@ -135,20 +165,20 @@ table tr.sumary{
             "bLengthChange":false,
             "bInfo":false,
             "bPaginate":false,
-            //"sScrollX": true
+            "sScrollY": "550px",
             "columnDefs": [
 		        { targets: [0,1], visible: false},
 		    ]
 		});
 
 
-		$('#subject_div').slimScroll({
-            height: '550px'
-        });
+		// $('#subject_div').slimScroll({
+  //           height: '550px'
+  //       });
 
-        $('#score_div').slimScroll({
-            height: '650px'
-        });
+        // $('#score_div').slimScroll({
+        //     height: '700px'
+        // });
 
 		$('#score_list_table').dataTable({
 			"bAutoWidth": true,	
@@ -157,7 +187,8 @@ table tr.sumary{
             "bLengthChange":false,
             "bInfo":false,
             "bPaginate":false,
-            //"sScrollX": true
+            "sScrollY": "620px",
+            "sScrollX": false
 
 		});
 
@@ -188,7 +219,7 @@ table tr.sumary{
 			                		"all",
 			                		record[0][0].class_id,
 			                		"Sumary",
-			                		""
+			                		" "
 		                		]);
 			                	$.each(record[0], function(i,j){
 			                		$('#subject_list_table').dataTable().fnAddData([
@@ -207,6 +238,11 @@ table tr.sumary{
 			                		"Trung Binh Tong Mon Hoc"
 		                		]);
 			                });
+			                $('#sumary_classname').val(data[1]);
+			                $('#sumary_note').val(record[2]['note']);
+			                $('#sumary_conduct').val(record[2]['conduct']);
+			                $('#sumary_ispassed').val((record[2]['ispassed'] == 0) ? 'Failed' : 'Passed' );
+			                $('#sumary_homeroom_teacher').val(data[2]);
 			            },
 			            error:function(){
 			                alert("something went wrong, contact master admin to fix");
@@ -235,7 +271,6 @@ table tr.sumary{
 			                    '_token'        :token
 			                    },
 			            success:function(record){
-			            	console.log(record);
 			            	if(record.type == "all"){
 			            		$('#score_list_table').dataTable().fnClearTable();
 				                $.each(record.data,function(i,j){
@@ -254,8 +289,8 @@ table tr.sumary{
 			            		for(i=8;i<=12;i++){
 			            			var a = $('#score_list_table').dataTable().fnAddData([
 			            				"<b><u>Month : "+i+"</u></b",
-			            				"",
-			            				""
+			            				" ",
+			            				" "
 		            				]);
 									var nTr = $('#score_list_table').dataTable().fnSettings().aoData[ a[0] ].nTr;									
 									$(nTr).removeClass('odd');
@@ -263,11 +298,21 @@ table tr.sumary{
 									$(nTr).addClass(myclass);
 			            			$.each(record['month_'+i],function(i,j){
 			            				if(i.search("average") == -1 ){
-			            					a = $('#score_list_table').dataTable().fnAddData([
-				            					i,
-				            					j['0'],
-				            					j['1']
-			            					]);
+			            					if(j['0'] != 'missing'){
+			            						a = $('#score_list_table').dataTable().fnAddData([
+					            					i,
+					            					j['0'],
+					            					j['1']
+				            					]);
+			            					}
+			            					else{
+			            						a = $('#score_list_table').dataTable().fnAddData([
+					            					i,
+					            					j['0'],
+					            					"Missing score "
+				            					]);
+			            					}
+			            					
 			            					nTr = $('#score_list_table').dataTable().fnSettings().aoData[ a[0] ].nTr;
 											$(nTr).removeClass('odd');
 											$(nTr).removeClass('even');
@@ -289,7 +334,7 @@ table tr.sumary{
 			            						a = $('#score_list_table').dataTable().fnAddData([
 					            					i,
 					            					j[0],
-					            					j[1]
+					            					" "
 				            					]);
 				            					nTr = $('#score_list_table').dataTable().fnSettings().aoData[ a[0] ].nTr;
 												$(nTr).removeClass('odd');
@@ -303,8 +348,8 @@ table tr.sumary{
 			            		for(i=1;i<=5;i++){
 			            			var a = $('#score_list_table').dataTable().fnAddData([
 			            				"<b><u>Month : "+i+"</u></b>",
-			            				"",
-			            				""
+			            				" ",
+			            				" "
 		            				]);
 									var nTr = $('#score_list_table').dataTable().fnSettings().aoData[ a[0] ].nTr;									
 									$(nTr).removeClass('odd');
@@ -312,11 +357,20 @@ table tr.sumary{
 									$(nTr).addClass(myclass);
 			            			$.each(record['month_'+i],function(i,j){
 			            				if(i.search("average") == -1 ){
-			            					a = $('#score_list_table').dataTable().fnAddData([
-				            					i,
-				            					j['0'],
-				            					j['1']
-			            					]);
+			            					if(j['0'] != 'missing'){
+			            						a = $('#score_list_table').dataTable().fnAddData([
+					            					i,
+					            					j['0'],
+					            					j['1']
+				            					]);
+			            					}
+			            					else{
+			            						a = $('#score_list_table').dataTable().fnAddData([
+					            					i,
+					            					j['0'],
+					            					"Missing score "
+				            					]);
+			            					}
 			            					nTr = $('#score_list_table').dataTable().fnSettings().aoData[ a[0] ].nTr;
 											$(nTr).removeClass('odd');
 											$(nTr).removeClass('even');
@@ -353,7 +407,7 @@ table tr.sumary{
 			            		a = $('#score_list_table').dataTable().fnAddData([
 	            					"HK1 Average",
 	            					record['hk1_average'],
-	            					""
+	            					" "
             					]);
             					nTr = $('#score_list_table').dataTable().fnSettings().aoData[ a[0] ].nTr;
 								$(nTr).removeClass('odd');
@@ -363,7 +417,7 @@ table tr.sumary{
 								a = $('#score_list_table').dataTable().fnAddData([
 	            					"HK2 Average",
 	            					record['hk2_average'],
-	            					""
+	            					" "
             					]);
             					nTr = $('#score_list_table').dataTable().fnSettings().aoData[ a[0] ].nTr;
 								$(nTr).removeClass('odd');
@@ -373,7 +427,7 @@ table tr.sumary{
 								a = $('#score_list_table').dataTable().fnAddData([
 	            					"Scholastic Average",
 	            					record['scholastic_average'],
-	            					""
+	            					" "
             					]);
             					nTr = $('#score_list_table').dataTable().fnSettings().aoData[ a[0] ].nTr;
 								$(nTr).removeClass('odd');

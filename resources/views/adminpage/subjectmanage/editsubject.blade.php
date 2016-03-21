@@ -131,7 +131,7 @@ table tr.selected{
                                     <select id="applyfrom" name="applyfrom" class="form-control">
                                         <?php 
                                             $year = date("Y");
-                                            $month = date("M");
+                                            $month = date("m");
                                             if($month < 8){
                                                 $year = $year - 1;
                                             }

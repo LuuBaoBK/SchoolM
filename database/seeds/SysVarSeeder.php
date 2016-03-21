@@ -31,5 +31,9 @@ class SysVarSeeder extends Seeder
                 'id' => 'sub_next_id',
                 'value' => '9',
         ]);
+        DB::table('sysvar')->insert([
+                'id' => 'tkb_date',
+                'value' => '0',
+        ]);
     }
 }

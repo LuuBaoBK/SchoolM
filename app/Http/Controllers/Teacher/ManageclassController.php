@@ -21,7 +21,7 @@ class ManageclassController extends Controller
 {
     public function get_view(){
         $year = substr(date("Y"),2);
-        $month = date("M");
+        $month = date("m");
         $year = ($month < 8) ? $year - 1 : $year;
         $class = Classes::where('homeroom_teacher','=',Auth::user()->id)
                         ->where('id','like',$year."_%")
@@ -82,7 +82,7 @@ class ManageclassController extends Controller
 
     public function update(){
         $year = substr(date("Y"),2);
-        $month = date("M");
+        $month = date("m");
         $year = ($month < 8) ? $year - 1 : $year;
         $class = Classes::where('homeroom_teacher','=',Auth::user()->id)
                         ->where('id','like',$year."_%")
@@ -96,6 +96,34 @@ class ManageclassController extends Controller
                         ->where('student_id','=',$student->student_id)
                         ->update(['GPA' => $gpa, 'ispassed' => $ispassed]);
         }
+        return "success";
+    }
+
+    public function set_conduct(Request $request){
+        $Id_list = $request['Idlist'];
+        $year = substr(date("Y"),2);
+        $month = date("m");
+        $year = ($month < 8) ? $year - 1 : $year;
+        $class = Classes::where('homeroom_teacher','=',Auth::user()->id)
+                        ->where('id','like',$year."_%")
+                        ->first();
+        StudentClass::where('class_id','=',$class->id)
+                    ->whereIn('student_id',$Id_list)
+                    ->update(['conduct' => $request['conduct']]);
+        return "success";
+    }
+
+    public function add_note(Request $request){
+        $Id_list = $request['Idlist'];
+        $year = substr(date("Y"),2);
+        $month = date("m");
+        $year = ($month < 8) ? $year - 1 : $year;
+        $class = Classes::where('homeroom_teacher','=',Auth::user()->id)
+                        ->where('id','like',$year."_%")
+                        ->first();
+        StudentClass::where('class_id','=',$class->id)
+                    ->whereIn('student_id',$Id_list)
+                    ->update(['note' => $request['note_add']]);
         return "success";
     }
 }

@@ -11,14 +11,14 @@ use App\Model\Teacher;
 use App\Model\Subject;
 use App\Model\Classes;
 use App\Model\Phancong;
-
+use App\Model\Sysvar;
 
 class ScheduleControler extends Controller
 {
    
     public function menu(){
         $year = substr(date('Y'),2);
-        if(date("M") < 8)
+        if(date("m") < 8)
             $year--;
         $DSNguonLuc = null;
         $tongtiet = 0;
@@ -53,7 +53,7 @@ class ScheduleControler extends Controller
 
     public function createnewphancong(){
         $year = substr(date('Y'),2);
-        if(date("M") < 8)
+        if(date("m") < 8)
             $year--;
         $this->TaoPhanCongMoi();
 
@@ -73,7 +73,7 @@ class ScheduleControler extends Controller
 
     public function chinhsuaphancong(){
         $year = substr(date('Y'),2);
-        if(date("M") < 8)
+        if(date("m") < 8)
             $year--;
 
         $DSPHANCONG = $this->getDSPCTheoGV($year);
@@ -166,7 +166,7 @@ class ScheduleControler extends Controller
     public function getNewSchedule(){
 
         $year = substr(Date('Y'), 2);
-        if(Date("M") <= 8)
+        if(date("m") <= 8)
             $year--;
         tkb::truncate();
         $thoikhoabieu   = $this->createnewschedule();
@@ -285,6 +285,15 @@ class ScheduleControler extends Controller
 
             $addnew->save();
         }
+
+        //update time
+        $date = date("d");
+        $month = date("m");
+        $year = date("Y");
+        $time = Sysvar::where('id','=','tkb_date')
+                      ->update(['value' => $date."-".$month."-".$year ]);
+        //End Update Time
+
         $dsloptrung = $this->checkTKB();
         $result['dsloptrung'] = $dsloptrung; 
         $result['thoikhoabieu'] = $thoikhoabieu; 
@@ -294,7 +303,7 @@ class ScheduleControler extends Controller
 
     public function createnewschedule(){
         $year = substr(Date('Y'), 2);
-       if(Date("M") <= 8)
+       if(date("m") <= 8)
             $year--;
        $listclass = Classes::where("id", "like", $year."%");
 
@@ -327,13 +336,14 @@ class ScheduleControler extends Controller
            }
        }
        return $thoikhoabieu;
+       //return "oke";
     }
 
     public function TaoPhanCongMoi(){
         $year = substr(date('Y'),2);
-        if(date("M") < 8)
+        if(date("m") < 8)
             $year--;
-        tkb::truncate();
+        //tkb::truncate();
         Phancong::where("class_id", "like", $year."%")->delete();
         $DSLOPHOC = Classes::where("id", "like", $year."%")->get();
         $DSMONHOC = Subject::all();
@@ -424,7 +434,7 @@ class ScheduleControler extends Controller
     public function edit(Request $request){
 
         $year = substr(date('Y'),2);
-        if(date("M") < 8)
+        if(date("m") < 8)
             $year--;
 
         $id = $request['id'];
@@ -471,7 +481,7 @@ class ScheduleControler extends Controller
 
     public function addnew(Request $request){
         $year = substr(date('Y'),2);
-        if(date("M") < 8)
+        if(date("m") < 8)
             $year--;
         $id = $request['id'];
         $listClass = $request['listClass'];
@@ -492,7 +502,7 @@ class ScheduleControler extends Controller
 
     public function removeclass(Request $request){
         $year = substr(date('Y'),2);
-        if(date("M") < 8)
+        if(date("m") < 8)
             $year--;
         $id = $request['id'];
         $listClass = $request['listClass'];
@@ -513,7 +523,7 @@ class ScheduleControler extends Controller
         $dschuaphan = null;
         $num_chuaphan = 0;
         $year = substr(date('Y'),2);
-        if(date("M") < 8)
+        if(date("m") < 8)
             $year--;
 
         $dsphancong = Phancong::where("class_id", "like", $year."%")->get();
@@ -570,7 +580,7 @@ class ScheduleControler extends Controller
         //kiem tra nhung lop chua phan cong
         $DSLOPChuaPC = null;
         $year = substr(date('Y'),2);
-        if(date("M") < 8)
+        if(date("m") < 8)
             $year--;
         $dem  = 0;
         foreach (tkb::all() as $Gv) {
@@ -622,7 +632,7 @@ class ScheduleControler extends Controller
     public function tkbgvthaydoi_capnhat(){
 
         $year = substr(date('Y'),2);
-        if(date("M") < 8)
+        if(date("m") < 8)
             $year--;
         
         //$thoikhoabieu   = $this->createnewschedule();
@@ -714,6 +724,14 @@ class ScheduleControler extends Controller
 
             $addnew->save();
         }
+
+        //update time
+        $date = date("d");
+        $month = date("m");
+        $year = date("Y");
+        $time = Sysvar::where('id','=','tkb_date')
+                      ->update(['value' => $date."-".$month."-".$year ]);
+        //End Update Time
 
         $DSLOPTRUNG = $this->checkTKB();
         $result['thoikhoabieu'] = $thoikhoabieu;
@@ -865,7 +883,7 @@ class ScheduleControler extends Controller
     public function tkblop_index()
     {
         $year = substr(date('Y'),2);
-        if(date("M") < 8)
+        if(date("m") < 8)
             $year--;
         $thoikhoabieu = tkb::all();
         $ds_lh = Classes::where("id", "like", $year."%")->get();
@@ -901,7 +919,7 @@ class ScheduleControler extends Controller
 
     public function tkbhientai(){
         $year = substr(date('Y'),2);
-        if(date("M") < 8)
+        if(date("m") < 8)
             $year--;
         foreach(tkb::all() as $key => $gv){
             $addnew = null;
@@ -962,7 +980,7 @@ class ScheduleControler extends Controller
 
     // public function phanconglop(){
     //     $year = substr(date('Y'),2);
-    //     if(date("M") < 8)
+    //     if(date("m") < 8)
     //         $year--;
     //     $DSPHANCONG = null;
     //     $dem  = 0;
@@ -1027,6 +1045,14 @@ class ScheduleControler extends Controller
             
             $update->save();
         }
+
+        //update time
+        $date = date("d");
+        $month = date("m");
+        $year = date("Y");
+        $time = Sysvar::where('id','=','tkb_date')
+                      ->update(['value' => $date."-".$month."-".$year ]);
+        //End Update Time
             
         return $tkb;
     }
@@ -1069,6 +1095,14 @@ class ScheduleControler extends Controller
             }
              $teacher->update();
         }
+
+        //update time
+        $date = date("d");
+        $month = date("m");
+        $year = date("Y");
+        $time = Sysvar::where('id','=','tkb_date')
+                      ->update(['value' => $date."-".$month."-".$year ]);
+        //End Update Time
         return $listclass;
     }
 }

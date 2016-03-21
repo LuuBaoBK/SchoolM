@@ -41,7 +41,7 @@
 	                        <?php
 	                            $year = date("Y");
 
-	                            if(date("M") < 8)
+	                            if(date("m") < 8)
 	                            	$year--;
 	                            for($year;$year >=2010 ;$year--){
 	                                

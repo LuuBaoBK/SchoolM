@@ -29,7 +29,7 @@ class ProfileController extends Controller
         $student['mydateofbirth'] = $mydateofbirth;
 
         $scholastic = substr(date("Y"), 2,2);
-        $scholastic = (date("M") < 8 ) ? $scholastic-1 : $scholastic;
+        $scholastic = (date("m") < 8 ) ? $scholastic-1 : $scholastic;
         $check = StudentClass::where('student_id','=',$student->id)
                              ->where('class_id','like', $scholastic."_%")
                              ->first();

@@ -136,7 +136,7 @@ $(document).ready(function(){
 					var append = "";					
 					var dsloptrung = rs['dsloptrung']; 
         			var thoikhoabieu = rs['thoikhoabieu']; 
-        			console.log(rs);
+        			// console.log(rs);
 
 					$('#tkb_gv').empty();
 					for (var i = 0; i < thoikhoabieu.length; i++) {

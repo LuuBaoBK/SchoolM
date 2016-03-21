@@ -35,6 +35,7 @@ class TranscriptController extends Controller
         $class_id = $request['data'][0];
         $year = substr($class_id, 0, 2);
         $tb = [];
+        $student = StudentClass::where('class_id','=',$class_id)->where('student_id','=',Auth::user()->id)->first();
         $phancong = Phancong::where('class_id','=',$class_id)->get();
         foreach ($phancong as $key => $row) {
        		$row['teacher_name'] = User::find($row->teacher_id)->fullname;
@@ -139,6 +140,7 @@ class TranscriptController extends Controller
 
         $record['0'] = $phancong;
         $record['1'] = $tb;
+        $record['2'] = $student;
         return $record;
 
     }
