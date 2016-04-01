@@ -26,6 +26,9 @@ class MyAuthController extends Controller
             elseif($user->role == 2){
                 return redirect('student/dashboard');
             }
+            elseif($user->role == 3){
+                return redirect('parents/dashboard');
+            }   
         }
         else
         {
@@ -75,6 +78,9 @@ class MyAuthController extends Controller
         elseif($user->role == 2){
             return redirect('student/dashboard');
         }
+        elseif($user->role == 3){
+            return redirect('parents/dashboard');
+        }
     }
 
     public function permission_denied(){
@@ -89,6 +95,9 @@ class MyAuthController extends Controller
             }
             elseif($user->role == 2){
                 return redirect('student/permission_denied');
+            }
+            elseif($user->role == 3){
+                return redirect('parents/permission_denied');
             }
         }
         else

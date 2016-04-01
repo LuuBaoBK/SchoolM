@@ -20,6 +20,16 @@
                     <i class="fa fa-home"></i> <span>Dashboard</span>
                 </a>
             </li>
+            <li id="sidebar_schedule" class="">
+                <a href="/teacher/schedule">
+                    <i class="fa fa-calendar"></i> <span>Schedule</span>
+                </a>
+            </li>
+            <li id="sidebar_noticeboard" class="">
+                <a href="/teacher/noticeboard">
+                    <i class="fa fa-newspaper-o"></i> <span>Notice Board</span>
+                </a>
+            </li>
             <li id="sidebar_list_2" class="treeview">
                 <a href="">
                     <i class="fa fa-list-ul"></i>

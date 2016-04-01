@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ScoretypeTableSeeder::class);
         $this->call(ClassteacherTableSeeder::class);
         $this->call(PhancongTableSeeder::class);
+        $this->call(LectureregisterSeeder::class);
         Model::reguard();
     }
 }

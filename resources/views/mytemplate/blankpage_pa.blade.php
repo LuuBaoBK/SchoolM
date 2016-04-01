@@ -21,7 +21,6 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{{asset("/adminlte/dist/css/skins/_all-skins.min.css")}}">
-
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -35,7 +34,7 @@
 
   @include('mytemplate.header')
 
-  @include('mytemplate.sidebar_te')
+  @include('mytemplate.sidebar_pa')
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     @yield('content')
@@ -85,8 +84,6 @@
 <script src="{{asset("/adminlte/plugins/datatables/dataTables.bootstrap.min.js")}}"></script>
 <!-- iCheck 1.0.1 -->
 <script src="{{asset("/adminlte/plugins/iCheck/icheck.min.js")}}"></script>
-<!-- Text area -->
-<script src="{{asset("/mylib/jquery-ui-custom/jquery-ui.min.js")}}"></script>
 
 </body>
 </html>

@@ -32,5 +32,6 @@ class Kernel extends HttpKernel
         'authrole_ad' => \App\Http\Middleware\Role_Admin::class,
         'authrole_te' => \App\Http\Middleware\Role_Teacher::class,
         'authrole_stu' => \App\Http\Middleware\Role_Student::class,
+        'authrole_pa' => \App\Http\Middleware\Role_Parent::class,
     ];
 }

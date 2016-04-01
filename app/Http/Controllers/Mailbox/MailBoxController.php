@@ -29,6 +29,9 @@ class MailBoxController extends Controller
         else if($prefix == "s"){
             return view('studentpage.mailbox', ['msg_list' => $msg_list, 'my_id' => $id]);
         }
+        else if($prefix == "p"){
+            return view('parentpage.mailbox', ['msg_list' => $msg_list, 'my_id' => $id]);
+        }
         
     }
 

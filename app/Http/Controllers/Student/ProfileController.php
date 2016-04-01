@@ -77,6 +77,7 @@ class ProfileController extends Controller
             $user->lastname    = $request['lastname'];
             $user->dateofbirth = $dateofbirth;
             $user->address     = $request['address'];
+            $user->fullname    = $request['firstname']." ".$request['middlename']." ".$request['lastname'];
 
             $user->save();
             

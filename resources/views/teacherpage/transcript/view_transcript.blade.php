@@ -5,14 +5,6 @@
 table tr.selected{
     background-color: #3399CC !important; 
 }
-table.dataTable {
-  width: auto;
-  margin: 0;
-}
-.dataTables_scroll
-{
-    overflow:fixed;
-}
 </style>
 <section class="content-header">
     <h1>
@@ -122,7 +114,7 @@ table.dataTable {
                                 <i class="fa fa-spin fa-refresh"></i>&nbsp; Loading...
                             </div>
                             <div id="div_view_transcript_table">
-                                <table id="view_transcript_table" class="table table-border" witdh="100%">
+                                <table id="view_transcript_table" class="table table-border result_table">
                                     <thead id='view_transcript_table_header'>
                                         <tr>
                                             <th>Result Table</th>
@@ -153,21 +145,14 @@ $(document).ready(function() {
         "ordering": true,
         "scrollY": "400px",
         "scrollCollapse": true,
+        //"bLengthChange": false,
         "info" : true,
         "paging": false,
         "dom": '<"pull-left"flp>'
     });
-    // $('#view_transcript_table').DataTable({
-    //     "lengthChange": true,
-    //     "searching": true,
-    //     "ordering": false,
-    //     "scrollY": "750px",
-    //     "scrollCollapse": true,
-    //     "info" : true,
-    //     "paging": false,
-    // });
 
-    $(document).on('click','a',function(e){
+    $(document).on('click','a.ahide',function(e){
+        e.preventDefault();
         if($(this).html() == "HK 1" || $(this).html() == "HK 2"){
             var col_list = $(this).attr('col_list').split("_");
             var i = 0;
@@ -218,11 +203,6 @@ $(document).ready(function() {
             }
         }
     });
-
-	// $('th#1').on('click',function(){
-	// 	console.log("abc");
-	// 	$('#view_transcript_table').DataTable().column(0).visible(false);
-	// })
 
     function update_class_list(){
         var scholastic = $('#scholastic').val();
@@ -332,15 +312,15 @@ $(document).ready(function() {
             });
             $('#view_transcript_table').dataTable().fnDestroy();
             $('#div_view_transcript_table').empty();
-            $('#div_view_transcript_table').append("<table width='auto' style='witdh:auto' id='view_transcript_table' class='table table-border table-striped'><thead id='view_transcript_table_header'></thead><tbody></tbody></table>");
+            $('#div_view_transcript_table').append("<table id='view_transcript_table' style='overflow: auto; display: inline-block; width: 100%; height:600px' class='table table-bordered table-striped'><thead  id='view_transcript_table_header'></thead><tbody></tbody></table>");
             var header  = "<tr>";
                 header += "<th rowspan='3'>Id</th>";
                 header += "<th rowspan='3'>Full_Name</th>";
                 if(total_score_type_hk1 > 0){
-                    header += "<th colspan='"+total_score_type_hk1+"' ><a href='#!'>HK 1</a></th>";
+                    header += "<th colspan='"+total_score_type_hk1+"' ><a class='ahide' href=''>HK 1</a></th>";
                 }
                 if(total_score_type_hk2 > 0){
-                    header += "<th colspan='"+total_score_type_hk2+"' ><a href='#!'>HK 2</a></th>";
+                    header += "<th colspan='"+total_score_type_hk2+"' ><a class='ahide' href=''>HK 2</a></th>";
                 }
                 header += "</tr>";
             $('#view_transcript_table_header').append(header);
@@ -411,14 +391,14 @@ $(document).ready(function() {
             $('#view_transcript_table_header').append(header);
 
             $('#view_transcript_table').dataTable({
-                "bAutoWidth": false,
+                "bAutoWidth": true,
                 "bFilter":true,
                 "bSort":true,
                 "bLengthChange":false,
                 "bInfo":false,
-                "bPaginate":false,
-                "sScrollX": "100%",
-                "sScrollY": "450px"
+                "bPaginate":true,
+                "pageLength": 10,
+                "scrollCollapse":true
             });
 
             var temp = -1;

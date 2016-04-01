@@ -127,7 +127,6 @@
             </div>
             <div class="form-group" style="color:black">
             <textarea style="color:black" id="mail_editor" name="mail_editor" rows="10" cols="80">
-              This is my textarea to be replaced with CKEditor.
             </textarea>
             </div>
         </form>
@@ -251,6 +250,10 @@ $(document).ready(function(){
   $('#resultbox_success').slimScroll({
       height: '250px'
   });
+
+  $('#title').on('input',function(){
+        check_count_note();
+    });
 
   var messages_table = $('#messages_table').dataTable({
       "lengthChange": false,
@@ -534,6 +537,19 @@ $(document).ready(function(){
     };
     channel.bind("new_mail_event",handler)
   }
+
+  function check_count_note(){
+        var data = $('#title').val();
+        var count = data.length;
+        // $('#count_text').empty();
+        // $('#count_text').append(count+"/100");
+        if(count > 100){
+            $('#title').parent().addClass('has-warning');
+        }
+        else{
+            $('#title').parent().removeClass('has-warning');
+        }
+    };
 
   notification();
 

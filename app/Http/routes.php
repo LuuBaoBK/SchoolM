@@ -178,6 +178,12 @@ Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () 
 	Route::post('manage-class/add_note', 'Teacher\ManageclassController@add_note');
 	//view transcript
 	Route::get('view_transcript', 'Teacher\Transcript\TranscriptController@view_transcript');
+	// Schedule
+	Route::get('schedule', 'Teacher\ScheduleController@get_view');
+	// Notice Board
+	Route::get('noticeboard', 'Teacher\NoticeboardController@get_view');
+	Route::post('noticeboard/add_notice', 'Teacher\NoticeboardController@add_notice');
+	Route::post('noticeboard/read_notice', 'Teacher\NoticeboardController@read_notice');
 
 });
 
@@ -198,7 +204,29 @@ Route::group(['prefix' => 'student','middleware' => 'authrole_stu'], function ()
 	
 	//Schedules
 	Route::get('schedule', 'Student\ScheduleController@get_view');
+	//Notice Board
+	Route::get('notice_board', 'Student\NoticeboardController@get_view');
+	Route::post('notice_board/read_notice', 'Student\NoticeboardController@read_notice');
+});
 
+Route::group(['prefix' => 'parents','middleware' => 'authrole_pa'], function () {
+	Route::get('dashboard', 'Parents\ProfileController@get_pa_dashboard' );
+	Route::post('dashboard', 'Parents\ProfileController@edit_info' );
+	Route::post('dashboard/changepassword', 'Parents\ProfileController@changepassword');
+	Route::get('permission_denied', 'Parents\ProfileController@permission_denied' );
+
+	//Mailbox
+	Route::get('mailbox', 'MailBox\MailBoxController@get_mailbox');
+
+	//Schedules
+	Route::get('schedule', 'Parents\ScheduleController@get_view');
+	Route::get('schedule/student_schedule/{student_id}', 'Parents\ScheduleController@show_student_schedule');
+
+	//Transcript
+	Route::get('transcript', 'Parents\TranscriptController@get_view');
+	Route::get('transcript/student_transcript/{student_id}', 'Parents\TranscriptController@show_student_transcript');
+	Route::post('transcript/select_class', 'Parents\TranscriptController@select_class');
+	Route::post('transcript/select_subject', 'Parents\TranscriptController@select_subject');
 });
 
 

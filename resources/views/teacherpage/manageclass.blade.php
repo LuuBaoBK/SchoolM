@@ -199,7 +199,6 @@ $(document).ready(function() {
                     '_token'        :token
                     },
             success:function(record){
-                console.log(record);
                 location.reload();
             },
             error:function(){

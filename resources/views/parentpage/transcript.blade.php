@@ -1,4 +1,4 @@
-@extends('mytemplate.blankpage_stu')
+@extends('mytemplate.blankpage_pa')
 @section('content')
 <style type="text/css">
 table {
@@ -20,11 +20,11 @@ textarea {
 </style>
 <section class="content-header">
     <h1>
-        Student
-        <small>Transcript</small>
+        Parent
+        <small>View Transcript</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="/student/dashboard"><i class="fa fa-home"></i>Student</a> -> Transcript</li>
+        <li><a href="/parents/dashboard"><i class="fa fa-home"></i>Parent</a> -> Transcript</li>
     </ol>
 </section>
 <section class="content">
@@ -33,102 +33,139 @@ textarea {
 		<h4 class="box-title">View Transcript</h4>
 	</div>
 	<div class="box-body">
-		<div class="row">
-			<div class="col-lg-4">
-				<div id="class_list_div" class="box box-primary">
-					<div class="box-header">
-						<h4 class="box-title">Attended Class</h4>
-						<div class="box-tools pull-right">
-				            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
-				        </div>
-					</div>
-					<div class="box-body">
-						<input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-						<table width="100%" id="class_list_table" class="table table-striped table-bordered">
-							<thead>
-								<tr>
-									<th>Class Id</th>
-									<th>Class Name</th>
-									<th>Scholastic</th>
-									<th>Homeroom Teacher</th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php
-									foreach ($class_list as $key => $class) {
-										echo "<tr>";
-										echo "<td>".$class->id."</td>";
-										echo "<td>".$class->classname."</td>";
-										echo "<td>20".substr($class->id, 0,2)."</td>";
-										echo "<td>".$class->home_teacher->fullname."</td>";
-										echo "</tr>";
-									}
-								?>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div id="subject_div" style="display:none" class="box box-primary">
-					<div class="box-header">
-						<h4 class="box-title">Subject List</h4>
-						<div class="box-tools pull-right">
-				            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
-				        </div>
-					</div>
-					<div class="box-body">
-						<table width="100%" id="subject_list_table" class="table table-striped table-bordered">
-							<thead>
-								<th>Subject_id</th>
-								<th>Class_id</th>
-								<th>Subject</th>
-								<th>Teacher</th>
-							</thead>
-							<tbody></tbody>	
-						</table>
-					</div>
-				</div>
+		<div class="col-lg-4">
+			<input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+            <label for="student">Student</label>
+            <select id="student" name="student" class="form-control">
+            @if($student_choose == null)
+	            	<option value="-1" selected>-- Select Student --</option>
+	                @foreach($student_list as $key => $student)
+	                	<option value={{$student->id}}>{{$student->user->fullname}}</option>
+	                @endforeach
+            @else
+	                @foreach($student_list as $key => $student)
+	                	@if($student->id == $student_choose)
+	                	<option value= {{$student->id }} selected>{{$student->user->fullname}}</option>
+	                	@else
+	                	<option value={{$student->id}}>{{$student->user->fullname}}</option>
+	                	@endif
+	                @endforeach
+            @endif
+        	</select>
+    	</div>
+	</div>
+	<div class="box-footer">
+		<div class="box box-primary box-primary">
+			<div class="box-header">
+				@if($student_choose == null)
+					<h4 class="box-title">Transcript</h4>
+				@else
+					@if($student->id == $student_choose)
+                	<h4 class="box-title">Transcript of: {{$student->user->fullname}}</h4>
+                	@endif
+				@endif
 			</div>
-			<div  class='col-lg-8'>
-				<div class="box box-primary collapsed-box">
-					<div class="box-header">
-						<h4 class="box-title">Sumary</h4>
-						<div class="box-tools pull-right">
-				            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
-				        </div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-lg-4">
+						<div id="class_list_div" class="box box-primary">
+							<div class="box-header">
+								<h4 class="box-title">Attended Class</h4>
+								<div class="box-tools pull-right">
+						            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+						        </div>
+							</div>
+							<div class="box-body">
+								<input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+								<table width="100%" id="class_list_table" class="table table-striped table-bordered">
+									<thead>
+										<tr>
+											<th>Class Id</th>
+											<th>Class Name</th>
+											<th>Scholastic</th>
+											<th>Homeroom Teacher</th>
+										</tr>
+									</thead>
+									<tbody>
+										@if($class_list != null)
+										<?php
+											foreach ($class_list as $key => $class) {
+												echo "<tr>";
+												echo "<td>".$class->id."</td>";
+												echo "<td>".$class->classname."</td>";
+												echo "<td>20".substr($class->id, 0,2)."</td>";
+												echo "<td>".$class->home_teacher->fullname."</td>";
+												echo "</tr>";
+											}
+										?>
+										@endif
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div id="subject_div" style="display:none" class="box box-primary">
+							<div class="box-header">
+								<h4 class="box-title">Subject List</h4>
+								<div class="box-tools pull-right">
+						            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+						        </div>
+							</div>
+							<div class="box-body">
+								<table width="100%" id="subject_list_table" class="table table-striped table-bordered">
+									<thead>
+										<th>Subject_id</th>
+										<th>Class_id</th>
+										<th>Subject</th>
+										<th>Teacher</th>
+									</thead>
+									<tbody></tbody>	
+								</table>
+							</div>
+						</div>
 					</div>
-					<div class="box-body">
-						<div class="form-group col-lg-4">
-							<label for="sumary_classname">Class  Name</label>
-							<input type="text" name="sumary_classname" id="sumary_classname" class="form-control" readonly>		
+					<div  class='col-lg-8'>
+						<div class="box box-primary collapsed-box">
+							<div class="box-header">
+								<h4 class="box-title">Sumary</h4>
+								<div class="box-tools pull-right">
+						            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-plus"></i></button>
+						        </div>
+							</div>
+							<div class="box-body">
+								<div class="form-group col-lg-4">
+									<label for="sumary_classname">Class  Name</label>
+									<input type="text" name="sumary_classname" id="sumary_classname" class="form-control" readonly>		
+								</div>
+								<div class="form-group col-lg-4">
+									<label for="sumary_homeroom_teacher">Homeroom Teacher</label>
+									<input type="text" name="sumary_homeroom_teacher" id="sumary_homeroom_teacher" class="form-control" readonly>
+								</div>
+								<div class="form-group col-lg-4">
+									<label for="sumary_conduct">Conduct</label>
+									<input type="text" name="sumary_conduct" id="sumary_conduct" class="form-control" readonly>
+								</div>
+								<div class="form-group col-lg-4">
+									<label for="sumary_ispassed">Status</label>
+									<input type="text" name="sumary_ispassed" id="sumary_ispassed" class="form-control" readonly>
+								</div>
+								<div class="form-group col-lg-8">
+									<label for="sumary_note">Note</label>
+									<textarea type="text-area" rows="5" name="sumary_note" id="sumary_note" class="form-control" readonly></textarea>
+								</div>
+							</div>
 						</div>
-						<div class="form-group col-lg-4">
-							<label for="sumary_homeroom_teacher">Homeroom Teacher</label>
-							<input type="text" name="sumary_homeroom_teacher" id="sumary_homeroom_teacher" class="form-control" readonly>
+						<div class="box box-primary">
+							<div class="box-body">
+								<h4 class="box-title">Score List</h4>
+								<table width="100%" style="witdh:100%" id="score_list_table" class="table">
+									<thead>
+										<th width="25%">#</th>
+										<th width="25%">Score</th>
+										<th width="50%">Note</th>
+									</thead>
+								</table>
+							</div>
 						</div>
-						<div class="form-group col-lg-4">
-							<label for="sumary_conduct">Conduct</label>
-							<input type="text" name="sumary_conduct" id="sumary_conduct" class="form-control" readonly>
-						</div>
-						<div class="form-group col-lg-4">
-							<label for="sumary_ispassed">Status</label>
-							<input type="text" name="sumary_ispassed" id="sumary_ispassed" class="form-control" readonly>
-						</div>
-						<div class="form-group col-lg-8">
-							<label for="sumary_note">Note</label>
-							<textarea type="text-area" rows="5" name="sumary_note" id="sumary_note" class="form-control" readonly></textarea>
-						</div>
-					</div>
-				</div>
-				<div class="box box-primary">
-					<div class="box-body">
-						<h4 class="box-title">Score List</h4>
-						<table width="100%" style="witdh:100%" id="score_list_table" class="table">
-							<thead>
-								<th width="25%">#</th>
-								<th width="25%">Score</th>
-								<th width="50%">Note</th>
-							</thead>
-						</table>
 					</div>
 				</div>
 			</div>
@@ -144,6 +181,18 @@ textarea {
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#sidebar_transcript').addClass('active');
+		$('#student').on('change',function(){
+			var student_id = $(this).val();
+			if(student_id != -1){
+				var token = $('input[name="_token"]').val();
+				$("#student option[value='-1']").remove();
+				url = "/parents/transcript/student_transcript/"+student_id;
+				window.location.replace(url);
+			}
+			else{
+				//Do nothing
+			}
+		});
 
 		$('#class_list_table').dataTable({
 			"bAutoWidth": false,
@@ -171,15 +220,6 @@ textarea {
 		    ]
 		});
 
-
-		// $('#subject_div').slimScroll({
-  //           height: '550px'
-  //       });
-
-        // $('#score_div').slimScroll({
-        //     height: '700px'
-        // });
-
 		$('#score_list_table').dataTable({
 			"bAutoWidth": true,	
             "bFilter":false,
@@ -200,14 +240,16 @@ textarea {
 	            $('#class_list_table tr.selected').removeClass('selected');
 	            $(this).addClass('selected');
 				var data = $('#class_list_table').dataTable().fnGetData(this);
+				var student_id = $('#student').val();
 				var token = $('input[name="_token"]').val();
 				if(data != null){
 					$.ajax({
-			            url     :"<?= URL::to('/student/transcript/select_class') ?>",
+			            url     :"<?= URL::to('/parents/transcript/select_class') ?>",
 			            type    :"POST",
 			            async   :false,
 			            data    :{
-			                    'data'      :data,
+			                    'data'      	:data,
+			                    'student_id'	:student_id, 
 			                    '_token'        :token
 			                    },
 			            success:function(record){
@@ -260,14 +302,16 @@ textarea {
 	            $('#subject_list_table tr.selected').removeClass('selected');
 	            $(this).addClass('selected');
 				var data = $('#subject_list_table').dataTable().fnGetData(this);
+				var student_id = $('#student').val()
 				var token = $('input[name="_token"]').val();
 				if(data != null){
 					$.ajax({
-			            url     :"<?= URL::to('/student/transcript/select_subject') ?>",
+			            url     :"<?= URL::to('/parents/transcript/select_subject') ?>",
 			            type    :"POST",
 			            async   :false,
 			            data    :{
-			                    'data'      :data,
+			                    'data'      	:data,
+			                    'student_id'	:student_id,
 			                    '_token'        :token
 			                    },
 			            success:function(record){
@@ -443,9 +487,6 @@ textarea {
 				}
 			}
 		});
-
 	});
-
-</script>
-
+</script>	
 @endsection

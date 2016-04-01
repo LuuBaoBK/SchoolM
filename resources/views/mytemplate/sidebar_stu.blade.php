@@ -24,6 +24,11 @@
                     <i class="fa fa-calendar"></i> <span>Schedule</span>
                 </a>
             </li>
+            <li id="sidebar_notice" class="">
+                <a href="/student/notice_board">
+                    <i class="fa fa-calendar"></i> <span>Notice Board</span>
+                </a>
+            </li>
             <!-- <li id="sidebar_list_2" class="treeview">
                 <a href="">
                     <i class="fa fa-list-ul"></i>

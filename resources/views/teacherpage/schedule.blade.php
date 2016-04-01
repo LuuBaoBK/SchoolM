@@ -1,4 +1,4 @@
-@extends('mytemplate.blankpage_stu')
+@extends('mytemplate.blankpage_te')
 
 @section('content')
 <style type="text/css">
@@ -11,23 +11,23 @@ p.text{
 </style>
 <section class="content-header">
     <h1>
-        Student
+        Teacher
         <small>Schedule</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="/student/dashboard"><i class="fa fa-home"></i>Dashboard</a></li>
+        <li><a href="/teacher/dashboard"><i class="fa fa-home"></i>Dashboard</a></li>
     </ol>
 </section>
 <section class="content">
 	<div class="box box-solid box-primary">
-		<div class="box-header">
+		 <div class="box-header">
 	        <h3 class="box-title">Schedule</h3>
 	        <div class="box-tools pull-right">
 	            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
 	        </div>
 	    </div><!-- /.box-header -->
 	    <div class="box-body">
-	    	@if($tkb == 'no_class')
+	    	@if($tkb == 'no_placement')
 	    		<div class="callout callout-warning col-lg-4">
 	    			<h4>No Placement</h4>
 	    			<p>You have noplacement</p>
@@ -45,27 +45,27 @@ p.text{
 		    		</div>
 	    		</div>
 	    		<div>
-	    			<h3><b><i><u>Schedule class {{$class->classname}}</u></i></b></h4>
+	    			<h3><b><i><u>Teaching Schedule</u></i></b></h4>
 	    			<table id="tkb_table" class="table table-striped" width="100%">
 	    				<thead>
 	    					<tr>
-	    						<td width="5%">#</td>
-	    						<td><p class='text text-center'><b>T2</b></p></td>
-	    						<td><p class='text text-center'><b>T3</b></p></td>
-	    						<td><p class='text text-center'><b>T4</b></p></td>
-	    						<td><p class='text text-center'><b>T5</b></p></td>
-	    						<td><p class='text text-center'><b>T6</b></p></td>
+	    						<td <p style="font-size:14px" class='text text-center' width="5%">#</p></td>
+	    						<td><p style="font-size:14px" class='text text-center'><b>T2</b></p></td>
+	    						<td><p style="font-size:14px" class='text text-center'><b>T3</b></p></td>
+	    						<td><p style="font-size:14px" class='text text-center'><b>T4</b></p></td>
+	    						<td><p style="font-size:14px" class='text text-center'><b>T5</b></p></td>
+	    						<td><p style="font-size:14px" class='text text-center'><b>T6</b></p></td>
 	    					</tr>
 	    				</thead>
 	    				<tbody>
 	    					@for ($i = 0; $i <= 9; $i++)
 							    <tr>
-							    	<td><p class='text text-center'>{{$i + 1}}</p></td>
-							    	<td><p class='text text-center'>{{$tkb[$i]['subject']}}</p></td>
-							    	<td><p class='text text-center'>{{$tkb[$i+10]['subject']}}</p></td>
-							    	<td><p class='text text-center'>{{$tkb[$i+20]['subject']}}</p></td>
-							    	<td><p class='text text-center'>{{$tkb[$i+30]['subject']}}</p></td>
-							    	<td><p class='text text-center'>{{$tkb[$i+40]['subject']}}</p></td>
+							    	<td><p style="font-size:14px" class='text text-center'>{{$i + 1}}</p></td>
+							    	<td><p style="font-size:14px" class='text text-center'>{{$tkb['T'.$i]}}</p></td>
+							    	<td><p style="font-size:14px" class='text text-center'>{{$tkb['T'.($i+10)]}}</p></td>
+							    	<td><p style="font-size:14px" class='text text-center'>{{$tkb['T'.($i+20)]}}</p></td>
+							    	<td><p style="font-size:14px" class='text text-center'>{{$tkb['T'.($i+30)]}}</p></td>
+							    	<td><p style="font-size:14px" class='text text-center'>{{$tkb['T'.($i+40)]}}</p></td>
 							    </tr>
 							    @if ($i == 4)
 							    	<tr>
@@ -86,7 +86,7 @@ p.text{
 <script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-	$('#sidebar_tkb').addClass('active');
+	$('#sidebar_schedule').addClass('active');
 });
 </script>
 @endsection

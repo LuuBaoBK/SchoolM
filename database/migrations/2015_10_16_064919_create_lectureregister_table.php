@@ -13,13 +13,13 @@ class CreateLectureregisterTable extends Migration
     public function up()
     {
         Schema::create('lectureregister', function (Blueprint $table) {
-            $table->string('class_id',11);
-            $table->string('writeby',9);
-            $table->datetime('date_time')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->primary(array('class_id','writeby','date_time'));
-            $table->foreign('class_id')->references('id')->on('classes');
-            $table->foreign('writeby')->references('id')->on('teachers');
-            $table->string('content',300);
+            $table->increments('id');
+            $table->string('teacher_id',9);
+            $table->string('title',100);
+            $table->string('level',1);
+            $table->datetime('wrote_date');
+            $table->foreign('teacher_id')->references('id')->on('teachers');
+            $table->text('content');
         });
     }
 

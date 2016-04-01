@@ -1,51 +1,49 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Parents;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\User;
-use App\Model\Teacher;
-use App\Model\Admin;
 use Auth;
+use App\Model\Parents;
+use App\User;
 use Validator;
-use Illuminate\Routing\Redirector;
+use App\Model\StudentClass;
 
 class ProfileController extends Controller
 {
-    public function get_ad_dashboard(){
+    public function get_pa_dashboard(){
         $user = Auth::user();
-        $admin = Admin::find($user->id);
-        $admin->user;
-        if($admin->user->dateofbirth != "0000-00-00")
+        $parent = Parents::find($user->id);
+        $parent->user;
+        if($parent->user->dateofbirth != "0000-00-00")
         {
-            $mydateofbirth = date_create_from_format("Y-m-d", $admin->user->dateofbirth);
+            $mydateofbirth = date_create_from_format("Y-m-d", $parent->user->dateofbirth);
             $mydateofbirth = date_format($mydateofbirth,"d/m/Y");
         }
         else{
             $mydateofbirth = "N/A";
         }
-        $admin['mydateofbirth'] = $mydateofbirth;
-    return view('adminpage.dashboard')->with('admin',$admin);
-}
+        $parent['mydateofbirth'] = $mydateofbirth;
+        return view('parentpage.dashboard')->with('parent' ,$parent);
+    }
 
     public function edit_info(Request $request){
         $id = $request['id'];
         $user  = User::find($id);
-        $admin = Admin::find($id);
-
+        $parent = Parents::find($id);
         $rules = array(
             'firstname'     => 'max:20',
             'middlename'    => 'max:20',
             'lastname'      => 'max:20',
-            'mobilephone'   => 'digits_between:10,11',
             'dateofbirth'   => 'date_format:d/m/Y',
-            'address'       => 'max:120'
+            'address'       => 'max:120',
+            'job'           => 'max:120',
+            'mobilephone'   => 'digits_between:10,11',
+            'homephone'     => 'digits_between:10,11'
         );
-
         $validator = Validator::make($request->all(), $rules);
-
         if($validator->fails())
         {
            $record =  $validator->messages();
@@ -69,15 +67,16 @@ class ProfileController extends Controller
             $user->dateofbirth = $dateofbirth;
             $user->address     = $request['address'];
             $user->fullname    = $request['firstname']." ".$request['middlename']." ".$request['lastname'];
-
             $user->save();
-            $admin->mobilephone = $request['mobilephone'];
-            $admin->save();
 
+            $parent->mobilephone = $request['mobilephone']; 
+            $parent->homephone   = $request['homephone'];
+            $parent->job         = $request['job'];
+            $parent->save();
             $record['isDone'] = 1;
             return $record;
         }
-    }        
+    }
 
     public function changepassword(Request $request){
         $new_password = $request['new_password'];
@@ -105,6 +104,6 @@ class ProfileController extends Controller
     }
 
     public function permission_denied(){
-        return view('adminpage.permission_denied');
-    }
+        return view('parentpage.permission_denied');
+    }   
 }
