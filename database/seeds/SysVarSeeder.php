@@ -35,5 +35,23 @@ class SysVarSeeder extends Seeder
                 'id' => 'tkb_date',
                 'value' => '0',
         ]);
+        // for($i=0;$i<10;$i++){
+        //     DB::table('sysvar')->insert([
+        //         'id' => 'boar_rector_'.$i,
+        //         'value' => null,
+        //     ]);
+        // }
+        // for($i=0;$i<10;$i++){
+        //     DB::table('sysvar')->insert([
+        //         'id' => 'custome_content'.$i,
+        //             'value' => null,
+        //     ]);
+        // }
+        // for($i=0;$i<10;$i++){
+        //     DB::table('sysvar')->insert([
+        //         'id' => 'custome_content_title'.$i,
+        //             'value' => null,
+        //     ]);
+        // }
     }
 }

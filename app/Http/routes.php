@@ -11,11 +11,21 @@
 |
 */
 
-
+//test API
+Route::get('/app/json/{id}', [function($id) {
+	$products = "my_json";
+	return Response::json(array(
+        'error' => false,
+        'products' => $products,
+        'status_code' => 200,
+        'id' => $id
+    ));
+}]);
 
 
 // Authentication routes...
 Route::get('/', 'Auth\MyAuthController@getview');
+Route::post('/get_info', 'Auth\MyAuthController@get_info');
 Route::get('/test', 'Test\TestController@test');
 Route::post('/test', 'Test\TestController@test_read');
 Route::post('/test/read', 'Test\TestController@test_read');
@@ -46,6 +56,8 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::get('dashboard', 'Admin\ProfileController@get_ad_dashboard' );
 	Route::post('dashboard', 'Admin\ProfileController@edit_info' );
 	Route::post('dashboard/changepassword', 'Admin\ProfileController@changepassword' );
+	//Homepage Edit
+	Route::get('homepage_edit', 'Admin\ProfileController@homepage_edit');
 
 
 	Route::get('mailbox', 'MailBox\MailBoxController@get_mailbox');
@@ -227,6 +239,10 @@ Route::group(['prefix' => 'parents','middleware' => 'authrole_pa'], function () 
 	Route::get('transcript/student_transcript/{student_id}', 'Parents\TranscriptController@show_student_transcript');
 	Route::post('transcript/select_class', 'Parents\TranscriptController@select_class');
 	Route::post('transcript/select_subject', 'Parents\TranscriptController@select_subject');
-});
 
+	//Notice Board
+	Route::get('notice_board', 'Parents\NoticeboardController@get_view');
+	Route::get('notice_board/student_noticeboard/{student_id}', 'Parents\NoticeboardController@get_student_noticeboard');
+	Route::post('notice_board/read_notice', 'Parents\NoticeboardController@read_notice');
+});
 

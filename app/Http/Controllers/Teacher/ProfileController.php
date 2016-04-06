@@ -33,10 +33,12 @@ class ProfileController extends Controller
         else{
             $myincomingday = "N/A";
         }
+
         $teacher['mydateofbirth'] = $mydateofbirth;
         $teacher['myincomingday'] = $myincomingday;
         $teacher->group = Subject::find($teacher->group)->subject_name;
-    return view('teacherpage.dashboard')->with('teacher',$teacher);
+
+        return view('teacherpage.dashboard')->with('teacher',$teacher);
     }
 
     public function edit_info(Request $request){

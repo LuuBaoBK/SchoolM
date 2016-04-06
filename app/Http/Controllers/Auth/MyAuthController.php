@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Routing\Redirector;
 use App\Model\Sysvar;
+use App\Model\Student;
 
 class MyAuthController extends Controller
 {
@@ -36,6 +37,8 @@ class MyAuthController extends Controller
             $record['num_student'] = $num_student->value + 1;
             $num_teacher = Sysvar::find('t_next_id');
             $record['num_teacher'] = $num_teacher->value + 1;
+            $year = date("Y") - 2010;
+            $record['year'] = $year;
             return view('auth.mylogin')->with('record',$record);
         }
     }
@@ -104,5 +107,25 @@ class MyAuthController extends Controller
         {
             return redirect('/');
         }
+    }
+
+    public function get_info(){
+        $data = [];
+        $labels = [];
+        $year = date("Y");
+        $month = date("m");
+        $year = ($month < 8) ? $year : $year - 1;
+        $start = $year - 8;
+        if($start <= 2010){
+            $start = 2010;
+        }
+        for($i = $start; $i <= $year ; $i++){
+            $student_count = Student::where('enrolled_year','=',$i)->count();
+            array_push($data, $student_count);
+            array_push($labels, $i);
+        }
+        $record['data'] = $data;
+        $record['labels'] = $labels;
+        return $record;
     }
 }

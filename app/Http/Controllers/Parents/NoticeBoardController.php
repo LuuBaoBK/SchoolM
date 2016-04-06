@@ -1,29 +1,39 @@
 <?php
 
-namespace App\Http\Controllers\Student;
+namespace App\Http\Controllers\Parents;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Auth;
-use App\Model\Classes;
-use App\Model\StudentClass;
+use App\Model\Parents;
 use App\User;
-use App\Model\Student;
-use App\Model\Teacher;
-use App\Model\ClassLectureregister;
+use App\Model\StudentClass;
 use App\Model\Lectureregister;
-use DB;
+use App\Model\ClassLectureregister;
 
-class NoticeboardController extends Controller
+class NoticeBoardController extends Controller
 {
     public function get_view(){
-        $student = Auth::user();
+        $student_list = Parents::find(Auth::user()->id)->student;
+        foreach ($student_list as $key => $value) {
+            $value->user;
+        }
+        $notice_list = null;
+        return view('parentpage.notice_board', ['notice_list' => $notice_list, 'student_list' => $student_list]);
+    }
+
+    public function get_student_noticeboard($student_id){
+        $student_list = Parents::find(Auth::user()->id)->student;
+        foreach ($student_list as $key => $value) {
+            $value->user;
+        }
+
         $year = substr(date('Y'),2,2);
         $month = date('m');
         $year = ($month < 8 ) ? $year - 1 : $year ;
-        $check = StudentClass::where('student_id','=',$student->id)
+        $check = StudentClass::where('student_id','=',$student_id)
                              ->where('class_id','like', $year."_%")
                              ->first();
         if($check == null){
@@ -34,8 +44,8 @@ class NoticeboardController extends Controller
             for($i=2; $i<=7; $i++){
                 $notice_list[$i] = [];
             }
-            $notice_temp_listt = ClassLectureregister::where('class_id','=',$check->class_id)->orderBy('id','desc')->get();
-            foreach ($notice_temp_listt as $key => $notice) {
+            $notice_temp_list = ClassLectureregister::where('class_id','=',$check->class_id)->orderBy('id','desc')->get();
+            foreach ($notice_temp_list as $key => $notice) {
                 $notice_date = date_create($notice->notice_date);
                 $notice_day = $this->my_day_format(date_format($notice_date,"D"));
                 if($notice_day == 8){
@@ -45,7 +55,7 @@ class NoticeboardController extends Controller
                 array_push($notice_list[$notice_day], $notice->notice_detail);
             }
         }
-        return view('studentpage.notice_board', ['notice_list' => $notice_list]);
+        return view('parentpage.notice_board', ['notice_list' => $notice_list, 'student_list' => $student_list, 'student_id' => $student_id]);
     }
 
     public function read_notice(Request $request){

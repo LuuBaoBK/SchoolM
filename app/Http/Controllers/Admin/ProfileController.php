@@ -107,4 +107,8 @@ class ProfileController extends Controller
     public function permission_denied(){
         return view('adminpage.permission_denied');
     }
+
+    public function homepage_edit(){
+        return view('adminpage.homepage_edit');
+    }
 }

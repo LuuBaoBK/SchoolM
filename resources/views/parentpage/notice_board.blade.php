@@ -1,4 +1,4 @@
-@extends('mytemplate.blankpage_stu')
+@extends('mytemplate.blankpage_pa')
 @section('content')
 <style type="text/css">
     table tr.selected{
@@ -7,19 +7,41 @@
 </style>
 <section class="content-header">
     <h1>
-        Student
+        Parent
         <small>Notice Board</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="/student/dashboard"><i class="fa fa-home"></i>Dashboard</a></li>
+        <li><a href="/parents/dashboard"><i class="fa fa-home"></i>Dashboard</a></li>
     </ol>
 </section>
 <section class="content">
-	<input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-	@if($notice_list == 'no_class')
-		<div class="callout callout-warning col-lg-4">
-			<h4>No Placement</h4>
-			<p>You have noplacement</p>
+	<div class="row form-group">
+		<input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+		<div class="col-lg-4">
+			<input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+	        <label for="student">Student</label>
+	        <select id="student" name="student" class="form-control">
+	        	<option value="-1" selected>-- Select Student --</option>
+	        	@if($notice_list == null)
+		            @foreach($student_list as $key => $student)
+		            	<option value={{$student->id}}>{{$student->user->fullname}}</option>
+		            @endforeach
+	            @else
+	            	@foreach($student_list as $key => $student)
+	            		@if($student->id == $student_id)
+		            		<option value={{$student->id}} selected>{{$student->user->fullname}}</option>
+	            		@else
+            				<option value={{$student->id}}>{{$student->user->fullname}}</option>
+            			@endif
+		            @endforeach
+	            @endif
+	        </select>
+		</div>
+	</div>
+	@if($notice_list == null)
+		<div class="callout callout-info col-lg-4">
+			<h4>No Student</h4>
+			<p>Please Select One Student</p>
 		</div>
 	@else
 		<div class="row">
@@ -315,13 +337,25 @@
         </div>
       <!-- /.modal-dialog -->
     </div>
-</section>
+</section>	
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
-<script src="{{asset("/adminlte/bootstrap/js/bootstrap.min.js")}}"></script>
+<script src="{{asset("/mylib/jquery/jquery.min.js")}}" type="text/javascript"></script>
 <script src="{{asset("/mylib/ckeditor/ckeditor.js")}}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-	$('#sidebar_notice').addClass('active');
+	$('#sidebar_tkb').addClass('active');
+	$('#student').on('change',function(){
+		var student_id = $(this).val();
+		if(student_id != -1){
+			var token = $('input[name="_token"]').val();
+			$("#student option[value='-1']").remove();
+			url = "/parents/notice_board/student_noticeboard/"+student_id;
+			window.location.replace(url);
+		}
+		else{
+			//Do nothing
+		}
+	});
 	setup_table();
 	CKEDITOR.replace('modal_content', {
         toolbarGroups: [
@@ -362,7 +396,7 @@ $(document).ready(function() {
 				$('table tbody tr.selected').removeClass('selected');
 				$(this).addClass('selected');
 				$.ajax({
-	                url     :"<?= URL::to('/student/notice_board/read_notice') ?>",
+	                url     :"<?= URL::to('/parents/notice_board/read_notice') ?>",
 	                type    :"POST",
 	                async   :false,
 	                data    :{
@@ -395,7 +429,6 @@ $(document).ready(function() {
 			}
 		}
 	});
-});	
-</script>	
+});
+</script>
 @endsection
-

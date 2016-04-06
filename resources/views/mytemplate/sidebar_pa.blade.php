@@ -29,9 +29,19 @@
                     <i class="fa fa-list-ul"></i> <span>Transcript</span>
                 </a>
             </li>
+            <li id="sidebar_notice" class="">
+                <a href="/parents/notice_board">
+                    <i class="fa fa-calendar"></i> <span>Notice Board</span>
+                </a>
+            </li>
             <li id="sidebar_mailbox">
                 <a href="/parents/mailbox">
                     <i class="fa fa-envelope-o"></i> <span>Mail Box</span>
+                </a>
+            </li>
+            <li>
+                <a href="/auth/logout">
+                    <i class="glyphicon glyphicon-log-out"></i> <span>Logout</span>
                 </a>
             </li>  
         </ul>
