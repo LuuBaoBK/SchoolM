@@ -77,6 +77,7 @@ class AdminManageController extends Controller
             $user->address = $request['address'];
             $user->role = "0";
             $user->dateofbirth = $dateofbirth;
+            $user->gender = "A";
             $user->save();
 
             $admin->id = $newid;

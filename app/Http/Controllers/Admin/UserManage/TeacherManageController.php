@@ -32,6 +32,14 @@ class TeacherManageController extends Controller
     public function search_te(Request $request){
         $fullname = $request['fullname'];
         $group = $request['group'];
+        $gender = $request['gender'];
+        if($gender == "0"){
+            $gender = "%";
+        }
+        else{
+            $gender .= "%";
+        }
+
         if($request['group'] == "1"){
             $teacher_list = Teacher::select('id')->get();
         }
@@ -39,9 +47,9 @@ class TeacherManageController extends Controller
             $teacher_list = Teacher::select('id')->where('group','=',$group)->get();
         }
         if($fullname != "")
-            $record = User::whereIn('id',$teacher_list)->where('fullname','LIKE',"%".$fullname."%")->get();
+            $record = User::whereIn('id',$teacher_list)->where('gender','like',$gender)->where('fullname','LIKE',"%".$fullname."%")->get();
         else
-            $record = User::whereIn('id',$teacher_list)->get();
+            $record = User::whereIn('id',$teacher_list)->where('gender','like',$gender)->get();
         foreach ($record as $key => $value) {
             $value->teacher->my_position;
             if($value->dateofbirth == "0000-00-00"){
@@ -64,6 +72,8 @@ class TeacherManageController extends Controller
             $record[$key]->dateofbirth = $dateofbirth;
             $record[$key]->teacher->incomingday = $incomingday;
             $record[$key]->teacher->group = Subject::find($value->teacher->group)->subject_name;
+            $record[$key]->teacher->active = ($record[$key]->teacher->active == "1") ? "Active" : "inActive";
+            $record[$key]->gender = ($record[$key]->gender == "M") ? "Male" : "Female";
         }
         return $record;
     }
@@ -125,7 +135,6 @@ class TeacherManageController extends Controller
             $email = $newid."@schoolm.com";
             //$password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
             $password = $newid;
-
             // Create User
             $user->id = $newid;
             $user->email = $email;
@@ -137,6 +146,7 @@ class TeacherManageController extends Controller
             $user->address = $request['address'];
             $user->role = "1";
             $user->dateofbirth = $dateofbirth;
+            $user->gender = $request['gender'];
             $user->save();
 
             $teacher->id = $newid;
@@ -146,6 +156,7 @@ class TeacherManageController extends Controller
             $teacher->position = $request['position'];
             $teacher->specialized = $request['specialized'];
             $teacher->incomingday = $incomingday;
+            $teacher->active = 1;
             $teacher->save();
 
             $te_next_id->save();
@@ -181,7 +192,8 @@ class TeacherManageController extends Controller
                 'mydata'        => $teacher
             );
 
-            
+            $teacher->active = "Active";
+            $teacher->user->gender = ($teacher->user->gender == "M" )? "Male" : "Female"; 
             $record['mydata'] = $teacher;
             return $record;
         }
@@ -267,6 +279,7 @@ class TeacherManageController extends Controller
             $user->fullname = $request['firstname']." ".$request['middlename']." ".$request['lastname'];
             $user->address = $request['address'];
             $user->dateofbirth = $dateofbirth;
+            $user->gender = $request['gender'];
             $user->save();
 
             $teacher->mobilephone = $request['mobilephone'];
@@ -298,5 +311,14 @@ class TeacherManageController extends Controller
             $dateofbirth = date_format($dateofbirth, "d/m/Y");
         }
         return view('adminpage.usermanage.print_te', ['teacher' => $teacher, 'password' => $password, 'dateofbirth' => $dateofbirth]);
+    }
+
+    public function change_status(Request $request){
+        $teacher = Teacher::find($request['id']);
+        // $teacher->save();
+        $teacher->active = $request['status'];
+        $teacher->save();
+        return $teacher;
+        return $request->all();
     }
 }

@@ -12,7 +12,7 @@ use App\Model\StudentClass;
 use App\User;
 use App\Model\Student;
 use App\Model\Teacher;
-use App\Model\ClassLectureregister;
+use App\Model\Classlectureregister;
 use App\Model\Lectureregister;
 use DB;
 
@@ -34,7 +34,7 @@ class NoticeboardController extends Controller
             for($i=2; $i<=7; $i++){
                 $notice_list[$i] = [];
             }
-            $notice_temp_listt = ClassLectureregister::where('class_id','=',$check->class_id)->orderBy('id','desc')->get();
+            $notice_temp_listt = Classlectureregister::where('class_id','=',$check->class_id)->orderBy('id','desc')->get();
             foreach ($notice_temp_listt as $key => $notice) {
                 $notice_date = date_create($notice->notice_date);
                 $notice_day = $this->my_day_format(date_format($notice_date,"D"));

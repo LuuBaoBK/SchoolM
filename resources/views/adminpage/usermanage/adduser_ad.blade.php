@@ -189,10 +189,9 @@ $(document).ready(function() {
                              dateofbirth,
                              record.mydata.user.address,
                              record.mydata.create_by,
-                             record.mydata.user.role,
                              record.button
                              ]
-                            );
+                        );
                    }
                    else{
                         $('#error_mess').show("medium");

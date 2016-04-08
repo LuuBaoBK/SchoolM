@@ -48,7 +48,7 @@ table tr.selected{
                                 echo "<option value='0' selected>-- All --</option>";  
                             ?>
                         </select>                                       
-                    </div> 
+                    </div>
                                         
             </div> <!-- /.box left body -->
             <div class="box-footer">
@@ -125,6 +125,20 @@ table tr.selected{
                         </div>
                         <div class="row">
                             <div class="form-group col-lg-4">
+                                <label for="dateofbirth">Date Of Birth</label>
+                                <input type="text" id="dateofbirth" name="dateofbirth" class="form-control"  data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/ value={{$parent['dateofbirth']}} >
+                                <label class="info_error_mess" id="dateofbirth_error" style="display:none" for="dateofbirth"></label>
+                            </div>
+                            <div class="col-lg-4">
+                                <label for="gender">Gender</label>
+                                <select class="form-control" id="gender" name="gender">
+                                    <option value="M">Male</option>
+                                    <option value="F">Female</option>
+                                </select>
+                            </div>          
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
                                 <label for="mobilephone">Mobile Phone</label>
                                 <input type="text" class="form-control" name="mobilephone" id="mobilephone" placeholder="Mobile Phone" value={{$parent['mobilephone']}}>
                                 <label class="info_error_mess" id="mobilephone_error" style="display:none" for="mobilephone"></label>
@@ -135,12 +149,8 @@ table tr.selected{
                                 <label class="info_error_mess" id="homephone_error" style="display:none" for="homephone"></label>
                             </div>
                         </div>
+                        
                         <div class="row">
-                            <div class="form-group col-lg-4">
-                                <label for="dateofbirth">Date Of Birth</label>
-                                <input type="text" id="dateofbirth" name="dateofbirth" class="form-control"  data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/ value={{$parent['dateofbirth']}} >
-                                <label class="info_error_mess" id="dateofbirth_error" style="display:none" for="dateofbirth"></label>
-                            </div>
                             <div class="form-group col-lg-8">
                                 <label for="address">Address</label>
                                 <input type="text" class="form-control" name="address" id="address" placeholder="Address" value={{$parent['address']}}>
@@ -327,6 +337,7 @@ $(document).ready(function() {
                         $('#homephone').val(record.homephone);
                         $('#address').val(record.user.address);
                         $('#dateofbirth').val(mydateofbirth);
+                        $("#gender").val(record.user.gender);
 
                         var button_1="";
                         var children_dateofbirth,formattedDate,d,m,y;
@@ -383,6 +394,7 @@ $(document).ready(function() {
             var homephone   = $('#homephone').val();
             var dateofbirth = $('#dateofbirth').val();
             var address     = $('#address').val();
+            var gender      = $('#gender').val();
             var token       = $('input[name="_token"]').val();
             $(".form-group").removeClass("has-warning");
             $(".info_error_mess").empty();
@@ -400,6 +412,7 @@ $(document).ready(function() {
                     'homephone'     :homephone,
                     'dateofbirth'   :dateofbirth,
                     'address'       :address,
+                    'gender'        :gender,
                     '_token'        :token
                 },
                 success:function(record){

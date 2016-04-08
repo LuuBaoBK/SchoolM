@@ -58,6 +58,15 @@
                                 <label class="error_mess" id="student_dateofbirth_error" style="display:none" for="student_dateofbirth"></label>
                             </div>
                             <div class="form-group col-lg-4">
+                                <label for="student_gender">Gender</label>
+                                <select id="student_gender" name="student_gender" class="form-control">
+                                    <option value="M" selected>Male</option>
+                                    <option value="F">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
                                 <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
                                 <label for="enrolled_year">Enrolled Year</label>
                                 <select id="enrolled_year" name="enrolled_year" class="form-control">
@@ -81,9 +90,7 @@
                                 <input type="text" class="form-control" name="graduated_year" id="graduated_year" placeholder="Graduated Year">
                                 <label class="error_mess" id="graduated_year_error" style="display:none" for="graduated_year"></label>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-12">
+                            <div class="form-group col-lg-8">
                                 <label for="student_address">Address</label>
                                 <input type="text" class="form-control" name="student_address" id="student_address" placeholder="Address">
                                 <label class="error_mess" id="student_address_error" style="display:none" for="student_address"></label>
@@ -131,6 +138,15 @@
                                 <input type="text" id="parent_dateofbirth" name="parent_dateofbirth" class="isParent form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/>
                                 <label class="error_mess" id="parent_dateofbirth_error" style="display:none" for="parent_dateofbirth"></label>
                             </div>
+                            <div class="form-group col-lg-4">
+                                <label for="parent_gender">Gender</label>
+                                <select class="form-control" id="parent_gender" name="parent_gender">
+                                    <option value="M" selected>Male</option>
+                                    <option value="F">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="form-group col-lg-4">
                                 <label for="parent_homephone">Home Phone</label>
                                 <input type="text" class="isParent form-control" name="parent_homephone" id="parent_homephone" placeholder="Parent Home Phone">
@@ -191,6 +207,14 @@
                     ?>
                 </select>
             </div>
+            <div class="form-group">
+                <label for="filter_gender">Gender</label>
+                <select class="form-control" id="filter_gender" name="filter_gender">
+                    <option value="0" selected>All</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                </select>
+            </div>
         </div>
         <div style = " " class="box-footer">
             <button id ="filter_form_submit" type="button" class="btn btn-block btn-primary pull-right">Search</button>
@@ -217,6 +241,7 @@
                 <th>Graduated Year</th>
                 <th>Parent Name</th>
                 <th>Date Of Birth</th>
+                <th>Gender</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -233,6 +258,7 @@
                 <th>Graduated Year</th>
                 <th>Parent Name</th>
                 <th>Date Of Birth</th>
+                <th>Gender</th>
                 <th>Action</th>
             </tr>
         </tfoot>
@@ -271,7 +297,7 @@ $(document).ready(function() {
 
         $("#student_table").DataTable({
             "order": [[ 1, "desc" ]],
-            "columnDefs": [ { "targets": 6, "orderable": false } ] 
+            "columnDefs": [ { "targets": 7, "orderable": false } ] 
             });
 
         $('#st_form_submit').click(function(){
@@ -280,6 +306,7 @@ $(document).ready(function() {
             var student_middlename = $('#student_middlename').val();
             var student_lastname = $('#student_lastname').val();
             var student_dateofbirth = $('#student_dateofbirth').val();
+            var student_gender = $('#student_gender').val();
             var enrolled_year = $('#enrolled_year').val();
             var graduated_year = $('#graduated_year').val();
             var student_address = $('#student_address').val();
@@ -288,6 +315,7 @@ $(document).ready(function() {
             var parent_middlename = $('#parent_middlename').val();
             var parent_lastname = $('#parent_lastname').val();
             var parent_dateofbirth = $('#parent_dateofbirth').val();
+            var parent_gender = $('#parent_gender').val();
             var parent_mobilephone = $('#parent_mobilephone').val();
             var parent_homephone = $('#parent_homephone').val();
             var parent_job = $('#parent_job').val();
@@ -306,6 +334,7 @@ $(document).ready(function() {
                     'student_middlename'    :student_middlename,   
                     'student_lastname'      :student_lastname, 
                     'student_dateofbirth'   :student_dateofbirth,   
+                    'student_gender'        :student_gender,
                     'enrolled_year'         :enrolled_year,   
                     'graduated_year'        :graduated_year,   
                     'student_address'       :student_address,  
@@ -313,7 +342,8 @@ $(document).ready(function() {
                     'parent_firstname'      :parent_firstname,   
                     'parent_middlename'     :parent_middlename,  
                     'parent_lastname'       :parent_lastname,   
-                    'parent_dateofbirth'    :parent_dateofbirth,  
+                    'parent_dateofbirth'    :parent_dateofbirth,
+                    'parent_gender'         :parent_gender,  
                     'parent_mobilephone'    :parent_mobilephone,   
                     'parent_homephone'      :parent_homephone,   
                     'parent_job'            :parent_job,   
@@ -335,6 +365,7 @@ $(document).ready(function() {
                             record.graduated_year,
                             record.parent.user.firstname+" "+record.parent.user.middlename+" "+record.parent.user.lastname,
                             student_dateofbirth,
+                            record.user.gender,
                             button
                         ]);
                    }
@@ -357,6 +388,7 @@ $(document).ready(function() {
         $('#filter_form_submit').click(function(){
             var fullname = $('#filter_fullname').val();
             var enrolled_year = $('#filter_enrolled_year').val();
+            var gender = $('#filter_gender').val();
             var token = $('input[name="_token"]').val();
 
            $.ajax({
@@ -366,6 +398,7 @@ $(document).ready(function() {
                 data    :{
                     'enrolled_year'  :enrolled_year,
                     'fullname'       :fullname,
+                    'gender'         :gender,
                     '_token'         :token
                 },
                 success:function(record){
@@ -401,6 +434,7 @@ $(document).ready(function() {
                                 row.student.graduated_year,
                                 " <a href='/admin/manage-user/parent/from_child/"+row.student.parent.user.id+"' target='_blank'>"+show_name+"</a>",
                                 mydateofbirth,
+                                row.gender,
                                 button
                             ]);
                         });

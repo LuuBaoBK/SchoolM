@@ -29,11 +29,11 @@ Route::post('/get_info', 'Auth\MyAuthController@get_info');
 Route::get('/test', 'Test\TestController@test');
 Route::post('/test', 'Test\TestController@test_read');
 Route::post('/test/read', 'Test\TestController@test_read');
-Route::post('auth/login', 'Auth\MyAuthController@authenticate');
-Route::get('auth/logout', 'Auth\MyAuthController@logout');
+Route::post('/auth/login', 'Auth\MyAuthController@authenticate');
+Route::get('/auth/logout', 'Auth\MyAuthController@logout');
 
 // Error Route
-Route::get('permission_denied', 'Auth\MyAuthController@permission_denied');
+Route::get('/permission_denied', 'Auth\MyAuthController@permission_denied');
 
 
 //common route
@@ -41,10 +41,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/dashboard','Auth\MyAuthController@get_dashboard');
 
 	Route::group(['prefix'=>'mailbox'],function(){
-		Route::post('update_mailbox','MailBox\MailBoxController@update_mailbox');
-		Route::post('read_msg','MailBox\MailBoxController@read_msg');
-		Route::post('save_draft','MailBox\MailBoxController@save_draft');
-		Route::post('send_mail','MailBox\MailBoxController@send_mail');
+		Route::post('update_mailbox','Mailbox\MailBoxController@update_mailbox');
+		Route::post('read_msg','Mailbox\MailBoxController@read_msg');
+		Route::post('save_draft','Mailbox\MailBoxController@save_draft');
+		Route::post('send_mail','Mailbox\MailBoxController@send_mail');
 	});
 });
 
@@ -56,11 +56,8 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::get('dashboard', 'Admin\ProfileController@get_ad_dashboard' );
 	Route::post('dashboard', 'Admin\ProfileController@edit_info' );
 	Route::post('dashboard/changepassword', 'Admin\ProfileController@changepassword' );
-	//Homepage Edit
-	Route::get('homepage_edit', 'Admin\ProfileController@homepage_edit');
 
-
-	Route::get('mailbox', 'MailBox\MailBoxController@get_mailbox');
+	Route::get('mailbox', 'Mailbox\MailBoxController@get_mailbox');
 
 	Route::get('position', 'Admin\PositionController@get_view');
 	Route::post('position', 'Admin\PositionController@change_name');
@@ -77,6 +74,7 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 		Route::post('teacher/search', 'TeacherManageController@search_te');
 		Route::get ('teacher/edit/{id}', 'TeacherManageController@get_edit_form');
 		Route::post ('teacher/edit', 'TeacherManageController@edit_te');
+		Route::post ('teacher/change-status', 'TeacherManageController@change_status');
 		Route::get ('teacher/edit/{id}/reset_password',  'TeacherManageController@reset_password');
 
 		Route::get ('student', 'StudentManageController@get_stu');
@@ -170,7 +168,7 @@ Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () 
 	Route::get('permission_denied', 'Teacher\ProfileController@permission_denied' );
 
 	//Mailbox
-	Route::get('mailbox', 'MailBox\MailBoxController@get_mailbox');
+	Route::get('mailbox', 'Mailbox\MailBoxController@get_mailbox');
 
 	//transcript manage
 	Route::get('transcript', 'Teacher\Transcript\TranscriptController@view');
@@ -207,7 +205,7 @@ Route::group(['prefix' => 'student','middleware' => 'authrole_stu'], function ()
 	Route::get('permission_denied', 'Student\ProfileController@permission_denied' );
 
 	//Mailbox
-	Route::get('mailbox', 'MailBox\MailBoxController@get_mailbox');
+	Route::get('mailbox', 'Mailbox\MailBoxController@get_mailbox');
 
 	//Transcript
 	Route::get('transcript', 'Student\TranscriptController@get_view');
@@ -228,7 +226,7 @@ Route::group(['prefix' => 'parents','middleware' => 'authrole_pa'], function () 
 	Route::get('permission_denied', 'Parents\ProfileController@permission_denied' );
 
 	//Mailbox
-	Route::get('mailbox', 'MailBox\MailBoxController@get_mailbox');
+	Route::get('mailbox', 'Mailbox\MailBoxController@get_mailbox');
 
 	//Schedules
 	Route::get('schedule', 'Parents\ScheduleController@get_view');

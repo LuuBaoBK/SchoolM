@@ -19,6 +19,7 @@ class ClassController extends Controller
         $record['teacherlist'] = Teacher::whereNotIn('id', 
                                                         Classes::select('homeroom_teacher')->where('scholastic','=',substr($year, 2))->get()
                                                     )
+                                ->where('active','=','1')
                                 ->get();
         foreach ($record['teacherlist'] as $key => $value) {
             $value->user;
@@ -31,6 +32,7 @@ class ClassController extends Controller
         $teacherlist = Teacher::whereNotIn('id', 
                                                Classes::select('homeroom_teacher')->where('scholastic','=',$year)->get()
                                            )
+                                ->where('active','=','1')
                                 ->get();
         foreach ($teacherlist as $key => $value) {
             $value->user;
@@ -99,9 +101,9 @@ class ClassController extends Controller
 
     public function get_edit_form($id){
         $class = Classes::find($id);
-        $year = date("Y");
+        $year = substr($id, 0,2);
         $record['teacherlist'] = Teacher::whereNotIn('id', 
-                                                        Classes::select('homeroom_teacher')->where('scholastic','=',substr($year, 2))->get()
+                                                        Classes::select('homeroom_teacher')->where('scholastic','=',$year)->get()
                                                     )
                                 ->get();
         foreach ($record['teacherlist'] as $key => $value) {

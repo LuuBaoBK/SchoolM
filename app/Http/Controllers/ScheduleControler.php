@@ -27,7 +27,7 @@ class ScheduleControler extends Controller
         $SOTIETDAY1TUANGV = 40;
         $dktaotkb = true;
         foreach (Subject::all() as $key => $Mon) {
-            $hientai = Teacher::where('group', '=', $Mon->id)->get()->count();
+            $hientai = Teacher::where('group', '=', $Mon->id)->where('active','=','1')->get()->count();
             $addnew[0] = $Mon->subject_name;
             $addnew[1] = $hientai;
             $toithieu = (int)($Mon->total_time * $tongsolop / $SOTIETDAY1TUANGV)+1;
@@ -130,7 +130,7 @@ class ScheduleControler extends Controller
         $dem  = 0;
 
         foreach (Subject::all() as $Mon) {
-            $DSGV = Teacher::where('group', "=", $Mon->id)->get();
+            $DSGV = Teacher::where('group', "=", $Mon->id)->where('active','=','1')->get();
             foreach ($DSGV as $GV) {
                 $addnew = null;
                 $addnew[0] = $GV->id;
@@ -174,7 +174,7 @@ class ScheduleControler extends Controller
         $randomngay     = $this->randomlist(5);
         $randomtietngay = $this->randomlist(10);
         $randomtiettuan = $this->randomlist(50);
-        $randomteacher  = $this->randomlist(Teacher::all()->count());
+        $randomteacher  = $this->randomlist(Teacher::where('active','=','1')->count());
 
 
         foreach ($randomteacher as $row){//Uu tien cho giao vien chu nhiem
@@ -310,7 +310,7 @@ class ScheduleControler extends Controller
        $thoikhoabieu = null;
        $count_gv = 0;
        foreach (Subject::all() as $key1 => $subject) {
-           $listTearcherofSub = Teacher::where("group", "=", $subject->id)->get();
+           $listTearcherofSub = Teacher::where("group", "=", $subject->id)->where('active','=','1')->get();
            foreach ($listTearcherofSub as $key2 => $teacher) {
                 $addnew    = null;
                 $addnew[0] = $teacher->id;
@@ -347,7 +347,7 @@ class ScheduleControler extends Controller
         Phancong::where("class_id", "like", $year."%")->delete();
         $DSLOPHOC = Classes::where("id", "like", $year."%")->get();
         $DSMONHOC = Subject::all();
-        $DSGIAOVIEN = Teacher::all();
+        $DSGIAOVIEN = Teacher::where('active','=','1')->get();
        
         //xu li cho truong hop co giao vien chu nhiem
         foreach ($DSLOPHOC as $Lop) {
@@ -367,7 +367,7 @@ class ScheduleControler extends Controller
 
         foreach ($DSMONHOC as $Mon) {
 
-            $DSGV1Mon = Teacher::where("group","=", $Mon->id)->get();
+            $DSGV1Mon = Teacher::where("group","=", $Mon->id)->where('active','=','1')->get();
             if($DSGV1Mon->count() == 0)
                 continue;
 
@@ -640,7 +640,7 @@ class ScheduleControler extends Controller
         $randomngay     = $this->randomlist(5);
         $randomtietngay = $this->randomlist(10);
         $randomtiettuan = $this->randomlist(50);
-        $randomteacher  = $this->randomlist(Teacher::all()->count());
+        $randomteacher  = $this->randomlist(Teacher::where('active','=','1')->count());
         
 
         $sogiaovien = 0;

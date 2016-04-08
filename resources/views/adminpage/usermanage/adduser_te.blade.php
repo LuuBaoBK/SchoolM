@@ -110,6 +110,15 @@
             <label class="error_mess" id="position_error" style="display:none" for="position"></label>
         </div>
     </div>
+    <div class="row">
+        <div class="form-group col-lg-3 col-xs-12">
+            <label for="gender">Gender</label>
+            <select class="form-control" id="gender" name="gender">
+                <option value="M" selected>Male</option>
+                <option value="F">Female</option>
+            </select>
+        </div>
+    </div>
 </div><!-- /.box-body -->
 <div style = " " class="box-footer">
         <button id ="te_form_submit" type="button" class="btn btn-primary">Create New Teacher</button>
@@ -145,6 +154,14 @@
                 ?>
                 </select>
             </div>
+            <div class="form-group">
+                <label for="filter_gender">Gender</label>
+                <select class="form-control" id="filter_gender" name="filter_gender">
+                    <option value="0" selected>All</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                </select>
+            </div>
         </div><!-- /.box-body -->
         <div style = " " class="box-footer">
                 <button id ="filter_form_submit" type="button" class="btn btn-block btn-primary pull-right">Search</button>
@@ -169,6 +186,8 @@
                 <th>Group</th>
                 <th>Position</th>
                 <th>Date Of Birth</th>
+                <th>Gender</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -184,6 +203,8 @@
                 <th>Group</th>
                 <th>Position</th>
                 <th>Date Of Birth</th>
+                <th>Gender</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </tfoot>
@@ -203,7 +224,7 @@
         $('#sidebar_list_2_2').addClass('active');
         $("#teacher_table").DataTable({
             "order": [[ 1, "desc" ]],
-            "columnDefs": [ { "targets": 5, "orderable": false } ]   
+            "columnDefs": [ { "targets": 7, "orderable": false } ]   
         });
         $("[data-mask]").inputmask();
 
@@ -220,6 +241,7 @@
             var group       = $('#group').val();
             var specialized = $('#specialized').val();
             var position    = $('#position').val();
+            var gender      = $('#gender').val();
             var token       = $('input[name="_token"]').val();
             $(".form-group").removeClass("has-warning");
             $(".error_mess").empty();
@@ -239,6 +261,7 @@
                     'position'      :position,
                     'dateofbirth'   :dateofbirth,
                     'address'       :address,
+                    'gender'        :gender,
                     '_token'        :token
                 },
                 success:function(record){
@@ -253,6 +276,8 @@
                             record.mydata.teach.subject_name,
                             record.mydata.position,
                             record.mydata.user.dateofbirth,
+                            record.mydata.user.gender,
+                            record.mydata.active,
                             record.button
                              ]
                             );
@@ -274,6 +299,7 @@
         $("#filter_form_submit").click(function() {
             var fullname   = $('#fullname_filter').val();
             var group       = $('#filter_group').val();
+            var gender      = $('#filter_gender').val();
             var token       = $('input[name="_token"]').val();
             $.ajax({
                 url     :"<?= URL::to('/admin/manage-user/teacher/search') ?>",
@@ -282,10 +308,10 @@
                 data    :{
                     'fullname'     :fullname,
                     'group'         :group,
+                    'gender'        :gender,
                     '_token'        :token
                 },
                 success:function(record){
-                    console.log(record);
                    $('#teacher_table').dataTable().fnClearTable();
                     $.each(record, function(i, row){
                         button = "<a href='teacher/edit/"+row.id+"'<i class = 'glyphicon glyphicon-edit'></i></a>";
@@ -295,6 +321,8 @@
                             row.teacher.group,
                             row.teacher.my_position.position_name,
                             row.dateofbirth,
+                            row.gender,
+                            row.teacher.active,
                             button
                         ]);
                     });

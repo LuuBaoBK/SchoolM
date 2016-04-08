@@ -32,6 +32,17 @@
                 <label for="email">Email</label>
                 <input type="text" class="form-control" name="email" id="email" placeholder="Email" readonly value={{$teacher->user->email}} >
             </div>
+            <div class="col-xs-12 col-lg-3">
+                <label for="gender">Gender</label>
+                <select class="form-control" id="gender" name="gender">
+                    <option value="M" selected>Male</option>
+                    @if($teacher->user->gender == "F")
+                        <option value="F" selected>Female</option>
+                    @else
+                        <option value="F">Female</option>
+                    @endif
+                </select>
+            </div>
         </div>
         <div class="row">
             <div class="form-group col-lg-3 col-xs-12">
@@ -123,8 +134,13 @@
     </div><!-- /.box-body -->
     <div class="box-footer">
             <button id ="te_form_submit" type="button" class="btn btn-primary">Edit</button>
-            <a href="/admin/manage-user/teacher"><button id ="back" type="button" class="btn btn-primary">Back To Teacher Table</button></a>
+            <a href="/admin/manage-user/teacher"><button id ="back" type="button" class="btn btn-primary">Back To Teacher Table</button></a>     
             <button id ="reset_password" type="button" class="btn btn-warning">Reset Password</button>
+            @if($teacher->active == 1)
+            <button type="button" class="btn btn-danger" id="deactive">Deactive</button>
+            @else
+            <button type="button" class="btn btn-info" id="active">Active</button>
+            @endif
     </div>
 
     </form>
@@ -174,6 +190,7 @@ $(document).ready(function() {
             var group       = $('#group').val();
             var specialized = $('#specialized').val();
             var position    = $('#position').val();
+            var gender      = $('#gender').val();
             var token       = $('input[name="_token"]').val();
 
             $(".form-group").removeClass("has-warning");
@@ -196,6 +213,7 @@ $(document).ready(function() {
                     'position'      :position,
                     'dateofbirth'   :dateofbirth,
                     'address'       :address,
+                    'gender'        :gender,
                     '_token'        :token
                 },
                 success:function(record){
@@ -225,6 +243,46 @@ $(document).ready(function() {
     $('#confirm_button').click(function(){
         $('#confirmModal').modal('hide');
         window.open('/admin/manage-user/teacher/edit/'+$('#id').val()+'/reset_password', '_blank');
+    });
+
+    $('#deactive').click(function(){
+        var token       = $('input[name="_token"]').val();
+        var status = "0";
+        var id          = $('#id').val();
+        $.ajax({
+            url     :"<?= URL::to('/admin/manage-user/teacher/change-status') ?>",
+            type    :"POST",
+            async   :false,
+            data    :{
+                'id'            :id,
+                'status'        :status,
+                '_token'        :token
+            },
+            success:function(record){
+               location.reload();
+               // console.log(record);
+            }
+        });        
+    });
+
+    $('#active').click(function(){
+        var token       = $('input[name="_token"]').val();
+        var status = "1";
+        var id          = $('#id').val();
+        $.ajax({
+            url     :"<?= URL::to('/admin/manage-user/teacher/change-status') ?>",
+            type    :"POST",
+            async   :false,
+            data    :{
+                'id'            :id,
+                'status'        :status,
+                '_token'        :token
+            },
+            success:function(record){
+               location.reload();
+               // console.log(record);
+            }
+        }); 
     });
 });
 </script>

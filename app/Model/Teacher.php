@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Teacher extends Model
 {
     protected $table = 'teachers';
-    protected $fillable = ['id', 'mobilephone' , 'homephone', 'group', 'position', 'incomingday'];
+    protected $fillable = ['id', 'mobilephone' , 'homephone', 'group', 'position', 'incomingday', 'active'];
     public $timestamps = false;
     
     public function user()

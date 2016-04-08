@@ -26,6 +26,13 @@ class StudentManageController extends Controller
     public function show(Request $request){
         $fullname = $request['fullname'];
         $enrolled_year = $request['enrolled_year'];
+        $gender = $request['gender'];
+        if($gender == "0"){
+            $gender = "%";
+        }
+        else{
+            $gender .="%";
+        }
         if($enrolled_year == 0){
             $student = Student::select('id')->orderBy('id','desc')->get();
         }
@@ -37,9 +44,11 @@ class StudentManageController extends Controller
         }
         $studentlist =  User::whereIn('id', $student)
                             ->where('fullname','like',"%".$fullname."%")
+                            ->where('gender','like',$gender)
                             ->get();
         foreach ($studentlist as $key => $value) {
             $value->student->parent->user;
+            $value->gender = ($value->gender == "M") ? "Male" : "Female";
         }
         $record = array(
             'isSuccess' => 1,
@@ -120,6 +129,7 @@ class StudentManageController extends Controller
             $s_user->fullname       = $request['student_firstname']." ".$request['student_middlename']." ".$request['student_lastname'];
             $s_user->role           = '2';
             $s_user->dateofbirth    = $student_dateofbirth;
+            $s_user->gender         = $request['student_gender'];
             $s_user->address        = $request['student_address'];
             $s_user->save();
             $s_next_id->save();
@@ -157,6 +167,7 @@ class StudentManageController extends Controller
                 $p_user->fullname       = $request['parent_firstname']." ".$request['parent_middlename']." ".$request['parent_lastname'];
                 $p_user->role           = '3';
                 $p_user->dateofbirth    = $parent_dateofbirth;
+                $p_user->gender         = $request['parent_gender'];
                 $p_user->address        = $request['parent_address'];
                 $p_user->save();
                 $p_next_id->save();
@@ -181,6 +192,7 @@ class StudentManageController extends Controller
             $student = Student::find($new_s_id);
             $student->user;
             $student->parent->user;
+            $student->user->gender = ($student->user->gender == "F")? "Female" : "Male";
             $record = $student;
             $record['isSuccess'] = 1;
             return $record;
@@ -245,6 +257,7 @@ class StudentManageController extends Controller
             $user->fullname = $request['firstname']." ".$request['middlename']." ".$request['lastname'];
             $user->address = $request['address'];
             $user->dateofbirth = $dateofbirth;
+            $user->gender = $request['gender'];
             $user->save();
 
             $student->enrolled_year = $request['enrolled_year'];

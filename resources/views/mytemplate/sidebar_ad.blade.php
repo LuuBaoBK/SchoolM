@@ -76,11 +76,6 @@
                 </a>
             </li>
             <li>
-                <a href="/admin/homepage_edit">
-                    <i class="glyphicon glyphicon-edit"></i> <span>Home Page Edit</span>
-                </a>
-            </li>
-            <li>
                 <a href="/auth/logout">
                     <i class="glyphicon glyphicon-log-out"></i> <span>Logout</span>
                 </a>

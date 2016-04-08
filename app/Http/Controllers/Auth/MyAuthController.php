@@ -9,6 +9,8 @@ use App\Http\Requests;
 use Illuminate\Routing\Redirector;
 use App\Model\Sysvar;
 use App\Model\Student;
+use App\Model\Teacher;
+use App\User;
 
 class MyAuthController extends Controller
 {
@@ -114,7 +116,8 @@ class MyAuthController extends Controller
         $labels = [];
         $year = date("Y");
         $month = date("m");
-        $year = ($month < 8) ? $year : $year - 1;
+        $year = ($month < 8) ? $year-1 : $year;
+        $year = 2013;
         $start = $year - 8;
         if($start <= 2010){
             $start = 2010;
@@ -124,8 +127,23 @@ class MyAuthController extends Controller
             array_push($data, $student_count);
             array_push($labels, $i);
         }
-        $record['data'] = $data;
-        $record['labels'] = $labels;
+        $record['data1'] = $data;
+        $record['labels1'] = $labels;
+
+        $student_male_count = Student::whereIn('id', 
+                                                User::select('id')
+                                                    ->where('gender','=','M')->get()
+                                        )
+                                        // ->where('enrolled_year','=',$year)
+                                        ->count();
+        $student_female_count = Student::whereIn('id', 
+                                                User::select('id')
+                                                    ->where('gender','=','F')->get()
+                                        )
+                                        ->where('enrolled_year','=',$year)
+                                        ->count();
+        $record['student_male_count'] = $student_male_count;
+        $record['student_female_count'] = $student_female_count;
         return $record;
     }
 }

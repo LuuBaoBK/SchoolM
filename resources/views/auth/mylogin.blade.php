@@ -21,6 +21,9 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{{asset("/adminlte/dist/css/skins/_all-skins.min.css")}}">
+   <!-- fullCalendar 2.2.5-->
+  <link rel="stylesheet" href="{{asset("/adminlte/plugins/fullcalendar/fullcalendar.min.css")}}">
+  <link rel="stylesheet" href="{{asset("/adminlte/plugins/fullcalendar/fullcalendar.print.css")}}" media="print">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -187,35 +190,44 @@
             <div class="col-lg-4">
               <div class="box box-primary">
                 <div class="box-header">
-                  <h4 class="text-center">Number Of Student</h4>
+                  <h3 class="text-center">Number Of Student</h3>
                 </div>
                 <div class="box-body">
-                  <div class="box-body">
-                    <div class="chart">
-                      <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-                      <canvas id="lineChart" style="height:450px  "></canvas>
-                    </div>
+                  <div class="chart">
+                    <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+                    <canvas id="lineChart" style="height:450px  "></canvas>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-lg-8">
+            <div class="col-lg-4">
               <div class="box box-primary">
                 <div class="box-header">
-                  <h4 class="text-center">Commitment To Quality</h4>
+                  <p style="font-size:45px; color:black" class="text-center" id="my_clock"></p>
                 </div>
                 <div class="box-body">
-                  <ul class="list-group list-group-unbordered">
-                    <li class="list-group-item">
-                      <b>Teaching</b>: Best teacher with best equipment for each class.
-                    </li>
-                    <li class="list-group-item">
-                      <b>Entertainment</b>: Lots of extracurricular activities and club.
-                     </li>
-                    <li class="list-group-item">
-                      <b>Result</b> will be graduated with B<sup>+</sup> certificate.
-                    </li>
-                  </ul>
+                  <div id="calendar" style="width: 100%"></div>
+                </div>
+                <div class="box-footer">
+                  <p style="font-size:35px; text-align:center"> Time Do Not Wait !</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="box box-primary">
+                <div class="box-header">
+                  <h3 class="text-center">The Proportion of Male & Female Students</h3>
+                </div>
+                <div class="box-body">
+                  <div class="chart">
+                    <canvas id="pieChart" style="height:400px"></canvas>
+                  </div>
+                  <table style="margin-top:25px; text-align:center; font-size:18px" width="100%"> 
+                    <tr>
+                      <td width="50%"><i class="fa fa-circle-o" style="color:#3c8dbc"></i>Male Student</td>
+                      <td width="50%"><i class="fa fa-circle-o" style="color:#58FAF4"></i>Female Student</td>
+                    </tr>
+                  </table>
                 </div>
               </div>
             </div>
@@ -269,6 +281,8 @@
 <!-- iCheck 1.0.1 -->
 <script src="{{asset("/adminlte/plugins/iCheck/icheck.min.js")}}"></script>
 <script src="{{asset("/adminlte/plugins/chartjs/Chart.min.js")}}"></script>
+<!-- Datepicker -->
+<script src="{{asset("/adminlte/plugins/datepicker/bootstrap-datepicker.js")}}"></script>
 @if(Session::has('alert-warning'))
   <script type="text/javascript">
     $(function() {
@@ -289,7 +303,7 @@
       });
     });
 
-    function draw_chart(){
+    function draw_line_chart(){
       var token           = $('input[name="_token"]').val();
       $.ajax({
         url     :"<?= URL::to('/get_info') ?>",
@@ -299,8 +313,8 @@
             '_token'           :token
         },
         success:function(record){
-          var areaChartData = {
-            labels: record.labels,
+          var lineChartData = {
+            labels: record.labels1,
             datasets: [
               {
                 label: "Electronics",
@@ -310,11 +324,11 @@
                 pointStrokeColor: "#c1c7d1",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(220,220,220,1)",
-                data: record.data
+                data: record.data1
               }
             ]
           };
-          var areaChartOptions = {
+          var lineChartOptions = {
             //Boolean - If we should show the scale at all
             showScale: true,
             //Boolean - Whether grid lines are shown across the chart
@@ -355,16 +369,89 @@
 
           var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
           var lineChart = new Chart(lineChartCanvas);
-          var lineChartOptions = areaChartOptions;
           lineChartOptions.datasetFill = false;
-          lineChart.Line(areaChartData, lineChartOptions);
+          lineChart.Line(lineChartData, lineChartOptions);
+
+          var PieData = [
+            {
+              value: record['student_male_count'],
+              color: "#3c8dbc",
+              highlight: "#509DC9",
+              label: "Male Students"
+            },
+            { 
+              value: record['student_female_count'],
+              color: "#58FAF4",
+              highlight: "#00FFFF",
+              label: "Female Students"
+            }
+          ];
+          var pieOptions = {
+            //Boolean - Whether we should show a stroke on each segment
+            segmentShowStroke: true,
+            //String - The colour of each segment stroke
+            segmentStrokeColor: "#fff",
+            //Number - The width of each segment stroke
+            segmentStrokeWidth: 2,
+            //Number - The percentage of the chart that we cut out of the middle
+            percentageInnerCutout: 50, // This is 0 for Pie charts
+            //Number - Amount of animation steps
+            animationSteps: 100,
+            //String - Animation easing effect
+            animationEasing: "easeOutBounce",
+            //Boolean - Whether we animate the rotation of the Doughnut
+            animateRotate: true,
+            //Boolean - Whether we animate scaling the Doughnut from the centre
+            animateScale: false,
+            //Boolean - whether to make the chart responsive to window resizing
+            responsive: true,
+            // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+            maintainAspectRatio: true,
+            //String - A legend template
+            legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+          };
+
+          var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+          var pieChart = new Chart(pieChartCanvas);
+          //Create pie or douhnut chart
+          // You can switch between pie and douhnut using the method below.
+          pieChart.Doughnut(PieData, pieOptions);
         },
         error:function(){
             alert("something went wrong, contact master admin to fix");
         }
       });
     }
-    draw_chart();
+
+    draw_line_chart();
+
+    function draw_datepicker(){
+      $('#calendar').datepicker({
+        minDate: new Date(),
+        maxDate: new Date()
+      });
+      var d = new Date();
+      var strDate = (d.getMonth()+1) + "/" + d.getDate()  + "/" +  d.getFullYear();
+      $("#calendar").datepicker( "setDate", strDate);
+    }
+
+    draw_datepicker();
+
+    function startTime() {
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        $('#my_clock').html(h + ":" + m + ":" + s);
+        var t = setTimeout(startTime, 500);
+    }
+    function checkTime(i) {
+        if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+        return i;
+    }
+    startTime();
 
   </script>
 </body>

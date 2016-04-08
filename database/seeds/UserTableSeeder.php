@@ -49,11 +49,17 @@ class UserTableSeeder extends Seeder
                 '8' => 'Mai',
                 '9' => 'Thùy' 
             );
+
+            $gender = array(
+                '0' => 'F' ,
+                '1' => 'M'
+            );
     	for($i=0; $i<=9; $i++){
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
             $fullname = $firstname." ".$middlename." ".$lastname;
+            $sex = $gender[rand(0,1)];
     		DB::table('users')->insert([
     			'id' =>	'a_000000'.$i,
 	            'firstname' => $firstname,
@@ -64,11 +70,13 @@ class UserTableSeeder extends Seeder
 	            'password' => bcrypt('1234'),
                 'dateofbirth' => "2015-11-1".$i,
                 'role' => '0',
+                'gender' => $sex,
         	]);
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
             $fullname = $firstname." ".$middlename." ".$lastname;
+            $sex = $gender[rand(0,1)];
             DB::table('users')->insert([
                 'id' => 't_000000'.$i,
                 'firstname' => $firstname,
@@ -79,11 +87,13 @@ class UserTableSeeder extends Seeder
                 'dateofbirth' => "2014-11-1".$i,
                 'password' => bcrypt('1234'),
                 'role' => '1',
+                'gender' => $sex,
             ]);
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
             $fullname = $firstname." ".$middlename." ".$lastname;
+            $sex = $gender[rand(0,1)];
             DB::table('users')->insert([
                 'id' => 's_000000'.$i,
                 'firstname' => $firstname,
@@ -94,11 +104,13 @@ class UserTableSeeder extends Seeder
                 'password' => bcrypt('1234'),
                 'dateofbirth' => "2015-11-1".$i,
                 'role' => '2',
+                'gender' => $sex,
             ]);
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
             $fullname = $firstname." ".$middlename." ".$lastname;
+            $sex = $gender[rand(0,1)];
             DB::table('users')->insert([
                 'id' => 'p_000000'.$i,
                 'firstname' => $firstname,
@@ -109,6 +121,7 @@ class UserTableSeeder extends Seeder
                 'password' => bcrypt('1234'),
                 'dateofbirth' => "2015-11-1".$i,
                 'role' => '3',
+                'gender' => $sex,
             ]);
     	}
         for($i=0; $i<=9; $i++){
@@ -125,11 +138,13 @@ class UserTableSeeder extends Seeder
                 'password' => bcrypt('1234'),
                 'dateofbirth' => "2015-11-1".$i,
                 'role' => '0',
+                'gender' => $sex,
             ]);
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
             $fullname = $firstname." ".$middlename." ".$lastname;
+            $sex = $gender[rand(0,1)];
             DB::table('users')->insert([
                 'id' => 't_000001'.$i,
                 'firstname' => $firstname,
@@ -140,11 +155,13 @@ class UserTableSeeder extends Seeder
                 'dateofbirth' => "2014-11-1".$i,
                 'password' => bcrypt('1234'),
                 'role' => '1',
+                'gender' => $sex,
             ]);
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
             $fullname = $firstname." ".$middlename." ".$lastname;
+            $sex = $gender[rand(0,1)];
             DB::table('users')->insert([
                 'id' => 's_000001'.$i,
                 'firstname' => $firstname,
@@ -155,6 +172,7 @@ class UserTableSeeder extends Seeder
                 'password' => bcrypt('1234'),
                 'dateofbirth' => "2015-11-1".$i,
                 'role' => '2',
+                'gender' => $sex,
             ]);
             // $firstname = $firstnamelist[rand(0, 9)];
             // $middlename = $middlenamelist[rand(0, 9)];
@@ -168,15 +186,17 @@ class UserTableSeeder extends Seeder
             //     'password' => bcrypt('1234'),
             //     'dateofbirth' => "2015-11-1".$i,
             //     'role' => '2',
+            //     'gender' => $sex,
             // ]);
         }
 
 
-        for($i=0; $i<=9; $i++){
+        for($i=0; $i<4; $i++){
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
             $fullname = $firstname." ".$middlename." ".$lastname;
+            $sex = $gender[rand(0,1)];
             DB::table('users')->insert([
                 'id' => 't_000002'.$i,
                 'firstname' => $firstname,
@@ -187,6 +207,7 @@ class UserTableSeeder extends Seeder
                 'dateofbirth' => "2014-11-1".$i,
                 'password' => bcrypt('1234'),
                 'role' => '1',
+                'gender' => $sex,
             ]);
             
             

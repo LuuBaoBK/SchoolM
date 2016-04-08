@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('fullname',60);
             $table->date('dateofbirth');
             $table->string('address',120);
+            $table->string('gender',1);
             $table->rememberToken();
             $table->timestamp('updated_at');
         });

@@ -144,6 +144,7 @@ class ParentManageController extends Controller
             $parent->homephone            = $request['homephone'];
             $parent->user->address        = $request['address'];
             $parent->user->dateofbirth    = $dateofbirth;
+            $parent->user->gender         = $request['gender'];
             $parent->save();
             $parent->user->save();
             $record['isSuccess'] = 1;

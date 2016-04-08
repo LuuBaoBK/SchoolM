@@ -33,6 +33,17 @@
             <label for="email">Email</label>
             <input type="text" class="form-control" name="email" id="email" placeholder="Email" readonly value={{$student->user->email}}>
         </div>
+        <div class="col-lg-3">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" class="form-control">
+                <option value="M" selected>Male</option>
+                @if($student->user->gender == "F")
+                    <option value="F" selected>Female</option>
+                @else
+                    <option value="F">Female</option>
+                @endif
+            </select>
+        </div>
     </div>
     <div class="row">
         <div class="form-group col-lg-3 col-xs-12">
@@ -130,6 +141,7 @@ $(document).ready(function() {
             var graduated_year   = $('#graduated_year').val();           
             var parent_id = $('#parent_id').val();
             var address     = $('#address').val();
+            var gender      = $('#gender').val();
             var token       = $('input[name="_token"]').val();
 
             $(".form-group").removeClass("has-warning");
@@ -149,6 +161,7 @@ $(document).ready(function() {
                     'graduated_year':graduated_year,
                     'parent_id'     :parent_id,
                     'address'       :address,
+                    'gender'        :gender,
                     '_token'        :token
                 },
                 success:function(record){
