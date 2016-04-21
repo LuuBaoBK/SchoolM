@@ -33,5 +33,6 @@ class Kernel extends HttpKernel
         'authrole_te' => \App\Http\Middleware\Role_Teacher::class,
         'authrole_stu' => \App\Http\Middleware\Role_Student::class,
         'authrole_pa' => \App\Http\Middleware\Role_Parent::class,
+        'apiguard' => \Chrisbjr\ApiGuard\Http\Middleware\ApiGuard::class,
     ];
 }

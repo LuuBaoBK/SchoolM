@@ -52,7 +52,6 @@
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <form id="form_login" style="margin-top : 5px" action="auth/login" method="post" class="navbar-form navbar-right form-horizontal">
             <!-- <ul class="nav navbar-nav navbar-right">     -->
-            {!! csrf_field() !!}
                 <div style = "margin-top: 2px; margin-right: 0px" class="form-group">
                     <input type="email" name="email" class="form-control" placeholder="User Email"/>
                     <input type="password" name="password" class="form-control" placeholder="Password"/>
@@ -194,7 +193,6 @@
                 </div>
                 <div class="box-body">
                   <div class="chart">
-                    <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
                     <canvas id="lineChart" style="height:450px  "></canvas>
                   </div>
                 </div>
@@ -304,13 +302,11 @@
     });
 
     function draw_line_chart(){
-      var token           = $('input[name="_token"]').val();
       $.ajax({
         url     :"<?= URL::to('/get_info') ?>",
         type    :"POST",
         async   :false,
         data    :{
-            '_token'           :token
         },
         success:function(record){
           var lineChartData = {

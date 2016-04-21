@@ -48,6 +48,8 @@
                 <li class="active"><a data-toggle="pill" href="#"><i class="fa fa-inbox"></i> Inbox
                   @if($msg_list['msg_recv_new_count'] > 0)
                   <span id="new_msg_count" class="label label-primary pull-right">{{$msg_list['msg_recv_new_count']}}</span></a></li>
+                  @else
+                  <span id="new_msg_count" class="label label-primary pull-right"></span></a></li>
                   @endif
                 <li><a data-toggle="pill" href="#"><i class="fa fa-envelope-o"></i> Sent</a></li>
                 <li><a data-toggle="pill" href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
@@ -74,6 +76,7 @@
               <td>Title</td>
               <td>Content</td>
               <td>Time</td>
+              <td>Action</td>
             </tr>
           </thead>
           <tbody>
@@ -85,6 +88,7 @@
                 <td><?= $message->content->title ?></td>
                 <td><?= $message->content->mycontent ?></td>
                 <td><?= $message->content->date_diff ?></td>
+                <td><a href='#'><i class="glyphicon glyphicon-trash" style='color:red'>Delete</a></i></td>
               </tr>
             @endforeach
             @foreach ($msg_list['msg_recv_read'] as $message)
@@ -94,6 +98,7 @@
                 <td><?= $message->content->title ?></td>
                 <td><?= $message->content->mycontent ?></td>
                 <td><?= $message->content->date_diff ?></td>
+                <td><a href='#'><i class="glyphicon glyphicon-trash" style='color:red'>Delete</a></i></td>
               </tr>
             @endforeach
           </div>
@@ -115,6 +120,30 @@
         </div>
         <div class="modal-body">
           <form class="form">
+            @if($role <= 1)
+            <div class="form-group">
+              <div class="row">
+                <div class="col-xs-1">
+                  <i id="btn_info" class="btn btn-primary glyphicon glyphicon-question-sign"></i>
+                </div>
+                <div class="col-xs-11">
+                  <div id="info_box" class="box box-info collapsed-box">
+                    <div class="box-body">
+                      <b style="color:black; font-size:17px">Group code</b>
+                      <div class="row" style="color:black; font-size:15px">
+                        <div class="col-lg-6">
+                          <ul class="list-unstyled">
+                            <li>group=role ( role: admin, teacher, student, parent )</li>
+                            <li>group=classid [ Ex: 15_9; 14_8; 15_7_A; 15_6_B_3 ]</li>
+                          </ul>
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            @endif
             <div class="form-group ">
               <div class="input-group">
               <span class="input-group-addon">To &nbsp&nbsp&nbsp :  </span>
@@ -149,7 +178,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span></button>
             <p><h4 class="2 modal-title">Mail Box</h4><p>
-            <p><h4 class="1 modal-title text-center">Mail Box</h4><p>
+            <p><h4 id="mail_content_title" class="1 modal-title text-center">Mail Box</h4><p>
         </div>
         <div class="modal-body">
           <div class="content">
@@ -157,6 +186,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">Close</button>
+            <button type="button" id="btn_forward" class="btn btn-primary pull-right" data-dismiss="modal">Forward</button>
         </div>
     </div>
 <!-- /.modal-content -->
@@ -273,127 +303,140 @@ $(document).ready(function(){
             {
                 "targets": [4],
                 "width" : "12%"
+            },
+            {
+                "targets": [5],
+                "width" : "5%"
             }]
   });
 
-  $(function () {
-    $('#sidebar_mailbox').addClass('active');
-  	$("#compose").click(function(){
-  		$('#editor').modal('toggle',{keyboard:true});
-  	});
+  $('#sidebar_mailbox').addClass('active');
+	$("#compose").click(function(){
+		$('#editor').modal('toggle',{keyboard:true});
+	});
 
-    $('#save_draft').click(function(){
-      var content = CKEDITOR.instances['mail_editor'].getData();
-      var title   = $('#title').val();
-      var type    = $("ul#folder li.active").index();
-      var token   = $('input[name="_token"]').val();
-      CKEDITOR.instances['mail_editor'].setData('');
-      $.ajax({
-        url     :"<?= URL::to('/mailbox/save_draft') ?>",
-        type    :"POST",
-        async   :false,
-        data    :{
-                'content'       :content,
-                'title'         :title,
-                'type'          :type,
-                '_token'        :token
-                },
-        success:function(record){
-          if(record==2){
-            update_mailbox(2);
-          }
-          $('#to').val("");
-          $('#title').val("");
-        },
-        error:function(){
-            alert("something went wrong, contact master admin to fix");
+  $('#save_draft').click(function(){
+    var content = CKEDITOR.instances['mail_editor'].getData();
+    var title   = $('#title').val();
+    var type    = $("ul#folder li.active").index();
+    var token   = $('input[name="_token"]').val();
+    CKEDITOR.instances['mail_editor'].setData('');
+    $.ajax({
+      url     :"<?= URL::to('/mailbox/save_draft') ?>",
+      type    :"POST",
+      async   :false,
+      data    :{
+              'content'       :content,
+              'title'         :title,
+              'type'          :type,
+              '_token'        :token
+              },
+      success:function(record){
+        if(record==2){
+          update_mailbox(2);
         }
-      });
-    });
-
-    $('#confirm_button').click(function(){
-      var content = CKEDITOR.instances['mail_editor'].getData();
-      var title   = $('#title').val();
-      var to_list = $('#to').val();
-      var type    = $("ul#folder li.active").index();
-      var token   = $('input[name="_token"]').val();
-      CKEDITOR.instances['mail_editor'].setData('');
-      $('#title').val('');
-      $('#to').val('');
-      $('#editor').modal('hide');
-      $.ajax({
-        url     :"<?= URL::to('/mailbox/send_mail') ?>",
-        type    :"POST",
-        async   :false,
-        data    :{
-                'content'       :content,
-                'title'         :title,
-                'type'          :type,
-                'to_list'       :to_list,
-                '_token'        :token
-                },
-        success:function(record){
-          $('#resultModal').modal('show');
-          var count = 0;
-          $('#errorlist-body').empty();
-          $.each(record[3], function(i,item){
-              $('#errorlist-body').append("<p>"+(i+1)+" | "+item+"</p");
-              count = count + 1;
-          });
-          $('#errorlist-header').empty();
-          $('#errorlist-header').append(count+" wrong format address");
-          count = 0;
-          $('#warninglist-body').empty();
-          $.each(record[2], function(i,item){
-              $('#warninglist-body').append("<p>"+(i+1)+" | "+item+"@schoolm.com"+"</p");
-              count = count + 1;
-          });
-          $('#warninglist-header').empty();
-          $('#warninglist-header').append(count+" not found address");
-          count = 0;
-          $('#successlist-body').empty();
-          $.each(record[1], function(i,item){
-              $('#successlist-body').append("<p>"+(i+1)+" | "+item.id+"@schoolm.com"+"</p");
-              count = count + 1;
-          });
-          $('#successlist-header').empty();
-          $('#successlist-header').append(count+" success address");
-          var type = $('ul#folder li.active').index();
-          if(type==1){
-            update_mailbox(1);
-          }
-        },
-        error:function(){
-            alert("something went wrong, contact master admin to fix");
-        }
-      });
-    });
-
-    $('ul#folder li').click(function(){
-      var type = $(this).index();
-      if(type==0){
-        update_mailbox(0);
-      }
-      else if(type==1){
-        update_mailbox(1);
-      }
-      else if(type==2){
-        update_mailbox(2);
-      }
-      else{
-        update_mailbox(3);
+        $('#to').val("");
+        $('#title').val("");
+      },
+      error:function(){
+          alert("something went wrong, contact master admin to fix");
       }
     });
   });
 
-  $('#messages_table tbody').on( 'click', 'tr', function () {
-     if( $('#messages_table').dataTable().fnGetData(this) != null){
-        var id = $('#messages_table').dataTable().fnGetData(this)[0];
+  $('#confirm_button').click(function(){
+    var content = CKEDITOR.instances['mail_editor'].getData();
+    var title   = $('#title').val();
+    var to_list = $('#to').val();
+    var type    = $("ul#folder li.active").index();
+    var token   = $('input[name="_token"]').val();
+    CKEDITOR.instances['mail_editor'].setData('');
+    $('#title').val('');
+    $('#to').val('');
+    $('#editor').modal('hide');
+    $.ajax({
+      url     :"<?= URL::to('/mailbox/send_mail') ?>",
+      type    :"POST",
+      async   :false,
+      data    :{
+              'content'       :content,
+              'title'         :title,
+              'type'          :type,
+              'to_list'       :to_list,
+              '_token'        :token
+              },
+      success:function(record){
+        $('#resultModal').modal('show');
+        var count = 0;
+        $('#errorlist-body').empty();
+        $.each(record[3], function(i,item){
+            $('#errorlist-body').append("<p>"+(i+1)+" | "+item+"</p");
+            count = count + 1;
+        });
+        $('#errorlist-header').empty();
+        $('#errorlist-header').append(count+" wrong format address");
+        count = 0;
+        $('#warninglist-body').empty();
+        $.each(record[2], function(i,item){
+            $('#warninglist-body').append("<p>"+(i+1)+" | "+item+"@schoolm.com"+"</p");
+            count = count + 1;
+        });
+        $('#warninglist-header').empty();
+        $('#warninglist-header').append(count+" not found address");
+        count = 0;
+        $('#successlist-body').empty();
+        $.each(record[1], function(i,item){
+            $('#successlist-body').append("<p>"+(i+1)+" | "+item.id+"@schoolm.com"+"</p");
+            count = count + 1;
+        });
+        $('#successlist-header').empty();
+        $('#successlist-header').append(count+" success address");
+        var type = $('ul#folder li.active').index();
+        if(type==1){
+          update_mailbox(1);
+        }
+        // console.log(record);
+      },
+      error:function(){
+          alert("something went wrong, contact master admin to fix");
+      }
+    });
+  });
+
+  $('ul#folder li').click(function(){
+    var type = $(this).index();
+    if(type==0){
+      update_mailbox(0);
+    }
+    else if(type==1){
+      update_mailbox(1);
+    }
+    else if(type==2){
+      update_mailbox(2);
+    }
+    else{
+      update_mailbox(3);
+    }
+  });
+
+  $('#btn_forward').on('click',function(){
+    var content = $('#mail_content div.modal-body div.content').html();
+    var title = $('#mail_content_title').html();
+    CKEDITOR.instances['mail_editor'].setData(content);
+    $('#title').val(title);
+    $('#editor').modal('toggle',{keyboard:true});
+  });
+
+  $('#messages_table tbody').on('click','tr td:not(:has(>a))',function(){
+    var position = $('#messages_table').dataTable().fnGetPosition( this );
+    var data = $('#messages_table').dataTable().fnGetData(position[0]);
+    if( data != null){
+        var id = data[0];
         var type = $('ul#folder li').index();
         if(type == 0){
-          if($(this).hasClass('not_read')){
-            $(this).removeClass('not_read');
-            $(this).addClass('read');
+          if($(this).parent().hasClass('not_read')){
+            $(this).parent().removeClass('not_read');
+            $(this).parent().addClass('read');
             var temp = $('#new_msg_count').html() - 1;
             if(temp == 0){
               $('#new_msg_count').empty();  
@@ -406,7 +449,21 @@ $(document).ready(function(){
         read_msg(id,type);
      }
      else{
-     }          
+     }  
+  });
+
+  $('#messages_table tbody').on('click','tr td a',function(e){
+    var position = $('#messages_table').dataTable().fnGetPosition( $(this).parent()[0] );
+    delete_mail(position[0]);
+  });
+
+  $('#btn_info').on('click',function(){
+    if($('#info_box').hasClass('collapsed-box')){
+      $('#info_box').removeClass('collapsed-box');
+    }
+    else{
+      $('#info_box').addClass('collapsed-box');
+    }
   });
 
   function update_mailbox(type){
@@ -429,7 +486,8 @@ $(document).ready(function(){
               row.author_name,
               row.content.title,
               row.content.mycontent,
-              row.content.date_diff
+              row.content.date_diff,
+              "<a href='#'><i class='glyphicon glyphicon-trash' style='color:red'>Delete</a></i>"
             ]);
             messages_table.fnSettings().aoData[ newrow[0] ].nTr.className = "not_read";
           });
@@ -439,7 +497,8 @@ $(document).ready(function(){
               row.author_name,
               row.content.title,
               row.content.mycontent,
-              row.content.date_diff
+              row.content.date_diff,
+              "<a href='#'><i class='glyphicon glyphicon-trash' style='color:red'>Delete</a></i>"
             ]);
             messages_table.fnSettings().aoData[ newrow[0] ].nTr.className = "read";
           });
@@ -451,7 +510,8 @@ $(document).ready(function(){
               row.author_name,
               row.content.title,
               row.content.mycontent,
-              row.content.date_diff
+              row.content.date_diff,
+              "<a href='#'><i class='glyphicon glyphicon-trash' style='color:red'>Delete</a></i>"
             ]);
             messages_table.fnSettings().aoData[ newrow[0] ].nTr.className = "not_read";
           });
@@ -466,6 +526,12 @@ $(document).ready(function(){
             $('#new_msg_count').html(record.msg_list['msg_recv_new_count']);
           }
         }
+        if(record.type == 3){
+          messages_table.fnSetColumnVis(5,false);
+        }
+        else{
+          messages_table.fnSetColumnVis(5,true);
+        }
       },
       error:function(){
           alert("something went wrong, contact master admin to fix");
@@ -476,6 +542,7 @@ $(document).ready(function(){
   function read_msg(id,type){
     var type  = $("ul#folder li.active").index();
     var token = $('input[name="_token"]').val();
+    // console.log(type+"_"+id);
     $.ajax({
       url     :"<?= URL::to('/mailbox/read_msg') ?>",
       type    :"POST",
@@ -493,6 +560,7 @@ $(document).ready(function(){
           $('#mail_content div.modal-body div.content').empty();
           $('#mail_content div.modal-body div.content').append(record.msg_list[0].content.content);
           $('#mail_content').modal('show');
+          // console.log(record);
       },
       error:function(){
           alert("something went wrong, contact master admin to fix");
@@ -538,6 +606,31 @@ $(document).ready(function(){
     channel.bind("new_mail_event",handler)
   }
 
+  function delete_mail (position) {
+    var data = messages_table.fnGetData(position);
+    messages_table.fnDeleteRow(position);
+    var id = data[0];
+    var type  = $("ul#folder li.active").index();
+    var token = $('input[name="_token"]').val();
+    $.ajax({
+      url     :"<?= URL::to('/mailbox/delete_mail') ?>",
+      type    :"POST",
+      async   :false,
+      data    :{
+              'id'            :id,
+              'type'          :type,
+              '_token'        :token
+              },
+      success:function(record){
+         update_mailbox(type);
+      },
+      error:function(){
+          alert("something went wrong, contact master admin to fix");
+      }
+    });
+
+  }
+
   function check_count_note(){
         var data = $('#title').val();
         var count = data.length;
@@ -549,7 +642,7 @@ $(document).ready(function(){
         else{
             $('#title').parent().removeClass('has-warning');
         }
-    };
+  };
 
   notification();
 

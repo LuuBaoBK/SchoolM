@@ -113,6 +113,7 @@ table tr td i.glyphicon-edit.enable{
                             $row .= "<td>".$scoretype->factor."</td>";
                             $row .= "<td><span class='badge ".$badge_color."' my_value='".$value->classname."|".$value->id."|".$scoretype->type."|".$scoretype->id."'>".$scoretype->status."</span></td>";
                             if($value->addclass == "enable"){
+                                
                                 if($scoretype->status == "new"){
                                     $row .= "<td><a href='#'><i class='glyphicon glyphicon-import ".$value->addclass."' my_value='".$value->classname."|".$value->id."|".$scoretype->type."|".$scoretype->id."'> Import</i></td>";
                                 }

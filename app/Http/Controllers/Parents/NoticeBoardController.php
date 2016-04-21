@@ -11,7 +11,7 @@ use App\Model\Parents;
 use App\User;
 use App\Model\StudentClass;
 use App\Model\Lectureregister;
-use App\Model\Claslectureregister;
+use App\Model\Classlectureregister;
 
 class NoticeBoardController extends Controller
 {
@@ -44,7 +44,7 @@ class NoticeBoardController extends Controller
             for($i=2; $i<=7; $i++){
                 $notice_list[$i] = [];
             }
-            $notice_temp_list = Claslectureregister::where('class_id','=',$check->class_id)->orderBy('id','desc')->get();
+            $notice_temp_list = Classlectureregister::where('class_id','=',$check->class_id)->orderBy('id','desc')->get();
             foreach ($notice_temp_list as $key => $notice) {
                 $notice_date = date_create($notice->notice_date);
                 $notice_day = $this->my_day_format(date_format($notice_date,"D"));

@@ -72,6 +72,8 @@ class UserTableSeeder extends Seeder
                 'role' => '0',
                 'gender' => $sex,
         	]);
+            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('a_000000'.$i);
+            
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
@@ -89,6 +91,8 @@ class UserTableSeeder extends Seeder
                 'role' => '1',
                 'gender' => $sex,
             ]);
+            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('t_000000'.$i);
+            
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
@@ -106,6 +110,8 @@ class UserTableSeeder extends Seeder
                 'role' => '2',
                 'gender' => $sex,
             ]);
+            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('s_000000'.$i);
+            
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
@@ -123,6 +129,8 @@ class UserTableSeeder extends Seeder
                 'role' => '3',
                 'gender' => $sex,
             ]);
+            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('p_000000'.$i);
+            
     	}
         for($i=0; $i<=9; $i++){
             $firstname = $firstnamelist[rand(0, 9)];
@@ -140,6 +148,8 @@ class UserTableSeeder extends Seeder
                 'role' => '0',
                 'gender' => $sex,
             ]);
+            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('a_000001'.$i);
+            
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
@@ -157,6 +167,8 @@ class UserTableSeeder extends Seeder
                 'role' => '1',
                 'gender' => $sex,
             ]);
+            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('t_000001'.$i);
+        
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
             $lastname = $lastnamelist[rand(0, 9)];
@@ -174,6 +186,8 @@ class UserTableSeeder extends Seeder
                 'role' => '2',
                 'gender' => $sex,
             ]);
+
+            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('s_000001'.$i);
             // $firstname = $firstnamelist[rand(0, 9)];
             // $middlename = $middlenamelist[rand(0, 9)];
             // $lastname = $lastnamelist[rand(0, 9)];
@@ -189,7 +203,6 @@ class UserTableSeeder extends Seeder
             //     'gender' => $sex,
             // ]);
         }
-
 
         for($i=0; $i<4; $i++){
             $firstname = $firstnamelist[rand(0, 9)];
@@ -209,8 +222,7 @@ class UserTableSeeder extends Seeder
                 'role' => '1',
                 'gender' => $sex,
             ]);
-            
-            
+            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('t_000001'.$i);
         }
     }
 }

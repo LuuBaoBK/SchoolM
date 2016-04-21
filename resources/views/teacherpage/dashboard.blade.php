@@ -173,6 +173,7 @@
             var dateofbirth = $('#dateofbirth').val();
             var address     = $('#address').val();
             var token       = $('input[name="_token"]').val();
+            console.log(token);
 
             $(".form-group").removeClass("has-warning");
             $(".error_mess").empty();

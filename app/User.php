@@ -49,7 +49,7 @@ class User extends Model implements AuthenticatableContract,
 
     public function parent()
     {
-        return $this->hasOne('App\Model\Parent' , 'id' ,'id');
+        return $this->hasOne('App\Model\Parents' , 'id' ,'id');
     }
 
     public function msg_send()
@@ -60,5 +60,9 @@ class User extends Model implements AuthenticatableContract,
     public function msg_recv()
     {
         return $this->hasMany('App\Model\MsgRecv' , 'recvby' ,'id');
+    }
+
+    public function api_key(){
+        return $this->hasOne('App\Model\ApiKey','user_id','id');
     }
 }

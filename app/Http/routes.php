@@ -11,18 +11,26 @@
 |
 */
 
-//test API
-Route::get('/app/json/{id}', [function($id) {
-	$products = "my_json";
-	return Response::json(array(
-        'error' => false,
-        'products' => $products,
-        'status_code' => 200,
-        'id' => $id
-    ));
-}]);
+// Android Api
+// Login
+Route::post('api/login','Api\MobileAuthController@login');
+Route::group(['prefix' => 'api', 'middleware' => 'apiguard'],function(){
+	Route::get('info','Api\MobileAuthController@info');
+	Route::get('get_schedule','Api\MobileScheduleController@get_schedule');
+	Route::group(['prefix' => 'admin'],function(){
 
+	});
+	Route::group(['prefix' => 'teacher'],function(){
 
+	});
+	Route::group(['prefix' => 'student'],function(){
+
+	});
+	Route::group(['prefix' => 'parent'],function(){
+
+	});
+});
+//***************************************************************//
 // Authentication routes...
 Route::get('/', 'Auth\MyAuthController@getview');
 Route::post('/get_info', 'Auth\MyAuthController@get_info');
@@ -35,7 +43,6 @@ Route::get('/auth/logout', 'Auth\MyAuthController@logout');
 // Error Route
 Route::get('/permission_denied', 'Auth\MyAuthController@permission_denied');
 
-
 //common route
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('/dashboard','Auth\MyAuthController@get_dashboard');
@@ -44,10 +51,10 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('update_mailbox','Mailbox\MailBoxController@update_mailbox');
 		Route::post('read_msg','Mailbox\MailBoxController@read_msg');
 		Route::post('save_draft','Mailbox\MailBoxController@save_draft');
-		Route::post('send_mail','Mailbox\MailBoxController@send_mail');
+		Route::post('send_mail','Mailbox\MailBoxController@my_send_mail');
+		Route::post('delete_mail','Mailbox\MailBoxController@delete_mail');
 	});
 });
-
 
 //Admin Route
 Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
@@ -155,9 +162,6 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::get('/phancongcacnam', 'ScheduleControler@phancongcacnam');
 	Route::post('/bangphancongcu', 'ScheduleControler@bangphancongcu');
 
-//});
-
-
 });
 
 //Teacher Route
@@ -219,6 +223,7 @@ Route::group(['prefix' => 'student','middleware' => 'authrole_stu'], function ()
 	Route::post('notice_board/read_notice', 'Student\NoticeboardController@read_notice');
 });
 
+//Parent Route
 Route::group(['prefix' => 'parents','middleware' => 'authrole_pa'], function () {
 	Route::get('dashboard', 'Parents\ProfileController@get_pa_dashboard' );
 	Route::post('dashboard', 'Parents\ProfileController@edit_info' );
