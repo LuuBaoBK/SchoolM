@@ -60,7 +60,7 @@ canvas{
 </section>
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
 <script src="{{asset("/adminlte/bootstrap/js/bootstrap.min.js")}}"></script>
-<script src="{{asset("/mylib/chartjs/dist/Chart.js")}}"></script>
+<script src="{{asset("/mylib/mychartjs/dist/Chart.js")}}"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#sidebar_list_8').addClass('active');
