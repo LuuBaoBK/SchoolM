@@ -279,28 +279,40 @@ class MailBoxController extends Controller
                         }
                     }
                     else if(strpos($item,'group=') !== false){
-                        $group = explode("group=", $item);
-                        switch ($group[1]) {
-                            case 'admin':
-                                $temp_list = Admin::select('id')->get();
-                                break;
-                            case 'teacher':
-                                $temp_list = Teacher::select('id')->get();
-                                break;
-                            case 'parent':
-                                $temp_list = Parents::select('id')->get();
-                                break;
-                            case 'student':
-                                $temp_list = Student::select('id')->get();
-                                break;                            
-                            case '':
-                                break;
-                            default:
-                                $temp_list = StudentClass::select('student_id as id')->where('class_id','like',$group[1].'%')->get();
-                                break;
+                        if(Auth::user()->role <= 1)
+                        {
+                            $group = explode("group=", $item);
+                            switch ($group[1]) {
+                                case 'admin':
+                                    $temp_list = Admin::select('id')->get();
+                                    break;
+                                case 'teacher':
+                                    $temp_list = Teacher::select('id')->get();
+                                    break;
+                                case 'parent':
+                                    $temp_list = Parents::select('id')->get();
+                                    break;
+                                case 'student':
+                                    $temp_list = Student::select('id')->get();
+                                    break;                            
+                                case '':
+                                    $temp_list = [];
+                                    break;
+                                default:
+                                    $temp_list = StudentClass::select('student_id as id')->where('class_id','like',$group[1].'%')->get();
+                                    break;
+                            }
+                            if(count($temp_list) == 0){
+                                array_push($wrong_format_list, $item." 0 Mail sent");
+                            }
+                            else{
+                                foreach ($temp_list as $key => $value) {
+                                    array_push($not_found_list, $value->id);
+                                }
+                            }
                         }
-                        foreach ($temp_list as $key => $value) {
-                            array_push($not_found_list,$value->id);
+                        else{
+                            array_push($wrong_format_list, $item." Permission denied");
                         }
                     }
                     else{
@@ -310,6 +322,7 @@ class MailBoxController extends Controller
             }
             $not_found_list = array_unique($not_found_list);
             $success_list = User::whereIn('id',$not_found_list)->where('id','<>',Auth::user()->id)->get();
+            $temp_list = array();
             foreach ($success_list as $key => $value) {
                 array_push($temp_list, $value->id);
             }
@@ -350,7 +363,6 @@ class MailBoxController extends Controller
                 else{
                     $record[0] = "not_send";
             }
-
             $record[1] = $success_list;
             $record[2] = $not_found_list;
             $record[3] = $wrong_format_list;

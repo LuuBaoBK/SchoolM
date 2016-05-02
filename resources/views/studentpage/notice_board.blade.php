@@ -33,6 +33,7 @@
 							<thead>
 								<tr>
 									<th>NId</th>
+									<th>Subject</th>
 									<th>Notice</th>
 									<th>Level</th>
 									<td>Deadline</td>
@@ -44,15 +45,16 @@
 									$notice->title = substr($notice->title, 0,45)."..."; 
 									if($notice->level == 1){
 										$level = "danger";
-										$level_show = "Straightway";
+										$level_show = "1";
 									}
 									else{
 										$level = ($notice->level == 2) ? "warning" : "success";
-										$level_show = ($notice->level == 2) ? "Gradual" : "Behindhand";
+										$level_show = ($notice->level == 2) ? "2" : "3";
 									}
 								?>
 								<tr> 
 									<td>{{$notice->id}}</td>
+									<td>{{$notice->subject}}</td>
 									<td>{{$notice->title}}</td>
 									<td><small class='pull-left label label-{{$level}}'>{{$level_show}}</small></td>
 									<td>{{$notice->notice_date}}</td>
@@ -73,6 +75,7 @@
 							<thead>
 								<tr>
 									<th>NId</th>
+									<th>Subject</th>
 									<th>Notice</th>
 									<th>Level</th>
 									<td>Deadline</td>
@@ -84,15 +87,16 @@
 									$notice->title = substr($notice->title, 0,45)."..."; 
 									if($notice->level == 1){
 										$level = "danger";
-										$level_show = "Straightway";
+										$level_show = "1";
 									}
 									else{
 										$level = ($notice->level == 2) ? "warning" : "success";
-										$level_show = ($notice->level == 2) ? "Gradual" : "Behindhand";
+										$level_show = ($notice->level == 2) ? "2" : "3";
 									}
 								?>
 								<tr> 
 									<td>{{$notice->id}}</td>
+									<td>{{$notice->subject}}</td>
 									<td>{{$notice->title}}</td>
 									<td><small class='pull-left label label-{{$level}}'>{{$level_show}}</small></td>
 									<td>{{$notice->notice_date}}</td>
@@ -113,6 +117,7 @@
 							<thead>
 								<tr>
 									<th>NId</th>
+									<th>Subject</th>
 									<th>Notice</th>
 									<th>Level</th>
 									<td>Deadline</td>
@@ -124,15 +129,16 @@
 									$notice->title = substr($notice->title, 0,45)."..."; 
 									if($notice->level == 1){
 										$level = "danger";
-										$level_show = "Straightway";
+										$level_show = "1";
 									}
 									else{
 										$level = ($notice->level == 2) ? "warning" : "success";
-										$level_show = ($notice->level == 2) ? "Gradual" : "Behindhand";
+										$level_show = ($notice->level == 2) ? "2" : "3";
 									}
 								?>
 								<tr> 
 									<td>{{$notice->id}}</td>
+									<td>{{$notice->subject}}</td>
 									<td>{{$notice->title}}</td>
 									<td><small class='pull-left label label-{{$level}}'>{{$level_show}}</small></td>
 									<td>{{$notice->notice_date}}</td>
@@ -155,6 +161,7 @@
 							<thead>
 								<tr>
 									<th>NId</th>
+									<th>Subject</th>
 									<th>Notice</th>
 									<th>Level</th>
 									<td>Deadline</td>
@@ -166,15 +173,16 @@
 									$notice->title = substr($notice->title, 0,45)."..."; 
 									if($notice->level == 1){
 										$level = "danger";
-										$level_show = "Straightway";
+										$level_show = "1";
 									}
 									else{
 										$level = ($notice->level == 2) ? "warning" : "success";
-										$level_show = ($notice->level == 2) ? "Gradual" : "Behindhand";
+										$level_show = ($notice->level == 2) ? "2" : "3";
 									}
 								?>
 								<tr> 
 									<td>{{$notice->id}}</td>
+									<td>{{$notice->subject}}</td>
 									<td>{{$notice->title}}</td>
 									<td><small class='pull-left label label-{{$level}}'>{{$level_show}}</small></td>
 									<td>{{$notice->notice_date}}</td>
@@ -195,6 +203,7 @@
 							<thead>
 								<tr>
 									<th>NId</th>
+									<th>Subject</th>
 									<th>Notice</th>
 									<th>Level</th>
 									<td>Deadline</td>
@@ -206,15 +215,16 @@
 									$notice->title = substr($notice->title, 0,45)."..."; 
 									if($notice->level == 1){
 										$level = "danger";
-										$level_show = "Straightway";
+										$level_show = "1";
 									}
 									else{
 										$level = ($notice->level == 2) ? "warning" : "success";
-										$level_show = ($notice->level == 2) ? "Gradual" : "Behindhand";
+										$level_show = ($notice->level == 2) ? "2" : "3";
 									}
 								?>
 								<tr> 
 									<td>{{$notice->id}}</td>
+									<td>{{$notice->subject}}</td>
 									<td>{{$notice->title}}</td>
 									<td><small class='pull-left label label-{{$level}}'>{{$level_show}}</small></td>
 									<td>{{$notice->notice_date}}</td>
@@ -235,6 +245,7 @@
 							<thead>
 								<tr>
 									<th>NId</th>
+									<th>Subject</th>
 									<th>Notice</th>
 									<th>Level</th>
 									<td>Deadline</td>
@@ -246,15 +257,16 @@
 									$notice->title = substr($notice->title, 0,45)."..."; 
 									if($notice->level == 1){
 										$level = "danger";
-										$level_show = "Straightway";
+										$level_show = "1";
 									}
 									else{
 										$level = ($notice->level == 2) ? "warning" : "success";
-										$level_show = ($notice->level == 2) ? "Gradual" : "Behindhand";
+										$level_show = ($notice->level == 2) ? "2" : "3";
 									}
 								?>
 								<tr> 
 									<td>{{$notice->id}}</td>
+									<td>{{$notice->subject}}</td>
 									<td>{{$notice->title}}</td>
 									<td><small class='pull-left label label-{{$level}}'>{{$level_show}}</small></td>
 									<td>{{$notice->notice_date}}</td>
@@ -342,10 +354,11 @@ $(document).ready(function() {
 		        "bAutoWidth": true,
 		        "dom": '<"top">frt<"clear"><"bottom"p>',
 		        "columns": [
-		        	{ "width": "5%" },
-		        	{ "width": "65%" },
-		        	{ "width": "10%" },
-		        	{ "width": "20%" }
+		        	{ "width": "3%" },
+		        	{ "width": "24%" },
+		        	{ "width": "55%" },
+		        	{ "width": "3%" },
+		        	{ "width": "15%" }
 		        ]
 			});
 		}
@@ -377,11 +390,11 @@ $(document).ready(function() {
 	                    var level;
 	                    $('#modal_title').val(record.title);
 	                    if(record.level == '1')
-	                        level = 'Straightway';
+	                        level = '1';
 	                    else if(record.level == '2')
-	                        level = 'Gradual';
+	                        level = '2';
 	                    else
-	                        level = 'Behindhand';    
+	                        level = '3';    
 	                    $('#modal_notice_wrote_by').val(record.wrote_by.user.fullname);
 	                    // $('#modal_notice_date').val(record.notice_date);
 	                    CKEDITOR.instances['modal_content'].setData(record.content);
@@ -395,6 +408,18 @@ $(document).ready(function() {
 			}
 		}
 	});
+	function check_date(){
+		var today = new Date();
+		var day = today.getDay() + 1;
+		if(day == 8){
+			day = day - 1;
+		}
+		$('#notice_table_'+day).parent().parent().parent().removeClass('box-primary');
+		var table = $('#notice_table_'+day).parent().parent().parent().addClass('box-success');
+		console.log(table);
+		// console.log($('#notice_table_'+day).parent().parent().parent());
+	}
+	check_date();
 });	
 </script>	
 @endsection

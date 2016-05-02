@@ -367,7 +367,7 @@
           var lineChart = new Chart(lineChartCanvas);
           lineChartOptions.datasetFill = false;
           lineChart.Line(lineChartData, lineChartOptions);
-
+          // console.log(record);
           var PieData = [
             {
               value: record['student_male_count'],

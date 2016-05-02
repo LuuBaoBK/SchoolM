@@ -14,6 +14,7 @@ use App\Model\Student;
 use App\Model\Teacher;
 use App\Model\Classlectureregister;
 use App\Model\Lectureregister;
+use App\Model\Subject;
 use DB;
 
 class NoticeboardController extends Controller
@@ -34,14 +35,15 @@ class NoticeboardController extends Controller
             for($i=2; $i<=7; $i++){
                 $notice_list[$i] = [];
             }
-            $notice_temp_listt = Classlectureregister::where('class_id','=',$check->class_id)->orderBy('id','desc')->get();
-            foreach ($notice_temp_listt as $key => $notice) {
+            $notice_temp_list = Classlectureregister::where('class_id','=',$check->class_id)->orderBy('id','desc')->get();
+            foreach ($notice_temp_list as $key => $notice) {
                 $notice_date = date_create($notice->notice_date);
                 $notice_day = $this->my_day_format(date_format($notice_date,"D"));
                 if($notice_day == 8){
                     $notice_day = 7;
                 }
                 $notice->notice_detail->notice_date = date_format(date_create($notice->notice_date),"d/m/Y");
+                $notice->notice_detail->subject = Subject::find($notice->notice_detail->wrote_by->group)->subject_name;
                 array_push($notice_list[$notice_day], $notice->notice_detail);
             }
         }

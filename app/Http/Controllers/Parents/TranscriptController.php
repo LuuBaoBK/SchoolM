@@ -24,6 +24,9 @@ class TranscriptController extends Controller
     public function get_view()
     {
         $student_list = Parents::find(Auth::user()->id)->student;
+        if(count($student_list) == 1){
+            return redirect('parents/transcript/student_transcript/'.$student_list[0]->user->id);
+        }
         foreach ($student_list as $key => $value) {
             $value->user;
         } 

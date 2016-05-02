@@ -117,8 +117,8 @@ class MyAuthController extends Controller
         $year = date("Y");
         $month = date("m");
         $year = ($month < 8) ? $year-1 : $year;
-        $year = 2013;
-        $start = $year - 8;
+        // $year = 2020;
+        $start = $year - 7;
         if($start <= 2010){
             $start = 2010;
         }
@@ -134,7 +134,7 @@ class MyAuthController extends Controller
                                                 User::select('id')
                                                     ->where('gender','=','M')->get()
                                         )
-                                        // ->where('enrolled_year','=',$year)
+                                        ->where('enrolled_year','=',$year)
                                         ->count();
         $student_female_count = Student::whereIn('id', 
                                                 User::select('id')

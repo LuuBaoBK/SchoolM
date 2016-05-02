@@ -57,46 +57,46 @@
 				                <div class="row form-group">
 				                    <div class="col-xs-12 col-lg-3">
 				                        <label for="id">Id</label>
-				                        <input type="text" class="form-control" name="id" id="id" value={{$student->id}} disabled>
+				                        <input type="text" class="form-control" name="id" id="id" value={{$student->id}} readonly>
 				                    </div>
 				                    <div class="col-xs-12 col-lg-3">
 				                        <label for="email">Email</label>
-				                        <input type="text" class="form-control" name="email" id="email" value={{$student->user->email}} disabled>
+				                        <input type="text" class="form-control" name="email" id="email" value={{$student->user->email}} readonly>
 				                    </div>
 				                </div>
 				                <div class="row">
 				                    <div class="form-group col-lg-3 col-xs-12">
 				                        <label for="firstname">First Name</label>
 				                        <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-				                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value='<?=$student->user->firstname?>'>
+				                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value='<?=$student->user->firstname?>' readonly>
 				                        <label class="error_mess" id="firstname_error" style="display:none" for="firstname"></label>
 				                    </div>
 				                    <div class="form-group col-lg-3 col-xs-12">
 				                        <label for="middlename">Middle Name</label>
-				                        <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" value='<?=$student->user->middlename?>'>
+				                        <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" value='<?=$student->user->middlename?>' readonly>
 				                        <label class="error_mess" id="middlename_error" style="display:none" for="middlename"></label>
 				                    </div>
 				                    <div class="form-group col-lg-3 col-xs-12">
 				                        <label for="lastname">Last Name</label>
-				                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value='<?=$student->user->lastname?>'>
+				                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value='<?=$student->user->lastname?>' readonly>
 				                        <label class="error_mess" id="lastname_error" style="display:none" for="lastname"></label>        
 				                    </div>
 				                </div>
 				                <div class="row">
 				                    <div class="form-group col-lg-3">
 				                        <label for="dateofbirth">Date Of Birth:</label>
-				                        <input type="text" id="dateofbirth" name="dateofbirth" class="form-control"  data-inputmask="'alias': 'dd/mm/yyyy'" data-mask / value={{$student->mydateofbirth}} >
+				                        <input type="text" id="dateofbirth" name="dateofbirth" class="form-control"  data-inputmask="'alias': 'dd/mm/yyyy'" data-mask / value={{$student->mydateofbirth}} readonly>
 				                        <label class="error_mess" id="dateofbirth_error" style="display:none" for="dateofbirth"></label>
 				                    </div>
 				                    <div class="form-group col-lg-6">
 				                        <label for="address">Address</label>
-				                        <input type="text" class="form-control" name="address" id="address" placeholder="Address" value='<?=$student->user->address?>'>
+				                        <input type="text" class="form-control" name="address" id="address" placeholder="Address" value='<?=$student->user->address?>' readonly>
 				                        <label class="error_mess" id="address_error" style="display:none" for="address"></label>
 				                    </div>
 				                </div>
 				            </div><!-- /.box-body -->
 				            <div class="box-footer">
-				                    <button id ="stu_form_submit" type="button" class="btn btn-primary">Edit</button>		                
+				                    <!-- <button id ="stu_form_submit" type="button" class="btn btn-primary">Edit</button>		                 -->
 				            </div>
 			            </form>
 		            </div>

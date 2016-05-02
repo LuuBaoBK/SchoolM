@@ -144,6 +144,7 @@ textarea {
 <script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+    $('#list_manage_class').addClass('active');
     $('#note_add').empty();
 	$('#student_list_table').dataTable({
         "lengthChange": false,

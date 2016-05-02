@@ -41,9 +41,14 @@
                     <li id="sidebar_list_2_2"><a href="/teacher/view_transcript"><i class="fa fa-angle-double-right"></i>View Transcript</a></li>
                 </ul>
             </li>
-            <li id="list_1" class="">
+            <li id="list_manage_class" class="">
                 <a href="/teacher/manage-class">
                     <i class="fa fa-file-text"></i> <span>Manage Class</span>
+                </a>
+            </li>
+            <li id="list_student_list" class="">
+                <a href="/teacher/student-list">
+                    <i class="fa fa-search"></i> <span>Student List</span>
                 </a>
             </li>
             <li id="sidebar_mailbox">

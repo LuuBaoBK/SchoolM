@@ -162,6 +162,11 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::get('/phancongcacnam', 'ScheduleControler@phancongcacnam');
 	Route::post('/bangphancongcu', 'ScheduleControler@bangphancongcu');
 
+	Route::group(['prefix' => 'statistic', 'namespace' =>'Admin\Statistic'], function(){
+		Route::get('numberofstudent' , 'NumberOfStudentController@get_view');
+		Route::post('numberofstudent/get_data', 'NumberOfStudentController@get_data');
+	});
+
 });
 
 //Teacher Route
@@ -198,6 +203,9 @@ Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () 
 	Route::get('noticeboard', 'Teacher\NoticeboardController@get_view');
 	Route::post('noticeboard/add_notice', 'Teacher\NoticeboardController@add_notice');
 	Route::post('noticeboard/read_notice', 'Teacher\NoticeboardController@read_notice');
+	// Class List
+	Route::get('student-list' , 'Teacher\StudentListController@get_view');
+	Route::post('student-list/get_student_list' , 'Teacher\StudentListController@get_student_list');
 
 });
 

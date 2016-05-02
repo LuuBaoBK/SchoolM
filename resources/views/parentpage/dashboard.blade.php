@@ -65,17 +65,17 @@
 				                    <div class="form-group col-lg-3 col-xs-12">
 				                        <label for="firstname">First Name</label>
 				                        <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-				                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value='<?=$parent->user->firstname?>'>
+				                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value='<?=$parent->user->firstname?>' readonly>
 				                        <label class="error_mess" id="firstname_error" style="display:none" for="firstname"></label>
 				                    </div>
 				                    <div class="form-group col-lg-3 col-xs-12">
 				                        <label for="middlename">Middle Name</label>
-				                        <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" value='<?=$parent->user->middlename?>'>
+				                        <input type="text" class="form-control" name="middlename" id="middlename" placeholder="Middle Name" value='<?=$parent->user->middlename?>' readonly>
 				                        <label class="error_mess" id="middlename_error" style="display:none" for="middlename"></label>
 				                    </div>
 				                    <div class="form-group col-lg-3 col-xs-12">
 				                        <label for="lastname">Last Name</label>
-				                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value='<?=$parent->user->lastname?>'>
+				                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value='<?=$parent->user->lastname?>' readonly>
 				                        <label class="error_mess" id="lastname_error" style="display:none" for="lastname"></label>        
 				                    </div>
 				                </div>

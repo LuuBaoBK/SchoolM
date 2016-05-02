@@ -12,6 +12,7 @@ use App\User;
 use App\Model\StudentClass;
 use App\Model\Lectureregister;
 use App\Model\Classlectureregister;
+use App\Model\Subject;
 
 class NoticeBoardController extends Controller
 {
@@ -20,8 +21,13 @@ class NoticeBoardController extends Controller
         foreach ($student_list as $key => $value) {
             $value->user;
         }
-        $notice_list = null;
-        return view('parentpage.notice_board', ['notice_list' => $notice_list, 'student_list' => $student_list]);
+        if(count($student_list) == 1){
+            return redirect('parents/notice_board/student_noticeboard/'.$student_list[0]->user->id);
+        }
+        else{
+            $notice_list = null;
+            return view('parentpage.notice_board', ['notice_list' => $notice_list, 'student_list' => $student_list]);
+        }
     }
 
     public function get_student_noticeboard($student_id){
@@ -52,6 +58,7 @@ class NoticeBoardController extends Controller
                     $notice_day = 7;
                 }
                 $notice->notice_detail->notice_date = date_format(date_create($notice->notice_date),"d/m/Y");
+                $notice->notice_detail->subject = Subject::find($notice->notice_detail->wrote_by->group)->subject_name;
                 array_push($notice_list[$notice_day], $notice->notice_detail);
             }
         }

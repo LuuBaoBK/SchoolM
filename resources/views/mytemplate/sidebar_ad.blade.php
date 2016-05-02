@@ -75,6 +75,16 @@
                     <i class="fa fa-envelope-o"></i> <span>Mail Box</span>
                 </a>
             </li>
+            <li id="sidebar_list_8" class="treeview">
+                <a href="">
+                    <i class="fa fa-bar-chart"></i>
+                    <span>Statistic</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li id="sidebar_list_8_1"><a href="/admin/statistic/numberofstudent"><i class="fa fa-angle-double-right"></i>Number of Student</a></li>
+                </ul>
+            </li>
             <li>
                 <a href="/auth/logout">
                     <i class="glyphicon glyphicon-log-out"></i> <span>Logout</span>

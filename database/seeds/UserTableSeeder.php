@@ -11,49 +11,49 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-            $firstnamelist = array(
-                '0' => 'Lưu' ,
-                '1' => 'Nguyễn',
-                '2' => 'Trần',
-                '3' => 'Lê',
-                '4' => 'Đinh',
-                '5' => 'Lý',
-                '6' => 'Trịnh',
-                '7' => 'Hoàng',
-                '8' => 'Triệu',
-                '9' => 'Võ' 
-            );
+        $firstnamelist = array(
+            '0' => 'Lưu' ,
+            '1' => 'Nguyễn',
+            '2' => 'Trần',
+            '3' => 'Lê',
+            '4' => 'Đinh',
+            '5' => 'Lý',
+            '6' => 'Trịnh',
+            '7' => 'Hoàng',
+            '8' => 'Triệu',
+            '9' => 'Võ' 
+        );
 
-            $middlenamelist = array(
-                '0' => 'Quốc' ,
-                '1' => 'Quang',
-                '2' => 'Xuân',
-                '3' => 'Bảo',
-                '4' => 'Anh',
-                '5' => 'Tiến',
-                '6' => 'Ngọc',
-                '7' => 'Vân',
-                '8' => 'Mai',
-                '9' => 'Thùy' 
-            );
+        $middlenamelist = array(
+            '0' => 'Quốc' ,
+            '1' => 'Quang',
+            '2' => 'Xuân',
+            '3' => 'Bảo',
+            '4' => 'Anh',
+            '5' => 'Tiến',
+            '6' => 'Ngọc',
+            '7' => 'Vân',
+            '8' => 'Mai',
+            '9' => 'Thùy' 
+        );
 
-            $lastnamelist = array(
-                '0' => 'Linh' ,
-                '1' => 'Châu',
-                '2' => 'Ân',
-                '3' => 'Khanh',
-                '4' => 'Anh',
-                '5' => 'Chi',
-                '6' => 'Ngọc',
-                '7' => 'Vân',
-                '8' => 'Mai',
-                '9' => 'Thùy' 
-            );
+        $lastnamelist = array(
+            '0' => 'Linh' ,
+            '1' => 'Châu',
+            '2' => 'Ân',
+            '3' => 'Khanh',
+            '4' => 'Anh',
+            '5' => 'Chi',
+            '6' => 'Ngọc',
+            '7' => 'Vân',
+            '8' => 'Mai',
+            '9' => 'Thùy' 
+        );
 
-            $gender = array(
-                '0' => 'F' ,
-                '1' => 'M'
-            );
+        $gender = array(
+            '0' => 'F' ,
+            '1' => 'M'
+        );
     	for($i=0; $i<=9; $i++){
             $firstname = $firstnamelist[rand(0, 9)];
             $middlename = $middlenamelist[rand(0, 9)];
