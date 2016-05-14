@@ -16,63 +16,64 @@ table tr.selected{
     </ol>
 </section>
 <section class="content">
-	<div class="col-xs-3">
-		<div class="box box-primary">
-			<div class="box-header">
-				<h4 class="box-title">Class List</h4>
-			</div>
-			<div class="box-body">
-				<input type="hidden" name="_token" value="<?= csrf_token(); ?>">
-				<table id="class_list_table" class="table table-bordered table-striped">
-					<thead>
-						<tr>
-							<th>Id</th>
-							<th>Class Name</th>
-							<th>Homeroom Teacher</th>
-							<th>Total Student</th>
-						</tr>
-					</thead>
-					<tbody>
+	<div class="box box-primary">
+		<div class="box-header">
+			<h4 class="box-title">Student List</h4>
+		</div>
+		<div class="box-body">
+			<div class="row">
+				<div class="col-lg-3">
+					<label for="select_class_list">Select Class</label>
+					<select id="select_class_list" class="form-control">
+						<option value="-1">-- Select Class --</option>
 						@foreach($class_list as $key => $class)
-						<tr>
-							<td>{{$class->id}}</td>
-							<td>{{$class->classname}}</td>
-							<td>{{$class->teacher->user->fullname}}</td>
-							<td>{{$class->total}}</td>
-						</tr>	
+							<option value={{$class->id}}>{{$class->classname}}</option>
 						@endforeach
-					</tbody>
-				</table>
+					</select>
+				</div>
+				<div class="col-lg-6">
+					<div class="row">
+						<div class="col-lg-4">
+							<label for="class_name">Class Name</label>
+							<input id="class_name" class="form-control" readonly>
+						</div>
+						<div class="col-lg-4">
+							<label for="total_student">Total Student</label>
+							<input id="total_student" class="form-control" readonly>
+						</div>
+						<div class="col-lg-4">
+							<label for="homeroom_teacher">Homeroom Teacher</label>
+							<input id="homeroom_teacher" class="form-control" readonly>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-xs-9">
-		<div class="box box-primary">
-			<div class="box-header">
-				<h4 class="box-title">Student List</h4>
+		<div class="box-body table-responsive">
+			<input type="hidden" name="_token" value="<?= csrf_token(); ?>">
+			<div class="form-group text-center">
+				<img id="student_avatar" src="/uploads/userAvatar.png" alt="Can't Load Image" class="img-circle" width="160px" height="160px">
 			</div>
-			<div class="box-body">
-				<table id="student_list_table" class="table table-bordered table-striped">
-					<thead>
-						<tr>
-							<th rowspan="2">Full Name</th>
-							<th rowspan="2">Email</th>
-							<th colspan="5">Parent Info</th>	
-						</tr>
-						<tr>
-							<th>Full Name</th>
-							<th>Email</th>
-							<th>Mobile Phone</th>
-							<th>Home Phone</th>
-							<th>Job</th>
-							<th>Address</th>
-						</tr>
-					</thead>
-					<tbody>
+			<table id="student_list_table" style='overflow: auto; width: 100% !important; height:auto' class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th rowspan="2">Full Name</th>
+						<th rowspan="2">Email</th>
+						<th colspan="4">Parent Contact Info</th>	
+					</tr>
+					<tr>
+						<th>Full Name</th>
+						<th>Email</th>
+						<th>Mobile Phone</th>
+						<th>Home Phone</th>
+						<th>Job</th>
+						<th>Address</th>
+					</tr>
+				</thead>
+				<tbody>
 
-					</tbody>
-				</table>
-			</div>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </section>
@@ -83,69 +84,76 @@ table tr.selected{
 $(document).ready(function() {
 	$('#list_student_list').addClass('active');
 	$('#student_list_table').dataTable({
-            "lengthChange": false,
-            "searching": true,
-            "ordering": false,
-            "pageLength": 5,
-            "scrollY": "600px",
-			"scrollCollapse": true,
-			"paging": false
-        });
-	$('#class_list_table').dataTable({
-            "lengthChange": false,
-            "searching": false,
-            "ordering": false,
-            "pageLength": 5,
-            "scrollY": "600px",
-			"scrollCollapse": true,
-			"paging": false,
-			"columnDefs": [
-            {
-                "targets": [ 0 ],
-                "visible": false,
-                "searchable": false
+        "bAutoWidth": true,
+        "bFilter":true,
+        "bSort":false,
+        "bLengthChange":false,
+        "bInfo":false,
+        "bPaginate":false,
+        "pageLength": 10,
+        "scrollCollapse":true,
+    });
+	$('#select_class_list').on('change',function(){
+		var token = $('input[name="_token"]').val();
+    	var data = $('#select_class_list').val();
+    	$("#select_class_list option[value='-1']").remove();
+		$.ajax({
+            url     :"<?= URL::to('/teacher/student-list/get_student_list') ?>",
+            type    :"POST",
+            async   :false,
+            data    :{
+            	'id'			:data,
+                '_token'        :token
             },
-            ]
-        });
-	$('#class_list_table').on('click','tbody tr',function(){
+            success:function(record)
+            {
+            	$('#homeroom_teacher').val(record.teacher.fullname);
+            	$('#class_name').val(record.classname);
+            	$('#total_student').val(record.total_student);
+                $('#student_list_table').dataTable().fnClearTable();
+                // console.log(record.studentlist);
+                $.each(record.studentlist, function(i,row){
+                	$('#student_list_table').dataTable().fnAddData([
+                		row.student.user.fullname,
+                		row.student.user.id+"@schoolm.com",
+                		row.student.parent.user.fullname,
+                		row.student.parent.user.id+"@schoolm.com",
+                		row.student.parent.mobilephone,
+                		row.student.parent.homephone,
+                		row.student.parent.job,
+                		row.student.parent.user.address
+            		]);
+                })
+            }
+        });   
+	});
+	$('#student_list_table').on('click','tbody tr',function(){
 		if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
         }
         else {
-            $('#class_list_table').dataTable().$('tr.selected').removeClass('selected');
+            $('#student_list_table').dataTable().$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
-            var index	  = $('#class_list_table tbody tr.selected').index();
+            var index	  = $('#student_list_table tbody tr.selected').index();
 	    	var token = $('input[name="_token"]').val();
-	    	var data = $('#class_list_table').dataTable().fnGetData(index);
-	    	if(data != null){
-	    		$.ajax({
-	                url     :"<?= URL::to('/teacher/student-list/get_student_list') ?>",
-	                type    :"POST",
-	                async   :false,
-	                data    :{
-	                	'id'			:data[0],
-	                    '_token'        :token
-	                },
-	                success:function(record)
-	                {
-	                    $('#student_list_table').dataTable().fnClearTable();
-	                    // console.log(record.studentlist);
-	                    $.each(record.studentlist, function(i,row){
-	                    	$('#student_list_table').dataTable().fnAddData([
-	                    		row.student.user.fullname,
-	                    		row.student.user.id+"@schoolm.com",
-	                    		row.student.parent.user.fullname,
-	                    		row.student.parent.user.id+"@schoolm.com",
-	                    		row.student.parent.mobilephone,
-	                    		row.student.parent.homephone,
-	                    		row.student.parent.job,
-	                    		row.student.parent.user.address
-                    		]);
-	                    })
-	                }
-	            });   
-	    	}   
-        }	
+	    	var data = $('#student_list_table').dataTable().fnGetData(index);
+	    	var temp = data[1].split("@");
+	    	$.ajax({
+	            url     :"<?= URL::to('/teacher/student-list/get_enrolled_year') ?>",
+	            type    :"POST",
+	            async   :false,
+	            data    :{
+	            	'id'			:temp[0],
+	                '_token'        :token
+	            },
+	            success:function(record)
+	            {
+	            	var src = record;
+	            	$("#student_avatar").attr('src', src);
+	            }
+	        });
+	    	
+	    }
 	});
 });
 </script>

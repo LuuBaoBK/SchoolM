@@ -36,15 +36,17 @@
                             <label for="scholastic">Scholastic</label>
                             <select id="scholastic" name="scholastic" class="form-control">
                                 <?php
-                                    $year = date("Y") + 2;
-                                    for($year;$year >=2010 ;$year--){
-                                        if($year == 2015)
+                                    $year = date("Y");
+                                    $year = (date("m") < 8) ? ($year - 1) : $year;
+                                    $end = $year + 1;
+                                    for($temp = $year; $temp <= $end; $temp++){
+                                        if($temp == $year)
                                         {
-                                            echo ("<option value='".substr($year,2)."' selected >".$year." - ".($year+1)."</option>");
+                                            echo ("<option value='".substr($temp,2)."' selected >".$temp." - ".($temp+1)."</option>");
                                         }
                                         else
                                         {
-                                            echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
+                                            echo ("<option value='".substr($temp,2)."'>".$temp." - ".($temp+1)."</option>");
                                         }
                                     }
                                 ?>
@@ -64,8 +66,9 @@
                             <select id="group" name="group" class="form-control">
                                 <option selected>A</option>;
                                 <option>B</option>;
-                                <option>C</option>;
-                                <option>MT</option>;
+                                <option>C</option>
+                                <option>D</option>;
+                                <!-- <option>MT</option>; -->
                             </select>
                         </div>                                                   
                     </div>

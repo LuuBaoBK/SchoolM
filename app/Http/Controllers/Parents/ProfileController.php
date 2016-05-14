@@ -26,6 +26,9 @@ class ProfileController extends Controller
             $mydateofbirth = "N/A";
         }
         $parent['mydateofbirth'] = $mydateofbirth;
+        foreach ($parent->student as $key => $value) {
+            $value->user;
+        }
         return view('parentpage.dashboard')->with('parent' ,$parent);
     }
 

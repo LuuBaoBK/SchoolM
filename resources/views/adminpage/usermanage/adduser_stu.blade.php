@@ -71,7 +71,7 @@
                                 <label for="enrolled_year">Enrolled Year</label>
                                 <select id="enrolled_year" name="enrolled_year" class="form-control">
                                     <?php
-                                        $year = date("Y") + 2;
+                                        $year = date("Y") + 1;
                                         $selected = "";
                                         for($year;$year >=2010 ;$year--){
                                             if($year == date("Y")){
@@ -200,7 +200,7 @@
                 <select id="filter_enrolled_year" name="filter_enrolled_year" class="form-control">
                     <?php
                         echo ("<option value='0' selected>-- All --</option>");
-                        $year = date("Y") + 2;
+                        $year = date("Y") + 1;
                         for($year;$year >=2010 ;$year--){
                             echo ("<option value='".$year."'>".$year."</option>");
                         }

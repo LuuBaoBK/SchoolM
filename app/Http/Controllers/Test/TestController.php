@@ -16,6 +16,7 @@ use App\Model\Classes;
 use App\Model\Phancong;
 use App\User;
 use App\Transcript;
+use App\Model\StudentClass;
 
 class TestController extends Controller 
 {
@@ -25,7 +26,26 @@ class TestController extends Controller
      * @return \Illuminate\Http\Response
      */
     // public function test(){
-    //     $this->TaoPhanCongMoi();
+    //     $student_list = StudentClass::where('class_id','like','15_%')->get();
+    //     foreach ($student_list as $key => $student) {
+    //         $gpa = rand(0,10);
+    //         $ispass = ($gpa < 5) ? 0 : 1;
+    //         StudentClass::where('class_id','=',$student->class_id)
+    //                     ->where('student_id','=',$student->student_id)
+    //                     ->update(['GPA' => $gpa, 'ispassed' => $ispass]);
+    //         // $student->GPA = $gpa;
+    //         // $student->ispasses = $ispass;
+    //         // $student->save();
+    //     }
+    // }
+
+    // public function test(){
+    //     $file = "./uploads/2014/s_0000290.jpg";
+    //     if (file_exists($file)) {
+    //         echo "The file $file exists";
+    //     } else {
+    //         echo "The file $file does not exist";
+    //     }
     // }
     public function test(){
 

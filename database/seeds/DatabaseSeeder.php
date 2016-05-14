@@ -21,18 +21,17 @@ class DatabaseSeeder extends Seeder
         $this->call(StudentsTableSeeder::class);
         $this->call(ClassTableSeeder::class);
         $this->call(SubjectTableSeeder::class);
-        $this->call(SysVarSeeder::class);
-        $this->call(SchedulesTableSeeder::class);
         $this->call(StudentClassTableSeeder::class);
-        $this->call(TranscriptTableSeeder::class);
+        $this->call(ScoretypeTableSeeder::class);
+        // $this->call(TranscriptTableSeeder::class);
         $this->call(MessagesTableSeeder::class);
         $this->call(MsgRecvTableSeeder::class);
         $this->call(MsgSendTableSeeder::class);
         $this->call(PositionTableSeeder::class);
-        $this->call(ScoretypeTableSeeder::class);
-        $this->call(ClassteacherTableSeeder::class);
         $this->call(PhancongTableSeeder::class);
         $this->call(LectureregisterSeeder::class);
+        $this->call(SysVarSeeder::class);
+
         Model::reguard();
     }
 }

@@ -45,41 +45,37 @@ class ScheduleController extends Controller
                              ->first();
         if($check == null){
             $tkb = "no_class";
+            $class = null;
+            $student_name = User::find($student_id)->fullname;
         }
         else{
             $class = Classes::find($check->class_id);
             $student_name = User::find($student_id)->fullname;
-            $teacher_list = Phancong::select('teacher_id')->where('class_id','=',$class->id)->get();
-            if(count($teacher_list) == 0){
+            $check = tkb::all();
+            if(count($check) == 0){
                 $tkb =  "no_schedule";
+                return view('parentpage.Schedule', ['tkb' => $tkb, 'student_list' => $student_list, 'updatetime' => $updatetime, 'class' => $class, 'student_name' => $student_name, 'student_id' => $student_id]);  
             }
-            else{
-                $check = tkb::all();
-                if(count($check) == 0){
-                    $tkb =  "no_schedule";                }
-                for($i = 0; $i<=49; $i++){
-                    if($i == 0 || $i == 9){
-                        $tiet['subject'] = "Chào Cờ";
-                    }
-                    else if($i == 44 || $i == 49){
-                        $tiet['subject'] = "SHCN";
+            for($i = 0; $i<=49; $i++){
+                if($i == 0 || $i == 9){
+                    $tiet['subject'] = "Chào cờ";
+                }
+                else if($i == 44 || $i == 49){
+                    $tiet['subject'] = "SHCD";
+                }
+                else{
+                    $temp = tkb::where("T".$i,"=",$class->classname)->first();
+                    if($temp == null){
+                        $tiet['subject'] = "";
                     }
                     else{
-                        $tiet = tkb::select('subject_name')
-                              ->whereIn('teacher_id',$teacher_list)
-                              ->where('T'.$i,'=',$class->classname)->first();
-                        if($tiet == null){
-                            $tiet['subject'] = "";
-                        }
-                        else{
-                            $tiet['subject'] = $tiet->subject_name;
-                        }
+                        $tiet['subject'] = $temp->subject_name;
                     }
-                    array_push($tkb, $tiet);
                 }
+                array_push($tkb, $tiet);
             }
         }
         $updatetime = Sysvar::find('tkb_date')->value;
-        return view('parentpage.Schedule', ['tkb' => $tkb, 'student_list' => $student_list, 'updatetime' => $updatetime, 'class' => $class, 'student_name' => $student_name]);
+        return view('parentpage.Schedule', ['tkb' => $tkb, 'student_list' => $student_list, 'updatetime' => $updatetime, 'class' => $class, 'student_name' => $student_name, 'student_id' => $student_id]);
     }
 }

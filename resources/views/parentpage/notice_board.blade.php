@@ -21,8 +21,8 @@
 			<input type="hidden" name="_token" value="<?= csrf_token(); ?>">
 	        <label for="student">Student</label>
 	        <select id="student" name="student" class="form-control">
-	        	<option value="-1" selected>-- Select Student --</option>
 	        	@if($notice_list == null)
+	        		<option value="-1" selected>-- Select Student --</option>
 		            @foreach($student_list as $key => $student)
 		            	<option value={{$student->id}}>{{$student->user->fullname}}</option>
 		            @endforeach
@@ -42,6 +42,11 @@
 		<div class="callout callout-info col-lg-4">
 			<h4>No Student</h4>
 			<p>Please Select One Student</p>
+		</div>
+	@elseif($notice_list == 'no_class')
+		<div class="callout callout-warning col-lg-4">
+			<h4>No Placement</h4>
+			<p>This student have no class</p>
 		</div>
 	@else
 		<div class="row">
@@ -442,6 +447,18 @@ $(document).ready(function() {
 			}
 		}
 	});
+	function check_date(){
+		var today = new Date();
+		var day = today.getDay() + 1;
+		if(day == 1){
+			day = 7;
+		}
+		$('#notice_table_'+day).parent().parent().parent().removeClass('box-primary');
+		var table = $('#notice_table_'+day).parent().parent().parent().addClass('box-success');
+		// console.log(table);
+		// console.log($('#notice_table_'+day).parent().parent().parent());
+	}
+	check_date();
 });
 </script>
 @endsection

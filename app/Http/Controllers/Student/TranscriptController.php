@@ -37,17 +37,21 @@ class TranscriptController extends Controller
         $tb = [];
         $student = StudentClass::where('class_id','=',$class_id)->where('student_id','=',Auth::user()->id)->first();
         $phancong = Phancong::where('class_id','=',$class_id)->get();
+        $temp = [];
         foreach ($phancong as $key => $row) {
        		$row['teacher_name'] = User::find($row->teacher_id)->fullname;
        		$row['subject'] = Subject::find(Teacher::find($row->teacher_id)->group);
           $row['class_id'] = $class_id;
        	}
-        //HK 1 
-        $subject_list = Teacher::select('group')
-                               ->whereIn(
-                                  'id',
-                                  Phancong::select('teacher_id')->where('class_id','=',$class_id)->get()
-                                )->get();
+        if(count($phancong) == 0){
+          $phancong = Subject::all();
+          foreach ($phancong as $key => $row) {
+            $row['teacher_name'] = "_";
+            $row['subject'] = Subject::find($row->id);
+            $row['class_id'] = $class_id;
+          }
+        }
+        $subject_list = Subject::select('id')->get();
         for($i=8;$i<=12;$i++){
           $scoretype_month = Scoretype::whereIn('subject_id',$subject_list)
                                       ->where('applyfrom','<=',$year)
@@ -151,11 +155,12 @@ class TranscriptController extends Controller
       $year = substr($class_id, 0,2);
       if($request['data'][0] == "all"){
         $tb = [];
-        $subject_list = Teacher::select('group')
-                               ->whereIn(
-                                  'id',
-                                  Phancong::select('teacher_id')->where('class_id','=',$class_id)->get()
-                                )->get();
+        // $subject_list = Teacher::select('group')
+        //                        ->whereIn(
+        //                           'id',
+        //                           Phancong::select('teacher_id')->where('class_id','=',$class_id)->get()
+        //                         )->get();
+        $subject_list = Subject::select('id')->get();
         for($i=8;$i<=12;$i++){
           $scoretype_month = Scoretype::whereIn('subject_id',$subject_list)
                                       ->where('applyfrom','<=',$year)

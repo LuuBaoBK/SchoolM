@@ -122,6 +122,22 @@ class MobileScheduleController extends ApiGuardController
         }
     }
 
+    // public function get_schedule(Request $request){
+    //     $request['data'] = "s_1;s_2;s_3;a_4!#o#!title!#o#!content"
+    //     $data = array();
+    //     $temp = array();
+    //     $temp['id'] = 1;
+    //     $temp['content'] = 'this_is_content';
+    //     $temp['titel'] = 'this_is_title';
+    //     $temp['date_time'] = 'Apr 29';
+    //     $temp['author'] = 'this_is_author';
+    //     $list_mail[0] = $temp;
+    //     $list_mail[1] = $temp;
+    //     // $data['inbox'] = json_encode($list_mail);
+    //     $data['inbox'] = $list_mail;
+    //     return Response::json($data);
+    // }
+
     public function get_view(){
         $teacher = Auth::user();
         $year = substr(date('Y'),2,2);

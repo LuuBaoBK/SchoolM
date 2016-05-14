@@ -307,7 +307,8 @@ table tr td i.glyphicon-edit.enable{
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#sidebar_list_2").addClass('active');
-    $('#modal_score').inputmask("[1]9[.9]");
+    // $('#modal_score').inputmask("[1]9|[1]9[9]");
+    $("#modal_score").inputmask({ mask: ["[1]9", "[1]9.9"], keepStatic: true });
     // First Box
     $('#class_list_table').dataTable({
             "lengthChange": false,

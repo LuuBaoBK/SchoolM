@@ -33,6 +33,11 @@
 		                <li class="list-group-item">
                 			<b>Job</b><a class="pull-right">{{$parent->job}}</a>
 		                </li>
+		                @foreach($parent->student as $key => $student)
+		                <li class="list-group-item">
+                			<b>Child</b><a class="pull-right">{{$student->user->fullname}}</a>
+		                </li>
+		                @endforeach
 	              	</ul>
 		      	</div>
 			</div>

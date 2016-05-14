@@ -411,12 +411,12 @@ $(document).ready(function() {
 	function check_date(){
 		var today = new Date();
 		var day = today.getDay() + 1;
-		if(day == 8){
-			day = day - 1;
+		if(day == 1){
+			day = 7;
 		}
 		$('#notice_table_'+day).parent().parent().parent().removeClass('box-primary');
 		var table = $('#notice_table_'+day).parent().parent().parent().addClass('box-success');
-		console.log(table);
+		// console.log(table);
 		// console.log($('#notice_table_'+day).parent().parent().parent());
 	}
 	check_date();

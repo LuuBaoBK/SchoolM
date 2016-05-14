@@ -312,7 +312,7 @@ $(document).ready(function() {
             });
             $('#view_transcript_table').dataTable().fnDestroy();
             $('#div_view_transcript_table').empty();
-            $('#div_view_transcript_table').append("<table id='view_transcript_table' style='overflow: auto; display: inline-block; width: 100%; height:600px' class='table table-bordered table-striped'><thead  id='view_transcript_table_header'></thead><tbody></tbody></table>");
+            $('#div_view_transcript_table').append("<table id='view_transcript_table' style='overflow: auto; display: inline-block; width: 100%; height:auto' class='table table-bordered table-striped'><thead  id='view_transcript_table_header'></thead><tbody></tbody></table>");
             var header  = "<tr>";
                 header += "<th rowspan='3'>Id</th>";
                 header += "<th rowspan='3'>Full_Name</th>";

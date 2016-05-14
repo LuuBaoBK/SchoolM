@@ -11,218 +11,108 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $firstnamelist = array(
-            '0' => 'Lưu' ,
-            '1' => 'Nguyễn',
-            '2' => 'Trần',
-            '3' => 'Lê',
-            '4' => 'Đinh',
-            '5' => 'Lý',
-            '6' => 'Trịnh',
-            '7' => 'Hoàng',
-            '8' => 'Triệu',
-            '9' => 'Võ' 
-        );
-
-        $middlenamelist = array(
-            '0' => 'Quốc' ,
-            '1' => 'Quang',
-            '2' => 'Xuân',
-            '3' => 'Bảo',
-            '4' => 'Anh',
-            '5' => 'Tiến',
-            '6' => 'Ngọc',
-            '7' => 'Vân',
-            '8' => 'Mai',
-            '9' => 'Thùy' 
-        );
-
-        $lastnamelist = array(
-            '0' => 'Linh' ,
-            '1' => 'Châu',
-            '2' => 'Ân',
-            '3' => 'Khanh',
-            '4' => 'Anh',
-            '5' => 'Chi',
-            '6' => 'Ngọc',
-            '7' => 'Vân',
-            '8' => 'Mai',
-            '9' => 'Thùy' 
-        );
-
+        $firstnamelist = array("Lưu", "Nguyễn", "Trần", "Lê", "Đinh", "Lý", "Trịnh", "Hoàng", "Võ", "Vương", "Phạm", "Huỳnh", "Hồ", "Đỗ", "Ngô", "Dương");
+        $middlenamelist = array( "Quốc" , "Quang", "Xuân", "Bảo", "Anh", "Tiến", "Ngọc", "Vân", "Thùy", "Thu", "Minh", "Trung", "Hiếu", "Đức", "Đạt", "Đông", "Hạ", "Thư", "Hoài"); 
+        $lastnamelist = array("Linh" ,"Châu","Ân","Khanh","Anh","Chi","Ngọc","Vân","Mai","Thùy","Ngân","Lan","Loan","Minh","Hiếu","Trung","Đức","Đạt","Hào","Toàn","Tiến", "Đông", "Hạ","Hoài"); 
         $gender = array(
             '0' => 'F' ,
             '1' => 'M'
         );
-    	for($i=0; $i<=9; $i++){
-            $firstname = $firstnamelist[rand(0, 9)];
-            $middlename = $middlenamelist[rand(0, 9)];
-            $lastname = $lastnamelist[rand(0, 9)];
-            $fullname = $firstname." ".$middlename." ".$lastname;
-            $sex = $gender[rand(0,1)];
-    		DB::table('users')->insert([
-    			'id' =>	'a_000000'.$i,
-	            'firstname' => $firstname,
-                'middlename' => $middlename,
-                'lastname' => $lastname,
-                'fullname' => $fullname,
-	            'email' => 'a_000000'.$i.'@schoolm.com',
-	            'password' => bcrypt('1234'),
-                'dateofbirth' => "2015-11-1".$i,
-                'role' => '0',
-                'gender' => $sex,
-        	]);
-            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('a_000000'.$i);
-            
-            $firstname = $firstnamelist[rand(0, 9)];
-            $middlename = $middlenamelist[rand(0, 9)];
-            $lastname = $lastnamelist[rand(0, 9)];
+        // 10 Admin
+        for($i=0; $i<=9; $i++){
+            $firstname = $firstnamelist[rand(0, count($firstnamelist)-1)];
+            $middlename = $middlenamelist[rand(0, count($middlenamelist)-1)];
+            $lastname = $lastnamelist[rand(0, count($lastnamelist)-1)];
             $fullname = $firstname." ".$middlename." ".$lastname;
             $sex = $gender[rand(0,1)];
             DB::table('users')->insert([
-                'id' => 't_000000'.$i,
+                'id' => 'a_000000'.$i,
                 'firstname' => $firstname,
                 'middlename' => $middlename,
                 'lastname' => $lastname,
                 'fullname' => $fullname,
-                'email' => 't_000000'.$i.'@schoolm.com',
-                'dateofbirth' => "2014-11-1".$i,
+                'email' => 'a_000000'.$i.'@schoolm.com',
+                'password' => bcrypt('1234'),
+                'dateofbirth' => "19".rand(7,8).rand(0,9)."-".rand(1,12)."-".rand(1,28),
+                'role' => '0',
+                'gender' => $sex,
+            ]);
+            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('a_000000'.$i);
+        }
+
+        //25 Teacher
+        for($i=0;$i<=24;$i++){
+            $firstname = $firstnamelist[rand(0, count($firstnamelist)-1)];
+            $middlename = $middlenamelist[rand(0, count($middlenamelist)-1)];
+            $lastname = $lastnamelist[rand(0, count($lastnamelist)-1)];
+            $fullname = $firstname." ".$middlename." ".$lastname;
+            $sex = $gender[rand(0,1)];
+            $offset = 9-strlen($i);
+            $id = substr('t_0000000', 0,$offset);
+            $id = $id.$i;
+            DB::table('users')->insert([
+                'id' => $id,
+                'firstname' => $firstname,
+                'middlename' => $middlename,
+                'lastname' => $lastname,
+                'fullname' => $fullname,
+                'email' => $id.'@schoolm.com',
+                'dateofbirth' => "19".rand(7,8).rand(0,9)."-".rand(1,12)."-".rand(1,28),
                 'password' => bcrypt('1234'),
                 'role' => '1',
                 'gender' => $sex,
             ]);
-            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('t_000000'.$i);
-            
-            $firstname = $firstnamelist[rand(0, 9)];
-            $middlename = $middlenamelist[rand(0, 9)];
-            $lastname = $lastnamelist[rand(0, 9)];
+            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make($id);
+        }
+
+        //500 Student
+        for($i=0;$i<=499;$i++){
+            $firstname = $firstnamelist[rand(0, count($firstnamelist)-1)];
+            $middlename = $middlenamelist[rand(0, count($middlenamelist)-1)];
+            $lastname = $lastnamelist[rand(0, count($lastnamelist)-1)];
             $fullname = $firstname." ".$middlename." ".$lastname;
             $sex = $gender[rand(0,1)];
+            $offset = 9-strlen($i);
+            $id = substr('s_0000000', 0,$offset);
+            $id = $id.$i;
             DB::table('users')->insert([
-                'id' => 's_000000'.$i,
+                'id' => $id,
                 'firstname' => $firstname,
                 'middlename' => $middlename,
                 'lastname' => $lastname,
                 'fullname' => $fullname,
-                'email' => 's_000000'.$i.'@schoolm.com',
+                'email' => $id.'@schoolm.com',
+                'dateofbirth' => "200".rand(0,4)."-".rand(1,12)."-".rand(1,28),
                 'password' => bcrypt('1234'),
-                'dateofbirth' => "2015-11-1".$i,
                 'role' => '2',
                 'gender' => $sex,
             ]);
-            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('s_000000'.$i);
-            
-            $firstname = $firstnamelist[rand(0, 9)];
-            $middlename = $middlenamelist[rand(0, 9)];
-            $lastname = $lastnamelist[rand(0, 9)];
+            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make($id);
+        }
+
+        // 450 Parents
+        for($i=0;$i<=449;$i++){
+            $firstname = $firstnamelist[rand(0, count($firstnamelist)-1)];
+            $middlename = $middlenamelist[rand(0, count($middlenamelist)-1)];
+            $lastname = $lastnamelist[rand(0, count($lastnamelist)-1)];
             $fullname = $firstname." ".$middlename." ".$lastname;
             $sex = $gender[rand(0,1)];
+            $offset = 9-strlen($i);
+            $id = substr('p_0000000', 0,$offset);
+            $id = $id.$i;
             DB::table('users')->insert([
-                'id' => 'p_000000'.$i,
+                'id' => $id,
                 'firstname' => $firstname,
                 'middlename' => $middlename,
                 'lastname' => $lastname,
                 'fullname' => $fullname,
-                'email' => 'p_000000'.$i.'@schoolm.com',
+                'email' => $id.'@schoolm.com',
+                'dateofbirth' => "19".rand(7,9).rand(0,9)."-".rand(1,12)."-".rand(1,28),
                 'password' => bcrypt('1234'),
-                'dateofbirth' => "2015-11-1".$i,
                 'role' => '3',
                 'gender' => $sex,
             ]);
-            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('p_000000'.$i);
-            
-    	}
-        for($i=0; $i<=9; $i++){
-            $firstname = $firstnamelist[rand(0, 9)];
-            $middlename = $middlenamelist[rand(0, 9)];
-            $lastname = $lastnamelist[rand(0, 9)];
-            DB::table('users')->insert([
-                'id' => 'a_000001'.$i,
-                'firstname' => $firstname,
-                'middlename' => $middlename,
-                'lastname' => $lastname,
-                'fullname' => $fullname,
-                'email' => 'a_000001'.$i.'@schoolm.com',
-                'password' => bcrypt('1234'),
-                'dateofbirth' => "2015-11-1".$i,
-                'role' => '0',
-                'gender' => $sex,
-            ]);
-            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('a_000001'.$i);
-            
-            $firstname = $firstnamelist[rand(0, 9)];
-            $middlename = $middlenamelist[rand(0, 9)];
-            $lastname = $lastnamelist[rand(0, 9)];
-            $fullname = $firstname." ".$middlename." ".$lastname;
-            $sex = $gender[rand(0,1)];
-            DB::table('users')->insert([
-                'id' => 't_000001'.$i,
-                'firstname' => $firstname,
-                'middlename' => $middlename,
-                'lastname' => $lastname,
-                'fullname' => $fullname,
-                'email' => 't_000001'.$i.'@schoolm.com',
-                'dateofbirth' => "2014-11-1".$i,
-                'password' => bcrypt('1234'),
-                'role' => '1',
-                'gender' => $sex,
-            ]);
-            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('t_000001'.$i);
-        
-            $firstname = $firstnamelist[rand(0, 9)];
-            $middlename = $middlenamelist[rand(0, 9)];
-            $lastname = $lastnamelist[rand(0, 9)];
-            $fullname = $firstname." ".$middlename." ".$lastname;
-            $sex = $gender[rand(0,1)];
-            DB::table('users')->insert([
-                'id' => 's_000001'.$i,
-                'firstname' => $firstname,
-                'middlename' => $middlename,
-                'lastname' => $lastname,
-                'fullname' => $fullname,
-                'email' => 's_000001'.$i.'@schoolm.com',
-                'password' => bcrypt('1234'),
-                'dateofbirth' => "2015-11-1".$i,
-                'role' => '2',
-                'gender' => $sex,
-            ]);
-
-            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('s_000001'.$i);
-            // $firstname = $firstnamelist[rand(0, 9)];
-            // $middlename = $middlenamelist[rand(0, 9)];
-            // $lastname = $lastnamelist[rand(0, 9)];
-            // DB::table('users')->insert([
-            //     'id' => 'p_000001'.$i,
-            //     'firstname' => $firstname,
-            //     'middlename' => $middlename,
-            //     'lastname' => $lastname,
-            //     'email' => 'p_000001'.$i.'@schoolm.com',
-            //     'password' => bcrypt('1234'),
-            //     'dateofbirth' => "2015-11-1".$i,
-            //     'role' => '2',
-            //     'gender' => $sex,
-            // ]);
-        }
-
-        for($i=0; $i<4; $i++){
-            $firstname = $firstnamelist[rand(0, 9)];
-            $middlename = $middlenamelist[rand(0, 9)];
-            $lastname = $lastnamelist[rand(0, 9)];
-            $fullname = $firstname." ".$middlename." ".$lastname;
-            $sex = $gender[rand(0,1)];
-            DB::table('users')->insert([
-                'id' => 't_000002'.$i,
-                'firstname' => $firstname,
-                'middlename' => $middlename,
-                'lastname' => $lastname,
-                'fullname' => $fullname,
-                'email' => 't_000002'.$i.'@schoolm.com',
-                'dateofbirth' => "2014-11-1".$i,
-                'password' => bcrypt('1234'),
-                'role' => '1',
-                'gender' => $sex,
-            ]);
-            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make('t_000001'.$i);
+            $apiKey = Chrisbjr\ApiGuard\Models\ApiKey::make($id);
         }
     }
 }

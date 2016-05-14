@@ -35,7 +35,7 @@ table tr.selected{
                                 <select id="scholastic" name="scholastic" class="form-control">
                                     <option value="-1" selected>-- Select --</option>;
                                     <?php
-                                        $year = date("Y") + 2;
+                                        $year = date("Y") + 1;
                                         for($year;$year >=2010 ;$year--){
                                             echo ("<option value='".substr($year,2)."'>".$year." - ".($year+1)."</option>");
                                         }
@@ -62,7 +62,7 @@ table tr.selected{
                                     <option value="B">B</option>;
                                     <option value="C">C</option>;
                                     <option value="D">D</option>;
-                                    <option value="MT">MT</option>;
+                                    <!-- <option value="MT">MT</option>; -->
                                     <option value="0">-- All --</option>
                                 </select>     
                             </div>
@@ -118,7 +118,7 @@ table tr.selected{
                                 <select id="enrolled_year" name="enrolled_year" class="form-control">
                                     <option value="-1" selected>-- Select --</option>;
                                     <?php
-                                        $year = date("Y") + 2;
+                                        $year = date("Y") + 1;
                                         for($year;$year >=2010 ;$year--){
                                             echo ("<option value='".$year."'>".$year."</option>");
                                         }

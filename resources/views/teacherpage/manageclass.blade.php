@@ -27,6 +27,13 @@ textarea {
 	          <h4 class="box-title">Manage Class</h4>
 	        </div>
 		 	<div  class="box-body">
+                @if($class==null)
+                <div class="alert alert-warning alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="icon fa fa-warning"></i>You're not homeroom teacher</h4>
+                    This feature is only available for teachers who are homeroom teacher of one class
+                </div>
+                @else
 		 		<div class="col-lg-12">
 			 		<div class="box box-primary">
 			 			<div class="box-header">
@@ -37,7 +44,7 @@ textarea {
 			 					<input type="hidden" name="_token" value="<?= csrf_token(); ?>">
 			 					<div class="form-group col-lg-4">
 					 				<label for="scholastic">Scholastic</label>
-					 				<input type="text" class="form-control" id="scholastic" value={{$year}} readonly>
+					 				<input type="text" class="form-control" id="scholastic" value='<?=$year?>' readonly>
 					 			</div>
 					 			<div class="form-group col-lg-4">
 					 				<label for="classname">Class Name</label>
@@ -132,7 +139,7 @@ textarea {
 			 			</div>
 			 		</div>
 			 	</div>
-
+                @endif
 		 	</div>        
 		</div>
 	</div>

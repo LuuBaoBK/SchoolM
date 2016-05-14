@@ -34,54 +34,54 @@
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
-    <header class="main-header">
-        <a href="#" class="logo">
-            <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>A</b>LT</span>
-            <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>School</b>M</span>
-        </a>
+  <header class="main-header">
+    <a href="#" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>S</b>M</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>School</b>M</span>
+    </a>
     <nav class="navbar navbar-static-top">
-        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <a id="sidebar_toggle" data-value="1" href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         </a>
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>
         </button>
-    <div class="container-fluid">
-    <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="navbar-collapse">
-            <form id="form_login" style="margin-top : 5px" action="auth/login" method="post" class="navbar-form navbar-right form-horizontal">
-            <!-- <ul class="nav navbar-nav navbar-right">     -->
-                <div style = "margin-top: 2px; margin-right: 0px" class="form-group">
-                    <input type="email" name="email" class="form-control" placeholder="User Email"/>
-                    <input type="password" name="password" class="form-control" placeholder="Password"/>
-                    <button style="display:none" type="submit" class="btn bg-olive btn-block">Sign me in</button>
-                </div>  
-            <!-- </ul> -->
-            </form>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-  </nav>
-  <div id="resultModal" class="modal modal-warning">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Error</h4>
-            </div>
-            <div class="modal-body">
-                <p>Email or Password is incorrect</p>
-            </div>
-            <div class="modal-footer">
-                <button class="close" type="button" class="btn btn-primary pull-right" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    <!-- /.modal-content -->
+      <div class="container-fluid">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="navbar-collapse">
+              <form id="form_login" style="margin-top : 5px" action="auth/login" method="post" class="navbar-form navbar-right form-horizontal">
+              <!-- <ul class="nav navbar-nav navbar-right">     -->
+                  <div style = "margin-top: 2px; margin-right: 0px" class="form-group">
+                      <input type="email" name="email" class="form-control" placeholder="User Email"/>
+                      <input type="password" name="password" class="form-control" placeholder="Password"/>
+                      <button style="display:none" type="submit" class="btn bg-olive btn-block">Sign me in</button>
+                  </div>  
+              <!-- </ul> -->
+              </form>
+          </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    <div id="resultModal" class="modal modal-warning">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title">Error</h4>
+              </div>
+              <div class="modal-body">
+                  <p>Email or Password is incorrect</p>
+              </div>
+              <div class="modal-footer">
+                  <button class="close" type="button" class="btn btn-primary pull-right" data-dismiss="modal">Close</button>
+              </div>
+          </div>
+      <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
     </div>
-  <!-- /.modal-dialog -->
-</div>
-</header>
+  </header>
   <!-- =============================================== -->
 
   <!-- Left side column. contains the sidebar -->
@@ -90,31 +90,11 @@
     <section class="sidebar">
       <!-- Sidebar user panel -->
       <div class="user-panel">
-        <div class="pull-left image">
-          <h4>|</h4>
-        </div>
-        <!-- <div class="pull-left info">
-          <p>Hello,<?php  $user = (Auth::check() ? Auth::user()->lastname : "guest").' !'; echo ' '.$user ?></p>
-        </div> -->
       </div>
         <div class="pull-left info">
-          <img style="margin-left : 12px" src="/mybanner.png">
+          <img id="sidebar_img" src="/mybanner.png" alt="Error Loading Image" style="padding-left:12px;">
         </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
-        <!-- <ul class="sidebar-menu">
-            <li class="active">
-                <a href="#">
-                    <i class="fa fa-home"></i> 
-                    <span>About School</span>
-                </a>
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-users"></i>
-                    <span>Contact Info</span>
-                </a>
-            </li>
-        </ul> -->
     </section>
     <!-- /.sidebar -->
   </aside>
@@ -253,7 +233,7 @@
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
-  <div class="control-sidebar-bg"></div> 
+  <!-- <div class="control-sidebar-bg"></div>  -->
 </div>
 <!-- ./wrapper -->
 
@@ -299,6 +279,12 @@
             return false;    //<---- Add this line
         }
       });
+      $('#sidebar_toggle').on('click',function(){
+        if($('#sidebar_img').css('display') == "inline")
+          $('#sidebar_img').css('display','none');
+        else
+          $('#sidebar_img').css('display','inline');
+      })
     });
 
     function draw_line_chart(){

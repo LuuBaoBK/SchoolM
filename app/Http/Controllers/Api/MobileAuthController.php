@@ -10,6 +10,7 @@ use Chrisbjr\ApiGuard\Http\Controllers\ApiGuardController;
 use Response;
 use Auth;
 use App\User;
+use App\Model\Subject;
 class MobileAuthController extends ApiGuardController
 {
     protected $apiMethods = [
@@ -32,6 +33,8 @@ class MobileAuthController extends ApiGuardController
                     $private_data = $user->admin;
                     break;
                 case '1':
+                    $user->teacher->group = Subject::find($user->teacher->group)->subject_name;
+                    $user->teacher->position = $user->teacher->my_position->position_name;
                     $private_data = $user->teacher;
                     break;
                 case '2':

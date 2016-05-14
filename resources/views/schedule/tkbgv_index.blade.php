@@ -40,8 +40,8 @@ table, th, td {
 	</div>
     <div class="box-body table-responsive col-md-10" style="">
 	    <div class="box box-primary">
-	    	<div class="box-body box-primary table-responsive" style="height:570px">
-	    		<table id="tkb_gv_table" class="table table-bordered table-hover data-table table-stripped" border="1">
+	    	<div class="box-body box-primary table-responsive" style="height:600px">
+	    		<table id="tkb_gv_table" class="table table-bordered table-hover data-table table-stripped" style='overflow: auto; display: inline-block; width: 100%; height:600px' border="1">
 			        <thead>
 			            <tr>
 			            	<th rowspan="2">MSGV</th>

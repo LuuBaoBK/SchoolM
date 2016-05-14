@@ -358,7 +358,7 @@ class MailBoxController extends Controller
                 $pusher = App::make('pusher');
                 $pusher->trigger( $temp_list,
                               'new_mail_event', 
-                              $temp_list);
+                              $user->id."-".$user->fullname);
                 }
                 else{
                     $record[0] = "not_send";

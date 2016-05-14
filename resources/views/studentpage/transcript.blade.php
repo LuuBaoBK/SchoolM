@@ -122,7 +122,7 @@ textarea {
 				<div class="box box-primary">
 					<div class="box-body">
 						<h4 class="box-title">Score List</h4>
-						<table width="100%" style="witdh:100%" id="score_list_table" class="table">
+						<table style="width:auto" id="score_list_table" class="table">
 							<thead>
 								<th width="25%">#</th>
 								<th width="25%">Score</th>
@@ -207,13 +207,14 @@ textarea {
 			            type    :"POST",
 			            async   :false,
 			            data    :{
-			                    'data'      :data,
+			                    'data'      	:data,
 			                    '_token'        :token
 			                    },
 			            success:function(record){
+			            	console.log(record);
 			                if(record[0].length > 0){
 			                	$('#subject_div').css('display','block');
-			                	$("#class_list_div button").click();
+			                	// $("#class_list_div button").click();
 			                	$('#subject_list_table').dataTable().fnClearTable();
 			                	$('#subject_list_table').dataTable().fnAddData([
 			                		"all",
@@ -242,7 +243,7 @@ textarea {
 			                $('#sumary_note').val(record[2]['note']);
 			                $('#sumary_conduct').val(record[2]['conduct']);
 			                $('#sumary_ispassed').val((record[2]['ispassed'] == 0) ? 'Failed' : 'Passed' );
-			                $('#sumary_homeroom_teacher').val(data[2]);
+			                $('#sumary_homeroom_teacher').val(data[3]);
 			            },
 			            error:function(){
 			                alert("something went wrong, contact master admin to fix");

@@ -17,7 +17,7 @@
         <ul class="sidebar-menu">
             <li id="list_1" class="">
                 <a href="/teacher/dashboard">
-                    <i class="fa fa-home"></i> <span>Dashboard</span>
+                    <i class="fa fa-home"></i> <span>Profile</span>
                 </a>
             </li>
             <li id="sidebar_schedule" class="">
@@ -53,7 +53,7 @@
             </li>
             <li id="sidebar_mailbox">
                 <a href="/teacher/mailbox">
-                    <i class="fa fa-envelope-o"></i> <span>Mail Box</span>
+                    <i class="fa fa-envelope-o"></i> <span>Mail Box</span><span id="mail_count" class="label label-primary pull-right" style="font-size: 14px">{{$mail_count}}</span>
                 </a>
             </li>
             <li id="list_4">

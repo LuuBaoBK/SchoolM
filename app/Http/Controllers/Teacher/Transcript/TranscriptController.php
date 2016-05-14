@@ -19,7 +19,7 @@ use Input;
 use Validator;
 use App\Transcript;  
 use DB;
-use App\Model\subject;
+use App\Model\Subject;
 class TranscriptController extends Controller
 {
     public function view()
@@ -219,14 +219,18 @@ class TranscriptController extends Controller
         $scholastic = substr($class_id, 0,2);
         $data = $request['data'];
         foreach ($data as $key => $value) {
-           $score = new Transcript;
-           $score->student_id = $value[0];
-           $score->scholastic = $scholastic;
-           $score->subject_id = $subject_id;
-           $score->scoretype_id = $scoretype_id;
-           $score->score = $value[2];
-           $score->note = $value[3];
-           $score->save();
+            $score = new Transcript;
+            $score->student_id = $value[0];
+            $score->scholastic = $scholastic;
+            $score->subject_id = $subject_id;
+            $score->scoretype_id = $scoretype_id;
+            $score->score = $value[2];
+            $score->note = $value[3];
+            $score->save();
+            // $pusher = App::make('pusher');
+            // $pusher->trigger( $value[0]."-chanel",
+            //               'new_score_event', 
+            //               Subject::find($subject_id)->subject_name)." import score: ".Scoretype::find($scoretype_id)->type;
         }
         $record = "success";
         return $record;
@@ -234,16 +238,33 @@ class TranscriptController extends Controller
 
     public function get_transcript(Request $request){
         $scholastic = substr($request['class_id'], 0,2);
-        $student_id_list = StudentClass::select('student_id')
-                                       ->where('class_id','=',$request['class_id'])
+        $student_id_list = StudentClass::where('class_id','=',$request['class_id'])
                                        ->get();
-        $data = Transcript::whereIn('student_id',$student_id_list)
-                          ->where('scholastic','=',$scholastic)
-                          ->where('scoretype_id','=',$request['scoretype_id'])
-                          ->get();
-        foreach ($data as $key => $value) {
-            $fullname = User::find($value->student_id)->fullname;
-            $data[$key]['full_name'] = $fullname;
+        $data = array();
+        foreach ($student_id_list as $key => $student) {
+            $student_score = Transcript::where('student_id','=',$student->student_id)
+                              ->where('scholastic','=',$scholastic)
+                              ->where('scoretype_id','=',$request['scoretype_id'])
+                              ->first();
+            if($student_score == null){
+                $temp['full_name'] = User::find($student->student_id)->fullname;
+                $temp['score'] = 19;
+                $temp['note'] = "";
+                $temp['student_id'] = $student->student_id;
+                array_push($data, $temp);
+            }
+            else{
+                $student_score->full_name = User::find($student->student_id)->fullname;
+                array_push($data, $student_score);
+            }
+        // }
+        // $data = Transcript::whereIn('student_id',$student_id_list)
+        //                   ->where('scholastic','=',$scholastic)
+        //                   ->where('scoretype_id','=',$request['scoretype_id'])
+        //                   ->get();
+        // foreach ($data as $key => $value) {
+        //     $fullname = User::find($value->student_id)->fullname;
+        //     $data[$key]['full_name'] = $fullname;
         }
         return $data;
     }
@@ -257,10 +278,26 @@ class TranscriptController extends Controller
         $data = $request['data'];
         $scholastic = substr($class_id, 0,2);
         foreach ($data as $key => $value) {
-           $score = Transcript::where('scholastic','=',$scholastic)
+            $check = Transcript::where('scholastic','=',$scholastic)
                               ->where('student_id','=',$value[0])
                               ->where('scoretype_id','=',$scoretype_id)
-                              ->update(['score' => $value[2], 'note' => $value[3] ]);
+                              ->first();
+            if($check == null){
+                $new = new Transcript;
+                $new->student_id = $value[0];
+                $new->scholastic = $scholastic;
+                $new->subject_id = $subject_id;
+                $new->scoretype_id = $scoretype_id;
+                $new->score = $value[2];
+                $new->note = $value[3];
+                $new->save();
+            }
+            else{
+                $check = Transcript::where('scholastic','=',$scholastic)
+                                  ->where('student_id','=',$value[0])
+                                  ->where('scoretype_id','=',$scoretype_id)
+                                  ->update(['score' => $value[2], 'note' => $value[3]]);
+            }
         }
         $record = "success";
         return $record;

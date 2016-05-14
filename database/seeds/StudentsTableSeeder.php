@@ -11,23 +11,43 @@ class StudentsTableSeeder extends Seeder
      */
     public function run()
     {
-        for($i=0; $i<=9; $i++){
-            $year = ($i <7)? "2013" : "2011";
+        for($i=0; $i<=499; $i++){
+            $offset = 9-strlen($i);
+            $id = substr('s_0000000', 0,$offset);
+            $id = $id.$i;
+            if($i <= 449){
+                $parent_id = substr('p_0000000', 0,$offset);
+                $parent_id .= $i;
+            }
+            else{
+                $temp = $i - 450;
+                $offset = 9-strlen($temp);
+                $parent_id = substr('p_0000000', 0,$offset);
+                $parent_id .= $temp;
+            }
+            
+            if($i <= 59){
+                $year = 2011;
+            }
+            else if($i <= 139){
+                $year = 2012;
+            }
+            else if($i <= 239){
+                $year = 2013;
+            }
+            else if($i <= 359){
+                $year = 2014;
+            }
+            else{
+                $year = 2015;
+            }
+
     		DB::table('students')->insert([
-    			'id' =>	's_000000'.$i,
+    			'id' =>	$id,
                 'enrolled_year' => $year,
-                'graduated_year' => $year + 4,
-                'parent_id' => 'p_000000'.$i,
+                'graduated_year' => 0,
+                'parent_id' => $parent_id,
         	]);
     	}
-        for($i=0; $i<=9; $i++){
-            $year = ($i <4)? "2013" : "2011";
-            DB::table('students')->insert([
-                'id' => 's_000001'.$i,
-                'enrolled_year' => $year,
-                'graduated_year' => $year + 4,
-                'parent_id' => 'p_000000'.$i,
-            ]);
-        }
     }
 }

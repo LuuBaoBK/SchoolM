@@ -39,8 +39,7 @@ class TeacherManageController extends Controller
         else{
             $gender .= "%";
         }
-
-        if($request['group'] == "1"){
+        if($request['group'] == "-1"){
             $teacher_list = Teacher::select('id')->get();
         }
         else{
@@ -71,7 +70,8 @@ class TeacherManageController extends Controller
             }
             $record[$key]->dateofbirth = $dateofbirth;
             $record[$key]->teacher->incomingday = $incomingday;
-            $record[$key]->teacher->group = Subject::find($value->teacher->group)->subject_name;
+            $subject = Subject::find($value->teacher->group);
+            $record[$key]->teacher->group = $subject->subject_name ;
             $record[$key]->teacher->active = ($record[$key]->teacher->active == "1") ? "Active" : "inActive";
             $record[$key]->gender = ($record[$key]->gender == "M") ? "Male" : "Female";
         }

@@ -26,15 +26,19 @@ class ManageclassController extends Controller
         $class = Classes::where('homeroom_teacher','=',Auth::user()->id)
                         ->where('id','like',$year."_%")
                         ->first();
-        $disable = ($class->doable_month == 5) ? "" : "disabled";
         $disable = "";
+
+        if($class == null){
+            return view('teacherpage.manageclass', ['class' => $class]);
+        }
+         
         $student_list = StudentClass::where('class_id','=',$class->id)->get();
         foreach ($student_list as $key => $student) {
             $student['fullname'] = User::find($student->student_id)->fullname;
             $student['gpa'] = $this->GPA_cal($class->id, $student->student_id);
         }
         $total_student = StudentClass::where('class_id','=',$class->id)->count();
-        $year = "20".$year." - 20".$year+1;
+        $year = "20".$year." - 20".($year+1);
         return view('teacherpage.manageclass',['class' => $class, 'student_list' => $student_list,
                                                 'year' => $year, 'total_student' => $total_student,
                                                 'disable' => $disable
@@ -87,6 +91,7 @@ class ManageclassController extends Controller
         $class = Classes::where('homeroom_teacher','=',Auth::user()->id)
                         ->where('id','like',$year."_%")
                         ->first();
+        $grade = explode("_",$class->id);
         $student_list = StudentClass::where('class_id','=',$class->id)->get();
 
         foreach ($student_list as $key => $student) {
@@ -95,6 +100,11 @@ class ManageclassController extends Controller
             StudentClass::where('class_id','=',$class->id)
                         ->where('student_id','=',$student->student_id)
                         ->update(['GPA' => $gpa, 'ispassed' => $ispassed]);
+            if($grade[1] == 9){
+                if($ispassed == 1){
+                    Student::find($student->student_id)->update(['graduated_year' => "20".($year+1)]);
+                }
+            }
         }
         return "success";
     }

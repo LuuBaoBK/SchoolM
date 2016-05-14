@@ -105,6 +105,7 @@ class ClassController extends Controller
         $record['teacherlist'] = Teacher::whereNotIn('id', 
                                                         Classes::select('homeroom_teacher')->where('scholastic','=',$year)->get()
                                                     )
+                                ->where('active','=','1')
                                 ->get();
         foreach ($record['teacherlist'] as $key => $value) {
             $value->user;
@@ -124,15 +125,8 @@ class ClassController extends Controller
         $myclass = Classes::find($id);
         list($scholastic, $grade, $group, $classname) = explode("_", $myclass->id);
 
-        if($scholastic == $request['scholastic'] && $grade==$request['grade'] && $group==$request['group'] && $classname==$request['classname']){
-            if($request['homeroomteacher'] == ""){
-                //do nothing
-            }
-            else{
-                $myclass->homeroom_teacher = $request['homeroomteacher'];
-                $myclass->save();
-            }
-            $request->session()->flash('alert-success', 'Success Edit Class Info');
+        if($scholastic == $request['scholastic'] && $grade==$request['grade'] && $group==$request['group'] && $classname==$request['classname'] && $request['homeroomteacher'] == ""){
+            $request->session()->flash('alert-info', 'Nothing has been changed');
             return redirect('/admin/class/classinfo/edit/'.$id);
         }
         else{
@@ -166,7 +160,7 @@ class ClassController extends Controller
                 }
             }
             else{
-                $request->session()->flash('alert-danger', 'This class have : '.$student_count.' students, cannot change any factor except homeroom\'s teacher');
+                $request->session()->flash('alert-danger', 'This class have : '.$student_count.' students, cannot change any factor');
                 return redirect('/admin/class/classinfo/edit/'.$id);
             }
         }

@@ -11,6 +11,7 @@ use App\Model\Subject;
 use App\User;
 use Validator;
 use App\Model\StudentClass;
+use Input;
 
 class ProfileController extends Controller
 {
@@ -84,6 +85,34 @@ class ProfileController extends Controller
             $record['isDone'] = 1;
             return $record;
         }
+    }
+
+    public function upload_image(Request $request){
+        $input = Input::all();
+        $file = array_get($input,'fileToUpload');
+        $extension = $file->getClientOriginalExtension();
+        $validator = Validator::make($request->all(), [
+            'fileToUpload' => 'required|max:1000',
+        ]);
+        if($validator->fails()){
+            $record = $validator->messages();
+            return $record;
+        }
+        else{
+            $id = $request['id'];
+            $destinationPath = 'uploads\\'; // upload path
+            $destinationPath .= Student::find($id)->enrolled_year.'\\';
+            $temp = $destinationPath.$id;
+            if(file_exists(".\\".$temp.".jpg")){
+                unlink($temp.".jpg");
+            }
+            if(file_exists(".\\".$temp.".png")){
+                unlink($temp.".png");
+            }
+            $filename = $id.'.'.$extension; // renameing image
+            $file->move($destinationPath, $filename); // uploading file to given path
+        }
+        return $request['fileToUpload'];
     }
 
     public function changepassword(Request $request){

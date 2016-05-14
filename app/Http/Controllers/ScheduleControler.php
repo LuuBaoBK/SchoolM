@@ -405,7 +405,7 @@ class ScheduleControler extends Controller
             $offset = count($DSLOPChuaPC)%count($DSGV1Mon);
 
             $offset . "". $Mon->id ." ".count($DSGV1MonSorted). "<br>";
-
+            shuffle($DSLOPChuaPC);
             $count_lop = 0;
             for($i = 0; $i < $offset; $i++){
                 for($j = 0; $j <= $agv; $j++){
@@ -425,10 +425,12 @@ class ScheduleControler extends Controller
                     $addnew->save();
                     $count_lop++;    
                 }
-                
             }
         }
-
+        // // Xoa mon Hóa lớp 6,7
+        // $DSGV_Hoa = Teacher::select('id')->where('group','=','4')->get();
+        // Phancong::where('class_id','like',$year."_6%")->whereIn('teacher_id',$DSGV_Hoa)->delete();
+        // Phancong::where('class_id','like',$year."_7%")->whereIn('teacher_id',$DSGV_Hoa)->delete();
     }
 
     public function edit(Request $request){

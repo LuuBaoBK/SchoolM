@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Model\Classes;
 
 class LectureregisterSeeder extends Seeder
 {
@@ -14,29 +15,28 @@ class LectureregisterSeeder extends Seeder
     	for($i = 1; $i<100; $i++){
     		$notice_date = '2016-03-'.rand(28,31);
             $day = date_create($notice_date);
+            $title = $this->RandomString();
+            $content = $this->RandomString()." ".$this->RandomString();
     		DB::table('lectureregister')->insert([
                 'teacher_id' => 't_000000'.rand(0,9),
-                'title' => $this->RandomString(),
+                'title' => $title,
                 'level' => rand(1,3),
                 'wrote_date' => '2016-03-27',
-                'content' => $this->RandomString()." ".$this->RandomString()     
+                'content' => $content
             ]);
-            DB::table('classlectureregister')->insert([
-                'id' => $i,
-                'classname' => '9A1',
-                'class_id'	=> '15_9_A_1',
-                'notice_date' => $notice_date
-            ]);
-            DB::table('classlectureregister')->insert([
-                'id' => $i,
-                'classname' => '9A2',
-                'class_id'	=> '15_9_A_2',
-                'notice_date' => $notice_date
-            ]);
+            $classes_list = Classes::where('id','like','15_%')->get();
+            foreach ($classes_list as $key => $class) {
+                DB::table('classlectureregister')->insert([
+                    'id' => $i,
+                    'classname' => $class->classname,
+                    'class_id'  => $class->id,
+                    'notice_date' => $notice_date
+                ]);
+            }
     	}
     }
 
-    function RandomString(){
+    private function RandomString(){
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randstring = '';
         for ($i = 0; $i < 10; $i++) {

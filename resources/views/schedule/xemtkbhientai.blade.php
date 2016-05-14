@@ -36,56 +36,58 @@
 	</div>
     <div class="box-body table-responsive col-md-10" style="">
 	    <div class="box box-primary">
-	    	<div class="box-body box-primary table-responsive" style="height:570px">
-	    		<table id="tkb_gv_table" class="table table-bordered table-hover data-table table-stripped" border="1">
-			        <thead>
-			            <tr>
-			            	<th rowspan="2">MSGV</th>
-			            	<th style="width:100px" rowspan ="2">Họ và tên</th>
-			            	<th rowspan="2">Môn</th>
-			            	<th rowspan="2">Lớp chủ nhiệm</th>
-			            	<th rowspan="2">Số tiêt chưa phân</th>
-			            	<th colspan="5">Sáng thứ 2</th>
-			            	<th colspan="5">Chiều thứ 2</th>
-			            	<th colspan="5">Sáng thứ 3</th>
-			            	<th colspan="5">Chiều thứ 3</th>
-			            	<th colspan="5">Sáng thứ 4</th>
-			            	<th colspan="5">Chiều thứ 4</th>
-			            	<th colspan="5">Sáng thứ 5</th>
-			            	<th colspan="5">Chiều thứ 5</th>
-			            	<th colspan="5">Sáng thứ 6</th>
-			            	<th colspan="5">Chiều thứ 6</th>
-			            </tr>
-						<tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
-						<th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
-						<th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
-						<th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
-						<th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr> 
-			        </thead>
-			        <tbody id="displayrecord">
-			           <?php
-					   		foreach ($thoikhoabieu as $gv) {
-					   			echo "<tr><td>".$gv[0]."</td><td>".$gv[1]."</td><td>".$gv[2]."</td><td>".$gv[3]."</td><td>".$gv[4]."</td>";
-					   			for($i = 0 ; $i < 50; $i++){
-					   				$kiemtra = true;
+	    	<div class="box-body box-primary table-responsive">
+	    		<div class="box-body">
+		    		<table id="tkb_gv_table" class="table table-bordered table-hover data-table table-stripped" style='overflow: auto; display: inline-block; width: 100%; height:600px' border="1">
+				        <thead>
+				            <tr>
+				            	<th rowspan="2">MSGV</th>
+				            	<th style="width:100px" rowspan ="2">Họ và tên</th>
+				            	<th rowspan="2">Môn</th>
+				            	<th rowspan="2">Lớp chủ nhiệm</th>
+				            	<th rowspan="2">Số tiêt chưa phân</th>
+				            	<th colspan="5">Sáng thứ 2</th>
+				            	<th colspan="5">Chiều thứ 2</th>
+				            	<th colspan="5">Sáng thứ 3</th>
+				            	<th colspan="5">Chiều thứ 3</th>
+				            	<th colspan="5">Sáng thứ 4</th>
+				            	<th colspan="5">Chiều thứ 4</th>
+				            	<th colspan="5">Sáng thứ 5</th>
+				            	<th colspan="5">Chiều thứ 5</th>
+				            	<th colspan="5">Sáng thứ 6</th>
+				            	<th colspan="5">Chiều thứ 6</th>
+				            </tr>
+							<tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
+							<th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
+							<th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
+							<th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
+							<th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr> 
+				        </thead>
+				        <tbody id="displayrecord">
+				           <?php
+						   		foreach ($thoikhoabieu as $gv) {
+						   			echo "<tr><td>".$gv[0]."</td><td>".$gv[1]."</td><td>".$gv[2]."</td><td>".$gv[3]."</td><td>".$gv[4]."</td>";
+						   			for($i = 0 ; $i < 50; $i++){
+						   				$kiemtra = true;
 
-					   				if($chuaphan)
-					   					foreach ($chuaphan as $cp) {
-						   					if( $cp[1] == $i and $cp[0] == $gv[$i + 5]){
-						   						$kiemtra = false;
-						   						echo "<td class='trung'>".$gv[$i + 5]."</td>";
-						   						break;
-						   					}
-						   				}
+						   				if($chuaphan)
+						   					foreach ($chuaphan as $cp) {
+							   					if( $cp[1] == $i and $cp[0] == $gv[$i + 5]){
+							   						$kiemtra = false;
+							   						echo "<td class='trung'>".$gv[$i + 5]."</td>";
+							   						break;
+							   					}
+							   				}
 
-					   				if($kiemtra)
-					   					echo "<td>".$gv[$i + 5]."</td>";
-					   			}
-					   			echo "</tr>";
-					   		}
-					   ?>
-        			</tbody>
-	    		</table>
+						   				if($kiemtra)
+						   					echo "<td>".$gv[$i + 5]."</td>";
+						   			}
+						   			echo "</tr>";
+						   		}
+						   ?>
+	        			</tbody>
+		    		</table>
+		    	</div>
 	    	</div>
 	    </div>
 	</div>

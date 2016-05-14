@@ -35,8 +35,6 @@ Route::group(['prefix' => 'api', 'middleware' => 'apiguard'],function(){
 Route::get('/', 'Auth\MyAuthController@getview');
 Route::post('/get_info', 'Auth\MyAuthController@get_info');
 Route::get('/test', 'Test\TestController@test');
-Route::post('/test', 'Test\TestController@test_read');
-Route::post('/test/read', 'Test\TestController@test_read');
 Route::post('/auth/login', 'Auth\MyAuthController@authenticate');
 Route::get('/auth/logout', 'Auth\MyAuthController@logout');
 
@@ -165,6 +163,8 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::group(['prefix' => 'statistic', 'namespace' =>'Admin\Statistic'], function(){
 		Route::get('numberofstudent' , 'NumberOfStudentController@get_view');
 		Route::post('numberofstudent/get_data', 'NumberOfStudentController@get_data');
+		Route::get('transcript' , 'TranscriptController@get_view');
+		Route::post('transcript/get_data' , 'TranscriptController@get_data');
 	});
 
 });
@@ -173,6 +173,7 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () {
 	Route::get('dashboard', 'Teacher\ProfileController@get_te_dashboard' );
 	Route::post('dashboard', 'Teacher\ProfileController@edit_info' );
+	Route::post('dashboard/upload_image', 'Teacher\ProfileController@upload_image' );
 	Route::post('dashboard/changepassword', 'Teacher\ProfileController@changepassword');
 	Route::get('permission_denied', 'Teacher\ProfileController@permission_denied' );
 
@@ -206,6 +207,7 @@ Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () 
 	// Class List
 	Route::get('student-list' , 'Teacher\StudentListController@get_view');
 	Route::post('student-list/get_student_list' , 'Teacher\StudentListController@get_student_list');
+	Route::post('student-list/get_enrolled_year' , 'Teacher\StudentListController@get_enrolled_year');
 
 });
 
@@ -213,6 +215,7 @@ Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () 
 Route::group(['prefix' => 'student','middleware' => 'authrole_stu'], function () {
 	Route::get('dashboard', 'Student\ProfileController@get_stu_dashboard' );
 	Route::post('dashboard', 'Student\ProfileController@edit_info' );
+	Route::post('dashboard/upload_image', 'Student\ProfileController@upload_image' );
 	Route::post('dashboard/changepassword', 'Student\ProfileController@changepassword');
 	Route::get('permission_denied', 'Student\ProfileController@permission_denied' );
 
@@ -229,6 +232,9 @@ Route::group(['prefix' => 'student','middleware' => 'authrole_stu'], function ()
 	//Notice Board
 	Route::get('notice_board', 'Student\NoticeboardController@get_view');
 	Route::post('notice_board/read_notice', 'Student\NoticeboardController@read_notice');
+
+	Route::get('teacher_list', 'Student\TeacherListController@get_view');
+	Route::post('teacher_list/select_teacher', 'Student\TeacherListController@select_teacher');
 });
 
 //Parent Route
@@ -238,6 +244,10 @@ Route::group(['prefix' => 'parents','middleware' => 'authrole_pa'], function () 
 	Route::post('dashboard/changepassword', 'Parents\ProfileController@changepassword');
 	Route::get('permission_denied', 'Parents\ProfileController@permission_denied' );
 
+	//Teacher List
+	Route::get('teacher_list', 'Parents\TeacherListController@get_view');
+	Route::get('teacher_list/{student_id}', 'Parents\TeacherListController@get_teacher_list');
+	Route::post('teacher_list/select_teacher', 'Parents\TeacherListController@select_teacher');
 	//Mailbox
 	Route::get('mailbox', 'Mailbox\MailBoxController@get_mailbox');
 

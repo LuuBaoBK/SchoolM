@@ -168,6 +168,7 @@ class TranscriptController extends Controller
 
     public function select_subject(Request $request){
       $record = [];
+      $student_id = $request['student_id'];
       $class_id = $request['data'][1];
       $year = substr($class_id, 0,2);
       if($request['data'][0] == "all"){
@@ -188,7 +189,7 @@ class TranscriptController extends Controller
             $month_factor = 0;
             foreach ($scoretype_month as $key => $score) {
               $temp = Transcript::where('scholastic','=',$year)
-                                ->where('student_id','=',Auth::user()->id)
+                                ->where('student_id','=',$student_id)
                                 ->where('scoretype_id','=',$score->id)
                                 ->first();
               if($temp != null){
@@ -218,7 +219,7 @@ class TranscriptController extends Controller
             $month_factor = 0;
             foreach ($scoretype_month as $key => $score) {
               $temp = Transcript::where('scholastic','=',$year)
-                                ->where('student_id','=',Auth::user()->id)
+                                ->where('student_id','=',$student_id)
                                 ->where('scoretype_id','=',$score->id)
                                 ->first();
               if($temp != null){
@@ -288,7 +289,7 @@ class TranscriptController extends Controller
           if(count($scoretype_month) > 0){
             foreach ($scoretype_month as $key => $score) {
               $temp = Transcript::where('scholastic','=',$year)
-                                ->where('student_id','=',Auth::user()->id)
+                                ->where('student_id','=',$student_id)
                                 ->where('scoretype_id','=',$score->id)
                                 ->first();
               if($temp != null){
@@ -336,7 +337,7 @@ class TranscriptController extends Controller
           if(count($scoretype_month) > 0){
             foreach ($scoretype_month as $key => $score) {
               $temp = Transcript::where('scholastic','=',$year)
-                                ->where('student_id','=',Auth::user()->id)
+                                ->where('student_id','=',$student_id)
                                 ->where('scoretype_id','=',$score->id)
                                 ->first();
               if($temp != null){

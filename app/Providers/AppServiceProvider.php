@@ -6,6 +6,9 @@ use Illuminate\Support\ServiceProvider;
 use Validator;
 use App\Model\Parents;
 use App\Model\Classes;
+use Auth;
+use View;
+use App\Model\MsgRecv;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -61,6 +64,21 @@ class AppServiceProvider extends ServiceProvider
         Validator::replacer('inrange',
             function ($message, $attribute, $rule, $parameters) {
                 return str_replace([':min', ':max'], [$parameters[0], $parameters[1]], $message);
+        });
+
+        View::composer('*', function($view){
+            $view->with('currentUser', Auth::user());
+        });
+
+        View::composer('*', function($view){
+            $user = Auth::user();
+            if($user != null){
+                $mail_count = MsgRecv::where('recvby','=',$user->id)->where('isread','=',0)->where('isdelete','=',0)->count();
+                $mail_count = ($mail_count == 0 ) ? "" : $mail_count;
+                $view->with('mail_count', $mail_count);
+            }
+
+                
         });
     }
 

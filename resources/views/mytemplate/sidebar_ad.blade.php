@@ -17,7 +17,7 @@
         <ul class="sidebar-menu">
             <li id="sidebar_list_1" class="">
                 <a href="/admin/dashboard">
-                    <i class="fa fa-home"></i> <span>Dashboard</span>
+                    <i class="fa fa-home"></i> <span>Profile</span>
                 </a>
             </li>
             <li id="sidebar_list_2" class="treeview">
@@ -53,6 +53,7 @@
                 <ul class="treeview-menu">
                     <li id="sidebar_list_4_1"><a href="/admin/addsubject"><i class="fa fa-book"></i> <span>Subject Manager</span></a></li>
                     <li id="sidebar_list_4_2"><a href="/admin/position"><i class="fa fa-file-text-o"></i> <span>Position Manager</span></a></li>
+                    <!-- <li id="sidebar_list_4_3"><a href="/admin/classgroup"><i class="fa fa-file"></i> <span>Class Group Manager</span></a></li> -->
                 </ul>
             </li>
             <li id="sidebar_list_5" class="treeview">
@@ -72,7 +73,7 @@
             </li>
             <li id="sidebar_mailbox">
                 <a href="/admin/mailbox">
-                    <i class="fa fa-envelope-o"></i> <span>Mail Box</span>
+                    <i class="fa fa-envelope-o"></i> <span>Mail Box</span><span id="mail_count" class="label label-primary pull-right" style="font-size: 14px" data-count={{$mail_count}}>{{$mail_count}}</span></span>
                 </a>
             </li>
             <li id="sidebar_list_8" class="treeview">
@@ -83,6 +84,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li id="sidebar_list_8_1"><a href="/admin/statistic/numberofstudent"><i class="fa fa-angle-double-right"></i>Number of Student</a></li>
+                    <li id="sidebar_list_8_2"><a href="/admin/statistic/transcript"><i class="fa fa-angle-double-right"></i>Transcript</a></li>
                 </ul>
             </li>
             <li>

@@ -40,7 +40,7 @@
         </div>
         <div class="row">
             <div class="form-group col-lg-6">
-                <label for="totaltime">Total Time</label>
+                <label for="totaltime">Total Period Per Week</label>
                 <input type="text" class="form-control" name="total_time" id="total_time">
             </div>
         </div>
@@ -67,7 +67,7 @@
             <tr>
                 <th>Id</th>
                 <th>Subject Name</th>
-                <th>Total Time</th>
+                <th>Total Time Per Week</th>
                 <th></th>
             </tr>
         </thead>

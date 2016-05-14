@@ -574,33 +574,7 @@ $(document).ready(function(){
     var channel = pusher.subscribe(my_id+"-channel");
     var Notification = window.Notification || window.mozNotification || window.webkitNotification;
     var handler = function(){
-        Notification.requestPermission(function (permission) {
-          //console.log(permission);
-        });
-       if (document.hidden) {
-        var instance = new Notification(
-          "SchoolM", {
-            body: "You have new mail",
-            icon: '/mylib/pnotify-master/includes/le_happy_face_by_luchocas-32.png'
-          }
-        );
-        setTimeout(instance.close.bind(instance), 4000);
-       }
-       else{
-        PNotify.prototype.options.styling = "fontawesome";
-        new PNotify({
-            title: 'SchoolM1111',
-            text: 'You have new mail',
-            icon: 'fa fa-envelope-o',
-            delay: 3000,
-            buttons: {
-              closer: true,
-              closer_hover: true,
-              sticker:false
-            }
-        });
-
-       }
+       console.log("abc");
        update_mailbox(0);
     };
     channel.bind("new_mail_event",handler)

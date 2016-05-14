@@ -11,11 +11,11 @@ class ScoretypeTableSeeder extends Seeder
      */
     public function run()
     {
-        for($i=2; $i<=11; $i++){
+        for($i=1; $i<=14; $i++){
             for($k=8; $k<=11; $k++){
                 DB::table('scoretype')->insert([
                     'subject_id' => $i, 
-                    'type' => '15_'.$k,
+                    'type' => '15_phut',
                     'factor' => '1',
                     'applyfrom' => '9',
                     'disablefrom' => '3000',
@@ -23,7 +23,7 @@ class ScoretypeTableSeeder extends Seeder
                 ]);
                 DB::table('scoretype')->insert([
                     'subject_id' => $i, 
-                    'type' => '45_'.$k,
+                    'type' => '1_tiett',
                     'factor' => '2',
                     'applyfrom' => '9',
                     'disablefrom' => '3000',
@@ -32,7 +32,7 @@ class ScoretypeTableSeeder extends Seeder
                 if($k == 9 || $k == 11){
                     DB::table('scoretype')->insert([
                         'subject_id' => $i, 
-                        'type' => 'M_'.$k,
+                        'type' => 'Kt_Mieng',
                         'factor' => '1',
                         'applyfrom' => '9',
                         'disablefrom' => '3000',
@@ -51,7 +51,7 @@ class ScoretypeTableSeeder extends Seeder
             for($k=1; $k<=4; $k++){
                 DB::table('scoretype')->insert([
                     'subject_id' => $i, 
-                    'type' => '15_'.$k,
+                    'type' => '15_phut',
                     'factor' => '1',
                     'applyfrom' => '9',
                     'disablefrom' => '3000',
@@ -59,7 +59,7 @@ class ScoretypeTableSeeder extends Seeder
                 ]);
                 DB::table('scoretype')->insert([
                     'subject_id' => $i, 
-                    'type' => '45_'.$k,
+                    'type' => '1_tiet',
                     'factor' => '2',
                     'applyfrom' => '9',
                     'disablefrom' => '3000',
@@ -68,7 +68,7 @@ class ScoretypeTableSeeder extends Seeder
                 if($k == 2 || $k == 4){
                     DB::table('scoretype')->insert([
                         'subject_id' => $i, 
-                        'type' => 'M_'.$k,
+                        'type' => 'Kt_Mieng',
                         'factor' => '1',
                         'applyfrom' => '9',
                         'disablefrom' => '3000',

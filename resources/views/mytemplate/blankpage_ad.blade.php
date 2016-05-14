@@ -62,7 +62,6 @@
   <div class="control-sidebar-bg"></div> 
 </div>
 <!-- ./wrapper -->
-
 <!-- jQuery 2.1.4 -->
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
 <!-- Bootstrap 3.3.5 -->
@@ -85,5 +84,68 @@
 <!-- iCheck 1.0.1 -->
 <script src="{{asset("/adminlte/plugins/iCheck/icheck.min.js")}}"></script>
 <script src="{{asset("/mylib/jquery-ui-custom/jquery-ui.min.js")}}"></script>
+<script src="{{asset("/mylib/bower_components/pusher/dist/pusher.min.js")}}"></script>
+<script src="{{asset("/mylib/pnotify-master/src/pnotify.js")}}"></script>
+<script src="{{asset("/mylib/pnotify-master/src/pnotify.desktop.js")}}"></script>
+<script src="{{asset("/mylib/pnotify-master/src/pnotify.buttons.js")}}"></script>
+<link rel="stylesheet" href="{{asset("/mylib/pnotify-master/src/pnotify.css")}}">
+<link rel="stylesheet" href="{{asset("/mylib/pnotify-master/src/pnotify.buttons.css")}}">
+
+<input type="hidden" id="currentUser" value="{{$currentUser->id}}">
+<script type="text/javascript">
+function notification(){
+  var my_id = $('#currentUser').val();
+  var pusher = new Pusher('{{env("PUSHER_KEY")}}');
+  var channel = pusher.subscribe(my_id+"-channel");
+  var Notification = window.Notification || window.mozNotification || window.webkitNotification;
+  Notification.requestPermission();
+  var handler = function(data){
+    var mail_count = $('#mail_count').html();
+    if(mail_count == ""){
+      mail_count = 1;
+    }
+    else{
+      mail_count = parseInt(mail_count) +1;
+    }
+    $('#mail_count').html(mail_count);
+    Notification.requestPermission(function (permission) {
+        console.log(permission);
+    });
+    if (document.hidden) {
+    var instance = new Notification(
+      "SchoolM", {
+        body: data+" sent you an email",
+        icon: '/mylib/pnotify-master/includes/le_happy_face_by_luchocas-32.png'
+      }
+    );
+    setTimeout(instance.close.bind(instance), 4000);
+    }
+    else{
+      PNotify.prototype.options.styling = "fontawesome";
+      new PNotify({
+          title: 'SchoolM',
+          text: data+" sent you an email",
+          icon: 'fa fa-envelope-o',
+          delay: 4000,
+          buttons: {
+            // closer: true,
+            closer_hover: false,
+            sticker:false
+          },
+          desktop: {
+            desktop: false,
+            fallback: true,
+            icon: null,
+            tag: null,
+            text: data+" sent you an email"
+          }  
+      });
+
+    }
+  };
+  channel.bind("new_mail_event",handler);
+}
+notification();
+</script>
 </body>
 </html>

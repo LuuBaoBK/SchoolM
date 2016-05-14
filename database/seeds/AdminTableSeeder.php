@@ -12,8 +12,8 @@ class AdminTableSeeder extends Seeder
     public function run()
     {
         for($i=0; $i<=9; $i++){
-            $mobilephone = '0';
-            for($k=0; $k<9; $k++){
+            $mobilephone = '09';
+            for($k=0; $k<7; $k++){
                 $mobilephone = $mobilephone.rand(0,9);
             }
     		DB::table('admin')->insert([
@@ -22,16 +22,5 @@ class AdminTableSeeder extends Seeder
                 'mobilephone' => $mobilephone
         	]);
     	}
-        for($i=0; $i<=9; $i++){
-            $mobilephone = '0';
-            for($k=0; $k<9; $k++){
-                $mobilephone = $mobilephone.rand(0,9);
-            }
-            DB::table('admin')->insert([
-                'id' => 'a_000001'.$i,
-                'create_by' => 'a_000000'.$i,
-                'mobilephone' => $mobilephone
-            ]);
-        }
     }
 }

@@ -284,7 +284,7 @@ textarea {
 			                $('#sumary_note').val(record[2]['note']);
 			                $('#sumary_conduct').val(record[2]['conduct']);
 			                $('#sumary_ispassed').val((record[2]['ispassed'] == 0) ? 'Failed' : 'Passed' );
-			                $('#sumary_homeroom_teacher').val(data[2]);
+			                $('#sumary_homeroom_teacher').val(data[3]);
 			            },
 			            error:function(){
 			                alert("something went wrong, contact master admin to fix");
@@ -315,6 +315,7 @@ textarea {
 			                    '_token'        :token
 			                    },
 			            success:function(record){
+			            	// console.log(record);
 			            	if(record.type == "all"){
 			            		$('#score_list_table').dataTable().fnClearTable();
 				                $.each(record.data,function(i,j){
@@ -324,7 +325,6 @@ textarea {
 				                		"Trung Binh Tong Mon Hoc"
 			                		]);
 				                });
-				                console.log("done");
 			            	}
 			            	else{
 			            		$('#score_list_table').dataTable().fnClearTable();

@@ -13,7 +13,7 @@ class SubjectTableSeeder extends Seeder
     {
         DB::table('subjects')->insert([
             'subject_name' => 'Toán',
-            'total_time' => '8'   
+            'total_time' => '6'   
         ]);
 		DB::table('subjects')->insert([
             'subject_name' => 'Ngữ Văn',
@@ -21,11 +21,11 @@ class SubjectTableSeeder extends Seeder
     	]);
         DB::table('subjects')->insert([
             'subject_name' => 'Vật Lý',
-            'total_time' => '2'   
+            'total_time' => '3'   
         ]);
         DB::table('subjects')->insert([
             'subject_name' => 'Hóa Học',
-            'total_time' => '2'   
+            'total_time' => '3'   
         ]);
         DB::table('subjects')->insert([
             'subject_name' => 'Sinh Học',
@@ -40,7 +40,7 @@ class SubjectTableSeeder extends Seeder
             'total_time' => '1'   
         ]);
         DB::table('subjects')->insert([
-            'subject_name' => 'Hát nhạc',
+            'subject_name' => 'Âm nhạc',
             'total_time' => '1'   
         ]);
         DB::table('subjects')->insert([
@@ -57,7 +57,7 @@ class SubjectTableSeeder extends Seeder
         ]);
         DB::table('subjects')->insert([
             'subject_name' => 'Anh Văn',
-            'total_time' => '6'   
+            'total_time' => '4'   
         ]);
         DB::table('subjects')->insert([
             'subject_name' => 'Mỹ thuật',
@@ -65,7 +65,7 @@ class SubjectTableSeeder extends Seeder
         ]);
         DB::table('subjects')->insert([
             'subject_name' => 'Công nghệ',
-            'total_time' => '2'   
+            'total_time' => '1'   
         ]);
     }
 }

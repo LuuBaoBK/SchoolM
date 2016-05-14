@@ -44,7 +44,7 @@ table tr.selected{
 		        <div class="tab-content">
 		            <div class="active tab-pane box" id="searchbyclass">
 		                <div id="loading" class="box-body table-responsive">
-					        <table id="phancongtheogv" class="table table-hover dataTable" >
+					        <table id="phancongtheogv" class="table table-hover dataTable" style="height:700px" >
 						        <thead style="background:#CECEF6">
 						            <tr>
 						              <th>ID</th>

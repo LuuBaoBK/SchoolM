@@ -45,73 +45,75 @@ color:#B40431;
                 <button class="btn btn-primary" id="menuschedule">MENU</button>
                 <button class="btn btn-primary" id="capnhat" disabled >CẬP NHẬT TKB</button>
             </div>
-        </div>
-    </div>
-    <div class="box-body table-responsive">
-        <table id="class_table" class="table table-bordered">
-        <thead>
-            <tr class="le">
-                <th style="width:130px" rowspan="2">STT</th>
-                <th rowspan ="2">Lớp</th>
-                <?php
-                    for($i=2; $i<=6; $i++){
-                        echo "<th class='sang' colspan='5'>Sáng thứ ".$i."</th>";
-                        echo "<th class='chieu' colspan='5'>Chiều thứ ".$i."</th>";
-                    }
-                ?>
-            </tr>
-            <tr class="chan">
-    			<?php
-                    $mau = "sang"; 
-                    for($i=1;$i<=10;$i++){
-                        for($k=1;$k<=5;$k++){
-                            echo "<td class='".$mau."'>".$k."</th>";
-                        }
-                        if($mau == "sang"){
-                            $mau = "chieu";
-                        }
-                        else{
-                            $mau = "sang";
-                        }
-                    }
-                ?>
-            </tr>
-        </thead>
-        <tbody id="displayrecord">
-           <?php
-                $class="le";
-		   		foreach ($thoikhoabieu as $key => $lophoc) {
-                    echo "<tr class='".$class."'>";
-                        echo "<td class='chieu'>".$lophoc[0]."</td>";
-                        echo "<td class='chieu'>".$lophoc[1]."</td>";
-                        $k=0;
-                        $mau = "sang";
-                        for($i=2;$i<= 51;$i++){
-                            $k++;
-                            echo "<td class='".$mau."'>".$lophoc[$i]."</td>";
-                            if($k==5){
-                                $k = 0;
-                                if($mau == "sang")
-                                    $mau = "chieu";
-                                else
+            <div class="box-footer" style="height:600px">
+                <div class="box-body table-responsive">
+                    <table id="class_table" class="table table-bordered" style='overflow: auto; display: inline-block; width: 100%; height:600px'>
+                    <thead>
+                        <tr class="le">
+                            <th style="width:130px" rowspan="2">STT</th>
+                            <th rowspan ="2">Lớp</th>
+                            <?php
+                                for($i=2; $i<=6; $i++){
+                                    echo "<th class='sang' colspan='5'>Sáng thứ ".$i."</th>";
+                                    echo "<th class='chieu' colspan='5'>Chiều thứ ".$i."</th>";
+                                }
+                            ?>
+                        </tr>
+                        <tr class="chan">
+                            <?php
+                                $mau = "sang"; 
+                                for($i=1;$i<=10;$i++){
+                                    for($k=1;$k<=5;$k++){
+                                        echo "<td class='".$mau."'>".$k."</th>";
+                                    }
+                                    if($mau == "sang"){
+                                        $mau = "chieu";
+                                    }
+                                    else{
+                                        $mau = "sang";
+                                    }
+                                }
+                            ?>
+                        </tr>
+                    </thead>
+                    <tbody id="displayrecord">
+                       <?php
+                            $class="le";
+                            foreach ($thoikhoabieu as $key => $lophoc) {
+                                echo "<tr class='".$class."'>";
+                                    echo "<td class='chieu'>".$lophoc[0]."</td>";
+                                    echo "<td class='chieu'>".$lophoc[1]."</td>";
+                                    $k=0;
                                     $mau = "sang";
+                                    for($i=2;$i<= 51;$i++){
+                                        $k++;
+                                        echo "<td class='".$mau."'>".$lophoc[$i]."</td>";
+                                        if($k==5){
+                                            $k = 0;
+                                            if($mau == "sang")
+                                                $mau = "chieu";
+                                            else
+                                                $mau = "sang";
+                                        }
+                                    }
+                                echo "</tr>";
+                                if($class == "le"){
+                                    $class="chan";
+                                }
+                                else{
+                                    $class="le";
+                                }
                             }
-                        }
-                    echo "</tr>";
-                    if($class == "le"){
-                        $class="chan";
-                    }
-                    else{
-                        $class="le";
-                    }
-		   		}
-		   ?>
+                       ?>
 
-        </tbody>
-        <tfoot>
-        	
-        </tfoot>
-        </table>
+                    </tbody>
+                    <tfoot>
+                        
+                    </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>

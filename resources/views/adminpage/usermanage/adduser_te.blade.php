@@ -81,11 +81,7 @@
             <select id="group" name="group" class="form-control">
                 <?php
                     foreach($record['subject_list'] as $key => $subject){
-                        if($key == "0"){
-                            echo ("<option value='1' selected>-- Select Subject --</option>");
-                        }
-                        else
-                            echo ("<option value='".$subject->id."'>".$subject->subject_name."</option>");
+                        echo ("<option value='".$subject->id."'>".$subject->subject_name."</option>");
                     }
                 ?>
             </select>
@@ -100,9 +96,9 @@
             <select id="position" name="position" class="form-control">
                 <?php
                     foreach($record['position_list'] as $key => $position){
-                        if($key == '0')
-                            echo ("<option value='1' selected>-- Select Position --</option>");
-                        else            
+                        // if($key == '0')
+                        //     echo ("<option value='1' selected>-- Select Position --</option>");
+                        // else            
                             echo ("<option value='".$position->id."'>".$position->position_name."</option>");
                     }
                 ?>
@@ -144,12 +140,10 @@
             <div class="form-group">
                 <label for="filter_group">Group</label>
                 <select id="filter_group" name="filter_group" class="form-control">
+                    <option value="-1">-- All --</option>
                 <?php
                     foreach($record['subject_list'] as $key => $subject){
-                        if($key == "0")
-                            echo ("<option value='1' selected>-- Select Subject --</option>");
-                        else
-                            echo ("<option value='".$subject->id."'>".$subject->subject_name."</option>");
+                        echo ("<option value='".$subject->id."'>".$subject->subject_name."</option>");
                     }
                 ?>
                 </select>
@@ -326,6 +320,7 @@
                             button
                         ]);
                     });
+                    // console.log(record);
                 },
                 error:function(){
                     alert("something went wrong, contact master admin to fix");

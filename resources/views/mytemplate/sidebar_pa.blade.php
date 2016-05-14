@@ -16,12 +16,17 @@
         <ul class="sidebar-menu">
             <li id="list_1" class="">
                 <a href="/parents/dashboard">
-                    <i class="fa fa-home"></i> <span>Dashboard</span>
+                    <i class="fa fa-home"></i> <span>Profile</span>
                 </a>
             </li>
             <li id="sidebar_tkb" class="">
                 <a href="/parents/schedule">
                     <i class="fa fa-calendar"></i> <span>Schedule</span>
+                </a>
+            </li>
+            <li id="sidebar_teacher_list" class="">
+                <a href="/parents/teacher_list">
+                    <i class="fa fa-search"></i> <span>Teacher List</span>
                 </a>
             </li>
             <li id="sidebar_mailbox">
@@ -36,7 +41,7 @@
             </li>
             <li id="sidebar_mailbox">
                 <a href="/parents/mailbox">
-                    <i class="fa fa-envelope-o"></i> <span>Mail Box</span>
+                    <i class="fa fa-envelope-o"></i> <span>Mail Box</span><span id="mail_count" class="label label-primary pull-right" style="font-size: 14px">{{$mail_count}}</span>
                 </a>
             </li>
             <li>

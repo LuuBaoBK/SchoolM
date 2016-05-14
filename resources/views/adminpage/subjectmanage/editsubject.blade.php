@@ -260,9 +260,28 @@ table tr.selected{
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="modal_edit" type="button" class="btn btn-primary btn-info btn-block">Edit</button>
-                    <button id="modal_disable" type="button" class="btn btn-primary btn-danger btn-block">Disable</button>
-                    <button type="button" class="btn btn-primary btn-block pull-right" data-dismiss="modal">Close</button>
+                    <div class="form-group">
+                        <button id="modal_edit" type="button" class="btn btn-info btn-block">Edit</button>
+                    </div>
+                    <div class="form-group">
+                        <button id="modal_disable" type="button" class="btn btn-warning btn-block">Disable</button>
+                    </div>
+                    <div id="reconfirm" style="display:none">
+                        <p class="text-center" style="color:red; font-size:18px"><b><u>This action can not be undone. Please confirm that you want to disable this scoretype !</u></b></p>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <button id="reconfirm_cancel" type="button" class="btn btn-primary btn-block">Cancel</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <button id="reconfirm_confirm" type="button" class="btn btn-danger btn-block">Disable</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary btn-block pull-right" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -405,6 +424,7 @@ table tr.selected{
                 $('#modal_month').val(month);
                 $('#modal_applyfrom').val(year);
                 $('#editModal').modal('show');
+                $('#reconfirm').css('display','none');
                 if(disablefrom != "Enable"){
                     $('#modal_disable').empty();
                     $('#modal_disable').append('Disable From '+disablefrom);
@@ -464,6 +484,12 @@ table tr.selected{
         });
 
         $('#modal_disable').on('click',function(){
+            $('#reconfirm').css('display','block'); 
+        });
+        $('#reconfirm_cancel').on('click',function(){
+            $('#reconfirm').css('display','none');
+        });
+        $('#reconfirm_confirm').on('click',function(){
             var scoretype_id = $('#modal_scoretype_id').val();
             var token      = $('input[name="_token"]').val();
             $.ajax({
@@ -479,8 +505,8 @@ table tr.selected{
                     $('#editModal').modal('hide');
                     $('#score_type_table').dataTable().fnUpdate( '20'+record.year, selected_row_index, 5 );
                 }
-            });              
-        });
+            });
+        })
     });
 </script>
 

@@ -15,13 +15,26 @@
 	<div class="row">
 		<div class="col-md-4 col-xs-12">
 			<div class="box box-primary">
-	            <div class="box-header">
-	              <h4 class="text text-center ">{{$teacher->user->firstname}} {{$teacher->user->middlename}} {{$teacher->user->lastname}}</h4>
+	            <div class="box-header text-center">
+	              	<h4 class="text">{{$teacher->user->firstname}} {{$teacher->user->middlename}} {{$teacher->user->lastname}}</h4>
+	              	<?php 
+	            		$src = "/uploads/teachers/".$currentUser->id;
+	            		if(file_exists(".".$src.".jpg")){
+	            			$src = $src.".jpg";
+	            		}
+	            		else if(file_exists(".".$src.".png")){
+	            			$src = $src.".png";
+	            		}
+	            		else{
+	            			$src = "/uploads/userAvatar.png";
+	            		}
+	            	?>
+	            	<img src="{{$src}}" class="img-circle" alt="Can't Load Image" style="margin:auto; width:160px; height:160px">
 	            </div>
 	            <div class="box-body">
 		      		<ul class="list-group list-group-unbordered">
 		                <li class="list-group-item">
-		                  <b>Role</b> <a class="pull-right">Teacher</a>
+		                  <b>Homeroom Class</b> <a class="pull-right">{{$homeroom_class}}</a>
 		                </li>
 		                <li class="list-group-item">
 		                  <b>Position</b> <a class="pull-right">{{$teacher->my_position->position_name}}</a>
@@ -55,7 +68,7 @@
 		        </ul>
 		        <div class="tab-content">
 		            <div class="active tab-pane" id="info">       
-			            <form id="ad_form" method="POST" role="form">
+			            <form id="te_form" method="POST" role="form">
 				            {!! csrf_field() !!}
 				            <div class="box-body">
 				                 <div id="success_mess" style = "display: none" class="alert alert-success">
@@ -113,9 +126,22 @@
 				                        <label class="error_mess" id="address_error" style="display:none" for="address"></label>
 				                    </div>
 				                </div>
+				                <button id ="te_form_submit" type="button" class="btn btn-primary">Edit Info</button>
 				            </div><!-- /.box-body -->
 				            <div class="box-footer">
-				                    <button id ="te_form_submit" type="button" class="btn btn-primary">Edit</button>		                
+				            	<div class="input-group">
+		                            <div class="input-group-btn">
+		                                <button id="choose_file" type="button" class="btn btn-primary" >Choose File (.xlsx)</button>
+		                            </div>
+		                            <input id="import_text" name="import_text" type="text" class="form-control" disabled>
+		                            <input id="import_text_hidden" name="import_text_hidden" type="text" class="form-control" style="display:none">
+		                            <input type="file" name="fileToUpload" id="fileToUpload" style="display:none">
+		                        </div>
+		                        <div class="has-warning form-group">
+		                        	<label class="error_mess" id="import_error" style="display:none"  for="import">Please Select File To Import</label>
+	                        		<label class="error_mess" id="type_error" style="display:none"  for="import">Wrong file type (png | jpg is required)</label>
+				                </div>
+				                <button id ="upload_avatar" type="submit" class="btn btn-primary">Upload Image</button> 		                
 				            </div>
 			            </form>
 		            </div>
@@ -250,6 +276,72 @@
                 }
             });
 		});
+
+		$('#choose_file').click(function(){
+	        $('#fileToUpload').click();
+	    });
+	    $('#fileToUpload').change(function(){
+	        var filename = $(this).val();
+	        var lastIndex = filename.lastIndexOf("\\");
+	        if (lastIndex >= 0) {
+	            filename = filename.substring(lastIndex + 1);
+	        }
+	        $('#import_text').val(filename);
+	        $('#import_text_hidden').val(filename);
+	    });
+
+	    $('#te_form').submit(function(e) {
+        	e.preventDefault();
+            $('#import_error').slideUp('fast');
+			$('#type_error').slideUp('fast');
+
+            var fd = new FormData(this); // XXX: Neex AJAX2
+	        var filename = $('#import_text').val();
+	        var file_ext = filename.substr(filename.lastIndexOf('.')+1);
+            var token       = $('input[name="_token"]').val();
+
+            if(filename == ""){
+	            $('#import_error').show('medium');
+	        }
+	        else if(file_ext == "png" || file_ext == "jpg" ){
+	            $('#import_error').slideUp('fast');
+	            $('#type_error').slideUp('fast');
+	            $.ajax({
+	                url: '/teacher/dashboard/upload_image',
+	                xhr: function() { // custom xhr (is the best)
+
+	                    var xhr = new XMLHttpRequest();
+	                    var total = 0;
+
+	                    // Get the total size of files
+	                    $.each(document.getElementById('fileToUpload').files, function(i, file) {
+	                        total += file.size;
+	                    });
+
+	                    //   Called when upload progress changes. xhr2
+	                    xhr.upload.addEventListener("progress", function(evt) {
+	                        // show progress like example
+	                        var loaded = (evt.loaded / total).toFixed(2)*100; // percent
+
+	                        $('#progress').text('Uploading... ' + loaded + '%' );
+	                    }, false);
+
+	                    return xhr;
+	                },
+	                type: 'post',
+	                processData: false,
+	                contentType: false,
+	                data: fd,
+	                success: function(record) {
+	                    location.reload();
+	                }
+	            });
+	        }
+	        else{
+	        	$('#type_error').show('medium');
+	        }
+	        
+        });
     });
 
 

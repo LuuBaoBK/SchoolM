@@ -75,15 +75,15 @@
                                 <label><b>Notice Level :</b></label><br>
                                 <label class="col-lg-2 col-xs-4">
                                   <input id="radio_1" value="1" type="radio" name="r1" class="minimal">
-                                  Straightway 
+                                  (1) Straightway 
                                 </label>
                                 <label class="col-lg-2 col-xs-4">
                                   <input id="radio_2" value="2" type="radio" name="r1" class="minimal" checked>
-                                  Gradual 
+                                  (2) Gradual 
                                 </label>
                                 <label class="col-lg-2 col-xs-4">
                                   <input id="radio_3" value="3" type="radio" name="r1" class="minimal">
-                                  Behindhand 
+                                  (3) Behindhand 
                                 </label> 
                             </div><br>
                             <div class="form-group">
@@ -121,7 +121,8 @@
                             <thead>
                                 <tr>
                                     <th width="10%">Id</th>
-                                    <th width="70%">Title</th>
+                                    <th width="50%">Title</th>
+                                    <th width="20%">Classes</th>
                                     <th width="20%">Wrote Date</th>
                                 </tr>
                             </thead>
@@ -130,20 +131,31 @@
 
                                     if($notice->level == 1){
                                         $level = "danger";
-                                        $level_show = "Straightway";
+                                        $level_show = "1";
                                     }
                                     else if($notice->level == 2){
                                         $level = "warning";
-                                        $level_show = "Gradual";
+                                        $level_show = "2";
                                     }                   
                                     else{
                                         $level = "success";
-                                        $level_show = "Behindhand";
-                                    }       
+                                        $level_show = "3";
+                                    }
+                                    $classes_show = $notice->notice_classes[0]->classname;
+                                    $length = count($notice->notice_classes);
+                                    $length = ($length > 3) ? 3 : $length;
+                                    for($i =1; $i< $length; $i++){
+                                        $temp = ", ".$notice->notice_classes[$i]->classname ;
+                                        $classes_show .= $temp;
+                                    }
+                                    if(count($notice->notice_classes) > 3){
+                                        $classes_show .="...";
+                                    }
                                 ?>
                                 <tr>
                                     <td>{{$notice->id}}</td>
                                     <td><small class="label label-{{$level}} pull-right">{{$level_show}}</small>{{$notice->title}}</td>
+                                    <td>{{$classes_show}}</td>
                                     <td>{{$notice->wrote_date}}</td>
                                 </tr>
                             @endforeach
@@ -259,7 +271,7 @@ $(document).ready(function() {
       radioClass: 'iradio_flat-yellow'
     });
     $('#radio_3').iCheck({
-      radioClass: 'iradio_flat-blue'
+      radioClass: 'iradio_flat-green'
     });
     $('#checkbox').iCheck({
       checkboxClass: 'icheckbox_flat-blue',
@@ -355,62 +367,66 @@ $(document).ready(function() {
         }
     });
     $('#add_notice').on('click',function(){
-        $('#add_notice_error').parent().removeClass('has-warning');
-        $('#add_notice_error').empty();
-        var content = CKEDITOR.instances['notice_content'].getData();
-        var title = $('#notice_title').val();
-        var notice_date = $('#from_date').val();
-        var class_list = [];
-        var error_mess = [];
-        var token = $('input[name="_token"]').val();
-        var level = $('input[name="r1"]:checked').val();
-        var next_class = $('#checkbox').is(":checked");
-        var check = true;
-        $('#class_list_table tbody tr.selected td:first-child').each(function(i,j){
-            class_list.push(j.innerHTML);
-        })
-        if(class_list.length == 0){
-            check = false;
-            error_mess.push("Please Select Class To Add Notice");
-        }
-        if(notice_date == "" && next_class == false){
-            check = false;
-            error_mess.push("Please Select Notice Date");
-        }
-        if(title == "" || content == ""){
-            check = false;
-            error_mess.push("Notice Title And Notice Content Can Not Empty");
-        }
-        if(!check){
+        $('#add_notice').html('<i class="fa fa-refresh fa-spin"></i>');
+        setTimeout(function(){ 
+            $('#add_notice_error').parent().removeClass('has-warning');
             $('#add_notice_error').empty();
-            $.each(error_mess,function(i,j){
-                $('#add_notice_error').append(j+"<br>");
-            });
-            $('#add_notice_error').parent().addClass('has-warning');
-        }
-        else{
-            $.ajax({
-                url     :"<?= URL::to('/teacher/noticeboard/add_notice') ?>",
-                type    :"POST",
-                async   :false,
-                data    :{
-                        'content'          :content,
-                        'title'         :title,
-                        'class_list'    :class_list,
-                        'notice_date'     :notice_date,
-                        'level'         :level,
-                        'next_class'    :next_class,
-                        '_token'        :token
-                        },
-                success:function(record){
-                    // location.reload();
-                    console.log(record);
-                },
-                error:function(){
-                    alert("something went wrong, contact master admin to fix");
-                }
-            });
-        }
+            var content = CKEDITOR.instances['notice_content'].getData();
+            var title = $('#notice_title').val();
+            var notice_date = $('#from_date').val();
+            var class_list = [];
+            var error_mess = [];
+            var token = $('input[name="_token"]').val();
+            var level = $('input[name="r1"]:checked').val();
+            var next_class = $('#checkbox').is(":checked");
+            var check = true;
+            $('#class_list_table tbody tr.selected td:first-child').each(function(i,j){
+                class_list.push(j.innerHTML);
+            })
+            if(class_list.length == 0){
+                check = false;
+                error_mess.push("Please Select Class To Add Notice");
+            }
+            if(notice_date == "" && next_class == false){
+                check = false;
+                error_mess.push("Please Select Notice Date");
+            }
+            if(title == "" || content == ""){
+                check = false;
+                error_mess.push("Notice Title And Notice Content Can Not Empty");
+            }
+            if(!check){
+                $('#add_notice_error').empty();
+                $.each(error_mess,function(i,j){
+                    $('#add_notice_error').append(j+"<br>");
+                });
+                $('#add_notice_error').parent().addClass('has-warning');
+                $('#add_notice').html('Add');
+            }
+            else{ 
+                $.ajax({
+                    url     :"<?= URL::to('/teacher/noticeboard/add_notice') ?>",
+                    type    :"POST",
+                    async   :false,
+                    data    :{
+                            'content'          :content,
+                            'title'         :title,
+                            'class_list'    :class_list,
+                            'notice_date'     :notice_date,
+                            'level'         :level,
+                            'next_class'    :next_class,
+                            '_token'        :token
+                            },
+                    success:function(record){
+                        location.reload();
+                        // console.log(record);
+                    },
+                    error:function(){
+                        alert("something went wrong, contact master admin to fix");
+                    }
+                });
+            }
+        }, 0);
     });
     $('#modal_forward').on('click', function(){
         $('#noticeModal').modal('hide');

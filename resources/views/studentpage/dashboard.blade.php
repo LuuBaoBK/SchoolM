@@ -14,8 +14,21 @@
 	<div class="row">
 		<div class="col-md-4 col-xs-12">
 			<div class="box box-primary">
-	            <div class="box-header">
-	            	<h4 class="text text-center ">{{$student->user->firstname}} {{$student->user->middlename}} {{$student->user->lastname}}</h4>
+	            <div class="box-header text text-center">
+	            	<h4 class="">{{$student->user->firstname}} {{$student->user->middlename}} {{$student->user->lastname}}</h4>
+	            	<?php 
+	            		$src = "\uploads\\".$student->enrolled_year."\\".$currentUser->id;
+	            		if(file_exists(".".$src.".jpg")){
+	            			$src = $src.".jpg";
+	            		}
+	            		else if(file_exists(".".$src.".png")){
+	            			$src = $src.".png";
+	            		}
+	            		else{
+	            			$src = "\uploads\userAvatar.png";
+	            		}
+	            	?>
+	            	<img src="{{$src}}" class="img-circle" alt="Can't Load Image" style="margin:auto; width:160px; height:160px">
 	            </div>
 	            <div class="box-body">
 		      		<ul class="list-group list-group-unbordered">
@@ -48,7 +61,7 @@
 		        </ul>
 		        <div class="tab-content">
 		            <div class="active tab-pane" id="info">       
-			            <form id="ad_form" method="POST" role="form">
+			            <form id="stu_form" method="POST" role="form">
 				            {!! csrf_field() !!}
 				            <div class="box-body">
 				                 <div id="success_mess" style = "display: none" class="alert alert-success">
@@ -94,8 +107,21 @@
 				                        <label class="error_mess" id="address_error" style="display:none" for="address"></label>
 				                    </div>
 				                </div>
+				                <div class="input-group">
+		                            <div class="input-group-btn">
+		                                <button id="choose_file" type="button" class="btn btn-primary" >Choose File (.xlsx)</button>
+		                            </div>
+		                            <input id="import_text" name="import_text" type="text" class="form-control" disabled>
+		                            <input id="import_text_hidden" name="import_text_hidden" type="text" class="form-control" style="display:none">
+		                            <input type="file" name="fileToUpload" id="fileToUpload" style="display:none">
+		                        </div>
+		                        <div class="has-warning form-group">
+		                        	<label class="error_mess" id="import_error" style="display:none"  for="import">Please Select File To Import</label>
+	                        		<label class="error_mess" id="type_error" style="display:none"  for="import">Wrong file type (png | jpg is required)</label>
+				                </div>
 				            </div><!-- /.box-body -->
 				            <div class="box-footer">
+				            	<button id ="stu_form_submit" type="submit" class="btn btn-primary">Upload Image</button>
 				                    <!-- <button id ="stu_form_submit" type="button" class="btn btn-primary">Edit</button>		                 -->
 				            </div>
 			            </form>
@@ -143,49 +169,57 @@
         $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
         $("[data-mask]").inputmask();
 
-        $("#stu_form_submit").click(function() {
-            /* Act on the event */
-            var id 			= $('#id').val();
-            var firstname   = $('#firstname').val();
-            var middlename  = $('#middlename').val();
-            var lastname    = $('#lastname').val();
-            var dateofbirth = $('#dateofbirth').val();
-            var address     = $('#address').val();
+        $('#stu_form').submit(function(e) {
+        	e.preventDefault();
+            $('#import_error').slideUp('fast');
+			$('#type_error').slideUp('fast');
+
+            var fd = new FormData(this); // XXX: Neex AJAX2
+	        var filename = $('#import_text').val();
+	        var file_ext = filename.substr(filename.lastIndexOf('.')+1);
             var token       = $('input[name="_token"]').val();
 
-            $(".form-group").removeClass("has-warning");
-            $(".error_mess").empty();
+            if(filename == ""){
+	            $('#import_error').show('medium');
+	        }
+	        else if(file_ext == "png" || file_ext == "jpg" ){
+	            $('#import_error').slideUp('fast');
+	            $('#type_error').slideUp('fast');
+	            $.ajax({
+	                url: '/student/dashboard/upload_image',
+	                xhr: function() { // custom xhr (is the best)
 
-            $.ajax({
-                url     :"<?= URL::to('/student/dashboard') ?>",
-                type    :"POST",
-                async   :false,
-                data    :{
-                	'id'			:id,
-                    'firstname'     :firstname,
-                    'middlename'    :middlename,
-                    'lastname'      :lastname,
-                    'dateofbirth'   :dateofbirth,
-                    'address'       :address,
-                    '_token'        :token
-                },
-                success:function(record){
-                   if(record.isDone == 1){
-                   	location.reload();                       
-                   }
-                   else{
-                        $('#error_mess').show("medium");
-                        $('#error_mess').empty();
-                        $.each(record, function(i, item){
-                          $('#'+i).parent().addClass('has-warning');
-                          $('#'+i+"_error").css("display","block").append("<i class='icon fa fa-warning'></i> "+item);
-                        });                      
-                   }    
-                },
-                error:function(){
-                    alert("something went wrong, contact master admin to fix");
-                }
-            });
+	                    var xhr = new XMLHttpRequest();
+	                    var total = 0;
+
+	                    // Get the total size of files
+	                    $.each(document.getElementById('fileToUpload').files, function(i, file) {
+	                        total += file.size;
+	                    });
+
+	                    //   Called when upload progress changes. xhr2
+	                    xhr.upload.addEventListener("progress", function(evt) {
+	                        // show progress like example
+	                        var loaded = (evt.loaded / total).toFixed(2)*100; // percent
+
+	                        $('#progress').text('Uploading... ' + loaded + '%' );
+	                    }, false);
+
+	                    return xhr;
+	                },
+	                type: 'post',
+	                processData: false,
+	                contentType: false,
+	                data: fd,
+	                success: function(record) {
+	                    location.reload();
+	                }
+	            });
+	        }
+	        else{
+	        	$('#type_error').show('medium');
+	        }
+	        
         });
 
 		$("#change_password_form_submit").click(function() {
@@ -226,6 +260,18 @@
                 }
             });
 		});
+		$('#choose_file').click(function(){
+	        $('#fileToUpload').click();
+	    });
+	    $('#fileToUpload').change(function(){
+	        var filename = $(this).val();
+	        var lastIndex = filename.lastIndexOf("\\");
+	        if (lastIndex >= 0) {
+	            filename = filename.substring(lastIndex + 1);
+	        }
+	        $('#import_text').val(filename);
+	        $('#import_text_hidden').val(filename);
+	    });
     });
 </script>
 @endsection

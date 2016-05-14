@@ -1,5 +1,13 @@
 @extends('mytemplate.blankpage_pa')
 @section('content')
+<style type="text/css">
+table, th, td {
+    border: 1px solid black;
+}
+p.text{
+	font-size: 120%;
+}
+</style>
 <section class="content-header">
     <h1>
         Parent
@@ -24,10 +32,20 @@
 					<input type="hidden" name="_token" value="<?= csrf_token(); ?>">
 		            <label for="student">Student</label>
 		            <select id="student" name="student" class="form-control">
-		            	<option value="-1" selected>-- Select Student --</option>
-		                @foreach($student_list as $key => $student)
-		                	<option value={{$student->id}}>{{$student->user->fullname}}</option>
-		                @endforeach
+		                @if($tkb == 'select_student')
+		                	<option value="-1" selected>-- Select Student --</option>
+				            @foreach($student_list as $key => $student)
+				            	<option value={{$student->id}}>{{$student->user->fullname}}</option>
+				            @endforeach
+			            @else
+			            	@foreach($student_list as $key => $student)
+			            		@if($student->id == $student_id)
+				            		<option value={{$student->id}} selected>{{$student->user->fullname}}</option>
+			            		@else
+		            				<option value={{$student->id}}>{{$student->user->fullname}}</option>
+		            			@endif
+				            @endforeach
+			            @endif
 		            </select>
 	        	</div>
 	        </div>	

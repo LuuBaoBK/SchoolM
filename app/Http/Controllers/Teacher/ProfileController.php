@@ -10,6 +10,8 @@ use App\Model\Teacher;
 use App\Model\Subject;
 use App\User;
 use Validator;
+use App\Model\Classes;
+use Input;
 
 class ProfileController extends Controller
 {
@@ -37,8 +39,16 @@ class ProfileController extends Controller
         $teacher['mydateofbirth'] = $mydateofbirth;
         $teacher['myincomingday'] = $myincomingday;
         $teacher->group = Subject::find($teacher->group)->subject_name;
-
-        return view('teacherpage.dashboard')->with('teacher',$teacher);
+        $year = substr(date("Y"),2,2);
+        $year = (date("m") < 8) ? ($year - 1) : $year;
+        $homeroom_class = Classes::where('homeroom_teacher','=',$teacher->id)->where('id','like',$year."_%")->first();
+        if($homeroom_class == null){
+            $homeroom_class = "N/A";
+        }
+        else{
+            $homeroom_class = $homeroom_class->classname;
+        }
+        return view('teacherpage.dashboard',['teacher' => $teacher, 'homeroom_class' => $homeroom_class]);
     }
 
     public function edit_info(Request $request){
@@ -114,6 +124,33 @@ class ProfileController extends Controller
             $record['isSuccess'] = '1';
             return $record;
         }
+    }
+
+    public function upload_image(Request $request){
+        $input = Input::all();
+        $file = array_get($input,'fileToUpload');
+        $extension = $file->getClientOriginalExtension();
+        $validator = Validator::make($request->all(), [
+            'fileToUpload' => 'required|max:1000',
+        ]);
+        if($validator->fails()){
+            $record = $validator->messages();
+            return $record;
+        }
+        else{
+            $id = Auth::user()->id;
+            $destinationPath = 'uploads\teachers\\'; // upload path
+            $temp = $destinationPath.$id;
+            if(file_exists(".\\".$temp.".jpg")){
+                unlink($temp.".jpg");
+            }
+            if(file_exists(".\\".$temp.".png")){
+                unlink($temp.".png");
+            }
+            $fileName = $id.'.'.$extension; // renameing image
+            $file->move($destinationPath, $fileName); // uploading file to given path
+        }
+        return $request['fileToUpload'];
     }
 
     public function permission_denied(){
