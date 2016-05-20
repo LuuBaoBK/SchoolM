@@ -272,6 +272,7 @@ textarea {
 			                    '_token'        :token
 			                    },
 			            success:function(record){
+			            	console.log(record);
 			            	if(record.type == "all"){
 			            		$('#score_list_table').dataTable().fnClearTable();
 				                $.each(record.data,function(i,j){
@@ -281,7 +282,6 @@ textarea {
 				                		"Trung Binh Tong Mon Hoc"
 			                		]);
 				                });
-				                console.log("done");
 			            	}
 			            	else{
 			            		$('#score_list_table').dataTable().fnClearTable();
@@ -334,7 +334,7 @@ textarea {
 			            					else{
 			            						a = $('#score_list_table').dataTable().fnAddData([
 					            					i,
-					            					j[0],
+					            					j,
 					            					" "
 				            					]);
 				            					nTr = $('#score_list_table').dataTable().fnSettings().aoData[ a[0] ].nTr;
@@ -392,8 +392,8 @@ textarea {
 			            					else{
 			            						a = $('#score_list_table').dataTable().fnAddData([
 					            					i,
-					            					j[0],
-					            					j[1]
+					            					j,
+					            					""
 				            					]);
 				            					nTr = $('#score_list_table').dataTable().fnSettings().aoData[ a[0] ].nTr;
 												$(nTr).removeClass('odd');

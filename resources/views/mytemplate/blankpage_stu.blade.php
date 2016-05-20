@@ -148,7 +148,7 @@ function notification(){
      if (document.hidden) {
       var instance = new Notification(
         "SchoolM", {
-          body: data,
+          body: "You have new notice on : "+data['show_date'],
           icon: '/mylib/pnotify-master/includes/le_happy_face_by_luchocas-32.png'
         }
       );
@@ -158,7 +158,7 @@ function notification(){
       PNotify.prototype.options.styling = "fontawesome";
       new PNotify({
           title: 'SchoolM',
-          text: data,
+          text: "You have new notice on : "+data['show_date'],
           icon: 'fa fa-envelope-o',
           delay: 4000,
           buttons: {
@@ -171,7 +171,7 @@ function notification(){
             fallback: true,
             icon: null,
             tag: null,
-            text: data
+            text: "You have new notice on : "+data['show_date']
           }
       });
       // console.log("abc");

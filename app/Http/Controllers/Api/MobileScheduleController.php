@@ -15,6 +15,7 @@ use App\Model\StudentClass;
 use App\Model\Classes;
 use App\Model\Phancong;
 use App\Model\Sysvar;
+use App\User;
 
 class MobileScheduleController extends ApiGuardController
 {
@@ -22,7 +23,7 @@ class MobileScheduleController extends ApiGuardController
         $user = Auth::user();
         $tkb = [];
         if($user->role == 0 || $user->role == 3){
-            $data['status'] = "no_schedule";
+            $data['status'] = "empty";
             return Response::json($data);
         }
         else{
@@ -122,51 +123,60 @@ class MobileScheduleController extends ApiGuardController
         }
     }
 
-    // public function get_schedule(Request $request){
-    //     $request['data'] = "s_1;s_2;s_3;a_4!#o#!title!#o#!content"
-    //     $data = array();
-    //     $temp = array();
-    //     $temp['id'] = 1;
-    //     $temp['content'] = 'this_is_content';
-    //     $temp['titel'] = 'this_is_title';
-    //     $temp['date_time'] = 'Apr 29';
-    //     $temp['author'] = 'this_is_author';
-    //     $list_mail[0] = $temp;
-    //     $list_mail[1] = $temp;
-    //     // $data['inbox'] = json_encode($list_mail);
-    //     $data['inbox'] = $list_mail;
-    //     return Response::json($data);
-    // }
-
-    public function get_view(){
-        $teacher = Auth::user();
+    public function parent_get_schedule(Request $request){
+        $id = $request['data'];
+        $user = User::find($id);
+        $tkb = [];
+        $data['status'] = "schedule";
+        $student = $user;
         $year = substr(date('Y'),2,2);
         $month = date('m');
         $year = ($month < 8 ) ? $year - 1 : $year ;
-        $tkb = [];
-        $check = Phancong::where('teacher_id','=',$teacher->id)
-                             ->where('class_id','like', $year."_%")
-                             ->first();
+        $check = StudentClass::where('student_id','=',$student->id)
+                         ->where('class_id','like', $year."_%")
+                         ->first();
         if($check == null){
-            $tkb = "no_placement";
-            return view('teacherpage.schedule',['tkb' => $tkb]);
+            $data['status'] = "no_schedule";
+            return Response::json($data);
         }
         else{
-            $check = tkb::all();
-            if(count($check) == 0){
-                $tkb = "no_schedule";
-                return view('teacherpage.schedule',['tkb' => $tkb]);
+            $class = Classes::find($check->class_id);
+            $teacher_list = Phancong::select('teacher_id')->where('class_id','=',$class->id)->get();
+            if(count($teacher_list) == 0){
+                $data['status'] = "no_schedule";
+                return Response::json($data);
             }
             else{
-                $tkb = tkb::where('teacher_id','=',$teacher->id)->first()->toArray();
-                if($tkb == null){
-                    $tkb = "no_schedule";
-                    return view('teacherpage.schedule',['tkb' => $tkb]);
+                $check = tkb::all();
+                if(count($check) == 0){
+                    $data['status'] = "no_schedule";
+                    return Response::json($data);
                 }
-                else{
+                for($i = 0; $i<=49; $i++){
+                    if($i == 0 || $i == 9){
+                        $tkb['t'.$i] = "Chào Cờ";
+                    }
+                    else if($i == 44 || $i == 49){
+                        $tkb['t'.$i] = "SHCN";
+                    }
+                    else{
+                        $tiet = tkb::select('subject_name')
+                              ->whereIn('teacher_id',$teacher_list)
+                              ->where('T'.$i,'=',$class->classname)->first();
+                        if($tiet == null){
+                            $tkb['t'.$i] = "";
+                        }
+                        else{
+                            $tkb['t'.$i] = $tiet->subject_name;
+                        }
+                    }
                 }
                 $tkb_date = Sysvar::find('tkb_date')->value;
-                return view('teacherpage.schedule',['tkb' => $tkb, 'tkb_date' => $tkb_date]);
+                $data['date'] = $tkb_date;
+                $data['class'] = $class->classname;
+                $data['teacher'] = $class->teacher->user->fullname;
+                $data['tkb'] = $tkb;
+                return Response::json($data);
             }
         }
     }

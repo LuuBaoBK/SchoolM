@@ -50,7 +50,7 @@
 		</div>
 	@else
 		<div class="row">
-			<div class="col-lg-4">
+			<div class="col-md-6">
 				<div class="box box-primary box-solid">
 					<div class="box-header">
 						<h4 class="text text-center">Monday</h4>
@@ -92,7 +92,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-4">
+			<div class="col-md-6">
 				<div class="box box-primary box-solid">
 					<div class="box-header">
 						<h4 class="text text-center">Tuesday</h4>
@@ -133,8 +133,10 @@
 						</table>
 					</div>
 				</div>
-			</div>
-			<div class="col-lg-4">
+			</div>			
+		</div>
+		<div class="row">
+			<div class="col-md-6">
 				<div class="box box-primary box-solid">
 					<div class="box-header">
 						<h4 class="text text-center">Wednesday</h4>
@@ -176,9 +178,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-4">
+			<div class="col-md-6">
 				<div class="box box-primary box-solid">
 					<div class="box-header">
 						<h4 class="text text-center">Thursday</h4>
@@ -220,7 +220,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-4">
+		</div>
+		<div class="row">
+			<div class="col-md-6">
 				<div class="box box-primary box-solid">
 					<div class="box-header">
 						<h4 class="text text-center">Friday</h4>
@@ -262,7 +264,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-4">
+			<div class="col-md-6">
 				<div class="box box-primary box-solid">
 					<div class="box-header">
 						<h4 class="text text-center">Saturday & Sunday</h4>
@@ -386,12 +388,13 @@ $(document).ready(function() {
 			$('#notice_table_'+i).dataTable({
 				"lengthChange": false,
 		        "searching": true,
-		        "ordering": false,
+		        "ordering": true,
 		        "info" : false,
 		        "paging": true,
 		        "pageLength": 5,
 		        "bAutoWidth": true,
 		        "dom": '<"top">frt<"clear"><"bottom"p>',
+		        "order": [[ 0, "desc" ]],
 		        "columns": [
 		        	{ "width": "5%" },
 		        	{ "width": "15%" },
@@ -459,6 +462,62 @@ $(document).ready(function() {
 		// console.log($('#notice_table_'+day).parent().parent().parent());
 	}
 	check_date();
+	function notify(){
+		var id_notice = $('#student').val();
+		if(id_notice != "none"){
+			console.log("run");
+			var pusher = new Pusher('{{env("PUSHER_KEY")}}');
+		    var channel = pusher.subscribe(id_notice+"-channel");
+		    var Notification = window.Notification || window.mozNotification || window.webkitNotification;
+		    var handler = function(data){
+		    	var temp = data['show_date'].split(" ");
+		    	var date = temp[0];
+		    	switch(date) {
+				    case "Mon":
+				        date = "2";
+				        break;
+				    case "Tue":
+				        date = "3";
+				        break;
+			        case "Wed":
+				        date = "4";
+				        break;
+			        case "Thu":
+				        date = "5";
+				        break;
+			        case "Fri":
+				        date = "6";
+				        break;
+				    default:
+				    	date = "7";
+				}
+				console.log(date);
+				$('#notice_table_'+date).dataTable().fnAddData([
+					data['nid'],
+					data['subject'],
+					data['title'],
+					"",
+					data['notice_date']
+				]);
+				var temp_level = "";
+				switch(data['level']) {
+					case "1":
+				        temp_level = "danger";
+				        break;
+			        case "2":
+				        temp_level = "warning";
+				        break;
+				    default:
+				    	temp_level = "success";
+				}
+				var temp = "<td><small class='pull-left label label-"+temp_level+"'>"+data['level']+"</small></td>";
+				$('#notice_table_'+date+' tr:first-child td:nth-child(4)').append(temp);
+				console.log("fuck");
+		    };
+		    channel.bind("new_notice_event",handler);
+		}
+	}
+	notify();
 });
 </script>
 @endsection

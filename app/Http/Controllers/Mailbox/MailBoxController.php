@@ -63,10 +63,12 @@ class MailBoxController extends Controller
                 $value->save();
                 $value->send_by->author;
                 $value->author_name = $value->send_by->author->firstname." ".$value->send_by->author->middlename." ".$value->send_by->author->lastname;
+                $value->author_id = $value->send_by->author->id;
             }
             else{
                 $value->author;
                 $value->author_name = $value->author->firstname." ".$value->author->middlename." ".$value->author->lastname;
+                $value->author_id = $value->author->id;
             }
             $value->content;
             $value->content->mycontent = substr($value->content->content,0,30)."...";

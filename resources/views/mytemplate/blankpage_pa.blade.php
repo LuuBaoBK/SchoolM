@@ -106,7 +106,7 @@ function notification(){
       mail_count = parseInt(mail_count) +1;
     }
     $('#mail_count').html(mail_count);
-    Notification.requestPermission(function (permission) {\
+    Notification.requestPermission(function (permission) {
       //console.log(permission);
     });
      if (document.hidden) {
@@ -147,7 +147,7 @@ function notification(){
      if (document.hidden) {
       var instance = new Notification(
         "SchoolM", {
-          body: data,
+          body: "You have new notice on : "+data['show_date']+" Nid= "+data['nid'],
           icon: '/mylib/pnotify-master/includes/le_happy_face_by_luchocas-32.png'
         }
       );
@@ -157,7 +157,7 @@ function notification(){
       PNotify.prototype.options.styling = "fontawesome";
       new PNotify({
           title: 'SchoolM',
-          text: data,
+          text: "You have new notice on : "+data['show_date']+" Nid= "+data['nid'],
           icon: 'fa fa-envelope-o',
           delay: 4000,
           buttons: {
@@ -170,7 +170,7 @@ function notification(){
             fallback: true,
             icon: null,
             tag: null,
-            text: data
+            text: "You have new notice on : "+data['show_date']+" Nid= "+data['nid']
           }  
       });
 

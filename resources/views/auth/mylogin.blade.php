@@ -91,8 +91,8 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
       </div>
-        <div class="pull-left info">
-          <img id="sidebar_img" src="/mybanner.png" alt="Error Loading Image" style="padding-left:12px;">
+        <div class="info">
+          <div style="padding-left:15%; padding-top:35%"><img id="sidebar_img" src="/mybanner.jpg" alt="Error Loading Image" style="padding:auto"></div>
         </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
     </section>

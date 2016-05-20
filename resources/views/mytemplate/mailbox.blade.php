@@ -8,7 +8,7 @@
 	background-color: white !important;
 }
 .table tbody tr.read {
-  background-color: #F8F8F8;
+  background-color: #F2F2F2;
 }
 .table tbody tr.not_read {
   background-color: white;
@@ -114,7 +114,7 @@
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" id="btn_close_editor" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title text-center">Mail Box</h4>
         </div>
@@ -178,15 +178,18 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span></button>
             <p><h4 class="2 modal-title">Mail Box</h4><p>
+            <p><h4  style="display:none" class="modal-title-hidden">Mail Box</h4><p>
             <p><h4 id="mail_content_title" class="1 modal-title text-center">Mail Box</h4><p>
         </div>
         <div class="modal-body">
           <div class="content">
           </div>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer"> 
             <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">Close</button>
             <button type="button" id="btn_forward" class="btn btn-primary pull-right" data-dismiss="modal">Forward</button>
+            <button type="button" id="btn_reply" class="btn btn-primary pull-right" data-dismiss="modal">Reply</button>
+            <button type="button" id="btn_edit_draft" class="btn btn-primary pull-right" data-dismiss="modal">Edit</button>
         </div>
     </div>
 <!-- /.modal-content -->
@@ -196,7 +199,7 @@
 </section>
 <section class="result">
 <div id="resultModal" class="modal">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg ">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -427,18 +430,28 @@ $(document).ready(function(){
     $('#editor').modal('toggle',{keyboard:true});
   });
 
+  $('#btn_reply').on('click',function(){
+    var content = "";
+    var title = "Reply: "+$('#mail_content_title').html();
+    var id = $('#mail_content div.modal-content div.modal-header h4.modal-title-hidden').html()+"@schoolm.com";
+    CKEDITOR.instances['mail_editor'].setData(content);
+    $('#title').val(title);
+    $('#to').val(id);
+    $('#editor').modal('toggle',{keyboard:true});
+  });
+
   $('#messages_table tbody').on('click','tr td:not(:has(>a))',function(){
     var position = $('#messages_table').dataTable().fnGetPosition( this );
     var data = $('#messages_table').dataTable().fnGetData(position[0]);
     if( data != null){
         var id = data[0];
-        var type = $('ul#folder li').index();
+        var type = $('ul#folder li.active').index();
         if(type == 0){
           if($(this).parent().hasClass('not_read')){
             $(this).parent().removeClass('not_read');
             $(this).parent().addClass('read');
             var temp = $('#new_msg_count').html() - 1;
-            if(temp == 0){
+            if(temp <= 0){
               $('#new_msg_count').empty();  
             }
             else{
@@ -464,6 +477,12 @@ $(document).ready(function(){
     else{
       $('#info_box').addClass('collapsed-box');
     }
+  });
+
+  $('#btn_close_editor').on('click',function(){
+    CKEDITOR.instances['mail_editor'].setData('');
+    $('#to').val("");
+    $('#title').val("");
   });
 
   function update_mailbox(type){
@@ -518,7 +537,7 @@ $(document).ready(function(){
         }
         if(record.type == 0){
 
-          if(record.msg_list['msg_recv_new_count'] == 0){
+          if(record.msg_list['msg_recv_new_count'] <= 0){
             $('#new_msg_count').empty();
           }
           else{
@@ -553,8 +572,33 @@ $(document).ready(function(){
               '_token'        :token
               },
       success:function(record){
+          var type = $('ul#folder li.active').index();
+          switch(type) {
+              case 0:
+                  $('#btn_forward').css('display','block');
+                  $('#btn_reply').css('display','block');
+                  $('#btn_edit_draft').css('display','none');
+                  break;
+              case 1:
+                  $('#btn_forward').css('display','block');
+                  $('#btn_reply').css('display','none');
+                  $('#btn_edit_draft').css('display','none');
+                  break;
+              case 2:
+                  $('#btn_forward').css('display','block');
+                  $('#btn_reply').css('display','none');
+                  $('#btn_edit_draft').css('display','block');
+                  break;
+              default:
+                  $('#btn_forward').css('display','block');
+                  $('#btn_reply').css('display','block');
+                  $('#btn_edit_draft').css('display','none');
+                  
+          }
           $('#mail_content div.modal-header h4.2').empty();
           $('#mail_content div.modal-header h4.2').append("Author : "+record.msg_list[0].author_name);
+          $('#mail_content div.modal-header h4.modal-title-hidden').empty();
+          $('#mail_content div.modal-header h4.modal-title-hidden').append(record.msg_list[0].author_id);
           $('#mail_content div.modal-header h4.1').empty();
           $('#mail_content div.modal-header h4.1').append(record.msg_list[0].content.title);
           $('#mail_content div.modal-body div.content').empty();
@@ -574,10 +618,10 @@ $(document).ready(function(){
     var channel = pusher.subscribe(my_id+"-channel");
     var Notification = window.Notification || window.mozNotification || window.webkitNotification;
     var handler = function(){
-       console.log("abc");
-       update_mailbox(0);
+
+      update_mailbox(0);
     };
-    channel.bind("new_mail_event",handler)
+    channel.bind("new_mail_event",handler);
   }
 
   function delete_mail (position) {
@@ -596,7 +640,12 @@ $(document).ready(function(){
               '_token'        :token
               },
       success:function(record){
-         update_mailbox(type);
+        update_mailbox(type);
+        $('#mail_count').html();
+        mail_count = parseInt(mail_count) -1;
+        if(mail_count == 0)
+        mail_count = "";
+        $('#mail_count').html(mail_count);
       },
       error:function(){
           alert("something went wrong, contact master admin to fix");

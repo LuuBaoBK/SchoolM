@@ -8,7 +8,7 @@
         <small>Dash Board</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="/teacher/dashboard"><i class="fa fa-home"></i>Dashboard</a></li>
+        <li><a href="/"><i class="fa fa-home"></i>Dashboard</a></li>
     </ol>
 </section>
 <section class="content">

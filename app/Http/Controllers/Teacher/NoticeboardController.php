@@ -15,6 +15,7 @@ use App\Model\Classlectureregister;
 use App\Model\StudentClass;
 use App\Model\tkb;
 use App\Model\Student;
+use App\Model\Subject;
 use App;
 class NoticeboardController extends Controller
 {
@@ -79,16 +80,30 @@ class NoticeboardController extends Controller
                 $class_notice->save();
 
                 $student_list = StudentClass::where('class_id','=',$class)->get();
+                $stu_channel = [];
+                $pa_channel = [];
                 foreach ($student_list as $key => $value) {
-                    $pusher = App::make('pusher');
-                    $pusher->trigger( $value->student_id."-chanel",
-                                  'new_notice_event', 
-                                  Auth::user()->id." - ".Auth::user()->fullname);
+                    array_push($stu_channel,$value->student_id.'-channel');
+                    array_push($pa_channel,Student::find($value->student_id)->parent->id.'-channel');
                     // $student = Student::find($value->student_id);
                     // $pusher->trigger( $student->parent->id."-chanel",
                     //               'new_notice_event', 
                     //               Auth::user()->id." - ".Auth::user()->fullname." post new notice for ".$student->user->fullname);
                 }
+                $date_temp = date_create_from_format('Y-m-d',$notice_date);
+                $data['nid'] = $notice->id;
+                $data['notice_date'] = date_format($date_temp,"d/m/Y");
+                $data['show_date'] = date_format($date_temp, "D d/m");
+                $data['subject'] = Subject::find(Auth::user()->teacher->group)->subject_name;
+                $data['level'] = $notice->level;
+                $data['title'] = $notice->title;
+                $pusher = App::make('pusher');
+                $pusher->trigger( $stu_channel,
+                              'new_notice_event', 
+                              $data);
+                $pusher->trigger( $pa_channel,
+                                  'new_notice_event', 
+                                  $data);
             }
             return $notice;
         }
@@ -159,13 +174,20 @@ class NoticeboardController extends Controller
                     //               'new_notice_event', 
                     //               Auth::user()->id." - ".Auth::user()->fullname." post new notice for ".$student->user->fullname);
                 }
+                $date_temp = date_create_from_format('Y-m-d',$notice_date);
+                $data['nid'] = $notice->id;
+                $data['notice_date'] = date_format($date_temp,"d/m/Y");
+                $data['show_date'] = date_format($date_temp, "D d/m");
+                $data['subject'] = Subject::find(Auth::user()->teacher->group)->subject_name;
+                $data['level'] = $notice->level;
+                $data['title'] = $notice->title;
                 $pusher = App::make('pusher');
                 $pusher->trigger( $stu_channel,
                               'new_notice_event', 
-                              Auth::user()->id." - ".Auth::user()->fullname." post new notice number: ".$notice->id.". Reload page to update");
+                              $data);
                 $pusher->trigger( $pa_channel,
                                   'new_notice_event', 
-                                  Auth::user()->id." - ".Auth::user()->fullname." post new notice number: ".$notice->id.". Reload page to update");
+                                  $data);
             }
             return $notice;
         }

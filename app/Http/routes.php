@@ -15,19 +15,38 @@
 // Login
 Route::post('api/login','Api\MobileAuthController@login');
 Route::group(['prefix' => 'api', 'middleware' => 'apiguard'],function(){
-	Route::get('info','Api\MobileAuthController@info');
+	Route::get('user_info', 'Api\MobileAuthController@get_user_info');
 	Route::get('get_schedule','Api\MobileScheduleController@get_schedule');
-	Route::group(['prefix' => 'admin'],function(){
 
+	Route::group(['prefix' => 'mailbox'], function(){
+		Route::get('get_inbox', 'Api\MailboxController@get_inbox');
+		Route::post('get_mail_on_login', 'Api\MailboxController@get_mail_on_login');
 	});
+
 	Route::group(['prefix' => 'teacher'],function(){
 
 	});
-	Route::group(['prefix' => 'student'],function(){
 
-	});
 	Route::group(['prefix' => 'parent'],function(){
+		Route::post('get_schedule', 'Api\MobileScheduleController@parent_get_schedule');
+	});
 
+
+	Route::group(['prefix' => 'post'], function(){
+		Route::post('get_notice_detail', 'Api\NoticeboardController@get_notice_detail');
+		Route::post('get_transcript', 'Api\MobileTranscriptController@get_transcript');
+
+		Route::group(['prefix' => 'mailbox'], function(){
+			// Route::post('get_mail_on_login', 'Api\MailboxController@get_mail_on_login');
+		});
+
+		Route::group(['prefix' => 'student'],function(){
+			Route::post('get_noticeboard', 'Api\NoticeBoardController@get_stu_noticeboard');
+		});
+		Route::group(['prefix' => 'parent'],function(){
+			Route::post('get_schedule', 'Api\MobileScheduleController@parent_get_schedule');
+			Route::post('get_noticeboard', 'Api\NoticeBoardController@get_pa_noticeboard');
+		});
 	});
 });
 //***************************************************************//
