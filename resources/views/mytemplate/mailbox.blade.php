@@ -16,6 +16,16 @@
 .table tbody tr:hover{
   background-color: #E0E0E0 !important;
 }
+#mail_content div.modal-body div.content{
+  border-color: #3c8dbc;
+  border-width: 2px;
+  border-style: solid;
+}
+span.cover_id{
+  background-color: #CEF6F5;
+  border-width: 0.1px;
+  border-color: black;
+}
 </style>
 <!-- bootstrap wysihtml5 - text editor -->
 <link rel="stylesheet" href="{{asset("/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css")}}">
@@ -71,12 +81,12 @@
         <table id="messages_table" class="table table-hover dataTable">
           <thead>
             <tr>
-              <td>id</td>
-              <td>Author</td>
-              <td>Title</td>
-              <td>Content</td>
-              <td>Time</td>
-              <td>Action</td>
+              <td><b>id</b></td>
+              <td><b>Author</b></td>
+              <td><b>Title</b></td>
+              <td><b>Content</b></td>
+              <td><b>Time</b></td>
+              <td><b>Action</b></td>
             </tr>
           </thead>
           <tbody>
@@ -110,7 +120,7 @@
 </div>
 </section>
 <section class="editor">
-<div id="editor" class="modal fade modal-info">
+<div id="editor" class="modal fade modal-primary">
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
@@ -127,7 +137,7 @@
                   <i id="btn_info" class="btn btn-primary glyphicon glyphicon-question-sign"></i>
                 </div>
                 <div class="col-xs-11">
-                  <div id="info_box" class="box box-info collapsed-box">
+                  <div id="info_box" class="box box-info collapsed-box no-border">
                     <div class="box-body">
                       <b style="color:black; font-size:17px">Group code</b>
                       <div class="row" style="color:black; font-size:15px">
@@ -163,6 +173,8 @@
         <div class="modal-footer">
             <button id="confirm_button" type="button" class="btn btn-default pull-right">Confirm</button>
             <button id="save_draft" type="button" class="btn btn-default pull-left" data-dismiss="modal">Save</button>
+            <button id="draft_edit" type="button" class="btn btn-default pull-left" data-dismiss="modal">Edit</button>
+            <button id="draft_send" type="button" class="btn btn-default pull-right" data-dismiss="modal">Send</button>
         </div>
     </div>
 <!-- /.modal-content -->
@@ -178,20 +190,34 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span></button>
             <p><h4 class="2 modal-title">Mail Box</h4><p>
-            <p><h4  style="display:none" class="modal-title-hidden">Mail Box</h4><p>
-            <p><h4 id="mail_content_title" class="1 modal-title text-center">Mail Box</h4><p>
+            <div class="box box-primary box-solid no-border">
+              <div class="box-header no-border">
+                <i id="btn_receiver_list" class="btn btn-primary glyphicon glyphicon-user"></i>
+                Receiver List
+              </div>
+              <div id="box_receiver_list" class="box-body no-border" style="width:100%; height:auto; color:black; display:none">
+              </div>
+              <div id="box_receiver_list_hidden" class="box-body no-border" style="color:black; display:none">
+              </div>
+            </div>
+            <p><h4  style="display:none" class="modal-title-hidden">Mail Box</h4><p>   
         </div>
         <div class="modal-body">
+          <p><h4 id="mail_content_title" class="1 modal-title text-center">Mail Box</h4><p>
           <div class="content">
           </div>
         </div>
         <div class="modal-footer"> 
             <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">Close</button>
-            <button type="button" id="btn_forward" class="btn btn-primary pull-right" data-dismiss="modal">Forward</button>
-            <button type="button" id="btn_reply" class="btn btn-primary pull-right" data-dismiss="modal">Reply</button>
+            <div class="btn-group">
+              <button type="button" id="btn_forward" class="btn btn-primary pull-right" data-dismiss="modal">Forward</button>
+              <button type="button" id="btn_reply" class="btn btn-primary pull-right" data-dismiss="modal">Reply</button>
+              <button type="button" id="btn_reply_all" class="btn btn-primary pull-right" data-dismiss="modal">Reply All</button>
+            </div>
             <button type="button" id="btn_edit_draft" class="btn btn-primary pull-right" data-dismiss="modal">Edit</button>
         </div>
     </div>
+    <input type="hidden" id="id_draft_mail">
 <!-- /.modal-content -->
 </div>
 <!-- /.modal-dialog -->
@@ -269,7 +295,12 @@ $(document).ready(function(){
       { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup',  ] },
       { name: 'document',    groups: [ 'mode', 'document' ] },
       { name: 'tools' },
-    ]
+    ],
+    uiColor: '#a7bdea',
+    width: 'auto',
+    height: '150',
+    enterMode: CKEDITOR.ENTER_BR,
+    shiftEnterMode: CKEDITOR.ENTER_P,
     // NOTE: Remember to leave 'toolbar' property with the default value (null).
   });
   CKEDITOR.instances['mail_editor'].setData('');
@@ -316,6 +347,10 @@ $(document).ready(function(){
   $('#sidebar_mailbox').addClass('active');
 	$("#compose").click(function(){
 		$('#editor').modal('toggle',{keyboard:true});
+    $('#draft_edit').css('display','none');
+    $('#draft_send').css('display','none');
+    $('#save_draft').css('display','block');
+    $('#confirm_button').css('display','block');
 	});
 
   $('#save_draft').click(function(){
@@ -427,6 +462,11 @@ $(document).ready(function(){
     var title = $('#mail_content_title').html();
     CKEDITOR.instances['mail_editor'].setData(content);
     $('#title').val(title);
+    $('#draft_edit').css('display','none');
+    $('#draft_send').css('display','none');
+    $('#save_draft').css('display','block');
+    $('#confirm_button').css('display','block');
+    $('#to').val("");
     $('#editor').modal('toggle',{keyboard:true});
   });
 
@@ -437,6 +477,24 @@ $(document).ready(function(){
     CKEDITOR.instances['mail_editor'].setData(content);
     $('#title').val(title);
     $('#to').val(id);
+    $('#draft_edit').css('display','none');
+    $('#draft_send').css('display','none');
+    $('#save_draft').css('display','block');
+    $('#confirm_button').css('display','block');
+    $('#editor').modal('toggle',{keyboard:true});
+  });
+
+  $('#btn_edit_draft').on('click',function(){
+    var content = $('#mail_content div.modal-body div.content').html();
+    var title = $('#mail_content_title').html();
+
+    var id = $('#mail_content div.modal-content div.modal-header h4.modal-title-hidden').html()+"@schoolm.com";
+    CKEDITOR.instances['mail_editor'].setData(content);
+    $('#title').val(title);
+    $('#draft_edit').css('display','block');
+    $('#draft_send').css('display','block');
+    $('#save_draft').css('display','none');
+    $('#confirm_button').css('display','none');
     $('#editor').modal('toggle',{keyboard:true});
   });
 
@@ -458,6 +516,9 @@ $(document).ready(function(){
               $('#new_msg_count').html(temp);
             }
           }
+        }
+        if(type == 2){
+          $('#id_draft_mail').val(data[0]);
         }
         read_msg(id,type);
      }
@@ -484,6 +545,119 @@ $(document).ready(function(){
     $('#to').val("");
     $('#title').val("");
   });
+
+  $('#draft_send').on('click',function(){
+    var content = CKEDITOR.instances['mail_editor'].getData();
+    var id      = $('#id_draft_mail').val();
+    var title   = $('#title').val();
+    var token   = $('input[name="_token"]').val();
+    var to_list = $('#to').val();
+    CKEDITOR.instances['mail_editor'].setData('');
+    $.ajax({
+      url     :"<?= URL::to('/mailbox/draft_send') ?>",
+      type    :"POST",
+      async   :false,
+      data    :{
+              'content'       :content,
+              'title'         :title,
+              'id'            :id,
+              'to_list'       :to_list,
+              '_token'        :token
+              },
+      success:function(record){
+        $('#resultModal').modal('show');
+        var count = 0;
+        $('#errorlist-body').empty();
+        $.each(record[3], function(i,item){
+            $('#errorlist-body').append("<p>"+(i+1)+" | "+item+"</p");
+            count = count + 1;
+        });
+        $('#errorlist-header').empty();
+        $('#errorlist-header').append(count+" wrong format address");
+        count = 0;
+        $('#warninglist-body').empty();
+        $.each(record[2], function(i,item){
+            $('#warninglist-body').append("<p>"+(i+1)+" | "+item+"@schoolm.com"+"</p");
+            count = count + 1;
+        });
+        $('#warninglist-header').empty();
+        $('#warninglist-header').append(count+" not found address");
+        count = 0;
+        $('#successlist-body').empty();
+        $.each(record[1], function(i,item){
+            $('#successlist-body').append("<p>"+(i+1)+" | "+item.id+"@schoolm.com"+"</p");
+            count = count + 1;
+        });
+        $('#successlist-header').empty();
+        $('#successlist-header').append(count+" success address");
+        var type = $('ul#folder li.active').index();
+        if(type==2){
+          update_mailbox(2);
+        }
+        // console.log(record);
+      },
+      error:function(){
+          alert("something went wrong, contact master admin to fix");
+      }
+    });
+  });
+
+  $('#draft_edit').on('click',function(){
+    var content = CKEDITOR.instances['mail_editor'].getData();
+    var id      = $('#id_draft_mail').val();
+    var title   = $('#title').val();
+    var token   = $('input[name="_token"]').val();
+    CKEDITOR.instances['mail_editor'].setData('');
+    $.ajax({
+      url     :"<?= URL::to('/mailbox/draft_edit') ?>",
+      type    :"POST",
+      async   :false,
+      data    :{
+              'content'       :content,
+              'title'         :title,
+              'id'            :id,
+              '_token'        :token
+              },
+      success:function(record){
+        update_mailbox(2);
+        $('#to').val("");
+        $('#title').val("");
+      },
+      error:function(){
+          alert("something went wrong, contact master admin to fix");
+      }
+    });
+  });
+
+  $('#btn_receiver_list').on('click',function(){
+    if(  $("#box_receiver_list").is(":visible") == true )
+      $("#box_receiver_list").css('display','none');   
+    else
+      $("#box_receiver_list").css('display','block');
+
+  });
+
+  $('#btn_reply_all').on('click',function(){
+    var content = "";
+    var title = "Reply: "+$('#mail_content_title').html();
+    var id_list = $('#box_receiver_list_hidden').html();
+    var type = $('ul#folder li.active').index();
+    if(type != 1){
+      var id = $('#mail_content div.modal-content div.modal-header h4.modal-title-hidden').html()+"@schoolm.com";
+      id_list = id + " " + id_list;
+    }
+    // console.log(id_list);
+    CKEDITOR.instances['mail_editor'].setData(content);
+    $('#title').val(title);
+    $('#to').val(id_list);
+    $('#draft_edit').css('display','none');
+    $('#draft_send').css('display','none');
+    $('#save_draft').css('display','block');
+    $('#confirm_button').css('display','block');
+    $('#editor').modal('toggle',{keyboard:true});
+    
+  })
+
 
   function update_mailbox(type){
     messages_table.fnClearTable();
@@ -578,31 +752,51 @@ $(document).ready(function(){
                   $('#btn_forward').css('display','block');
                   $('#btn_reply').css('display','block');
                   $('#btn_edit_draft').css('display','none');
+                  $('#btn_reply_all').css('display','block');
                   break;
               case 1:
                   $('#btn_forward').css('display','block');
                   $('#btn_reply').css('display','none');
                   $('#btn_edit_draft').css('display','none');
+                  $('#btn_reply_all').css('display','block');
                   break;
               case 2:
                   $('#btn_forward').css('display','block');
                   $('#btn_reply').css('display','none');
                   $('#btn_edit_draft').css('display','block');
+                  $('#btn_reply_all').css('display','none');
                   break;
               default:
                   $('#btn_forward').css('display','block');
                   $('#btn_reply').css('display','block');
                   $('#btn_edit_draft').css('display','none');
-                  
+                  $('#btn_reply_all').css('display','block');
           }
           $('#mail_content div.modal-header h4.2').empty();
           $('#mail_content div.modal-header h4.2').append("Author : "+record.msg_list[0].author_name);
           $('#mail_content div.modal-header h4.modal-title-hidden').empty();
           $('#mail_content div.modal-header h4.modal-title-hidden').append(record.msg_list[0].author_id);
-          $('#mail_content div.modal-header h4.1').empty();
-          $('#mail_content div.modal-header h4.1').append(record.msg_list[0].content.title);
+          $('#mail_content_title').empty();
+          $('#mail_content_title').append(record.msg_list[0].content.title);
           $('#mail_content div.modal-body div.content').empty();
           $('#mail_content div.modal-body div.content').append(record.msg_list[0].content.content);
+
+          $('#box_receiver_list').empty();
+          $.each(record.receive_list,function(i,j){
+            if(i == 0)
+              $('#box_receiver_list').append("<span class='cover_id' >"+j.recvby+"@schoolm.com"+"<span>");
+            else
+              $('#box_receiver_list').append(" "+"<span class='cover_id' >"+j.recvby+"@schoolm.com"+"<span>");
+          });
+
+         $('#box_receiver_list_hidden').empty();
+          $.each(record.receive_list,function(i,j){
+            if(i == 0)
+              $('#box_receiver_list_hidden').append(j.recvby+"@schoolm.com");
+            else
+              $('#box_receiver_list_hidden').append(" "+j.recvby+"@schoolm.com");
+          }); 
+
           $('#mail_content').modal('show');
           // console.log(record);
       },

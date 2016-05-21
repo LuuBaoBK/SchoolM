@@ -70,6 +70,8 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('save_draft','Mailbox\MailBoxController@save_draft');
 		Route::post('send_mail','Mailbox\MailBoxController@my_send_mail');
 		Route::post('delete_mail','Mailbox\MailBoxController@delete_mail');
+		Route::post('draft_edit', 'Mailbox\MailBoxController@draft_edit');
+		Route::post('draft_send', 'Mailbox\MailBoxController@draft_send');
 	});
 });
 

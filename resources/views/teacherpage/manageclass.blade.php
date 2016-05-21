@@ -79,7 +79,7 @@ textarea {
 					 							echo "<tr>";
 					 							echo "<td>".$student->student_id."</td>";
 					 							echo "<td>".$student->fullname."</td>";
-					 							echo "<td>".$student->gpa."</td>";
+					 							echo "<td>".$student->GPA."</td>";
 					 							echo "<td>".$student->conduct."</td>";
 					 							$student->ispassed = ($student->ispassed == 1) ? "Done" : "Fail";
 					 							echo "<td>".$student->ispassed."</td>";

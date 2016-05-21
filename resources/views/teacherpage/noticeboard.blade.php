@@ -73,19 +73,19 @@
                         <form>
                             <div class="form-group">
                                 <label><b>Notice Level :</b></label><br>
-                                <label class="col-lg-2 col-xs-4">
+                                <!-- <label class="col-lg-3 col-xs-4"> -->
                                   <input id="radio_1" value="1" type="radio" name="r1" class="minimal">
                                   (1) Straightway 
-                                </label>
-                                <label class="col-lg-2 col-xs-4">
+                                <!-- </label> -->
+                                <!-- <label class="col-lg-3 col-xs-4"> -->
                                   <input id="radio_2" value="2" type="radio" name="r1" class="minimal" checked>
                                   (2) Gradual 
-                                </label>
-                                <label class="col-lg-2 col-xs-4">
+                                <!-- </label> -->
+                                <!-- <label class="col-lg-3 col-xs-4"> -->
                                   <input id="radio_3" value="3" type="radio" name="r1" class="minimal">
                                   (3) Behindhand 
-                                </label> 
-                            </div><br>
+                                <!-- </label>  -->
+                            </div>
                             <div class="form-group">
                                 <label><b>Notice Time :</b></label>
                                 <div class="input-group col-lg-5 col-xs-12">

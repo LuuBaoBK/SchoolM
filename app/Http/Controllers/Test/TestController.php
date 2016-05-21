@@ -25,29 +25,35 @@ class TestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function test(){
-    //     $student_list = StudentClass::where('class_id','like','15_%')->get();
-    //     foreach ($student_list as $key => $student) {
-    //         $gpa = rand(0,10);
-    //         $ispass = ($gpa < 5) ? 0 : 1;
-    //         StudentClass::where('class_id','=',$student->class_id)
-    //                     ->where('student_id','=',$student->student_id)
-    //                     ->update(['GPA' => $gpa, 'ispassed' => $ispass]);
-    //         // $student->GPA = $gpa;
-    //         // $student->ispasses = $ispass;
-    //         // $student->save();
-    //     }
-    // }
-
-    // public function test(){
-    //     $file = "./uploads/2014/s_0000290.jpg";
-    //     if (file_exists($file)) {
-    //         echo "The file $file exists";
-    //     } else {
-    //         echo "The file $file does not exist";
-    //     }
-    // }
     public function test(){
+        $group = array(1,1,1,2,2,2,3,3,4,4,5,5,6,7,8,9,10,10,11,11,12,12,13,14,14);
+        $subject_name = array("Toán", "Ngữ Văn", "Vật Lý", "Hóa Học", "Sinh Học", "Lịch Sử", "Địa Lý", "Âm Nhạc", "GDCD", "Thể Dục", "Tin Học", "Anh Văn", "Mỹ Thuật", "Công Nghệ");
+        $position = array(2,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,6,6,6);
+        shuffle($group);
+        for($i=0; $i<=24; $i++){
+            $offset = 9-strlen($i);
+            $id = substr('t_0000000', 0, $offset);
+            $id = $id.$i;
+            $mobilephone = '09';
+            $homephone = '08';
+            for($k=0; $k<8; $k++){
+                $mobilephone = $mobilephone.rand(0,9);
+                $homephone = $homephone.rand(0,9);
+            }
+            DB::table('teachers')->insert([
+                'id' => $id,
+                'mobilephone' => $mobilephone,
+                'homephone' => $homephone,
+                'group' => $group[$i],
+                'position' => $position[$i],
+                'specialized' => $subject_name[$group[$i] - 1],
+                'incomingday' => "2010-".rand(1,12)."-".rand(1,28),
+                'active' => 1
+            ]);
+        }
+    }
+
+    public function test1(){
 
         $year = substr(date('Y'),2);
         if(date("M") < 8)

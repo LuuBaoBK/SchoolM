@@ -35,10 +35,11 @@ class ManageclassController extends Controller
         $student_list = StudentClass::where('class_id','=',$class->id)->get();
         foreach ($student_list as $key => $student) {
             $student['fullname'] = User::find($student->student_id)->fullname;
-            $student['gpa'] = $this->GPA_cal($class->id, $student->student_id);
+            // $student['gpa'] = $this->GPA_cal($class->id, $student->student_id);
         }
         $total_student = StudentClass::where('class_id','=',$class->id)->count();
         $year = "20".$year." - 20".($year+1);
+        // dd($student_list);
         return view('teacherpage.manageclass',['class' => $class, 'student_list' => $student_list,
                                                 'year' => $year, 'total_student' => $total_student,
                                                 'disable' => $disable
@@ -57,12 +58,14 @@ class ManageclassController extends Controller
                                                     ->get()
                                         )
                                 ->get();
+
         $scoretype_list = Scoretype::whereIn('subject_id', $subject_list)
                                ->where('applyfrom','<=',$year)
                                ->where('disablefrom','>=',$year)
+                               ->where('month','>=', 8)
                                ->get();
         if(count($scoretype_list) == 0 ){
-            $gpa = 0;
+            $hk1_gpa = 0;
         }
         else{
             foreach ($scoretype_list as $key => $scoretype) {
@@ -78,8 +81,34 @@ class ManageclassController extends Controller
                 }
                 $total_factor += $scoretype->factor;
             }
-            $gpa = number_format($total_score/$total_factor,2);
+            $hk1_gpa = number_format($total_score/$total_factor,2);
         }
+
+        $scoretype_list = Scoretype::whereIn('subject_id', $subject_list)
+                               ->where('applyfrom','<=',$year)
+                               ->where('disablefrom','>=',$year)
+                               ->where('month','<', 8)
+                               ->get();
+        if(count($scoretype_list) == 0 ){
+            $hk2_gpa = 0;
+        }
+        else{
+            foreach ($scoretype_list as $key => $scoretype) {
+                $score = Transcript::where('scoretype_id','=',$scoretype->id)
+                                    ->where('student_id','=',$student_id)
+                                    ->where('scholastic','=',$year)
+                                    ->first();
+                if(count($score) == 0){
+                    $total_score += 0;
+                }
+                else{
+                    $total_score += $score->score;
+                }
+                $total_factor += $scoretype->factor;
+            }
+            $hk2_gpa = number_format($total_score/$total_factor,2);
+        }
+        $gpa = number_format($hk1_gpa+2*$hk2_gpa / 3, 2);
         
         return $gpa;
     }

@@ -14,12 +14,11 @@ class TeacherTableSeeder extends Seeder
 
         $group = array(1,1,1,2,2,2,3,3,4,4,5,5,6,7,8,9,10,10,11,11,12,12,13,14,14);
         $subject_name = array("Toán", "Ngữ Văn", "Vật Lý", "Hóa Học", "Sinh Học", "Lịch Sử", "Địa Lý", "Âm Nhạc", "GDCD", "Thể Dục", "Tin Học", "Anh Văn", "Mỹ Thuật", "Công Nghệ");
-        $position = (2,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,6,6,6);
-        shuffle($group);
+        $position = array(2,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,6,6,6);
         shuffle($group);
         for($i=0; $i<=24; $i++){
             $offset = 9-strlen($i);
-            $id = substr('t_0000000', 0,$offset);
+            $id = substr('t_0000000', 0, $offset);
             $id = $id.$i;
             $mobilephone = '09';
             $homephone = '08';
