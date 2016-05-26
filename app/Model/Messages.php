@@ -10,4 +10,8 @@ class Messages extends Model
     protected $fillable = ['id', 'title' , 'content', 'created_at'];
     public $timestamps = false;
 
+    public function send_by(){
+    	return $this->hasOne('App\Model\MsgSend', 'id','id');
+    }
+
 }

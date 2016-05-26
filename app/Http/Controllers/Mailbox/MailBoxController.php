@@ -276,47 +276,49 @@ class MailBoxController extends Controller
                     if(strpos($item,'@') !== false){
                         $email = explode("@", $item);
                         if($email[1] == "schoolm.com"){
-                            array_push($not_found_list, $email[0]);
+                            if(strpos($email[0],'group.') !== false){
+                                if(Auth::user()->role <= 1)
+                                {
+                                    $group = explode("group.", $email[0]);
+                                    switch ($group[1]) {
+                                        case 'admin':
+                                            $temp_list = Admin::select('id')->get();
+                                            break;
+                                        case 'teacher':
+                                            $temp_list = Teacher::select('id')->get();
+                                            break;
+                                        case 'parent':
+                                            $temp_list = Parents::select('id')->get();
+                                            break;
+                                        case 'student':
+                                            $temp_list = Student::select('id')->get();
+                                            break;                            
+                                        case '':
+                                            $temp_list = [];
+                                            break;
+                                        default:
+                                            $temp_list = StudentClass::select('student_id as id')->where('class_id','like',$group[1].'%')->get();
+                                            break;
+                                    }
+                                    if(count($temp_list) == 0){
+                                        array_push($wrong_format_list, $item." 0 Mail sent");
+                                    }
+                                    else{
+                                        foreach ($temp_list as $key => $value) {
+                                            array_push($not_found_list, $value->id);
+                                        }
+                                    }
+                                }
+                                else{
+                                    array_push($wrong_format_list, $item." Permission denied");
+                                }
+                            }
+                            else{
+                                array_push($not_found_list, $email[0]);
+                            }
                         }
                         else{
                             array_push($wrong_format_list, $item);
-                        }
-                    }
-                    else if(strpos($item,'group=') !== false){
-                        if(Auth::user()->role <= 1)
-                        {
-                            $group = explode("group=", $item);
-                            switch ($group[1]) {
-                                case 'admin':
-                                    $temp_list = Admin::select('id')->get();
-                                    break;
-                                case 'teacher':
-                                    $temp_list = Teacher::select('id')->get();
-                                    break;
-                                case 'parent':
-                                    $temp_list = Parents::select('id')->get();
-                                    break;
-                                case 'student':
-                                    $temp_list = Student::select('id')->get();
-                                    break;                            
-                                case '':
-                                    $temp_list = [];
-                                    break;
-                                default:
-                                    $temp_list = StudentClass::select('student_id as id')->where('class_id','like',$group[1].'%')->get();
-                                    break;
-                            }
-                            if(count($temp_list) == 0){
-                                array_push($wrong_format_list, $item." 0 Mail sent");
-                            }
-                            else{
-                                foreach ($temp_list as $key => $value) {
-                                    array_push($not_found_list, $value->id);
-                                }
-                            }
-                        }
-                        else{
-                            array_push($wrong_format_list, $item." Permission denied");
                         }
                     }
                     else{
@@ -424,47 +426,49 @@ class MailBoxController extends Controller
                     if(strpos($item,'@') !== false){
                         $email = explode("@", $item);
                         if($email[1] == "schoolm.com"){
-                            array_push($not_found_list, $email[0]);
+                            if(strpos($email[0],'group.') !== false){
+                                if(Auth::user()->role <= 1)
+                                {
+                                    $group = explode("group.", $email[0]);
+                                    switch ($group[1]) {
+                                        case 'admin':
+                                            $temp_list = Admin::select('id')->get();
+                                            break;
+                                        case 'teacher':
+                                            $temp_list = Teacher::select('id')->get();
+                                            break;
+                                        case 'parent':
+                                            $temp_list = Parents::select('id')->get();
+                                            break;
+                                        case 'student':
+                                            $temp_list = Student::select('id')->get();
+                                            break;                            
+                                        case '':
+                                            $temp_list = [];
+                                            break;
+                                        default:
+                                            $temp_list = StudentClass::select('student_id as id')->where('class_id','like',$group[1].'%')->get();
+                                            break;
+                                    }
+                                    if(count($temp_list) == 0){
+                                        array_push($wrong_format_list, $item." 0 Mail sent");
+                                    }
+                                    else{
+                                        foreach ($temp_list as $key => $value) {
+                                            array_push($not_found_list, $value->id);
+                                        }
+                                    }
+                                }
+                                else{
+                                    array_push($wrong_format_list, $item." Permission denied");
+                                }
+                            }
+                            else{
+                                array_push($not_found_list, $email[0]);
+                            }
                         }
                         else{
                             array_push($wrong_format_list, $item);
-                        }
-                    }
-                    else if(strpos($item,'group=') !== false){
-                        if(Auth::user()->role <= 1)
-                        {
-                            $group = explode("group=", $item);
-                            switch ($group[1]) {
-                                case 'admin':
-                                    $temp_list = Admin::select('id')->get();
-                                    break;
-                                case 'teacher':
-                                    $temp_list = Teacher::select('id')->get();
-                                    break;
-                                case 'parent':
-                                    $temp_list = Parents::select('id')->get();
-                                    break;
-                                case 'student':
-                                    $temp_list = Student::select('id')->get();
-                                    break;                            
-                                case '':
-                                    $temp_list = [];
-                                    break;
-                                default:
-                                    $temp_list = StudentClass::select('student_id as id')->where('class_id','like',$group[1].'%')->get();
-                                    break;
-                            }
-                            if(count($temp_list) == 0){
-                                array_push($wrong_format_list, $item." 0 Mail sent");
-                            }
-                            else{
-                                foreach ($temp_list as $key => $value) {
-                                    array_push($not_found_list, $value->id);
-                                }
-                            }
-                        }
-                        else{
-                            array_push($wrong_format_list, $item." Permission denied");
                         }
                     }
                     else{

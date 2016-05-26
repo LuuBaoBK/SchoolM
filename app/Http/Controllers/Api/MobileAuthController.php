@@ -11,6 +11,7 @@ use Response;
 use Auth;
 use App\User;
 use App\Model\Subject;
+use App\Model\Msgrecv;
 class MobileAuthController extends ApiGuardController
 {
     protected $apiMethods = [
@@ -21,19 +22,19 @@ class MobileAuthController extends ApiGuardController
     ];
     public function login(Request $request){
         $token = csrf_token();
-        $data = explode("|", $request['data']);
-        $email = $data['0'];
-        $password = $data['1'];
-        if(Auth::attempt(['email' => $email, 'password' => $password])){
+        $email = $request['email'];
+        $password = $request['password'];
+        if (Auth::attempt(['email' => $email, 'password' => $password])){
             $token = User::find(Auth::user()->id)->api_key->key;
             $user = User::find(Auth::user()->id);
             $user->token = $token;
 
             $return_data['id'] = $user->id;
             $return_data['email'] = $user->id."@schoolm.com";
-            $return_data['role'] = (string)$user->role;
+            $return_data['role'] = $user->role."";
             $return_data['fullname'] = $user->fullname;
             $return_data['token'] = $token;
+            $return_data['num_new_mail'] = Msgrecv::where('recvby','=',$user->id)->where('isread','=',0)->where('isdelete','=',0)->count();
             if($user->role == 3){
                 $return_data['numchild'] = count($user->parent->student);
                 $return_data['children'] = array();
@@ -47,11 +48,7 @@ class MobileAuthController extends ApiGuardController
             return $return_data;
         }
         else{
-            return Response::json(array(
-                'error' => false,
-                'status_code' => 201,
-                'data' => "Id or Password is incorrect",
-            ));
+            return "Id or Password is incorrect";
         }
     }
 

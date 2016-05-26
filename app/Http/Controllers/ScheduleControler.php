@@ -149,7 +149,7 @@ class ScheduleControler extends Controller
                 $result[$dem++] = $addnew;
             }
         }
-
+        
         return $result;
     }
 

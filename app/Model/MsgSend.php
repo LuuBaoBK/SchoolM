@@ -16,7 +16,7 @@ class MsgSend extends Model
     }
 
     public function recv_by(){
-    	return $this->belongsToMany('App\Model\MsgSend', 'id','id');
+    	return $this->hasMany('App\Model\MsgRecv', 'id','id');
     }
 
     public function author(){

@@ -53,6 +53,7 @@ class NoticeboardController extends Controller
             $notice->notice_classes;
 
         }
+        // dd($notice_list);
         return view('teacherpage.noticeboard',['class_list' => $class_list, 'notice_list' => $notice_list]);
     }
 

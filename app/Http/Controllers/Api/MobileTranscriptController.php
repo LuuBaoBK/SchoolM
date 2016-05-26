@@ -9,6 +9,11 @@ use App\Http\Controllers\Controller;
 use App\Model\Subject;
 use App\Transcript;
 use App\Model\Scoretype;
+use App\Model\Teacher;
+use App\Model\Classes;
+use App\User;
+use App\Model\StudentClass;
+use Auth;
 
 class MobileTranscriptController extends Controller
 {
@@ -210,5 +215,74 @@ class MobileTranscriptController extends Controller
           return "summary";
           break;
       }
+    }
+
+    public function te_get_stulist(){
+      $return_data['liststudents'] = array();
+      $user = Auth::user();
+      // $teacher = Teacher::find($user->id);
+      $year = substr(date("Y"),2,2);
+      $year = (date("m") < 8) ? ($year-1) : $year;
+      $class = Classes::where('homeroom_teacher','=',$user->id)->where('id','like',$year."%")->first();
+      $student_list = $class->students;
+      foreach ($student_list as $key => $student) {
+        $src =  '\uploads\\'.$student->enrolled_year.'\\'.$student->student_id;
+        if(file_exists(".".$src.".jpg")){
+          $src = $src.".jpg";
+        }
+        else if(file_exists(".".$src.".png")){
+          $src = $src.".png";
+        }
+        else{
+          $src = "\uploads\userAvatar.png";
+        }
+        $temp['avatar'] = $src;
+        $temp['name'] = User::find($student->student_id)->fullname;
+        $temp['ma'] = $student->student_id;
+        array_push($return_data['liststudents'], $temp);
+      }
+      return $return_data;
+    }
+
+    public function te_get_stu_detail(Request $request){
+      $id = $request['id'];
+      $student = User::find($id);
+      $src =  '\uploads\\'.$student->student->enrolled_year.'\\'.$student->student_id;
+        if(file_exists(".".$src.".jpg")){
+          $src = $src.".jpg";
+        }
+        else if(file_exists(".".$src.".png")){
+          $src = $src.".png";
+        }
+        else{
+          $src = "\uploads\userAvatar.png";
+        }
+        $temp['avatar'] = $src;
+        $temp['email'] = $student->id."@schoolm.com";
+        $temp['name'] = $student->fullname;
+        $temp['gender'] = ($student->gender == "M")? "Nam" : "Nữ";
+        if($student->dateofbirth != "0000-00-00")
+        {
+            $mydateofbirth = date_create_from_format("Y-m-d", $student->dateofbirth);
+            $mydateofbirth = date_format($mydateofbirth,"d/m/Y");
+        }
+        else{
+            $mydateofbirth = "";
+        }
+
+        $temp['birthday'] = $mydateofbirth;
+        $parent = User::find($student->student->parent_id);
+        $temp['parent'] = $parent->fullname;
+        $temp['address'] = $parent->address;
+        $temp['phone'] = $parent->parent->mobilephone;
+  //     "avatar": "http://jsonparsing.parseapp.com/jsonData/images/avengers.jpg",
+  // "email": "s_0000001@schoolm.com",
+  // "name": "Trần Quách Tĩnh",
+  // "birthday": "01/09/1997",
+  // "gender": "Nam",
+  // "parent": "Trần Thiên Hoàng",
+  // "phone": "099292997",
+  // "address": "Trung Thành Tây, Mỹ Quang, Q.3"
+      return $temp;
     }
 }

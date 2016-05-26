@@ -19,12 +19,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'apiguard'],function(){
 	Route::get('get_schedule','Api\MobileScheduleController@get_schedule');
 
 	Route::group(['prefix' => 'mailbox'], function(){
-		Route::get('get_inbox', 'Api\MailboxController@get_inbox');
 		Route::post('get_mail_on_login', 'Api\MailboxController@get_mail_on_login');
-	});
-
-	Route::group(['prefix' => 'teacher'],function(){
-
 	});
 
 	Route::group(['prefix' => 'parent'],function(){
@@ -35,9 +30,27 @@ Route::group(['prefix' => 'api', 'middleware' => 'apiguard'],function(){
 	Route::group(['prefix' => 'post'], function(){
 		Route::post('get_notice_detail', 'Api\NoticeboardController@get_notice_detail');
 		Route::post('get_transcript', 'Api\MobileTranscriptController@get_transcript');
-
+		Route::post('teacher/get_stulist','Api\MobileTranscriptController@te_get_stulist');
+		Route::post('teacher/get_stu_detail','Api\MobileTranscriptController@te_get_stu_detail');
 		Route::group(['prefix' => 'mailbox'], function(){
 			// Route::post('get_mail_on_login', 'Api\MailboxController@get_mail_on_login');
+			Route::post('get_inbox', 'Api\MailboxController@get_inbox');
+			Route::post('get_sent', 'Api\MailboxController@get_sent');
+			Route::post('get_draft', 'Api\MailboxController@get_draft');
+			Route::post('get_trash', 'Api\MailboxController@get_trash');
+
+			Route::post('read_mail', 'Api\MailboxController@read_mail');
+			Route::post('send_mail', 'Api\MailboxController@send_mail');
+			Route::post('save_draft', 'Api\MailboxController@save_draft');
+			Route::post('send_draftmail','Api\MailboxController@send_draftmail');
+			Route::post('update_log', 'Api\MailboxController@update_log');
+		});
+
+		Route::group(['prefix' => 'teacher'],function(){
+			Route::post('get_te_noticeboard','Api\NoticeboardController@get_te_noticeboard');
+			Route::post('te_read_notice','Api\NoticeboardController@te_read_notice');
+			Route::post('te_get_classlist','Api\NoticeboardController@te_get_classlist');
+			Route::post('te_create_notice', 'Api\NoticeboardController@te_create_notice');
 		});
 
 		Route::group(['prefix' => 'student'],function(){
@@ -147,9 +160,9 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::post('editsubject/disable_scoretype', 'Admin\EditsubjectController@disable_scoretype');
 
 	//Manage Schedule
-	Route::get('schedule', 'Admin\ScheduleController@index');
-	Route::post('schedule/getschedule', 'Admin\ScheduleController@getschedule');
-	Route::post('schedule', 'Admin\ScheduleController@store');
+	Route::group(['prefix' => 'schedule', 'namespace' =>'Admin\Schedule'], function(){
+		Route::get('main_menu', 'ScheduleController@main_menu_view');
+	});
 
 	//Manage Transcript
 	Route::get('transcript/general', 'Admin\TranscriptController@general_view');
