@@ -12,7 +12,7 @@ use App\Model\Subject;
 use App\Model\Classes;
 use App\Model\Phancong;
 use App\Model\Sysvar;
-
+use App\Model\Schedule;
 class ScheduleControler extends Controller
 {
    
@@ -149,7 +149,7 @@ class ScheduleControler extends Controller
                 $result[$dem++] = $addnew;
             }
         }
-        
+
         return $result;
     }
 
@@ -163,6 +163,7 @@ class ScheduleControler extends Controller
         return view("schedule.tkbgv_index");
     }
 
+    // tạo thời khóa biểu mới
     public function getNewSchedule(){
 
         $year = substr(Date('Y'), 2);
@@ -548,7 +549,6 @@ class ScheduleControler extends Controller
                 if(!$isexisted){
                     $dsloptrung[$num_trung] = array($pc1->classes->classname, $pc1->teacher->teach->subject_name);
                     $num_trung++;
-
                 }
             }
         }
@@ -621,7 +621,6 @@ class ScheduleControler extends Controller
             }
             
         }
-        
         return $DSTRUNG;
     }
 
@@ -1054,9 +1053,9 @@ class ScheduleControler extends Controller
         $year = date("Y");
         $time = Sysvar::where('id','=','tkb_date')
                       ->update(['value' => $date."-".$month."-".$year ]);
-        //End Update Time
-            
-        return $tkb;
+        // End Update Time
+        $DSTRUNG = $this->checkTKB();
+        return $DSTRUNG;
     }
 
     public function printcheck1($arr){
@@ -1105,6 +1104,29 @@ class ScheduleControler extends Controller
         $time = Sysvar::where('id','=','tkb_date')
                       ->update(['value' => $date."-".$month."-".$year ]);
         //End Update Time
+        $year = substr(date('Y'),2);
+        if(date("m") < 8)
+            $year--;
+        $tkb = tkb::all();
+        Schedule::where('class_id','like',$year."%")->delete();
+        foreach ($tkb as $key => $row) {
+            for($i=0;$i<5;$i++){
+                for($j=0;$j<10;$j++){
+                    $period = "T".($j+$i*10);
+                    if($row->$period != "" && $row->$period != "cc" && $row->$period != "sh"){
+                        $schedule_row = new Schedule;
+                        $schedule_row->teacher_id = $row->teacher_id;
+                        $schedule_row->class_id = Classes::where('id','like',$year."%")->where('classname','=',$row->$period)->first()->id;
+                        $schedule_row->period = $j;
+                        $schedule_row->day = $i+2;
+                        $schedule_row->save();
+                    }
+                    else{
+                        continue;
+                    }
+                }
+            }
+        }              
         return $listclass;
     }
 }

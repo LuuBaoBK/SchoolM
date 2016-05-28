@@ -119,7 +119,9 @@
                             <select id="scholastic_filter" name="scholastic_filter" class="form-control">
                                 <option value="" selected>Select All</option>
                                 <?php
-                                    $year = date("Y") + 2;
+                                    $year = date("Y");
+                                    $year = (date("m") < 8) ? ($year - 1) : $year;
+                                    $year += 1;
                                     for($year;$year >=2010 ;$year--){
                                         if($year == 2015)
                                         {

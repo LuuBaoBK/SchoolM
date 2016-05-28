@@ -61,11 +61,11 @@ p.text{
 	    					@for ($i = 0; $i <= 9; $i++)
 							    <tr>
 							    	<td><p style="font-size:14px" class='text text-center'>{{$i + 1}}</p></td>
-							    	<td><p style="font-size:14px" class='text text-center'>{{$tkb['T'.$i]}}</p></td>
-							    	<td><p style="font-size:14px" class='text text-center'>{{$tkb['T'.($i+10)]}}</p></td>
-							    	<td><p style="font-size:14px" class='text text-center'>{{$tkb['T'.($i+20)]}}</p></td>
-							    	<td><p style="font-size:14px" class='text text-center'>{{$tkb['T'.($i+30)]}}</p></td>
-							    	<td><p style="font-size:14px" class='text text-center'>{{$tkb['T'.($i+40)]}}</p></td>
+							    	<td><p style="font-size:14px" class='text text-center'>{{$tkb[$i]}}</p></td>
+							    	<td><p style="font-size:14px" class='text text-center'>{{$tkb[($i+10)]}}</p></td>
+							    	<td><p style="font-size:14px" class='text text-center'>{{$tkb[($i+20)]}}</p></td>
+							    	<td><p style="font-size:14px" class='text text-center'>{{$tkb[($i+30)]}}</p></td>
+							    	<td><p style="font-size:14px" class='text text-center'>{{$tkb[($i+40)]}}</p></td>
 							    </tr>
 							    @if ($i == 4)
 							    	<tr>

@@ -14,8 +14,8 @@ table tr.selected{
         <small>Transcript</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="dashboard"><i class="fa fa-dashboard"></i>Admin</a></li>
-        <li><a href="schedule"><i class="active"></i>Create Transcript</a></li>
+        <li><a href="/"><i class="fa fa-dashboard"></i>Admin</a></li>
+        <li><a href="#"><i class="active"></i>Create Transcript</a></li>
     </ol>
 </section>
 <section class="content">

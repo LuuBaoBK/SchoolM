@@ -67,7 +67,7 @@
                 </ul>
             </li>
             <li id="sidebar_list_7">
-                <a href="/admin/menuschedule">
+                <a href="/admin/schedule/main_menu">
                     <i class="fa fa-calendar"></i> <span>Schedule Manager</span>
                 </a>
             </li>

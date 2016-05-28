@@ -13,6 +13,7 @@ use App\Model\tkb;
 use App\Model\Phancong;
 use App\Model\Classes;
 use App\Model\Sysvar;
+use App\Model\Schedule;
 
 class ScheduleController extends Controller
 {
@@ -22,30 +23,41 @@ class ScheduleController extends Controller
         $month = date('m');
         $year = ($month < 8 ) ? $year - 1 : $year ;
         $tkb = [];
-        $check = Phancong::where('teacher_id','=',$teacher->id)
-                             ->where('class_id','like', $year."_%")
-                             ->first();
+        // $check = Phancong::where('teacher_id','=',$teacher->id)
+        //                      ->where('class_id','like', $year."_%")
+        //                      ->first();
+        $check = Schedule::where('teacher_id','=',$teacher->id)
+                         ->where('class_id','like',$year."%")
+                         ->first();
         if($check == null){
             $tkb = "no_placement";
             return view('teacherpage.schedule',['tkb' => $tkb]);
         }
         else{
-            $check = tkb::all();
-            if(count($check) == 0){
+            $tkb = [];
+            for($i=0;$i<5;$i++){
+                for($j=0;$j<10;$j++){
+                    $temp = Schedule::where('teacher_id','=',$teacher->id)
+                                    ->where('period','=',$j)
+                                    ->where('day','=',$i+2)
+                                    ->first();
+                    if($temp != null){
+                        $temp =array_push($tkb, substr(str_replace("_", "", $temp->class_id), 2));
+                    }
+                    else{
+                        array_push($tkb, "");
+                    }
+                }
+            }
+            if($tkb == null){
                 $tkb = "no_schedule";
                 return view('teacherpage.schedule',['tkb' => $tkb]);
             }
             else{
-                $tkb = tkb::where('teacher_id','=',$teacher->id)->first()->toArray();
-                if($tkb == null){
-                    $tkb = "no_schedule";
-                    return view('teacherpage.schedule',['tkb' => $tkb]);
-                }
-                else{
-                }
-                $tkb_date = Sysvar::find('tkb_date')->value;
-                return view('teacherpage.schedule',['tkb' => $tkb, 'tkb_date' => $tkb_date]);
+                // do no thing
             }
+            $tkb_date = Sysvar::find('tkb_date')->value;
+            return view('teacherpage.schedule',['tkb' => $tkb, 'tkb_date' => $tkb_date]);
         }
     }
 }

@@ -21,7 +21,7 @@
     <form id="ad_form" method="POST" role="form">
     {!! csrf_field() !!}
     <div class="box-body">
-         <div id="success_mess" style = "display: none" class="alert alert-success">
+        <div id="success_mess" style = "display: none" class="alert alert-success">
             <h4><i class="icon fa fa-check"></i>Success edit admin info</h4>
         </div>
         <div class="row">

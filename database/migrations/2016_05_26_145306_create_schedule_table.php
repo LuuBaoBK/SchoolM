@@ -18,7 +18,8 @@ class CreateScheduleTable extends Migration
             $table->foreign('class_id')->references('id')->on('classes');
             $table->foreign('teacher_id')->references('id')->on('teachers');
             $table->string('period',2);
-            $table->string('date',1);
+            $table->string('day',1);
+            $table->primary(['class_id','teacher_id','period','day']);
         });
     }
 

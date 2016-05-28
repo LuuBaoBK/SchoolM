@@ -12,6 +12,7 @@ use App\User;
 use App\Model\Phancong;
 use App\Model\Teacher;
 use App\Model\Scoretype;
+use App\Model\Schedule;
 use Excel;
 use Storage;
 use Auth;
@@ -45,10 +46,10 @@ class TranscriptController extends Controller
             $year = $year - 1;
         }
         $year = substr($year, 2);
-        $class_id_list = Phancong::select('class_id')
-                                      ->where('teacher_id','=',$teacher->id)
-                                      ->where('class_id','like',$year.$grade)
-                                      ->get();
+        $class_id_list = Schedule::select('class_id')
+                                ->where('class_id','like',$year.$grade)
+                                ->where('teacher_id','=',$teacher->id)
+                                ->get();
         $class_list = Classes::whereIn('id',$class_id_list)->get();
         //Add Scoretype for each class
         foreach ($class_list as $key => $value) {
@@ -309,7 +310,7 @@ class TranscriptController extends Controller
         $year = substr(date("Y"), 2,2);
         $year = (date("m") < 8) ? $year-1 : $year;
         $subject_id = Teacher::find(Auth::user()->id)->group;
-        $class_list = Phancong::select('class_id')
+        $class_list = Schedule::select('class_id')
                               ->where('teacher_id','=',$teacher->id)
                               ->where('class_id','like',$year."_%")
                               ->get();
@@ -331,7 +332,7 @@ class TranscriptController extends Controller
         }
         $teacher_id = Auth::user()->id;
         $subject_id = Teacher::find(Auth::user()->id)->group;
-        $class_list = Phancong::select('class_id')
+        $class_list = Schedule::select('class_id')
                               ->where('teacher_id','=',$teacher_id)
                               ->where('class_id','like',$scholastic.$grade)
                               ->get();

@@ -133,6 +133,8 @@ $(document).ready(function(){
 					'_token' : token
 				},
 				success:function(rs){
+					$('#editupdate').css('display','block');
+					$('#btn_confirm').css('display','block');
 					var append = "";					
 					var dsloptrung = rs['dsloptrung']; 
         			var thoikhoabieu = rs['thoikhoabieu']; 
@@ -249,8 +251,9 @@ $(document).ready(function(){
 					"tkbgv"	: tkb
 				},
 				success:function(rs){
-					//console.log("success!!");
 					console.log(rs);
+					//console.log("success!!");
+					//do some notice
 				},
 				error:function(){
 					console.log("error!!");

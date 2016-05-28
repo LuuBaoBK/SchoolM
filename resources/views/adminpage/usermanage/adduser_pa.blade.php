@@ -238,10 +238,10 @@ table tr.selected{
 <!-- /.modal-dialog -->
 </div>
 <!-- DATA TABES SCRIPT -->
-        <script src="{{asset("/mylib/jquery/jquery.min.js")}}" type="text/javascript"></script>
-        <script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
-        <script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
-        
+<script src="{{asset("/mylib/jquery/jquery.min.js")}}" type="text/javascript"></script>
+<script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
+<script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
+
 <!-- page script -->
 <script type="text/javascript">
 $(document).ready(function() {

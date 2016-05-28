@@ -162,6 +162,19 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	//Manage Schedule
 	Route::group(['prefix' => 'schedule', 'namespace' =>'Admin\Schedule'], function(){
 		Route::get('main_menu', 'ScheduleController@main_menu_view');
+		Route::get('teacher_assigment', 'ScheduleController@teacher_assigment');
+		Route::get('new_schedule_index', 'ScheduleController@new_schedule_index');
+		Route::get('edit_current_index', 'ScheduleController@edit_current_index');
+		Route::get('edit_current_index_stu', 'ScheduleController@edit_current_index_stu');
+
+		Route::post('create_new_assigment','ScheduleController@create_new_assigment');
+		Route::post('get_classes_list','ScheduleController@get_classes_list');
+		Route::post('update_assigment', 'ScheduleController@update_assigment');
+
+		Route::post('create_schedule', 'ScheduleController@create_schedule');
+		Route::post('confirm_schedule', 'ScheduleController@confirm_schedule');
+
+		Route::get('test', 'ScheduleController@make_schedule');
 	});
 
 	//Manage Transcript

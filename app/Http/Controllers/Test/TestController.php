@@ -26,6 +26,8 @@ class TestController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function test(){
+        // Phancong::where('class_id','like','15%')->delete();
+        tkb::truncate();
         return date("d-m-Y h:m:s");
     }
     // public function test(){
