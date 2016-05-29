@@ -16,7 +16,7 @@ use App\Model\Sysvar;
 use App\Model\Position;
 use Input;
 use Validator;
-
+use Chrisbjr\ApiGuard\Models\ApiKey;
 
 class TeacherManageController extends Controller
 {
@@ -148,6 +148,7 @@ class TeacherManageController extends Controller
             $user->dateofbirth = $dateofbirth;
             $user->gender = $request['gender'];
             $user->save();
+            $apiKey = ApiKey::make($newid);
 
             $teacher->id = $newid;
             $teacher->mobilephone = $request['mobilephone'];

@@ -49,13 +49,13 @@ class NoticeBoardController extends Controller
                 $offset += 1;
                 $plus = date('Y-m-d 00:00:00', strtotime("+".$offset." day"));
                 $notice_temp_list = Classlectureregister::where('class_id','=',$check->class_id)
-                                                        // ->where('notice_date','=',$date)
-                                                        // ->orWhere('notice_date','=',$plus)
+                                                        ->where('notice_date','=',$date)
+                                                        ->orWhere('notice_date','=',$plus)
                                                         ->orderBy('id','desc')->get();
             }
             else{
                 $notice_temp_list = Classlectureregister::where('class_id','=',$check->class_id)
-                                                        // ->where('notice_date','=',$date)    
+                                                        ->where('notice_date','=',$date)    
                                                         ->orderBy('id','desc')->get();
             }
             $temp = array();

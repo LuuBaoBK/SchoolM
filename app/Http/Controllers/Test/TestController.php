@@ -17,7 +17,13 @@ use App\Model\Phancong;
 use App\User;
 use App\Transcript;
 use App\Model\StudentClass;
+use App\Model\Schedule;
 
+use App\Model\Admin;
+use App\Model\Sysvar;
+use App;
+use Chrisbjr\ApiGuard\Models\ApiKey;
+use Illuminate\Console\Command;
 class TestController extends Controller 
 {
     /**
@@ -26,8 +32,14 @@ class TestController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function test(){
+        $apiKey = ApiKey::make('a_0000010');
+        return $apiKey;
+        $apiKey->save();
+        // $apiKey = ApiKey::make($this->getOption('user-id', null), $this->getOption('level', 10), $this->getOption('ignore-limits', 1));
         // Phancong::where('class_id','like','15%')->delete();
-        tkb::truncate();
+        // tkb::truncate();
+        // Schedule::truncate();
+        // Phancong::truncate();
         return date("d-m-Y h:m:s");
     }
     // public function test(){

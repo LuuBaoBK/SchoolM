@@ -14,7 +14,7 @@ use App\Model\Parents;
 use App\Model\Sysvar;
 use Input;
 use Validator;
-
+use Chrisbjr\ApiGuard\Models\ApiKey;
 
 class StudentManageController extends Controller
 {
@@ -133,6 +133,7 @@ class StudentManageController extends Controller
             $s_user->address        = $request['student_address'];
             $s_user->save();
             $s_next_id->save();
+            $apiKey = ApiKey::make($new_s_id);
 
             if($check == 'true'){ // create new parent account
                 $p_user = new User;
@@ -171,6 +172,7 @@ class StudentManageController extends Controller
                 $p_user->address        = $request['parent_address'];
                 $p_user->save();
                 $p_next_id->save();
+                $apiKey = ApiKey::make($new_p_id);
 
                 $parent->id             = $new_p_id;
                 $parent->mobilephone    = $request['parent_mobilephone'];

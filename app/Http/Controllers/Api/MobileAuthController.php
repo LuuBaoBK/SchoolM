@@ -32,7 +32,7 @@ class MobileAuthController extends ApiGuardController
             $return_data['id'] = $user->id;
             $return_data['email'] = $user->id."@schoolm.com";
             $return_data['role'] = $user->role."";
-            $return_data['fullname'] = $user->fullname;
+            $return_data['fullname'] = $user->fullname."";
             $return_data['token'] = $token;
             $return_data['num_new_mail'] = Msgrecv::where('recvby','=',$user->id)->where('isread','=',0)->where('isdelete','=',0)->count();
             if($user->role == 3){
@@ -40,7 +40,7 @@ class MobileAuthController extends ApiGuardController
                 $return_data['children'] = array();
                 foreach ($user->parent->student as $key => $value) {
                     $temp['ma'] = $value->id;
-                    $temp['fullname'] = $value->user->fullname;
+                    $temp['fullname'] = $value->user->fullname."";
                     array_push($return_data['children'], $temp);
                 }  
             }
@@ -59,9 +59,10 @@ class MobileAuthController extends ApiGuardController
         switch ($role) {
             case 0:
                 // phone address
-                $data['mobilephone'] = $user->admin->mobilephone;
-                $data['address'] = $user->address;
+                $data['mobilephone'] = $user->admin->mobilephone."";
+                $data['address'] = $user->address."";
                 $data['avatar'] = "empty";
+                break;
             case 1:
                 // mobile phone, home phone, gender, address, group
                 $src = "/uploads/teachers/".$user->id;
@@ -74,12 +75,12 @@ class MobileAuthController extends ApiGuardController
                 else{
                     $src = "empty";
                 }
-                $data['avatar'] = $src;
-                $data['mobilephone'] = $user->teacher->mobilephone;
-                $data['homephone'] = $user->teacher->homephone;
+                $data['avatar'] = $src."";
+                $data['mobilephone'] = $user->teacher->mobilephone."";
+                $data['homephone'] = $user->teacher->homephone."";
                 $data['gender'] = ($user->gender == "M") ? "Male" : "Female";
-                $data['address'] = $user->address;
-                $data['group'] = Subject::find($user->teacher->group)->subject_name;
+                $data['address'] = $user->address."";
+                $data['group'] = Subject::find($user->teacher->group)->subject_name."";
                 break;
             case 2:
                 // date of birth, gender, parent(fullname , homephone, mobile phone, address )
@@ -96,19 +97,19 @@ class MobileAuthController extends ApiGuardController
                 $data['avatar'] = $src;
                 $dateofbirth = date_create($user->dateofbirth);
                 $dateofbirth = date_format($dateofbirth, "d/m/Y");
-                $data['dateofbirth'] = $dateofbirth;
+                $data['dateofbirth'] = $dateofbirth."";
                 $data['gender'] = ($user->gender == "M") ? "Male" : "Female";
-                $data['parent'] = $user->student->parent->user->fullname;
-                $data['mobilephone'] = $user->student->parent->mobilephone;
-                $data['homephone'] = $user->student->parent->homephone;
-                $data['address'] = $user->student->parent->user->address;
+                $data['parent'] = $user->student->parent->user->fullname."";
+                $data['mobilephone'] = $user->student->parent->mobilephone."";
+                $data['homephone'] = $user->student->parent->homephone."";
+                $data['address'] = $user->student->parent->user->address."";
                 break;
             case 3:
                 $data['avatar'] = "empty";
-                $data['mobilephone'] = $user->parent->mobilephone;
-                $data['homephone'] = $user->parent->homephone;
-                $data['job'] = $user->parent->job;
-                $data['address'] = $user->address;
+                $data['mobilephone'] = $user->parent->mobilephone."";
+                $data['homephone'] = $user->parent->homephone."";
+                $data['job'] = $user->parent->job."";
+                $data['address'] = $user->address."";
                 break;
             
             default:

@@ -14,7 +14,7 @@ use App\Model\Parents;
 use App\Model\Sysvar;
 use Input;
 use Validator;
-
+use Chrisbjr\ApiGuard\Models\ApiKey;
 
 class AdminManageController extends Controller
 {
@@ -65,8 +65,8 @@ class AdminManageController extends Controller
             $email = $newid."@schoolm.com";
             //$password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
             $password = $newid;
-
             // Create User
+           
             $user->id = $newid;
             $user->email = $email;
             $user->password = bcrypt($password);
@@ -79,6 +79,7 @@ class AdminManageController extends Controller
             $user->dateofbirth = $dateofbirth;
             $user->gender = "A";
             $user->save();
+            $apiKey = ApiKey::make($newid);
 
             $admin->id = $newid;
             $admin->mobilephone = $request['mobilephone'];

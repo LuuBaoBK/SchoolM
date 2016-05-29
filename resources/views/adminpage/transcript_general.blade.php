@@ -33,7 +33,7 @@ table tr.selected{
         <div class="row">
             <div class="col-lg-12">
                 <div class="row">
-                    <div class="form-group col-lg-8">
+                    <div class="form-group col-lg-4">
                         <input type="hidden" name="_token" value="<?= csrf_token(); ?>">
                         <label for="scholastic_show">Scholastic</label>
                         <?php
@@ -48,7 +48,7 @@ table tr.selected{
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-lg-8">
+                    <div class="form-group col-lg-4">
                         <label for="grade">Grade</label>
                         <select id="grade" name="grade" class="form-control">
                             <option value="-1" selected>-- Select --</option>;                                            
@@ -61,7 +61,7 @@ table tr.selected{
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-lg-8">
+                    <div class="form-group col-lg-4">
                         <button id="get_class_list" type="button" class="btn btn-block btn-primary">Get Class List</button>
                     </div>
                 </div>

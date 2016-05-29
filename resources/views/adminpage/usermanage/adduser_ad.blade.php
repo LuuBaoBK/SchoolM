@@ -154,7 +154,6 @@ $(document).ready(function() {
             var dateofbirth = $('#dateofbirth').val();
             var address     = $('#address').val();
             var token       = $('input[name="_token"]').val();
-
             $(".form-group").removeClass("has-warning");
             $(".error_mess").empty();
 
@@ -172,6 +171,7 @@ $(document).ready(function() {
                     '_token'        :token
                 },
                 success:function(record){
+                    // console.log(record);
                    if(record.isDone == 1){
                         $('#error_mess').slideUp('slow');
                         $('#success_mess').show("medium");

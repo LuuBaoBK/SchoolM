@@ -801,7 +801,7 @@ class ScheduleControler extends Controller
             $dem = $TKB[$rowT][$col];
             $TKB[$rowT][$col] =  $TKB[$rowT][$colempty];
             $TKB[$rowT][$colempty] = $dem;
-            $this->xulitrung($TKB, $rowT, $colempty);
+            $this->xulitrung($TKB, $rowT, $col);
         }
     }
 

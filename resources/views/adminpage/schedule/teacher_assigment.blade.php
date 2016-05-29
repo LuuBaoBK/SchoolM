@@ -139,10 +139,11 @@ table tr.selected{
 		        </table>
 			</div> 
 			<div class="modal-body">
+				<div class="row">
 				<div class="col-lg-6 col-xs-12">
 					<div class="box">
 						<div class="box-header"><h4 class="box-title">Classes List</h4></div>
-			           	<div class="dataTables_scrossBody" style="overflow: auto; height: 350px; width: 100%">
+			           	<div class="dataTables_scrossBody" style="overflow-y: scroll; overflow-x: hidden; height: 350px; width: 100%">
 	                    	<div class="box-body">
 		                        <table id="not_add_classes" class="table table-bordered table-striped">
 		                            <thead>
@@ -164,7 +165,7 @@ table tr.selected{
 				<div class="col-lg-6 col-xs-12">
 					<div class="box">
 						<div class="box-header"><h4 class="box-title">Classes Assigment</h4></div>
-	                   	<div class="dataTables_crossBody" style="overflow: auto; height: 350px; width: 100%">
+	                   	<div class="dataTables_crossBody" style="overflow-y: scroll; overflow-x: hidden; height: 350px; width: 100%">
 		                   	<div class="box-body">
 		                   		<table id = "added_classes" class="table table-bordered table-striped">
 		                   			<thead>
@@ -183,8 +184,9 @@ table tr.selected{
 	                   	</div>
 	               </div>
 				</div>
+			</div>
 				<div class="text-center" id="onloading_model" style="display:none"><i class="fa fa-refresh fa-spin"  ></i>&nbsp Loading new assigment ... <i class="fa fa-refresh fa-spin" ></i></div>
-				<button type="button" class="btn btn-block btn-primary text-center" id="btn_update_change">Update</button>
+				<button style="width:98%; margin:auto" type="button" class="btn btn-block btn-primary text-center" id="btn_update_change">Update</button>
 			</div>
 			<div class="modal-footer" style="border:none">
 			</div>
