@@ -8,8 +8,10 @@ use App\Http\Controllers\Controller;
 use App\Model\Classes;
 use App\Model\Teacher;
 use DB;
+use App\Model\Schedule;
 use Illuminate\Pagination\LengthAwarePaginator;
 use validator;
+
 
 class ClassController extends Controller
 {
@@ -131,7 +133,8 @@ class ClassController extends Controller
         }
         else{
             $student_count = $myclass->students()->count();
-            if($student_count == 0){
+            $tkb_check = Schedule::where('class_id','=',$id)->count();
+            if($student_count == 0 && $tkb_check == 0){
                 $rules = array(
                     'classname' => 'required|max:2',
                     'id'   => 'isexistclasses'
@@ -160,7 +163,15 @@ class ClassController extends Controller
                 }
             }
             else{
-                $request->session()->flash('alert-danger', 'This class have : '.$student_count.' students, cannot change any factor');
+                $message = 'This class have : ';
+                if($student_count > 0){
+                    $message .= $student_count.' students, ';
+                }
+                if($tkb_check > 0){
+                    $message .= 'and have schedule, ';
+                }
+                $message .= "cannot change any factor";
+                $request->session()->flash('alert-danger', $message );
                 return redirect('/admin/class/classinfo/edit/'.$id);
             }
         }

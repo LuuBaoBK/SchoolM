@@ -60,6 +60,8 @@ Route::group(['prefix' => 'api', 'middleware' => 'apiguard'],function(){
 			Route::post('get_schedule', 'Api\MobileScheduleController@parent_get_schedule');
 			Route::post('get_noticeboard', 'Api\NoticeBoardController@get_pa_noticeboard');
 		});
+
+		Route::post('get_te_list','Api\MobileTranscriptController@get_te_list');
 	});
 });
 //***************************************************************//

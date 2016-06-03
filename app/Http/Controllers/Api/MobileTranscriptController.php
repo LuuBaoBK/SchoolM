@@ -14,6 +14,7 @@ use App\Model\Classes;
 use App\User;
 use App\Model\StudentClass;
 use Auth;
+use App\Model\Schedule;
 
 class MobileTranscriptController extends Controller
 {
@@ -285,4 +286,36 @@ class MobileTranscriptController extends Controller
   // "address": "Trung Thành Tây, Mỹ Quang, Q.3"
       return $temp;
     }
+
+    public function get_te_list(Request $request){
+      $id = $request['id'];
+      $year = substr(date("Y"), 2);
+      $year = (date("m") < 8) ? ($year-1) : $year;
+      $class = StudentClass::where('class_id','like',$year."%")->where('student_id','=',$id)->first();
+      $teacher_id_list = Schedule::where('class_id','=',$class->class_id)->get();
+      $return_data['listteacher'] = array();
+      foreach ($teacher_id_list as $key => $teacher) {
+        $src =  '\uploads\teacher\\'.$teacher->teacher_id;
+        if(file_exists(".".$src.".jpg")){
+          $src = $src.".jpg";
+        }
+        else if(file_exists(".".$src.".png")){
+          $src = $src.".png";
+        }
+        else{
+          $src = "\uploads\userAvatar.png";
+        }
+        $temp['avatar'] = $src;
+        $temp['name'] = User::find($teacher->teacher_id)->fullname;
+        $temp['email'] = $teacher->teacher_id."@schoolm.com";
+        $temp['subject'] = Subject::find(Teacher::find($teacher->teacher_id)->group)->subject_name;
+        array_push($return_data['listteacher'], $temp);
+      }
+      if(count($return_data['listteacher']) == 0){
+        $return_data['listteacher'] = "empty";
+      };
+      return $return_data;
+    }
+    
+
 }
