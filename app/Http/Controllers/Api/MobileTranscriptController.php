@@ -288,7 +288,7 @@ class MobileTranscriptController extends Controller
     }
 
     public function get_te_list(Request $request){
-      $id = $request['id'];
+      $id = $request['data'];
       $year = substr(date("Y"), 2);
       $year = (date("m") < 8) ? ($year-1) : $year;
       $class = StudentClass::where('class_id','like',$year."%")->where('student_id','=',$id)->first();
