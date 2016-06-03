@@ -292,7 +292,7 @@ class MobileTranscriptController extends Controller
       $year = substr(date("Y"), 2);
       $year = (date("m") < 8) ? ($year-1) : $year;
       $class = StudentClass::where('class_id','like',$year."%")->where('student_id','=',$id)->first();
-      $teacher_id_list = Schedule::where('class_id','=',$class->class_id)->get();
+      $teacher_id_list = Schedule::where('class_id','=',$class->class_id)->groupBy('teacher_id')->get();
       $return_data['listteacher'] = array();
       foreach ($teacher_id_list as $key => $teacher) {
         $src =  '\uploads\teacher\\'.$teacher->teacher_id;
