@@ -11,6 +11,9 @@ use App\Model\Admin;
 use Auth;
 use Validator;
 use Illuminate\Routing\Redirector;
+use App\Model\Classes;
+use App\Model\StudentClass;
+use App\Model\Student;
 
 class ProfileController extends Controller
 {

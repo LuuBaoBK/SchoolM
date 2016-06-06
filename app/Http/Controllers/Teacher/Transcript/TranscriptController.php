@@ -233,6 +233,7 @@ class TranscriptController extends Controller
             //               'new_score_event', 
             //               Subject::find($subject_id)->subject_name)." import score: ".Scoretype::find($scoretype_id)->type;
         }
+
         $record = "success";
         return $record;
     }
@@ -357,7 +358,8 @@ class TranscriptController extends Controller
             $hk2_average = 0;
             $scholastic_average = 0;
 
-            $hk_factor_total = 1;
+            $hk_factor_total = 0;
+
             for($i=8;$i<=12;$i++){
                 $month_average = 0;
                 $month_factor_total = 0;
@@ -382,6 +384,10 @@ class TranscriptController extends Controller
                             $student_score['month_'.$i][$scoretype->type] = $score->score;
                         }
                         else{
+                            $real_score = 0;
+                            $month_average += $real_score * $scoretype->factor;
+                            $hk1_average += $real_score * $scoretype->factor;
+                            $month_average = $month_average / $month_factor_total;
                             $student_score['month_'.$i][$scoretype->type] = "13";
                         }
                     }
@@ -390,7 +396,7 @@ class TranscriptController extends Controller
             }
             $hk1_average = $hk1_average / $hk_factor_total;
             
-            $hk_factor_total = 1;
+            $hk_factor_total = 0;
             for($i=1;$i<=5;$i++){
                 $month_average = 0;
                 $month_factor_total = 0;
@@ -415,6 +421,10 @@ class TranscriptController extends Controller
                             $student_score['month_'.$i][$scoretype->type] = $score->score;
                         }
                         else{
+                            $real_score = 0;
+                            $month_average += $real_score * $scoretype->factor;
+                            $hk1_average += $real_score * $scoretype->factor;
+                            $month_average = $month_average / $month_factor_total;
                             $student_score['month_'.$i][$scoretype->type] = "13";
                         }
                     }

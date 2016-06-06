@@ -147,6 +147,7 @@
 <script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
 <script type="text/javascript">
     $(function() {
+
     	$('#sidebar_list_1').addClass('active');
         $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
         $("[data-mask]").inputmask();

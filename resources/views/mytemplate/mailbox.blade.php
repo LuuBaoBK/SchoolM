@@ -764,7 +764,7 @@ $(document).ready(function(){
                   $('#btn_forward').css('display','block');
                   $('#btn_reply').css('display','none');
                   $('#btn_edit_draft').css('display','block');
-                  $('#btn_reply_all').css('display','none');
+                  $('#btn_reply_all').css('display','none');  
                   break;
               default:
                   $('#btn_forward').css('display','block');

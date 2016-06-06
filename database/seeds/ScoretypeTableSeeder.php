@@ -82,7 +82,7 @@ class ScoretypeTableSeeder extends Seeder
                 'factor' => '3',
                 'applyfrom' => '9',
                 'disablefrom' => '3000',
-                'month' => '12',
+                'month' => '5',
             ]);   
         } 
     }

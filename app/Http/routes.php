@@ -93,7 +93,6 @@ Route::group(['middleware' => 'auth'], function () {
 //Admin Route
 Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 	Route::get('permission_denied', 'Admin\ProfileController@permission_denied' );
-
 	Route::get('dashboard', 'Admin\ProfileController@get_ad_dashboard' );
 	Route::post('dashboard', 'Admin\ProfileController@edit_info' );
 	Route::post('dashboard/changepassword', 'Admin\ProfileController@changepassword' );
@@ -214,6 +213,13 @@ Route::group(['prefix' => 'admin','middleware' => 'authrole_ad'], function () {
 		Route::post('numberofstudent/get_data', 'NumberOfStudentController@get_data');
 		Route::get('transcript' , 'TranscriptController@get_view');
 		Route::post('transcript/get_data' , 'TranscriptController@get_data');
+	});
+
+	Route::group(['prefix' => 'report', 'namespace' => 'Admin\Report'], function(){
+		Route::get('general' , 'ReportController@get_view_scholastic');
+		Route::get('report_semester_1', 'ReportController@report_semester_1');
+		Route::get('report_semester_2', 'ReportController@report_semester_2');
+		Route::get('report_semester_3', 'ReportController@report_semester_3');
 	});
 
 });

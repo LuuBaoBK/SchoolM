@@ -87,6 +87,17 @@
                     <li id="sidebar_list_8_2"><a href="/admin/statistic/transcript"><i class="fa fa-angle-double-right"></i>Transcript</a></li>
                 </ul>
             </li>
+            <li id="sidebar_list_9" class="treeview">
+                <a href="">
+                    <i class="fa fa-file-text-o"></i>
+                    <span>Report</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li id="sidebar_list_8_1"><a href="/admin/report/general"><i class="fa fa-angle-double-right"></i>Scholastic</a></li>
+                    <li id="sidebar_list_8_2"><a href="/admin/report/transcript"><i class="fa fa-angle-double-right"></i>Transcript</a></li>
+                </ul>
+            </li>
             <li>
                 <a href="/auth/logout">
                     <i class="glyphicon glyphicon-log-out"></i> <span>Logout</span>

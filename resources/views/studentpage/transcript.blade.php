@@ -236,7 +236,7 @@ textarea {
 			                	$('#score_list_table').dataTable().fnAddData([
 			                		i,
 			                		j,
-			                		"Trung Binh Tong Mon Hoc"
+			                		"Trung binh nam cua mon hoc"
 		                		]);
 			                });
 			                $('#sumary_classname').val(data[1]);
@@ -279,7 +279,7 @@ textarea {
 				                	$('#score_list_table').dataTable().fnAddData([
 				                		i,
 				                		j,
-				                		"Trung Binh Tong Mon Hoc"
+				                		"Trung Binh Ca Nam Mon Hoc"
 			                		]);
 				                });
 			            	}
