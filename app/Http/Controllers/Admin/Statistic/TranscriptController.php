@@ -133,40 +133,40 @@ class TranscriptController extends Controller
         $total_grade_9_1 = StudentClass::where('class_id','like',($year-1)."_9_%")->count();
         $total_grade_9_2 = StudentClass::where('class_id','like',$year."_9_%")->count();
         $data = array(0,0,0,0,0,0,0,0);
-        $data[0] = round(StudentClass::where('class_id','like',($year-1)."_6%")->where('GPA','<',5)->count() / $total_grade_6_1,2) * 100;
-        $data[1] = round(StudentClass::where('class_id','like',$year."_6%")->where('GPA','<',5)->count() / $total_grade_6_2,2) * 100;
-        $data[2] = round(StudentClass::where('class_id','like',($year-1)."_7%")->where('GPA','<',5)->count() / $total_grade_7_1,2) * 100;
-        $data[3] = round(StudentClass::where('class_id','like',$year."_7%")->where('GPA','<',5)->count() / $total_grade_7_2,2) * 100;
-        $data[4] = round(StudentClass::where('class_id','like',($year-1)."_8%")->where('GPA','<',5)->count() / $total_grade_8_1,2) * 100;
-        $data[5] = round(StudentClass::where('class_id','like',$year."_8%")->where('GPA','<',5)->count() / $total_grade_8_2,2) * 100;
-        $data[6] = round(StudentClass::where('class_id','like',($year-1)."_9%")->where('GPA','<',5)->count() / $total_grade_9_1,2) * 100;
-        $data[7] = round(StudentClass::where('class_id','like',$year."_9%")->where('GPA','<',5)->count() / $total_grade_9_2,2) * 100;
+        $data[1] = round(StudentClass::where('class_id','like',($year-1)."_6%")->where('GPA','<',5)->count() / $total_grade_6_1,2) * 100;
+        $data[0] = round(StudentClass::where('class_id','like',$year."_6%")->where('GPA','<',5)->count() / $total_grade_6_2,2) * 100;
+        $data[3] = round(StudentClass::where('class_id','like',($year-1)."_7%")->where('GPA','<',5)->count() / $total_grade_7_1,2) * 100;
+        $data[2] = round(StudentClass::where('class_id','like',$year."_7%")->where('GPA','<',5)->count() / $total_grade_7_2,2) * 100;
+        $data[5] = round(StudentClass::where('class_id','like',($year-1)."_8%")->where('GPA','<',5)->count() / $total_grade_8_1,2) * 100;
+        $data[4] = round(StudentClass::where('class_id','like',$year."_8%")->where('GPA','<',5)->count() / $total_grade_8_2,2) * 100;
+        $data[7] = round(StudentClass::where('class_id','like',($year-1)."_9%")->where('GPA','<',5)->count() / $total_grade_9_1,2) * 100;
+        $data[6] = round(StudentClass::where('class_id','like',$year."_9%")->where('GPA','<',5)->count() / $total_grade_9_2,2) * 100;
         $datachart2['data1'] = $data;
 
         $data = array(0,0,0,0,0,0,0,0);
-        $data[0] = round(StudentClass::where('class_id','like',($year-1)."_6%")->where('GPA','>=',5)->where('GPA','<=',7.5)->count() / $total_grade_6_1,2) * 100;
-        $data[1] = round(StudentClass::where('class_id','like',$year."_6%")->where('GPA','>=',5)->where('GPA','<=',7.5)->count() / $total_grade_6_2,2) * 100;
-        $data[2] = round(StudentClass::where('class_id','like',($year-1)."_7%")->where('GPA','>=',5)->where('GPA','<=',7.5)->count() / $total_grade_7_1,2) * 100;
-        $data[3] = round(StudentClass::where('class_id','like',$year."_7%")->where('GPA','>=',5)->where('GPA','<=',7.5)->count() / $total_grade_7_2,2) * 100;
-        $data[4] = round(StudentClass::where('class_id','like',($year-1)."_8%")->where('GPA','>=',5)->where('GPA','<=',7.5)->count() / $total_grade_8_1,2) * 100;
-        $data[5] = round(StudentClass::where('class_id','like',$year."_8%")->where('GPA','>=',5)->where('GPA','<=',7.5)->count() / $total_grade_8_2,2) * 100;
-        $data[6] = round(StudentClass::where('class_id','like',($year-1)."_9%")->where('GPA','>=',5)->where('GPA','<=',7.5)->count() / $total_grade_9_1,2) * 100;
-        $data[7] = round(StudentClass::where('class_id','like',$year."_9%")->where('GPA','>=',5)->where('GPA','<=',7.5)->count() / $total_grade_9_2,2) * 100;
+        $data[1] = round(StudentClass::where('class_id','like',($year-1)."_6%")->where('GPA','>=',5)->where('GPA','<=',7.5)->count() / $total_grade_6_1,2) * 100;
+        $data[0] = round(StudentClass::where('class_id','like',$year."_6%")->where('GPA','>=',5)->where('GPA','<=',7.5)->count() / $total_grade_6_2,2) * 100;
+        $data[3] = round(StudentClass::where('class_id','like',($year-1)."_7%")->where('GPA','>=',5)->where('GPA','<=',7.5)->count() / $total_grade_7_1,2) * 100;
+        $data[2] = round(StudentClass::where('class_id','like',$year."_7%")->where('GPA','>=',5)->where('GPA','<=',7.5)->count() / $total_grade_7_2,2) * 100;
+        $data[5] = round(StudentClass::where('class_id','like',($year-1)."_8%")->where('GPA','>=',5)->where('GPA','<=',7.5)->count() / $total_grade_8_1,2) * 100;
+        $data[4] = round(StudentClass::where('class_id','like',$year."_8%")->where('GPA','>=',5)->where('GPA','<=',7.5)->count() / $total_grade_8_2,2) * 100;
+        $data[7] = round(StudentClass::where('class_id','like',($year-1)."_9%")->where('GPA','>=',5)->where('GPA','<=',7.5)->count() / $total_grade_9_1,2) * 100;
+        $data[6] = round(StudentClass::where('class_id','like',$year."_9%")->where('GPA','>=',5)->where('GPA','<=',7.5)->count() / $total_grade_9_2,2) * 100;
         $datachart2['data2'] = $data;
 
         $data = array(0,0,0,0,0,0,0,0);
-        $data[0] = round(StudentClass::where('class_id','like',($year-1)."_6%")->where('GPA','>',7.5)->count() / $total_grade_6_1,2) * 100;
-        $data[1] = round(StudentClass::where('class_id','like',$year."_6%")->where('GPA','>',7.5)->count() / $total_grade_6_2,2) * 100;
-        $data[2] = round(StudentClass::where('class_id','like',($year-1)."_7%")->where('GPA','>',7.5)->count() / $total_grade_7_1,2) * 100;
-        $data[3] = round(StudentClass::where('class_id','like',$year."_7%")->where('GPA','>',7.5)->count() / $total_grade_7_2,2) * 100;
-        $data[4] = round(StudentClass::where('class_id','like',($year-1)."_8%")->where('GPA','>',7.5)->count() / $total_grade_8_1,2) * 100;
-        $data[5] = round(StudentClass::where('class_id','like',$year."_8%")->where('GPA','>',7.5)->count() / $total_grade_8_2,2) * 100;
-        $data[6] = round(StudentClass::where('class_id','like',($year-1)."_9%")->where('GPA','>',7.5)->count() / $total_grade_9_1,2) * 100;
-        $data[7] = round(StudentClass::where('class_id','like',$year."_9%")->where('GPA','>',7.5)->count() / $total_grade_9_2,2) * 100;
+        $data[1] = round(StudentClass::where('class_id','like',($year-1)."_6%")->where('GPA','>',7.5)->count() / $total_grade_6_1,2) * 100;
+        $data[0] = round(StudentClass::where('class_id','like',$year."_6%")->where('GPA','>',7.5)->count() / $total_grade_6_2,2) * 100;
+        $data[3] = round(StudentClass::where('class_id','like',($year-1)."_7%")->where('GPA','>',7.5)->count() / $total_grade_7_1,2) * 100;
+        $data[2] = round(StudentClass::where('class_id','like',$year."_7%")->where('GPA','>',7.5)->count() / $total_grade_7_2,2) * 100;
+        $data[5] = round(StudentClass::where('class_id','like',($year-1)."_8%")->where('GPA','>',7.5)->count() / $total_grade_8_1,2) * 100;
+        $data[4] = round(StudentClass::where('class_id','like',$year."_8%")->where('GPA','>',7.5)->count() / $total_grade_8_2,2) * 100;
+        $data[7] = round(StudentClass::where('class_id','like',($year-1)."_9%")->where('GPA','>',7.5)->count() / $total_grade_9_1,2) * 100;
+        $data[6] = round(StudentClass::where('class_id','like',$year."_9%")->where('GPA','>',7.5)->count() / $total_grade_9_2,2) * 100;
         $datachart2['data3'] = $data;
 
-        $datachart2['year1'] = "20".($year-1);
-        $datachart2['year2'] = "20".$year;
+        $datachart2['year2'] = "20".($year-1);
+        $datachart2['year1'] = "20".$year;
         return $datachart2;
     }
     

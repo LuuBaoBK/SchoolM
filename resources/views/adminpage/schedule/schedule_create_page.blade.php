@@ -161,7 +161,7 @@ td.selected{
                     $('#onloading').css('display','none');
                     $('#editupdate').css('display','inline-block')
                     $('#btn_confirm').css('display','inline-block');
-                    $('#btn_create_new_schedule').html('Remake Schedule To Fix Duplicated');
+                    // $('#btn_create_new_schedule').html('Remake Schedule To Fix Duplicated');
                     var append = "";                    
                     var dsloptrung = rs['dsloptrung']; 
                     var thoikhoabieu = rs['thoikhoabieu']; 

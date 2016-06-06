@@ -53,9 +53,11 @@
               <form id="form_login" style="margin-top : 5px" action="auth/login" method="post" class="navbar-form navbar-right form-horizontal">
               <!-- <ul class="nav navbar-nav navbar-right">     -->
                   <div style = "margin-top: 2px; margin-right: 0px" class="form-group">
-                      <input type="email" name="email" class="form-control" placeholder="User Email"/>
-                      <input type="password" name="password" class="form-control" placeholder="Password"/>
-                      <button style="display:none" type="submit" class="btn bg-olive btn-block">Sign me in</button>
+                      <ul class="nav navbar-nav">
+                        <li><input type="email" name="email" class="form-control" placeholder="User Email"/></li>
+                        <li><input type="password" name="password" class="form-control" placeholder="Password"/></li>
+                        <li><button style="display:block" type="submit" class="btn btn-default"><i class="glyphicon glyphicon-log-in"></i></button></li>
+                      </ul>                
                   </div>  
               <!-- </ul> -->
               </form>

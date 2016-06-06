@@ -97,12 +97,13 @@ class MobileAuthController extends ApiGuardController
                 $data['avatar'] = $src;
                 $dateofbirth = date_create($user->dateofbirth);
                 $dateofbirth = date_format($dateofbirth, "d/m/Y");
-                $data['dateofbirth'] = $dateofbirth."";
+                $data['birthday'] = $dateofbirth."";
                 $data['gender'] = ($user->gender == "M") ? "Male" : "Female";
                 $data['parent'] = $user->student->parent->user->fullname."";
                 $data['mobilephone'] = $user->student->parent->mobilephone."";
                 $data['homephone'] = $user->student->parent->homephone."";
-                $data['address'] = $user->student->parent->user->address."";
+                // $data['address'] = $user->student->parent->user->address."";
+                $data['address'] = $user->address."";
                 break;
             case 3:
                 $data['avatar'] = "empty";

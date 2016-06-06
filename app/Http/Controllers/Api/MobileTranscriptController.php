@@ -218,33 +218,6 @@ class MobileTranscriptController extends Controller
       }
     }
 
-    // public function te_get_stulist(){
-    //   $return_data['liststudents'] = array();
-    //   $user = Auth::user();
-    //   // $teacher = Teacher::find($user->id);
-    //   $year = substr(date("Y"),2,2);
-    //   $year = (date("m") < 8) ? ($year-1) : $year;
-    //   $class = Classes::where('homeroom_teacher','=',$user->id)->where('id','like',$year."%")->first();
-    //   $student_list = $class->students;
-    //   foreach ($student_list as $key => $student) {
-    //     $src =  '\uploads\\'.$student->enrolled_year.'\\'.$student->student_id;
-    //     if(file_exists(".".$src.".jpg")){
-    //       $src = $src.".jpg";
-    //     }
-    //     else if(file_exists(".".$src.".png")){
-    //       $src = $src.".png";
-    //     }
-    //     else{
-    //       $src = "\uploads\userAvatar.png";
-    //     }
-    //     $temp['avatar'] = $src;
-    //     $temp['name'] = User::find($student->student_id)->fullname;
-    //     $temp['ma'] = $student->student_id;
-    //     array_push($return_data['liststudents'], $temp);
-    //   }
-    //   return $return_data;
-    // }
-
     public function te_get_stu_detail(Request $request){
       $id = $request['id'];
       $student = User::find($id);
@@ -276,17 +249,9 @@ class MobileTranscriptController extends Controller
         $temp['parent'] = $parent->fullname;
         $temp['address'] = $parent->address;
         $temp['phone'] = $parent->parent->mobilephone;
-  //     "avatar": "http://jsonparsing.parseapp.com/jsonData/images/avengers.jpg",
-  // "email": "s_0000001@schoolm.com",
-  // "name": "Trần Quách Tĩnh",
-  // "birthday": "01/09/1997",
-  // "gender": "Nam",
-  // "parent": "Trần Thiên Hoàng",
-  // "phone": "099292997",
-  // "address": "Trung Thành Tây, Mỹ Quang, Q.3"
+
       return $temp;
     }
-
 
     public function get_list_classes(){
       $year = substr(date("Y"),2);
@@ -329,6 +294,47 @@ class MobileTranscriptController extends Controller
       }
       return $return_data;
     }
+
+    public function get_te_list(Request $request){
+      $id = $request['data'];
+      $year = substr(date("Y"), 2);
+      $year = (date("m") < 8) ? ($year-1) : $year;
+      $class = StudentClass::where('class_id','like',$year."%")->where('student_id','=',$id)->first();
+      $return_data['listteachers'] = array();
+      if($class == null){
+        $return_data['listteachers'] = [];
+      }
+      else{
+        $teacher_id_list = Schedule::where('class_id','=',$class->class_id)->groupBy('teacher_id')->get();
+        if(count($teacher_id_list) == 0){
+          $return_data['listteachers'] = [];
+        }
+        else{
+          foreach ($teacher_id_list as $key => $teacher) {
+            $src =  '\uploads\teacher\\'.$teacher->teacher_id;
+            if(file_exists(".".$src.".jpg")){
+              $src = $src.".jpg";
+            }
+            else if(file_exists(".".$src.".png")){
+              $src = $src.".png";
+            }
+            else{
+              $src = "\uploads\userAvatar.png";
+            }
+            $temp['avatar'] = $src;
+            $temp['name'] = User::find($teacher->teacher_id)->fullname;
+            $temp['email'] = $teacher->teacher_id."@schoolm.com";
+            $temp['subject'] = Subject::find(Teacher::find($teacher->teacher_id)->group)->subject_name;
+            array_push($return_data['listteachers'], $temp);
+          }
+          if(count($return_data['listteachers']) == 0){
+            $return_data['listteachers'] = "empty";
+          };
+        }
+      }
+      return $return_data;
+    }
+    
 }
 
 
