@@ -17,7 +17,8 @@ Route::post('api/login','Api\MobileAuthController@login');
 Route::group(['prefix' => 'api', 'middleware' => 'apiguard'],function(){
 	Route::get('user_info', 'Api\MobileAuthController@get_user_info');
 	Route::get('get_schedule','Api\MobileScheduleController@get_schedule');
-
+	Route::get('get_list_classes', 'Api\MobileTranscriptController@get_list_classes');
+	// Route::get('get_list_classes', 'Api\MobileTranscriptController@get_list_classes');
 	Route::group(['prefix' => 'mailbox'], function(){
 		Route::post('get_mail_on_login', 'Api\MailboxController@get_mail_on_login');
 	});
@@ -27,7 +28,10 @@ Route::group(['prefix' => 'api', 'middleware' => 'apiguard'],function(){
 	});
 
 
+		
+
 	Route::group(['prefix' => 'post'], function(){
+
 		Route::post('get_notice_detail', 'Api\NoticeboardController@get_notice_detail');
 		Route::post('get_transcript', 'Api\MobileTranscriptController@get_transcript');
 		Route::post('teacher/get_stulist','Api\MobileTranscriptController@te_get_stulist');
