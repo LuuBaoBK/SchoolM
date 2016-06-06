@@ -14,6 +14,7 @@ use App\Model\Classes;
 use App\User;
 use App\Model\StudentClass;
 use Auth;
+use App\Model\Schedule;
 
 class MobileTranscriptController extends Controller
 {
@@ -217,32 +218,32 @@ class MobileTranscriptController extends Controller
       }
     }
 
-    public function te_get_stulist(){
-      $return_data['liststudents'] = array();
-      $user = Auth::user();
-      // $teacher = Teacher::find($user->id);
-      $year = substr(date("Y"),2,2);
-      $year = (date("m") < 8) ? ($year-1) : $year;
-      $class = Classes::where('homeroom_teacher','=',$user->id)->where('id','like',$year."%")->first();
-      $student_list = $class->students;
-      foreach ($student_list as $key => $student) {
-        $src =  '\uploads\\'.$student->enrolled_year.'\\'.$student->student_id;
-        if(file_exists(".".$src.".jpg")){
-          $src = $src.".jpg";
-        }
-        else if(file_exists(".".$src.".png")){
-          $src = $src.".png";
-        }
-        else{
-          $src = "\uploads\userAvatar.png";
-        }
-        $temp['avatar'] = $src;
-        $temp['name'] = User::find($student->student_id)->fullname;
-        $temp['ma'] = $student->student_id;
-        array_push($return_data['liststudents'], $temp);
-      }
-      return $return_data;
-    }
+    // public function te_get_stulist(){
+    //   $return_data['liststudents'] = array();
+    //   $user = Auth::user();
+    //   // $teacher = Teacher::find($user->id);
+    //   $year = substr(date("Y"),2,2);
+    //   $year = (date("m") < 8) ? ($year-1) : $year;
+    //   $class = Classes::where('homeroom_teacher','=',$user->id)->where('id','like',$year."%")->first();
+    //   $student_list = $class->students;
+    //   foreach ($student_list as $key => $student) {
+    //     $src =  '\uploads\\'.$student->enrolled_year.'\\'.$student->student_id;
+    //     if(file_exists(".".$src.".jpg")){
+    //       $src = $src.".jpg";
+    //     }
+    //     else if(file_exists(".".$src.".png")){
+    //       $src = $src.".png";
+    //     }
+    //     else{
+    //       $src = "\uploads\userAvatar.png";
+    //     }
+    //     $temp['avatar'] = $src;
+    //     $temp['name'] = User::find($student->student_id)->fullname;
+    //     $temp['ma'] = $student->student_id;
+    //     array_push($return_data['liststudents'], $temp);
+    //   }
+    //   return $return_data;
+    // }
 
     public function te_get_stu_detail(Request $request){
       $id = $request['id'];
@@ -285,4 +286,49 @@ class MobileTranscriptController extends Controller
   // "address": "Trung Thành Tây, Mỹ Quang, Q.3"
       return $temp;
     }
+
+
+    public function get_list_classes(){
+      $year = substr(date("Y"),2);
+      $year = (date("m") < 8) ? ($year -1 ) : $year;
+      $user= Auth::user();
+      $return_data = array();
+      $listClass = Schedule::where("teacher_id" , "=", $user->id)
+                            ->where('class_id','like',$year."%")
+                            ->groupBy('class_id')->get();
+      foreach ($listClass as $key => $value) {
+        $class_name = Classes::where('id','=',$value->class_id)->first();
+        $temp['class_id'] = $value->class_id;
+        $temp['class_name'] = $class_name->classname;
+        array_push($return_data, $temp);
+      }
+      return $return_data;
+    }
+
+
+    public function te_get_stulist(Request $request){
+      $return_data['liststudents'] = array();
+      $class_id = $request['data'];
+      $class = Classes::where('id','=',$class_id)->first();
+      $student_list = $class->students;
+      foreach ($student_list as $key => $student) {
+        $src =  '\uploads\\'.$student->enrolled_year.'\\'.$student->student_id;
+        if(file_exists(".".$src.".jpg")){
+          $src = $src.".jpg";
+        }
+        else if(file_exists(".".$src.".png")){
+          $src = $src.".png";
+        }
+        else{
+          $src = "\uploads\userAvatar.png";
+        }
+        $temp['avatar'] = $src;
+        $temp['name'] = User::find($student->student_id)->fullname;
+        $temp['ma'] = $student->student_id;
+        array_push($return_data['liststudents'], $temp);
+      }
+      return $return_data;
+    }
 }
+
+
