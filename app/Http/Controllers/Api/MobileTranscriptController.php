@@ -25,97 +25,9 @@ class MobileTranscriptController extends Controller
         $year = (date("m") < 8 ) ? ($year-1) : $year;
         $tb = array();
         if($month == "summary"){
-            $subject_list = Subject::select('id')->get();
-            for($i=8;$i<=12;$i++){
-              $scoretype_month = Scoretype::whereIn('subject_id',$subject_list)
-                                          ->where('applyfrom','<=',$year)
-                                          ->where('disablefrom','>=',$year)
-                                          ->where('month','=',$i)
-                                          ->get();
-              if(count($scoretype_month) > 0){
-                $tb['tb_thang_'.$i] = 0;
-                $month_factor = 0;
-                foreach ($scoretype_month as $key => $score) {
-                  $temp = Transcript::where('scholastic','=',$year)
-                                    ->where('student_id','=',$id)
-                                    ->where('scoretype_id','=',$score->id)
-                                    ->first();
-                  if($temp != null){
-                    $real_score = ($temp->score > 10) ? 0 : $temp->score;
-                    $tb['tb_thang_'.$i] += $real_score * $score->factor;
-                    $month_factor += $score->factor;
-                  }
-                  else{
-                    $tb['tb_thang_'.$i] += 0;
-                    $month_factor += $score->factor;
-                  }
-                }
-                $tb['tb_thang_'.$i] = number_format($tb['tb_thang_'.$i] / $month_factor ,2);
-              }
-              else{
-                $tb['tb_thang_'.$i] = "noscore";
-              }
-            }
-            for($i=1;$i<=5;$i++){
-              $scoretype_month = Scoretype::whereIn('subject_id',$subject_list)
-                                          ->where('applyfrom','<=',$year)
-                                          ->where('disablefrom','>=',$year)
-                                          ->where('month','=',$i)
-                                          ->get();
-              if(count($scoretype_month) > 0){
-                $tb['tb_thang_'.$i] = 0;
-                $month_factor = 0;
-                foreach ($scoretype_month as $key => $score) {
-                  $temp = Transcript::where('scholastic','=',$year)
-                                    ->where('student_id','=',$id)
-                                    ->where('scoretype_id','=',$score->id)
-                                    ->first();
-                  if($temp != null){
-                    $real_score = ($temp->score > 10) ? 0 : $temp->score;
-                    $tb['tb_thang_'.$i] += $real_score * $score->factor;
-                    $month_factor += $score->factor;
-                  }
-                  else{
-                    $tb['tb_thang_'.$i] += 0;
-                    $month_factor += $score->factor;
-                  }
-                }
-                $tb['tb_thang_'.$i] = number_format($tb['tb_thang_'.$i] / $month_factor ,2);
-              }
-              else{
-                $tb['tb_thang_'.$i] = "noscore";
-              }
-            }
-            $thang = 0;
-            $tb['tb_hk_1'] = 0;
-            for($i=8;$i<=12;$i++){
-              $tb['tb_hk_1'] += $tb['tb_thang_'.$i];
-              if($tb['tb_thang_'.$i] != "noscore"){
-                $thang = $thang + 1;
-              }
-            }
-            if($thang == 0){
-              $tb['tb_hk_1'] = "noscore";
-            }else{
-              $tb['tb_hk_1'] = number_format($tb['tb_hk_1'] / $thang , 2 );
-            }
-
-            $thang = 0;
-            $tb['tb_hk_2'] = 0;
-            for($i=1;$i<=5;$i++){
-              $tb['tb_hk_2'] += $tb['tb_thang_'.$i];
-              if($tb['tb_thang_'.$i] != "noscore"){
-                $thang = $thang + 1;
-              }
-            }
-            if($thang == 0){
-              $tb['tb_hk_2'] = "noscore";
-            }else{
-              $tb['tb_hk_2'] = number_format($tb['tb_hk_2'] / $thang , 2 );
-            }
-
-            $tb['tb_nam'] = number_format(($tb['tb_hk_1'] + 2*$tb['tb_hk_2'])/3 ,2);
+            $tb = $this->cal_summary_score($year);
         }
+        // end summary
         else{
             $subject_list = Subject::select('id')->get();
             foreach ($subject_list as $key => $subject) {
@@ -162,15 +74,9 @@ class MobileTranscriptController extends Controller
           array_push($data['tb'], $value);
         }
         if($month == "summary"){
-          for($i=8;$i<=12;$i++){
-            array_push($data['subject_list'],"Trung Bình Tháng ".$i);
+          foreach ($tb as $key => $value) {
+            array_push($data['subject_list'],$key);
           }
-          for($i=1;$i<=5;$i++){
-            array_push($data['subject_list'],"Trung Bình Tháng ".$i);
-          }
-          array_push($data['subject_list'],"Trung Bình HK1");
-          array_push($data['subject_list'],"Trung Bình HK2");
-          array_push($data['subject_list'],"Trung Bình Cả Năm");
         }
         else{
           foreach ($subject_list as $key => $value) {
@@ -333,6 +239,84 @@ class MobileTranscriptController extends Controller
         }
       }
       return $return_data;
+    }
+
+    private function cal_summary_score($year){
+      $student_id = Auth::user()->id;
+      $gpa_hk1 = 0;
+      $gpa_hk2 = 0;
+      $gpa = 0;
+      $gpa_list = array();
+      $subject_id_list = Subject::select('id')->get();
+      foreach ($subject_id_list as $key => $value) {
+        $subject_id_list[$key]->group = $value->id;
+      }
+      $total_subject = count($subject_id_list);
+      
+      foreach ($subject_id_list as $subject) {
+          //tinh diem hk 1 cua tung mon
+          $sub_key = Subject::find($subject->group)->subject_name;
+          $scoretype_list = Scoretype::where('subject_id','=',$subject->group)
+                                     ->where('applyfrom','<=',$year)
+                                     ->where('disablefrom','>=',$year)
+                                     ->where('month','>=', 8)
+                                     ->get();
+          $temp_gpa = 0;
+          $temp_factor = 0;
+          foreach ($scoretype_list as $scoretype) {
+              $score = Transcript::where('scoretype_id','=',$scoretype->id)
+                                  ->where('student_id','=',$student_id)
+                                  ->where('scholastic','=',$year)
+                                  ->first();
+              if($score == null){
+                  $temp_factor += $scoretype->factor;
+                  $temp_gpa += 0;
+              }
+              else{
+                  $score->score = ($score->score > 10) ? 0 : $score->score;
+                  $temp_factor += $scoretype->factor;
+                  $temp_gpa += $score->score * $scoretype->factor;                    
+              }
+          }
+          $temp_gpa = number_format(($temp_gpa / $temp_factor), 2 );
+          $gpa_list[$sub_key] = $temp_gpa;
+          $gpa_hk1 += $temp_gpa;
+
+          // hk 2
+          $scoretype_list = Scoretype::where('subject_id','=',$subject->group)
+                                     ->where('applyfrom','<=',$year)
+                                     ->where('disablefrom','>=',$year)
+                                     ->where('month','<', 8)
+                                     ->get();
+          $temp_gpa = 0;
+          $temp_factor = 0;
+          foreach ($scoretype_list as $scoretype) {
+              $score = Transcript::where('scoretype_id','=',$scoretype->id)
+                                  ->where('student_id','=',$student_id)
+                                  ->where('scholastic','=',$year)
+                                  ->first();
+              if($score == null){
+                  $temp_factor += $scoretype->factor;
+                  $temp_gpa += 0;
+              }
+              else{
+                  $score->score = ($score->score > 10) ? 0 : $score->score;
+                  $temp_factor += $scoretype->factor;
+                  $temp_gpa += $score->score * $scoretype->factor;                    
+              }
+          }
+          $temp_gpa = number_format(($temp_gpa / $temp_factor), 2 );
+          $gpa_list[$sub_key] = number_format(($gpa_list[$sub_key] + 2*$temp_gpa)/3,2);
+          $gpa_hk2 += $temp_gpa;
+      }
+      $gpa_hk1 = number_format(($gpa_hk1/$total_subject),2);
+      $gpa_hk2 = number_format(($gpa_hk2/$total_subject),2);
+      $gpa = number_format(($gpa_hk1 + 2*$gpa_hk2 )/ 3,2);
+      $gpa = round( $gpa, 1, PHP_ROUND_HALF_UP);
+      $gpa_list['tb_hk1'] = $gpa_hk1;
+      $gpa_list['tb_hk2'] = $gpa_hk2;
+      $gpa_list['tb_nam'] = $gpa;
+      return $gpa_list;
     }
     
 }
