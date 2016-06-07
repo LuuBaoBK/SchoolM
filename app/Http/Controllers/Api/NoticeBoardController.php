@@ -69,7 +69,7 @@ class NoticeBoardController extends Controller
                 $notice->notice_detail->subject = Subject::find($notice->notice_detail->wrote_by->group)->subject_name;
                 $temp['nid'] = $notice->notice_detail->id;
                 $temp['subject'] = $notice->notice_detail->subject;
-                $temp['notice'] = $notice->notice_detail->content;
+                $temp['notice'] = strip_tags($notice->notice_detail->content);
                 $temp['level'] = $notice->notice_detail->level;
                 $temp['deadline'] = $notice->notice_detail->notice_date;
                 $temp['title'] = $notice->notice_detail->title;
@@ -149,7 +149,7 @@ class NoticeBoardController extends Controller
         $data['author'] = $author->user->fullname;
         $data['ngaytao'] = date_format(date_create($lectureregister->wrote_date),'d/m/Y');
         $data['level'] = $lectureregister->level;
-        $data['notice'] = $lectureregister->content;
+        $data['notice'] = strip_tags($lectureregister->content);
         $data['title'] = $lectureregister->title;
         if($child_id == "self"){
             $student = Auth::user();
