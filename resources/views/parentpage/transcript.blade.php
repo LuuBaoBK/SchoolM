@@ -377,7 +377,7 @@ textarea {
 			            					else{
 			            						a = $('#score_list_table').dataTable().fnAddData([
 					            					i,
-					            					j[0],
+					            					j,
 					            					" "
 				            					]);
 				            					nTr = $('#score_list_table').dataTable().fnSettings().aoData[ a[0] ].nTr;

@@ -25,7 +25,7 @@ class MobileTranscriptController extends Controller
         $year = (date("m") < 8 ) ? ($year-1) : $year;
         $tb = array();
         if($month == "summary"){
-            $tb = $this->cal_summary_score($year);
+            $tb = $this->cal_summary_score($year,$id);
         }
         // end summary
         else{
@@ -241,8 +241,8 @@ class MobileTranscriptController extends Controller
       return $return_data;
     }
 
-    private function cal_summary_score($year){
-      $student_id = Auth::user()->id;
+    private function cal_summary_score($year,$stu_id){
+      $student_id = $stu_id;
       $gpa_hk1 = 0;
       $gpa_hk2 = 0;
       $gpa = 0;
