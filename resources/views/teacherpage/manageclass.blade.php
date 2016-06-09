@@ -108,6 +108,7 @@ textarea {
                                             <select id="conduct" name="conduct" class="form-control" {{$disable}}>
                                                 <option value="excellent" selected>Excellent</option>;
                                                 <option value="good" >Good</option>;
+                                                <option value="average">Avarage</option>
                                                 <option value="bad" >Bad</option>;
                                             </select>
                                         </div> 
@@ -132,7 +133,27 @@ textarea {
                                         <h4 class="text text-center box-title">Update Status</h4>
                                     </div>
                                     <div class="box-body">
-                                        <button id='update' class='btn btn-primary btn-block' {{$disable}} >Update</button>
+                                        <button id='update' class='btn btn-primary btn-block' {{$disable}} >Update GPA</button>
+                                    </div>
+                                </div>
+                                <div class='box box-primary'>
+                                    <div class="box-header">
+                                        <h4 class="text text-center box-title">Report</h4>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="btn-group" style="width:100%">
+
+                                          <button type="button" class="btn btn-block btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Create Report <span class="caret"></span>
+                                          </button>
+                                          <ul class="dropdown-menu" style="width:100%">
+                                            <li><a id="report_1" class="text-center" href="/teacher/manage-class/report_1/{{$class->id}}" target="_blank">Report Semester I</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a id="report_2" class="text-center" href="/teacher/manage-class/report_2/{{$class->id}}" target="_blank">Report Semester II</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a id="report_3" class="text-center" href="/teacher/manage-class/report_3/{{$class->id}}" target="_blank">Report Semester Year</a></li>
+                                          </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -207,6 +228,7 @@ $(document).ready(function() {
                     '_token'        :token
                     },
             success:function(record){
+                // console.log(record);
                 location.reload();
             },
             error:function(){

@@ -13,6 +13,7 @@
 
 // Android Api
 // Login
+
 Route::post('api/login','Api\MobileAuthController@login');
 Route::group(['prefix' => 'api', 'middleware' => 'apiguard'],function(){
 	Route::get('user_info', 'Api\MobileAuthController@get_user_info');
@@ -255,6 +256,10 @@ Route::group(['prefix' => 'teacher','middleware' => 'authrole_te'], function () 
 	Route::post('manage-class/update', 'Teacher\ManageclassController@update');
 	Route::post('manage-class/set_conduct', 'Teacher\ManageclassController@set_conduct');
 	Route::post('manage-class/add_note', 'Teacher\ManageclassController@add_note');
+	Route::get('manage-class/report_1/{class_id}', 'Teacher\ManageclassController@create_report_1');
+	Route::get('manage-class/report_2/{class_id}', 'Teacher\ManageclassController@create_report_2');
+	Route::get('manage-class/report_3/{class_id}', 'Teacher\ManageclassController@create_report_3');
+	Route::post('manage-class/send_report', 'Teacher\ManageclassController@send_report');
 	//view transcript
 	Route::get('view_transcript', 'Teacher\Transcript\TranscriptController@view_transcript');
 	// Schedule

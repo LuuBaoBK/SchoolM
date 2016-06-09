@@ -137,10 +137,15 @@ $(document).ready(function() {
         $('#sidebar_list_2').addClass('active');
         $('#sidebar_list_2_1').addClass('active');
         $("#admin_table").DataTable({
-            "order": [[ 0, "desc" ]],
-            "columnDefs": [ { "targets": 3, "orderable": false } ],
-            "columnDefs": [ { "targets": 5, "orderable": false } ],
-            "columnDefs": [ { "targets": 7, "orderable": false } ]
+            "scrollCollapse": false,
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": false,
+            "info": true,
+            "autoWidth": true,
+            "order": [[ 15, "desc" ]],
+            "columnDefs": [ { "targets": 3, "orderable": false } ]
         }
         );
         $("[data-mask]").inputmask();
