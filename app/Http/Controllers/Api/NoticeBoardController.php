@@ -69,7 +69,7 @@ class NoticeBoardController extends Controller
                 $notice->notice_detail->subject = Subject::find($notice->notice_detail->wrote_by->group)->subject_name;
                 $temp['nid'] = $notice->notice_detail->id;
                 $temp['subject'] = $notice->notice_detail->subject;
-                $temp['notice'] = strip_tags($notice->notice_detail->content);
+                $temp['notice'] = $temp['notice'] = substr(strip_tags($notice->notice_detail->content),0,-1);
                 $temp['level'] = $notice->notice_detail->level;
                 $temp['deadline'] = $notice->notice_detail->notice_date;
                 $temp['title'] = $notice->notice_detail->title;
