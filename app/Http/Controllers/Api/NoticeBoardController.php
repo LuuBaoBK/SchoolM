@@ -46,7 +46,10 @@ class NoticeBoardController extends Controller
             $offset = (($day - $to_day) < 0) ? ($day - $to_day +7) : ($day - $to_day);
             $date = date('Y-m-d 00:00:00', strtotime("+".$offset." day"));
             if($day == 7){
-                $offset += 1;
+                if(date('D') == "Sat")
+                    $offset += 1;
+                else
+                    $offset -= 1;
                 $plus = date('Y-m-d 00:00:00', strtotime("+".$offset." day"));
                 $notice_temp_list = Classlectureregister::where('class_id','=',$check->class_id)
                                                         ->where('notice_date','=',$date)
@@ -107,7 +110,10 @@ class NoticeBoardController extends Controller
             $offset = (($day - $to_day) < 0) ? ($day - $to_day +7) : ($day - $to_day);
             $date = date('Y-m-d 00:00:00', strtotime("+".$offset." day"));
             if($day == 7){
-                $offset += 1;
+                if(date('D') == "Sat")
+                    $offset += 1;
+                else
+                    $offset -= 1;
                 $plus = date('Y-m-d 00:00:00', strtotime("+".$offset." day"));
                 $notice_temp_list = Classlectureregister::where('class_id','=',$check->class_id)
                                                         ->where('notice_date','=',$date)
