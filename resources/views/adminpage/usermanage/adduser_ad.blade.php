@@ -130,7 +130,9 @@
 </div><!-- /.box -->
 </section>
 <!-- DataTables -->
-<script src="{{asset("/adminlte/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
+<script src="{{asset("/mylib/jquery/jquery.min.js")}}" type="text/javascript"></script>
+<script src="{{asset("/adminltemaster/js/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
+<script src="{{asset("/adminltemaster/js/plugins/datatables/dataTables.bootstrap.js")}}" type="text/javascript"></script>
 <script>
 $(document).ready(function() {
     $(function () {
@@ -138,13 +140,13 @@ $(document).ready(function() {
         $('#sidebar_list_2_1').addClass('active');
         $("#admin_table").DataTable({
             "scrollCollapse": false,
-            "paging": false,
+            "paging": true,
             "lengthChange": false,
-            "searching": false,
-            "ordering": false,
+            "searching": true,
+            "ordering": true,
             "info": true,
             "autoWidth": true,
-            "order": [[ 15, "desc" ]],
+            "order": [[ 0, "desc" ]],
             "columnDefs": [ { "targets": 3, "orderable": false } ]
         }
         );

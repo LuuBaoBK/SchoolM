@@ -29,7 +29,7 @@
                     <i class="fa fa-search"></i> <span>Teacher List</span>
                 </a>
             </li>
-            <li id="sidebar_mailbox">
+            <li id="sidebar_transcript">
                 <a href="/parents/transcript">
                     <i class="fa fa-list-ul"></i> <span>Transcript</span>
                 </a>

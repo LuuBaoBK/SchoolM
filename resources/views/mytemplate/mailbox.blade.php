@@ -725,6 +725,8 @@ $(document).ready(function(){
         else{
           messages_table.fnSetColumnVis(5,true);
         }
+        // console.log(record);
+        // console.log("abc");
       },
       error:function(){
           alert("something went wrong, contact master admin to fix");

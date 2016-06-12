@@ -259,29 +259,44 @@ class ScheduleController extends Controller
         $duplicated_list = $this->checkDuplicated_Assigment();
         $no_assigment_list = $this->checkNoAssigment();
 
+        $teacher_error_list = [];
         $stop = false; $color = "";
         $total_period_per_week = 0;
         $subject_list = Subject::all();
         foreach ($subject_list as $subject_list_key => $subject) {
             $teacher_list = Teacher::select('id')->where('group','=',$subject->id)->where('active','=',1)->get();
-            $assigment_classes = Phancong::whereIn('teacher_id',$teacher_list)->where('class_id','like',$year."%")->get();
-            $used_teachers_list = Phancong::whereIn('teacher_id',$teacher_list)->where('class_id','like',$year."%")->groupBy('teacher_id')->get();
-            $total_class = count($assigment_classes);
-            $total_period = ceil($total_class*$subject->total_time);
-            $total_used_teachers = count($used_teachers_list);
-            $teacher_need = ceil($total_period / $this->TEACHER_MAX_PERIOD_PER_WEEK);
-            $subject_list[$subject_list_key]['teacher_need'] = $teacher_need;
-            $subject_list[$subject_list_key]['total_used_teachers'] = $total_used_teachers;
-            $subject_list[$subject_list_key]['style_on_view'] = ($total_used_teachers < $teacher_need) ? $this->WARNING_COLOR : "";
-            $stop = ($total_used_teachers < $teacher_need) ? true : $stop;
-            if(count($assigment_classes) > 0){
-                $total_period_per_week += $subject->total_time;
+            foreach ($teacher_list as $te_key => $teacher) {
+                $assigment_classes = Phancong::where('teacher_id','=',$teacher->id)->where('class_id','like',$year."%")->get();
+                $total_class = count($assigment_classes);
+                $total_period = ceil($total_class*$subject->total_time);
+                if($total_period > 40){
+                    $teacher_list[$te_key]['style_on_view'] = $this->WARNING_COLOR;
+                    $teacher_list[$te_key]['total_period'] = $total_period;
+                    $teacher_list[$te_key]['fullname'] = User::find($teacher->id)->fullname;
+                    $teacher_list[$te_key]['subject'] = $subject->subject_name;
+                    array_push($teacher_error_list, $teacher);
+                }
+                else{
+                    $teacher_list[$te_key]['style_on_view'] = "";
+                }
             }
+            
+            // $used_teachers_list = Phancong::whereIn('teacher_id',$teacher_list)->where('class_id','like',$year."%")->groupBy('teacher_id')->get();
+            // $total_used_teachers = count($used_teachers_list);
+            // $teacher_need = ceil($total_period / $this->TEACHER_MAX_PERIOD_PER_WEEK);
+            // $subject_list[$subject_list_key]['teacher_need'] = $teacher_need;
+            // $subject_list[$subject_list_key]['total_used_teachers'] = $total_used_teachers;
+            // $subject_list[$subject_list_key]['style_on_view'] = ($total_used_teachers < $teacher_need) ? $this->WARNING_COLOR : "";
+            // $stop = ($total_used_teachers < $teacher_need) ? true : $stop;
+            // if(count($assigment_classes) > 0){
+            //     $total_period_per_week += $subject->total_time;
+            // }
         }
-        if($total_period_per_week > 46){
-            $stop = true;
-            $color = $this->WARNING_COLOR;
-        }
+        // if($total_period_per_week > 46){
+        //     $stop = true;
+        //     $color = $this->WARNING_COLOR;
+        // }
+        $stop = (count($teacher_error_list) > 0) ? "true" : $stop;
         $total['class'] = $total_period_per_week;
         $total['max'] = 46;
         $total['color'] = $color;
@@ -290,7 +305,8 @@ class ScheduleController extends Controller
                 'duplicated_list' => $duplicated_list,
                 'no_assigment_list' => $no_assigment_list,
                 'subject_list'  => $subject_list,
-                'total_period' => $total
+                'total_period' => $total,
+                'teacher_error_list' => $teacher_error_list
             ]);
         }
         else{
@@ -488,7 +504,6 @@ class ScheduleController extends Controller
 
     public function confirm_schedule(Request $request){
         $tkb = $request['tkb'];
-
         foreach ($tkb as $key1 => $rowgv) {
             $update = tkb::where("teacher_id", "=", $rowgv[0])->first();
 

@@ -71,7 +71,8 @@ class MailBoxController extends Controller
                 $value->author_id = $value->author->id;
             }
             $value->content;
-            $value->content->mycontent = substr($value->content->content,0,30)."...";
+            $temp_content = strip_tags($value->content->content);
+            $value->content->mycontent = substr($temp_content,0,30)."...";
             $value->content->date_diff = $this->date_diff($value->content->created_at);
         }
         $record['msg_list'] = $msg_list;
@@ -122,7 +123,8 @@ class MailBoxController extends Controller
                 $value->content->mycontent = "N/A";
             }
             else{
-                $value->content->mycontent = substr($value->content->content,0,30)."...";
+                $temp_content = strip_tags($value->content->content);
+                $value->content->mycontent = substr($temp_content,0,30)."...";
             }
             $value->content->date_diff = $this->date_diff($value->content->created_at);
         }
@@ -135,7 +137,8 @@ class MailBoxController extends Controller
                 $value->content->mycontent = "N/A";
             }
             else{
-                $value->content->mycontent = substr($value->content->content,0,30)."...";
+                $temp_content = strip_tags($value->content->content);
+                $value->content->mycontent = substr($temp_content,0,30)."...";
             }
             $value->content->date_diff = $this->date_diff($value->content->created_at);
         }
@@ -159,7 +162,8 @@ class MailBoxController extends Controller
                 $value->content->mycontent = "N/A";
             }
             else{
-                $value->content->mycontent = substr($value->content->content,0,30)."...";
+                $temp_content = strip_tags($value->content->content);
+                $value->content->mycontent =  substr($temp_content,0,30)."...";
             }
             $value->content->date_diff = $this->date_diff($value->content->created_at);
         }
@@ -180,7 +184,8 @@ class MailBoxController extends Controller
                 $value->content->mycontent = "N/A";
             }
             else{
-                $value->content->mycontent = substr($value->content->content,0,30)."...";
+                $temp_content = strip_tags($value->content->content);
+                $value->content->mycontent = substr($temp_content,0,30)."...";
             }
             $value->content->date_diff = $this->date_diff($value->content->created_at);
         }
@@ -204,7 +209,8 @@ class MailBoxController extends Controller
                 $value->content->mycontent = "N/A";
             }
             else{
-                $value->content->mycontent = substr($value->content->content,0,30)."...";
+                $temp_content = strip_tags($value->content->content);
+                $value->content->mycontent = substr($temp_content,0,30)."...";
             }
             $value->content->date_diff = $this->date_diff($value->content->created_at);
         }
@@ -217,7 +223,8 @@ class MailBoxController extends Controller
                 $value->content->mycontent = "N/A";
             }
             else{
-                $value->content->mycontent = substr($value->content->content,0,30)."...";
+                $temp_content = strip_tags($value->content->content);
+                $value->content->mycontent = substr($temp_content,0,30)."...";
             }
 
             $value->content->date_diff = $this->date_diff($value->content->created_at);
